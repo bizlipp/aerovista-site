@@ -7,6 +7,296 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <style>
+    .book-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
+      opacity: 0.2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    
+    .floating-letters {
+      position: absolute;
+      font-family: serif;
+      opacity: 0.3;
+      color: var(--color-hot);
+      animation: float-up 15s linear infinite;
+      font-weight: 700;
+    }
+    
+    @keyframes float-up {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.3;
+      }
+      90% {
+        opacity: 0.3;
+      }
+      100% {
+        transform: translateY(-50px) rotate(359deg);
+        opacity: 0;
+      }
+    }
+    
+    .book-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .book-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-base);
+      padding: 0;
+      transition: transform var(--transition-medium) ease, box-shadow var(--transition-medium) ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .book-cover {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      border-radius: var(--radius-base) var(--radius-base) 0 0;
+    }
+    
+    .book-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .book-info {
+      padding: 1.5rem;
+      background: var(--color-surface);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      border-radius: 0 0 var(--radius-base) var(--radius-base);
+    }
+    
+    .book-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .book-tag {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      background: var(--color-surface-alt);
+      color: var(--color-text-soft);
+      display: inline-block;
+    }
+    
+    .book-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hot);
+    }
+    
+    .book-card:hover .book-cover img {
+      transform: scale(1.05);
+    }
+    
+    .book-title {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-family: var(--font-heading);
+    }
+    
+    .book-author {
+      font-size: 0.95rem;
+      color: var(--color-text-soft);
+      margin-bottom: 1rem;
+    }
+    
+    .book-description {
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+    
+    .book-price {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+    
+    .book-price .btn {
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+    }
+    
+    .bookshelf {
+      margin: 4rem 0;
+      display: flex;
+      overflow-x: auto;
+      padding: 2rem 0;
+      gap: 1.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-accent) var(--color-surface);
+    }
+    
+    .bookshelf::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .bookshelf::-webkit-scrollbar-track {
+      background: var(--color-surface);
+      border-radius: 10px;
+    }
+    
+    .bookshelf::-webkit-scrollbar-thumb {
+      background: var(--color-accent);
+      border-radius: 10px;
+    }
+    
+    .bookshelf-book {
+      min-width: 80px;
+      height: 200px;
+      background: var(--gradient-hot);
+      border-radius: 3px;
+      position: relative;
+      box-shadow: -3px 5px 10px rgba(0, 0, 0, 0.2);
+      transition: transform var(--transition-medium) ease;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      color: white;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      padding: 1rem 0.5rem;
+      text-align: center;
+    }
+    
+    .bookshelf-book::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px 0 0 3px;
+    }
+    
+    .bookshelf-book:hover {
+      transform: translateY(-10px) rotate(-3deg);
+    }
+    
+    .publishing-services {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .service-item {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-base);
+      padding: 2rem;
+      text-align: center;
+      transition: transform var(--transition-medium) ease, box-shadow var(--transition-medium) ease;
+    }
+    
+    .service-item:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-card);
+    }
+    
+    .service-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      background: var(--gradient-hot);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .open-book {
+      position: relative;
+      max-width: 600px;
+      margin: 3rem auto;
+      perspective: 1000px;
+    }
+    
+    .book-page {
+      width: 500px;
+      height: 300px;
+      background: white;
+      position: relative;
+      transform-style: preserve-3d;
+      transform-origin: center left;
+      transition: transform var(--transition-medium) cubic-bezier(0.645, 0.045, 0.355, 1);
+      box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 2rem;
+      color: black;
+      overflow: hidden;
+    }
+    
+    .open-book:hover .book-page {
+      transform: rotateY(-30deg);
+    }
+    
+    .quote-section {
+      max-width: 800px;
+      margin: 4rem auto;
+      text-align: center;
+    }
+    
+    .big-quote {
+      font-size: 1.5rem;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    
+    .quote-author {
+      font-weight: 700;
+      font-family: var(--font-heading);
+    }
+    
+    @media (max-width: 768px) {
+      .bookshelf-book {
+        min-width: 60px;
+        height: 180px;
+        font-size: 0.8rem;
+      }
+      
+      .open-book {
+        scale: 0.8;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
@@ -22,55 +312,225 @@
 
   <!-- Division Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#ffb34733 100%);">
-    <h1>Vespera Publishing</h1>
+    <div class="book-bg" id="bookBg"></div>
+    <h1 class="text-gradient-hot glitch" data-text="Vespera Publishing">Vespera Publishing</h1>
     <p>Books, courses, and multimedia resources crafted to spark holistic growth and lifelong learning.</p>
+    <a href="#books" class="btn" data-animate="fade-up">Browse Collection</a>
   </section>
 
   <!-- Overview -->
   <section class="container">
-    <h2>Mission</h2>
-    <p>Vespera Publishing cultivates transformative stories and educational materials—bridging classic wisdom with modern insight to help readers flourish.</p>
+    <h2>Our Mission</h2>
+    <div class="text-center" data-animate="fade-up">
+      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">Vespera Publishing cultivates transformative stories and educational materials—bridging classic wisdom with modern insight to help readers flourish in a complex world through powerful narratives and practical guidance.</p>
+    </div>
+    
+    <div class="quote-section" data-animate="fade-up">
+      <div class="big-quote">
+        "Books are a uniquely portable magic. They have the power to transport us, transform us, and reveal truths we never knew existed."
+      </div>
+      <div class="quote-author">
+        — Elena Vespera, Founder
+      </div>
+    </div>
+  </section>
+
+  <!-- Browsing Experience -->
+  <section class="container">
+    <h2>Browse Our Bookshelf</h2>
+    <p class="text-center" style="max-width:700px;margin:0 auto 2rem;">Slide through our collection of transformative works spanning multiple genres and formats.</p>
+    
+    <div class="bookshelf" data-animate="fade-up">
+      <div class="bookshelf-book" style="background:linear-gradient(45deg, #ff3caf, #ffb347);">Seasons of Change</div>
+      <div class="bookshelf-book" style="background:linear-gradient(45deg, #474dff, #00d2ff);">Mindful Transitions</div>
+      <div class="bookshelf-book" style="background:linear-gradient(45deg, #9b59b6, #3498db);">Autumn's Harvest</div>
+      <div class="bookshelf-book" style="background:linear-gradient(45deg, #2ecc71, #9b59b6);">Creative Resilience</div>
+      <div class="bookshelf-book" style="background:linear-gradient(45deg, #3498db, #2ecc71);">Digital Minimalism</div>
+      <div class="bookshelf-book" style="background:linear-gradient(45deg, #e74c3c, #f39c12);">Summer's Bloom</div>
+      <div class="bookshelf-book" style="background:linear-gradient(45deg, #00d2ff, #474dff);">The Middle Path</div>
+      <div class="bookshelf-book" style="background:linear-gradient(45deg, #f39c12, #e74c3c);">Spring's Renewal</div>
+      <div class="bookshelf-book" style="background:linear-gradient(45deg, #1abc9c, #3498db);">The Flow State</div>
+      <div class="bookshelf-book" style="background:linear-gradient(45deg, #8e44ad, #1abc9c);">Reflective Wisdom</div>
+    </div>
   </section>
 
   <!-- Featured Works -->
-  <section class="container">
+  <section id="books" class="container">
     <h2>Featured Titles</h2>
-    <div class="grid grid-cols-2 grid-cols-3">
-      <div class="card" data-animate="fade-up">
-        <h3>Seasons of Change — Winter’s Wisdom</h3>
-        <p>The first in a cyclical series blending TCM, mindfulness, and narrative guidance.</p>
+    <div class="book-cards">
+      <div class="book-card" data-animate="fade-up">
+        <div class="book-cover">
+          <img src="https://images.unsplash.com/photo-1577455436337-78277d6e5da7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Seasons of Change">
+        </div>
+        <div class="book-info">
+          <div class="book-tags">
+            <span class="book-tag">Wellness</span>
+            <span class="book-tag">Mindfulness</span>
+          </div>
+          <h3 class="book-title">Seasons of Change — Winter's Wisdom</h3>
+          <p class="book-author">By Elena Vespera</p>
+          <p class="book-description">The first in a cyclical series blending Traditional Chinese Medicine, mindfulness, and narrative guidance for seasonal living.</p>
+          <div class="book-price">
+            <span>$24.95</span>
+            <button class="btn outline">Pre-Order</button>
+          </div>
+        </div>
       </div>
-      <div class="card" data-animate="fade-up">
-        <h3>Autumn’s Harvest</h3>
-        <p>A vibrant companion book with illustrated recipes and reflective prompts.</p>
+      
+      <div class="book-card" data-animate="fade-up">
+        <div class="book-cover">
+          <img src="https://images.unsplash.com/photo-1506920139339-1f909ccb27b8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Autumn's Harvest">
+        </div>
+        <div class="book-info">
+          <div class="book-tags">
+            <span class="book-tag">Cookbook</span>
+            <span class="book-tag">Seasonal</span>
+          </div>
+          <h3 class="book-title">Autumn's Harvest</h3>
+          <p class="book-author">By Mira Chen & Liam Davis</p>
+          <p class="book-description">A vibrant companion book with illustrated recipes, reflective prompts, and seasonal wisdom for autumn transitions.</p>
+          <div class="book-price">
+            <span>$29.95</span>
+            <button class="btn outline">Buy Now</button>
+          </div>
+        </div>
       </div>
-      <div class="card" data-animate="fade-up">
-        <h3>Creative Resilience Workbook</h3>
-        <p>Interactive exercises for artists and innovators to overcome blocks.</p>
+      
+      <div class="book-card" data-animate="fade-up">
+        <div class="book-cover">
+          <img src="https://images.unsplash.com/photo-1547480053-7d174f67b557?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Creative Resilience">
+        </div>
+        <div class="book-info">
+          <div class="book-tags">
+            <span class="book-tag">Creativity</span>
+            <span class="book-tag">Workbook</span>
+          </div>
+          <h3 class="book-title">Creative Resilience Workbook</h3>
+          <p class="book-author">By Jason Wright</p>
+          <p class="book-description">Interactive exercises, prompts, and frameworks for artists and innovators to overcome creative blocks and build resilience.</p>
+          <div class="book-price">
+            <span>$19.95</span>
+            <button class="btn outline">Buy Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Open Book Animation -->
+  <section class="container text-center">
+    <h2>Opening New Perspectives</h2>
+    <div class="open-book" data-animate="fade-up">
+      <div class="book-page">
+        <h3 style="margin-top:0;color:#333;font-family:serif;">From "Seasons of Change"</h3>
+        <p style="color:#555;font-family:serif;line-height:1.7;">
+          Winter calls us inward, into the quiet depths where reflection becomes our teacher. Like the seed beneath snow, we too need periods of dormancy—not as absence, but as preparation for what's to come.
+          <br><br>
+          In this season of stillness, we discover that rest is not merely the absence of activity, but a vital force of its own...
+        </p>
+      </div>
+    </div>
+    <p style="max-width:500px;margin:2rem auto 0;font-style:italic;color:var(--color-text-soft);">Hover over the page to experience our immersive reading experience</p>
+  </section>
+
+  <!-- Publishing Services -->
+  <section class="container">
+    <h2>Our Publishing Services</h2>
+    <div class="publishing-services">
+      <div class="service-item" data-animate="fade-up">
+        <div class="service-icon">📝</div>
+        <h3>Editorial Development</h3>
+        <p>Comprehensive manuscript guidance, structural editing, and developmental support for authors at all stages.</p>
+      </div>
+      <div class="service-item" data-animate="fade-up">
+        <div class="service-icon">🎨</div>
+        <h3>Design & Illustration</h3>
+        <p>Beautiful visual storytelling through cover design, interior layout, and custom illustrations.</p>
+      </div>
+      <div class="service-item" data-animate="fade-up">
+        <div class="service-icon">🔊</div>
+        <h3>Audiobook Production</h3>
+        <p>Professional narration, sound design, and audio mastering for immersive listening experiences.</p>
+      </div>
+      <div class="service-item" data-animate="fade-up">
+        <div class="service-icon">📱</div>
+        <h3>Digital & Interactive</h3>
+        <p>Enhanced ebooks, companion apps, and interactive content that extends beyond traditional pages.</p>
       </div>
     </div>
   </section>
 
   <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:#1a1d24;">
-    <h2 style="margin-bottom:1rem;">Seeking Publishing Partners & Contributors</h2>
-    <p style="max-width:600px;color:var(--color-text-soft);">We welcome authors, illustrators, and educators aligned with our mission to co‑create the next wave of growth‑focused content.</p>
-    <a href="#contact" class="btn" style="margin-top:1.5rem;">Pitch Your Idea</a>
+  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));">
+    <h2 style="margin-bottom:1rem;" class="text-gradient-hot">Seeking Publishing Partners & Contributors</h2>
+    <p style="max-width:600px;color:var(--color-text-soft);">We welcome authors, illustrators, and educators aligned with our mission to co‑create the next wave of growth‑focused content and transformative publications.</p>
+    <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Pitch Your Idea</a>
   </section>
 
   <!-- Contact CTA -->
-  <section id="contact">
+  <section id="contact" class="container">
     <h2>Contact Vespera Publishing</h2>
-    <form id="contactForm" class="container">
-      <input required type="text" placeholder="Your Name" />
-      <input required type="email" placeholder="Email" />
-      <textarea required rows="5" placeholder="Share your proposal or inquiry..."></textarea>
-      <button class="btn" type="submit">Send Message</button>
+    <form id="contactForm" class="bg-glass" style="border-radius:var(--radius-base);padding:2rem;border:1px solid var(--glass-border);">
+      <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+      <input required type="email" placeholder="Email" data-animate="fade-up" />
+      <textarea required rows="5" placeholder="Share your proposal or inquiry..." data-animate="fade-up"></textarea>
+      <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
     </form>
   </section>
 
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><strong>AeroVista</strong></div>
+        <p>Transforming ideas into exceptional digital experiences.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Divisions</h4>
+        <a href="skyforge-creative.html">SkyForge Creative</a>
+        <a href="vespera-publishing.html">Vespera Publishing</a>
+        <a href="summit-learning.html">Summit Learning</a>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <a href="../index.html">Home</a>
+        <a href="../divisions.html">Divisions</a>
+        <a href="../apps.html">Apps</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 AeroVista LLC — All rights reserved.
+    </div>
+  </footer>
 
   <script type="module" src="../main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Create floating letters in the background
+      const bookBg = document.getElementById('bookBg');
+      const letterCount = 20;
+      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      
+      for (let i = 0; i < letterCount; i++) {
+        const letter = document.createElement('div');
+        letter.className = 'floating-letters';
+        letter.textContent = letters[Math.floor(Math.random() * letters.length)];
+        
+        // Random position and size
+        const posX = Math.random() * 100;
+        const size = Math.random() * 30 + 20;
+        const delay = Math.random() * 10;
+        const duration = Math.random() * 10 + 10;
+        const rotation = Math.random() * 360;
+        
+        letter.style.left = `${posX}%`;
+        letter.style.fontSize = `${size}px`;
+        letter.style.animationDelay = `${delay}s`;
+        letter.style.animationDuration = `${duration}s`;
+        letter.style.transform = `rotate(${rotation}deg)`;
+        
+        bookBg.appendChild(letter);
+      }
+    });
+  </script>
 </body>
 </html>
