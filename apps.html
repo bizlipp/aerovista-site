@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="responsive-fixes.css" />
+  <link rel="stylesheet" href="theme-classes.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="description" content="Explore AeroVista's sleek, local-first apps – from sticky-note productivity to glitch-punk file managers and more.">
   <meta property="og:title" content="AeroVista | Apps & Products">
@@ -261,7 +262,7 @@
   <main id="main-content">
 
   <!-- Hero -->
-  <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#00d2ff33 100%);">
+  <section class="hero bytepad-bg">
     <h1 class="text-gradient glitch" data-text="Apps & Products">Apps & Products</h1>
     <p>Browse our flagship tools—shipped, in beta, or coming soon. Each built with a local‑first mindset and sleek AeroVista polish.</p>
     <a href="#apps" class="btn" data-animate="fade-up">Explore Apps</a>
@@ -275,7 +276,7 @@
       <div class="device desktop">
         <img 
           src="public/images/apps/bytepad.png" 
-          alt="BytePad Desktop App" 
+          alt="BytePad Desktop App - Sticky note productivity app interface showing organized digital notes and task cards" 
           loading="lazy"
           width="800"
           height="500">
@@ -283,7 +284,7 @@
       <div class="device mobile left">
         <img 
           src="public/images/apps/mobile-view.png" 
-          alt="Mobile App Left" 
+          alt="BytePad Mobile App - Mobile interface of the sticky note app showing responsive design and touch interactions" 
           loading="lazy"
           width="300"
           height="600">
@@ -291,7 +292,7 @@
       <div class="device mobile right">
         <img 
           src="public/images/apps/mobile-view.png" 
-          alt="Mobile App Right" 
+          alt="BytePad Mobile App - Alternative view of the mobile interface showing different note organization options" 
           loading="lazy"
           width="300"
           height="600">
@@ -315,7 +316,7 @@
       <div class="app-feature-image">
         <img 
           src="public/images/apps/bytepad.png" 
-          alt="Local-First Approach" 
+          alt="BytePad demonstrates local-first approach - App interface showing offline capability with sync status indicators" 
           loading="lazy"
           width="600"
           height="450">
@@ -330,7 +331,7 @@
       <div class="app-feature-image">
         <img 
           src="public/images/apps/mobile-view.png" 
-          alt="Minimalist Design" 
+          alt="Minimalist design of mobile app interface showing clean layout, clear typography and focused content areas" 
           loading="lazy"
           width="600"
           height="450">
@@ -345,7 +346,7 @@
       <div class="app-feature-image">
         <img 
           src="public/images/apps/reflection-journal.png" 
-          alt="Cross-Platform Integration" 
+          alt="Reflection Journal app showing cross-platform integration with synchronized content across devices" 
           loading="lazy"
           width="600"
           height="450">
@@ -407,7 +408,7 @@
   </section>
 
   <!-- CTA -->
-  <section class="hero" style="min-height:auto;padding:4rem 1rem;background:var(--color-surface);">
+  <section class="cta-section">
     <h2 style="margin-bottom:1.5rem;">Ready to Enhance Your Workflow?</h2>
     <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">Our apps are designed to help you work more efficiently while maintaining control over your data. Try them today and experience the difference.</p>
     <div class="flex gap-md">
@@ -456,6 +457,9 @@
       </div>
     </div>
   </footer>
+
+  <!-- Schema.org data will be injected here by JS -->
+  <div class="schema-metadata" aria-hidden="true"></div>
 
   <script type="module" src="main.js"></script>
   <script type="module">

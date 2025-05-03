@@ -1,0 +1,171 @@
+/* 
+ * AeroVista Theme Classes
+ * Centralized CSS classes for gradients, backgrounds, and common styling
+ */
+
+/* Hero Background Classes */
+.hero {
+  position: relative;
+  padding: 6rem 1rem;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Division Hero Backgrounds */
+.hero.skyforge-bg {
+  background: linear-gradient(135deg, rgba(255, 60, 175, 0.27) 0%, rgba(73, 46, 255, 0.4) 100%);
+}
+
+.hero.horizon-bg {
+  background: linear-gradient(135deg, rgba(0, 138, 191, 0.27) 0%, rgba(0, 210, 255, 0.2) 100%);
+}
+
+.hero.vespera-bg {
+  background: linear-gradient(135deg, rgba(255, 60, 175, 0.27) 0%, rgba(255, 179, 71, 0.2) 100%);
+}
+
+.hero.summit-bg {
+  background: linear-gradient(135deg, rgba(255, 179, 71, 0.2) 0%, rgba(255, 60, 175, 0.27) 100%);
+}
+
+.hero.lumina-bg {
+  background: linear-gradient(135deg, rgba(58, 71, 213, 0.53) 0%, rgba(196, 113, 237, 0.33) 100%);
+}
+
+.hero.nexus-bg {
+  background: linear-gradient(135deg, rgba(0, 210, 255, 0.2) 0%, rgba(71, 77, 255, 0.33) 100%);
+}
+
+.hero.echoverse-bg {
+  background: linear-gradient(135deg, rgba(255, 60, 175, 0.27) 0%, rgba(71, 77, 255, 0.33) 100%);
+}
+
+/* App Hero Backgrounds */
+.hero.bytepad-bg {
+  background: linear-gradient(135deg, rgba(0, 210, 255, 0.2) 0%, rgba(58, 71, 213, 0.53) 100%);
+}
+
+.hero.vaultmaster-bg {
+  background: linear-gradient(135deg, rgba(255, 60, 175, 0.27) 0%, rgba(58, 71, 213, 0.53) 100%);
+}
+
+.hero.rydesync-bg {
+  background: linear-gradient(135deg, rgba(71, 77, 255, 0.33) 0%, rgba(0, 210, 255, 0.2) 100%);
+}
+
+/* General Backgrounds */
+.bg-primary-gradient {
+  background: linear-gradient(135deg, #00d2ff33 0%, #474dff55 100%);
+}
+
+.bg-hot-gradient {
+  background: linear-gradient(135deg, #ff3caf44 0%, #ffb34733 100%);
+}
+
+.bg-surface {
+  background: var(--color-surface);
+}
+
+.bg-surface-alt {
+  background: var(--color-surface-alt);
+}
+
+.bg-glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+/* CTA Sections */
+.cta-section {
+  min-height: auto;
+  padding: 4rem 1rem;
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.cta-section.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+}
+
+/* Focus & Hover Enhancements for Accessibility */
+.btn:focus,
+.card:focus,
+nav a:focus,
+input:focus,
+textarea:focus,
+select:focus,
+.feature-box:focus,
+.tech-card:focus,
+.aerial-card:focus,
+.equipment-item:focus,
+.service-item:focus,
+.book-card:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Enhanced hover states for interactive elements */
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, outline 0.2s ease;
+}
+
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-card);
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+}
+
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, outline 0.2s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  border-radius: 100%;
+  transform: scale(1, 1) translate(-50%);
+  transform-origin: 50% 50%;
+}
+
+.btn:focus:not(:active)::after {
+  animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0, 0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(30, 30);
+    opacity: 0;
+  }
+}
+
+/* Schema.org metadata styles (hidden but available for screen readers) */
+.schema-metadata {
+  display: none;
+} 

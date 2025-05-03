@@ -6,8 +6,10 @@
    <body data-page="..."> for targeted functionality.
    ====================================================== */
 
-// Import image utilities
+// Import image utilities, theme and schema helper
 import { initLazyLoading } from './src/imageUtil.js';
+import { colors, gradients, shadows } from './src/theme.js';
+import { createOrganizationSchema, createDivisionSchema, createAppSchema, injectSchema } from './src/schemaHelper.js';
 
 // 1. CONTENT -----------------------------------------------------------------
 export const divisions = [
@@ -81,6 +83,17 @@ export const apps = [
 
 // 2. RENDER HELPERS -----------------------------------------------------------
 function createCard({ name, title, desc, status, slug, color }, type = 'division') {
+  // Error handling for missing slug or title
+  if (!slug) {
+    console.error('Error creating card: missing slug parameter');
+    return document.createElement('div'); // Return empty div to avoid breaking the layout
+  }
+  
+  if (!name && !title) {
+    console.error(`Error creating card for ${slug}: missing name/title parameter`);
+    return document.createElement('div'); // Return empty div to avoid breaking the layout
+  }
+  
   const card = document.createElement('a');
   card.href = type === 'division' ? `Divisions/${slug}.html` : `Apps/${slug}.html`;
   card.className = 'card';
@@ -90,7 +103,7 @@ function createCard({ name, title, desc, status, slug, color }, type = 'division
   
   card.innerHTML = `
       <h3 class="glitch" data-text="${name || title}">${name || title}</h3>
-      <p>${desc}</p>
+      <p>${desc || 'No description available'}</p>
       ${status ? `<span class="badge ${badgeClass}">${status}</span>` : ''}
   `;
   
@@ -166,7 +179,11 @@ function initParallaxEffects() {
     let iterations = 0;
     
     function scramble() {
-      if (iterations >= 15) return;
+      if (iterations >= 15) {
+        // Force reset to original text after max iterations
+        headline.textContent = originalText;
+        return;
+      }
       
       headline.textContent = originalText.split('')
         .map((char, index) => {
@@ -176,11 +193,29 @@ function initParallaxEffects() {
         .join('');
       
       iterations++;
-      setTimeout(scramble, 50);
+      
+      // Use requestAnimationFrame for smoother animation
+      if (iterations < 15) {
+        setTimeout(() => requestAnimationFrame(scramble), 50);
+      }
     }
     
-    // Start the scramble effect with a delay
-    setTimeout(scramble, 1000);
+    // Wait for fonts to load before starting scramble effect
+    if ('fonts' in document) {
+      document.fonts.ready.then(() => {
+        // Use requestIdleCallback if available, otherwise setTimeout
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(() => {
+            setTimeout(scramble, 1000);
+          });
+        } else {
+          setTimeout(scramble, 1000);
+        }
+      });
+    } else {
+      // Fallback for browsers that don't support document.fonts
+      setTimeout(scramble, 1500); // Slightly longer delay as a precaution
+    }
   });
 }
 
@@ -244,17 +279,25 @@ function initDynamicBackgrounds() {
   sections.forEach(section => {
     const bgType = section.dataset.bg;
     if (bgType === 'gradient') {
-      // Set random gradient background
-      const colors = [
-        'var(--color-accent)',
-        'var(--color-hot)',
-        'var(--color-secondary)'
-      ];
-      
-      const color1 = colors[Math.floor(Math.random() * colors.length)];
-      const color2 = colors[Math.floor(Math.random() * colors.length)];
-      
-      section.style.background = `linear-gradient(135deg, ${color1}33 0%, ${color2}55 100%)`;
+      // Check if section already has inline style
+      if (section.style.background) {
+        // Replace with CSS class
+        section.style.background = '';
+        section.classList.add('bg-primary-gradient');
+      }
+    }
+  });
+  
+  // Replace inline styles on CTA sections with theme classes
+  const ctaSections = document.querySelectorAll('section.hero[style*="min-height:auto"]');
+  ctaSections.forEach(section => {
+    // Replace inline styles with CSS class
+    section.removeAttribute('style');
+    section.classList.add('cta-section');
+    
+    // Check if it should be glass
+    if (section.style.background && section.style.background.includes('glass-bg')) {
+      section.classList.add('glass');
     }
   });
 }
@@ -292,14 +335,73 @@ function initHome() {
       particles.appendChild(particle);
     }
   }
+  
+  // Inject organization schema
+  injectSchema(createOrganizationSchema());
 }
 
 function initDivisionsHub() {
   renderGrid(divisions, 'divisionsHub', 'division');
+  
+  // Inject organization schema with focus on divisions
+  injectSchema(createOrganizationSchema());
 }
 
 function initAppsHub() {
   renderGrid(apps, 'appsHub', 'app');
+  
+  // Inject software application collection schema
+  const appsCollection = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "itemListElement": apps.map((app, index) => ({
+      "@type": "ListItem",
+      "position": index + 1,
+      "item": createAppSchema(app)
+    }))
+  };
+  
+  injectSchema(appsCollection);
+}
+
+function initDivisionPage() {
+  // Get current division data from URL
+  const path = window.location.pathname;
+  const divisionSlug = path.split('/').pop().replace('.html', '');
+  
+  const currentDivision = divisions.find(div => div.slug === divisionSlug);
+  if (currentDivision) {
+    // Update hero background based on division
+    const hero = document.querySelector('.hero');
+    if (hero) {
+      // Replace inline style with CSS class
+      hero.style.background = '';
+      hero.classList.add(`${divisionSlug}-bg`);
+    }
+    
+    // Inject division-specific schema
+    injectSchema(createDivisionSchema(currentDivision));
+  }
+}
+
+function initAppPage() {
+  // Get current app data from URL
+  const path = window.location.pathname;
+  const appSlug = path.split('/').pop().replace('.html', '');
+  
+  const currentApp = apps.find(app => app.slug === appSlug);
+  if (currentApp) {
+    // Update hero background based on app
+    const hero = document.querySelector('.hero');
+    if (hero) {
+      // Replace inline style with CSS class
+      hero.style.background = '';
+      hero.classList.add(`${appSlug}-bg`);
+    }
+    
+    // Inject app-specific schema
+    injectSchema(createAppSchema(currentApp));
+  }
 }
 
 function initContactForm() {
@@ -383,10 +485,58 @@ function init() {
     initDivisionsHub();
   } else if (pageType === 'apps-hub') {
     initAppsHub();
+  } else if (pageType && pageType.includes('division-')) {
+    initDivisionPage();
+  } else if (pageType && pageType.includes('app-')) {
+    initAppPage();
   }
   
   // Forms can be on multiple pages
   initContactForm();
+  
+  // Add alt text variation to enhance accessibility
+  enhanceImageAccessibility();
+}
+
+/**
+ * Enhances image accessibility by improving alt text descriptions
+ */
+function enhanceImageAccessibility() {
+  const images = document.querySelectorAll('img');
+  
+  images.forEach(img => {
+    const currentAlt = img.getAttribute('alt') || '';
+    const src = img.getAttribute('src') || '';
+    
+    // Skip if the image already has a decent alt text (longer than 10 chars)
+    if (currentAlt.length > 10 && !currentAlt.includes('placeholder')) {
+      return;
+    }
+    
+    // Generate better alt text based on image context
+    if (src.includes('portfolio')) {
+      // Handle portfolio images
+      const parentHeading = img.closest('section').querySelector('h2, h3, h4')?.textContent;
+      if (parentHeading) {
+        img.setAttribute('alt', `Visual representation of ${parentHeading} project`);
+      } else {
+        img.setAttribute('alt', 'Portfolio showcase image of creative work');
+      }
+    } else if (src.includes('apps/bytepad')) {
+      img.setAttribute('alt', 'BytePad sticky note productivity app interface showing organized notes');
+    } else if (src.includes('apps/mobile-view')) {
+      img.setAttribute('alt', 'Mobile app interface showing responsive design on smartphone screen');
+    } else if (src.includes('apps/coming-soon')) {
+      img.setAttribute('alt', 'Preview of upcoming application or feature');
+    } else if (src.includes('apps/reflection-journal')) {
+      img.setAttribute('alt', 'Reflection journal app interface with prompts and writing space');
+    } else if (src.includes('division-highlights')) {
+      img.setAttribute('alt', 'Highlight of division expertise and capabilities');
+    } else if (currentAlt.includes('placeholder')) {
+      // Replace generic placeholder text
+      img.setAttribute('alt', 'Visual representation of ' + (img.closest('section')?.querySelector('h2, h3')?.textContent || 'content'));
+    }
+  });
 }
 
 // Initialize on DOM content loaded
