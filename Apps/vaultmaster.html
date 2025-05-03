@@ -7,95 +7,135 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../responsive-fixes.css" />
+  <link rel="stylesheet" href="../theme-classes.css" />
   <style>
     .carousel { display:flex; overflow-x:auto; gap:1rem; padding:1rem 0; scroll-snap-type:x mandatory; }
     .carousel img { width:300px; height:180px; object-fit:cover; border-radius:var(--radius-base); scroll-snap-align:center; }
   </style>
 </head>
-<body>
+<body data-page="app-vaultmaster">
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
   <!-- Navbar -->
-  <header>
+  <header role="banner">
     <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
+    <nav role="navigation" aria-label="Main Navigation">
       <a href="../index.html">Home</a>
-      <a href="../apps.html">Apps</a>
       <a href="../divisions.html">Divisions</a>
+      <a href="../apps.html">Apps</a>
+      <a href="../store.html">Tools & Resources</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <!-- App Hero -->
-  <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#3a47d589 100%);min-height:60vh;">
-    <h1>VaultMaster</h1>
-    <p>The local‑first, glitch‑punk file manager that turns hard‑drive chaos into curated order.</p>
-    <a href="#buy" class="btn" style="margin-top:1rem;">Join Early Access</a>
-  </section>
+  <!-- Main content area -->
+  <main id="main-content">
+    <!-- App Hero -->
+    <section class="hero vaultmaster-bg">
+      <h1 class="text-gradient-hot glitch" data-text="VaultMaster">VaultMaster</h1>
+      <p>The local‑first, glitch‑punk file manager that turns hard‑drive chaos into curated order.</p>
+      <a href="#buy" class="btn" style="margin-top:1rem;">Join Early Access</a>
+    </section>
 
-  <!-- Gallery -->
-  <section class="container">
-    <h2>Screenshots</h2>
-    <div class="carousel">
-      <img 
-        src="../public/images/apps/coming-soon.png" 
-        alt="Traveler Mode" 
-        loading="lazy"
-        width="300"
-        height="180" />
-      <img 
-        src="../public/images/apps/bytepad.png" 
-        alt="Glitch UI" 
-        loading="lazy"
-        width="300"
-        height="180" />
-      <img 
-        src="../public/images/apps/coming-soon.png" 
-        alt="File Preview" 
-        loading="lazy"
-        width="300"
-        height="180" />
-    </div>
-  </section>
+    <!-- Gallery -->
+    <section class="container">
+      <h2>Screenshots</h2>
+      <div class="carousel">
+        <img 
+          src="../public/images/apps/coming-soon.png" 
+          alt="Traveler Mode - VaultMaster's quick file navigation interface" 
+          loading="lazy"
+          width="300"
+          height="180" />
+        <img 
+          src="../public/images/apps/bytepad.png" 
+          alt="Glitch UI - VaultMaster's unique cyberpunk-inspired interface" 
+          loading="lazy"
+          width="300"
+          height="180" />
+        <img 
+          src="../public/images/apps/coming-soon.png" 
+          alt="File Preview - VaultMaster's integrated file viewer with quick editing capabilities" 
+          loading="lazy"
+          width="300"
+          height="180" />
+      </div>
+    </section>
 
-  <!-- Features -->
-  <section class="container">
-    <h2>Key Features</h2>
-    <ul style="list-style:disc;padding-left:1.25rem;line-height:1.8;">
-      <li>Traveler Mode for rapid navigation and inline previews.</li>
-      <li>Abandonment detection highlights forgotten files.</li>
-      <li>Plugin architecture—integrate BytePad, media players, and more.</li>
-      <li>Glitch‑punk dark UI with resizable split layout.</li>
-      <li>Offline‑first, no cloud required—your data stays on your drive.</li>
-    </ul>
-  </section>
+    <!-- Features -->
+    <section class="container">
+      <h2>Key Features</h2>
+      <ul style="list-style:disc;padding-left:1.25rem;line-height:1.8;">
+        <li>Traveler Mode for rapid navigation and inline previews.</li>
+        <li>Abandonment detection highlights forgotten files.</li>
+        <li>Plugin architecture—integrate BytePad, media players, and more.</li>
+        <li>Glitch‑punk dark UI with resizable split layout.</li>
+        <li>Offline‑first, no cloud required—your data stays on your drive.</li>
+      </ul>
+    </section>
 
-  <!-- Buy / Download CTA -->
-  <section id="buy" class="hero" style="min-height:auto;padding:3rem 1rem;background:#1a1d24;">
-    <h2 style="margin-bottom:1rem;">Get VaultMaster Early‑Access</h2>
-    <div class="cta-buttons">
-      <a href="https://downloads.aerovista.us/vaultmaster/demo" class="btn" style="margin:0.5rem;">Download Demo</a>
-      <a href="https://store.aerovista.us/vaultmaster" class="btn alt" style="margin:0.5rem;">Buy Early Access $15</a>
-    </div>
-    <p style="max-width:600px;color:var(--color-text-soft);margin-top:1rem;font-size:0.9rem;">Early supporters receive lifetime updates and priority feature requests.</p>
-  </section>
+    <!-- Buy / Download CTA -->
+    <section id="buy" class="hero cta-section">
+      <h2 style="margin-bottom:1rem;">Get VaultMaster Early‑Access</h2>
+      <div class="cta-buttons">
+        <a href="https://downloads.aerovista.us/vaultmaster/demo" class="btn" style="margin:0.5rem;">Download Demo</a>
+        <a href="https://store.aerovista.us/vaultmaster" class="btn alt" style="margin:0.5rem;">Buy Early Access $15</a>
+      </div>
+      <p style="max-width:600px;color:var(--color-text-soft);margin-top:1rem;font-size:0.9rem;">Early supporters receive lifetime updates and priority feature requests.</p>
+    </section>
+  </main>
 
   <!-- Contact CTA -->
   <section id="contact">
-    <h2>Feedback & Feature Ideas</h2>
-    <form id="contactForm" class="container">
-      <input required type="text" placeholder="Your Name" />
-      <input required type="email" placeholder="Email" />
-      <textarea required rows="5" placeholder="Tell us what you'd like to see in VaultMaster"></textarea>
-      <button class="btn" type="submit">Send Message</button>
-    </form>
+    <div class="container">
+      <h2>Feedback & Feature Ideas</h2>
+      <form id="contactForm">
+        <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+        <input required type="email" placeholder="Email" data-animate="fade-up" />
+        <textarea required rows="5" placeholder="Tell us what you'd like to see in VaultMaster" data-animate="fade-up"></textarea>
+        <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
+      </form>
+    </div>
   </section>
 
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><strong>AeroVista</strong></div>
+          <p>Crafting bold tech &amp; creative experiences since 2019.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="../index.html">Home</a>
+          <a href="../apps.html">Apps</a>
+          <a href="../divisions.html">Divisions</a>
+          <a href="../Store.html">Tools & Resources</a>
+        </div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script type="module" src="../main.js"></script>
   <script type="module">
     import { initLazyLoading } from '../src/imageUtil.js'; 
     document.addEventListener('DOMContentLoaded', () => {
       initLazyLoading();
+      
+      // Add body-loaded class for glitch animation
+      setTimeout(() => {
+        document.body.classList.add('body-loaded');
+      }, 100);
     });
   </script>
 </body>

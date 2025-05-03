@@ -1,0 +1,1090 @@
+/* Seasons of Change – Enhanced Visual Experience */
+
+:root {
+  /* Color Palette */
+  --spring-light: #e0f2d1;
+  --spring-mid: #a5d6a7;
+  --spring-dark: #4caf50;
+  --spring-accent: #ff80ab;
+
+  --summer-light: #ffe0b2;
+  --summer-mid: #ffb74d;
+  --summer-dark: #ff9800;
+  --summer-accent: #42a5f5;
+
+  --autumn-light: #ffccbc;
+  --autumn-mid: #ff8a65;
+  --autumn-dark: #e64a19;
+  --autumn-accent: #5e35b1;
+
+  --winter-light: #e0f7fa;
+  --winter-mid: #80deea;
+  --winter-dark: #00acc1;
+  --winter-accent: #7e57c2;
+
+  --neutral-100: #fefdfb;
+  --neutral-200: #f4f1ed;
+  --neutral-300: #e2ddd6;
+  --neutral-400: #c4beb4;
+  --neutral-500: #837e75;
+  --neutral-600: #4A362A;
+  --neutral-700: #2d251a;
+
+  /* Typography */
+  --font-primary: 'Open Sans', sans-serif;
+  --font-display: 'Playfair Display', serif;
+  
+  /* Spacing */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 4rem;
+  --spacing-xl: 8rem;
+  
+  /* Border Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  
+  /* Shadows */
+  --shadow-soft: 0 5px 20px rgba(0,0,0,0.04);
+  --shadow-medium: 0 8px 30px rgba(0,0,0,0.08);
+  --shadow-hard: 0 10px 50px rgba(0,0,0,0.12);
+}
+
+/* Base Styling */
+body {
+  font-family: var(--font-primary);
+  color: var(--neutral-600);
+  background-color: var(--neutral-100);
+  margin: 0;
+  padding: 0;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  color: var(--neutral-600);
+  font-weight: 700;
+  margin-top: 0;
+  line-height: 1.25;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: var(--spacing-md);
+}
+
+h2 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-bottom: var(--spacing-sm);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  margin-bottom: var(--spacing-sm);
+}
+
+p {
+  margin-bottom: var(--spacing-md);
+}
+
+a {
+  color: var(--autumn-dark);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+a:hover {
+  color: var(--autumn-accent);
+}
+
+/* Header */
+header {
+  background: var(--neutral-100);
+  color: var(--neutral-600);
+  padding: var(--spacing-sm) var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-soft);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+nav {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+nav a {
+  color: var(--neutral-600);
+  position: relative;
+}
+
+nav a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--autumn-dark);
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  overflow: hidden;
+  min-height: 80vh;
+  background-image: 
+    radial-gradient(circle at top right, var(--autumn-light) 0%, transparent 70%),
+    radial-gradient(circle at bottom left, var(--spring-light) 0%, transparent 70%),
+    linear-gradient(135deg, var(--summer-light) 0%, var(--autumn-dark) 100%);
+  color: white;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('../public/images/autumns_harvest.png');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;
+  z-index: -1;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.6) 100%);
+  z-index: -1;
+}
+
+.hero h1 {
+  color: white;
+  text-shadow: 0 2px 15px rgba(0,0,0,0.3);
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+}
+
+.hero h1::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: white;
+  margin: 15px auto 0;
+  border-radius: 3px;
+}
+
+.hero p {
+  max-width: 600px;
+  margin-bottom: var(--spacing-md);
+  font-size: 1.25rem;
+  text-shadow: 0 1px 10px rgba(0,0,0,0.2);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  background: var(--autumn-dark);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover {
+  background: var(--autumn-accent);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  color: white;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.btn:hover::after {
+  transform: translateX(0);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+/* Season Grid */
+.season-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  margin: var(--spacing-md) 0 var(--spacing-lg);
+}
+
+.season-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: var(--spacing-md);
+  text-align: center;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  border: 1px solid var(--neutral-300);
+}
+
+.season-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  z-index: 1;
+}
+
+.season-card:nth-child(1)::before {
+  background: linear-gradient(to right, var(--spring-mid), var(--spring-dark));
+}
+
+.season-card:nth-child(2)::before {
+  background: linear-gradient(to right, var(--summer-mid), var(--summer-dark));
+}
+
+.season-card:nth-child(3)::before {
+  background: linear-gradient(to right, var(--autumn-mid), var(--autumn-dark));
+}
+
+.season-card:nth-child(4)::before {
+  background: linear-gradient(to right, var(--winter-mid), var(--winter-dark));
+}
+
+.season-card img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: var(--spacing-sm);
+  transition: transform 0.5s ease;
+}
+
+.season-card h3 {
+  font-size: 1.5rem;
+  margin: var(--spacing-sm) 0;
+}
+
+.season-card p {
+  color: var(--neutral-500);
+  margin-bottom: 0;
+}
+
+.season-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-medium);
+}
+
+.season-card:hover img {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Content Sections */
+section {
+  margin-bottom: var(--spacing-lg);
+  position: relative;
+  padding: var(--spacing-md) 0;
+}
+
+section h2 {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--spacing-md);
+}
+
+section h2::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 50px;
+  height: 3px;
+  background: var(--autumn-dark);
+  border-radius: 3px;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+ul li {
+  margin-bottom: var(--spacing-xs);
+  position: relative;
+}
+
+/* Footer */
+footer {
+  background: var(--neutral-200);
+  padding: var(--spacing-md);
+  text-align: center;
+  color: var(--neutral-500);
+  margin-top: var(--spacing-lg);
+  border-top: 1px solid var(--neutral-300);
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animated {
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+
+/* Seasons Specific Styling */
+.spring-theme {
+  --season-light: var(--spring-light);
+  --season-mid: var(--spring-mid);
+  --season-dark: var(--spring-dark);
+  --season-accent: var(--spring-accent);
+}
+
+.summer-theme {
+  --season-light: var(--summer-light);
+  --season-mid: var(--summer-mid);
+  --season-dark: var(--summer-dark);
+  --season-accent: var(--summer-accent);
+}
+
+.autumn-theme {
+  --season-light: var(--autumn-light);
+  --season-mid: var(--autumn-mid);
+  --season-dark: var(--autumn-dark);
+  --season-accent: var(--autumn-accent);
+}
+
+.winter-theme {
+  --season-light: var(--winter-light);
+  --season-mid: var(--winter-mid);
+  --season-dark: var(--winter-dark);
+  --season-accent: var(--winter-accent);
+}
+
+/* Seasonal Decorative Elements */
+.seasonal-decor {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.1;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    padding: var(--spacing-sm);
+  }
+  
+  nav {
+    margin-top: var(--spacing-sm);
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .hero {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+  
+  .season-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* Add styles for the new elements */
+
+/* Two-column grid layout */
+.two-column-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-lg);
+  align-items: center;
+  margin: var(--spacing-md) 0;
+}
+
+@media (max-width: 768px) {
+  .two-column-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Feature list */
+.feature-list {
+  list-style: none;
+  padding: 0;
+}
+
+.feature-list li {
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--neutral-300);
+  position: relative;
+}
+
+.feature-list li strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--neutral-600);
+}
+
+/* Shadow image */
+.shadow-image {
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-medium);
+  max-width: 100%;
+  transition: transform 0.5s ease, box-shadow 0.5s ease;
+}
+
+.shadow-image:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-hard);
+}
+
+/* Philosophy section */
+.alt-section {
+  background-color: var(--neutral-200);
+  padding: var(--spacing-lg) var(--spacing-md);
+  margin: var(--spacing-xl) 0;
+  border-radius: var(--radius-lg);
+}
+
+.philosophy-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.philosophy-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.philosophy-card {
+  background: white;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+}
+
+.philosophy-card h3 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  position: relative;
+}
+
+.philosophy-card h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 40px;
+  height: 2px;
+  background: var(--autumn-dark);
+}
+
+.seasonal-quote {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--neutral-600);
+  text-align: center;
+  margin: var(--spacing-md) 0;
+  padding: var(--spacing-md);
+  position: relative;
+}
+
+.seasonal-quote::before {
+  content: '"';
+  position: absolute;
+  top: -20px;
+  left: 0;
+  font-size: 4rem;
+  color: var(--neutral-400);
+  opacity: 0.3;
+}
+
+.seasonal-quote cite {
+  display: block;
+  font-size: 1rem;
+  margin-top: var(--spacing-sm);
+  color: var(--neutral-500);
+}
+
+/* Seasonal Features */
+.section-intro {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto var(--spacing-md);
+  text-align: center;
+  color: var(--neutral-500);
+}
+
+.seasonal-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  margin: var(--spacing-md) 0 var(--spacing-lg);
+}
+
+.seasonal-feature {
+  background: white;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.seasonal-feature:hover {
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* CTA Box */
+.cta-box {
+  background: linear-gradient(135deg, var(--autumn-light), var(--autumn-dark));
+  color: white;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  text-align: center;
+  margin: var(--spacing-lg) 0;
+}
+
+.cta-box h3 {
+  color: white;
+  margin-bottom: var(--spacing-xs);
+}
+
+.cta-box p {
+  opacity: 0.9;
+  margin-bottom: var(--spacing-md);
+}
+
+.cta-box .btn {
+  background: white;
+  color: var(--autumn-dark);
+}
+
+.cta-box .btn:hover {
+  background: rgba(255,255,255,0.9);
+  color: var(--autumn-dark);
+}
+
+/* Event Grid */
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  margin: var(--spacing-md) 0;
+}
+
+.event-card {
+  background: white;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  position: relative;
+  border-left: 4px solid var(--autumn-dark);
+}
+
+.event-date {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+  background: var(--autumn-light);
+  color: var(--autumn-dark);
+  font-weight: bold;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+}
+
+.event-card h3 {
+  margin-top: 0;
+  margin-bottom: var(--spacing-xs);
+}
+
+.event-card p {
+  color: var(--neutral-500);
+  margin-bottom: var(--spacing-sm);
+}
+
+.text-link {
+  color: var(--autumn-dark);
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.text-link:hover {
+  text-decoration: underline;
+}
+
+/* Contact Section */
+.contact-section {
+  margin: var(--spacing-xl) 0;
+}
+
+.subscription-form {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-medium);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 600;
+  color: var(--neutral-600);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--neutral-300);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-primary);
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--autumn-dark);
+  box-shadow: 0 0 0 3px rgba(230, 74, 25, 0.1);
+}
+
+/* Footer Enhancements */
+.footer-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--spacing-md);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+}
+
+.footer-brand {
+  font-size: 0.9rem;
+}
+
+.footer-brand p {
+  margin: var(--spacing-xs) 0;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.footer-links a {
+  color: var(--neutral-500);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--autumn-dark);
+}
+
+.footer-legal {
+  font-size: 0.8rem;
+  color: var(--neutral-500);
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .footer-links {
+    margin: var(--spacing-sm) 0;
+    align-items: center;
+  }
+}
+
+/* Seasonal Animations and Particles */
+.particle-blossom,
+.particle-sun,
+.particle-leaf,
+.particle-snow {
+  position: absolute;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Blossom particles (Spring) */
+.particle-blossom {
+  background-color: var(--spring-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--spring-light);
+  animation: float-around 20s linear infinite, pulse 3s ease-in-out infinite;
+}
+
+/* Sun particles (Summer) */
+.particle-sun {
+  background-color: var(--summer-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--summer-light);
+  animation: float-rising 25s linear infinite, glow 4s ease-in-out infinite;
+}
+
+/* Leaf particles (Autumn) */
+.particle-leaf {
+  background-color: var(--autumn-accent);
+  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+  animation: float-falling 15s linear infinite, rotate 10s linear infinite;
+}
+
+/* Snow particles (Winter) */
+.particle-snow {
+  background-color: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  box-shadow: 0 0 5px var(--winter-light);
+  animation: float-snow 30s linear infinite, fade-pulse 4s ease-in-out infinite;
+}
+
+/* Animation keyframes for particles */
+@keyframes float-around {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(100px, 50px) rotate(120deg);
+  }
+  66% {
+    transform: translate(-50px, 100px) rotate(240deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(360deg);
+  }
+}
+
+@keyframes float-rising {
+  0% {
+    transform: translate(0, 100vh) scale(0.5);
+  }
+  100% {
+    transform: translate(50px, -100px) scale(1.5);
+  }
+}
+
+@keyframes float-falling {
+  0% {
+    transform: translate(0, -100px) rotate(0deg);
+  }
+  100% {
+    transform: translate(100px, 100vh) rotate(720deg);
+  }
+}
+
+@keyframes float-snow {
+  0% {
+    transform: translate(0, -50px);
+  }
+  100% {
+    transform: translate(50px, 100vh);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px var(--summer-light);
+    opacity: 0.6;
+  }
+  50% {
+    box-shadow: 0 0 20px var(--summer-accent);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Theme transition animation */
+.theme-transition {
+  transition: background-color 1s ease, color 1s ease;
+}
+
+.theme-transition * {
+  transition: background-color 1s ease, border-color 1s ease, color 1s ease;
+}
+
+/* Season-specific card styling */
+.season-card.spring-card::before {
+  background: linear-gradient(to right, var(--spring-mid), var(--spring-dark));
+}
+
+.season-card.summer-card::before {
+  background: linear-gradient(to right, var(--summer-mid), var(--summer-dark));
+}
+
+.season-card.autumn-card::before {
+  background: linear-gradient(to right, var(--autumn-mid), var(--autumn-dark));
+}
+
+.season-card.winter-card::before {
+  background: linear-gradient(to right, var(--winter-mid), var(--winter-dark));
+}
+
+.season-card.active {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-medium);
+  border-color: var(--autumn-mid);
+}
+
+.season-date {
+  margin-top: var(--spacing-sm);
+  font-size: 0.8rem;
+  color: var(--neutral-500);
+}
+
+/* Add the seasonal-particles-container styles */
+
+.seasonal-particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* Accessibility - Skip to Content */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: 9999;
+  background: var(--autumn-dark);
+  color: white;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  transition: transform 0.3s ease;
+}
+
+.skip-to-content:focus {
+  left: 0;
+  top: 0;
+  width: auto;
+  height: auto;
+  overflow: auto;
+  transform: translateY(0);
+  outline: 3px solid var(--autumn-accent);
+}
+
+/* Mobile Menu Toggle */
+.menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  cursor: pointer;
+  z-index: 101;
+  padding: 0;
+}
+
+.menu-toggle span {
+  display: block;
+  background-color: var(--neutral-600);
+  height: 3px;
+  width: 100%;
+  margin-bottom: 5px;
+  position: relative;
+  left: 0;
+  top: 0;
+  transition: all 0.3s ease;
+}
+
+.menu-toggle.active span:nth-child(1) {
+  transform: rotate(45deg);
+  top: 8px;
+}
+
+.menu-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg);
+  top: -8px;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+  
+  nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    max-width: 300px;
+    height: 100vh;
+    background: white;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5rem 2rem 2rem;
+    transition: right 0.3s ease;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    z-index: 100;
+  }
+  
+  nav.nav-open {
+    right: 0;
+  }
+  
+  header {
+    padding-right: 60px; /* Make room for menu toggle */
+  }
+
+  /* Add an overlay when menu is open */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 99;
+  }
+  
+  body.menu-open::after {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+  

@@ -13,71 +13,34 @@
   </style>
 </head>
 <body>
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
   <!-- Navbar -->
-  <header>
+  <header role="banner">
     <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
+    <nav role="navigation" aria-label="Main Navigation">
       <a href="../index.html">Home</a>
-      <a href="../apps.html">Apps</a>
       <a href="../divisions.html">Divisions</a>
+      <a href="../apps.html">Apps</a>
+      <a href="../store.html">Tools & Resources</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <!-- App Hero -->
-  <section class="hero" style="background:linear-gradient(135deg,#474dff55 0%,#00d2ff33 100%);min-height:60vh;">
-    <h1>RydeSync</h1>
-    <p>Offline‑first group ride app with synced music, voice chat, and dynamic maps for every crew.</p>
-    <a href="#notify" class="btn" style="margin-top:1rem;">Notify Me on Launch</a>
-  </section>
+  <!-- Main content area -->
+  <main id="main-content">
+    <!-- App Hero -->
+    <section class="hero" style="background:linear-gradient(135deg,#474dff55 0%,#00d2ff33 100%);min-height:60vh;">
+      <h1>RydeSync</h1>
+      <p>Real-time rideshare coordination app optimized for group travel</p>
+    </section>
 
-  <!-- Gallery -->
-  <section class="container">
-    <h2>Screenshots</h2>
-    <div class="carousel">
-      <img 
-        src="../public/images/apps/coming-soon.png" 
-        alt="Sync Playlist" 
-        loading="lazy"
-        width="300"
-        height="180" />
-      <img 
-        src="../public/images/apps/coming-soon.png" 
-        alt="Voice Rooms" 
-        loading="lazy"
-        width="300"
-        height="180" />
-      <img 
-        src="../public/images/apps/coming-soon.png" 
-        alt="Route Tracking" 
-        loading="lazy"
-        width="300"
-        height="180" />
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section class="container">
-    <h2>What Makes It Unique</h2>
-    <ul style="list-style:disc;padding-left:1.25rem;line-height:1.8;">
-      <li>Host synced music sessions during group rides.</li>
-      <li>PeerJS‑based voice chat—connect without a central server.</li>
-      <li>Offline‑ready map and GPS with custom waypoints.</li>
-      <li>Room code system to invite friends instantly.</li>
-      <li>Designed for motorcyclists, cyclists, and rally organizers.</li>
-    </ul>
-  </section>
-
-  <!-- Notify CTA -->
-  <section id="notify" class="hero" style="min-height:auto;padding:3rem 1rem;background:#1a1d24;">
-    <h2 style="margin-bottom:1rem;">Launching Soon</h2>
-    <form id="contactForm" class="container">
-      <input required type="text" placeholder="Your Name" />
-      <input required type="email" placeholder="Email for updates" />
-      <button class="btn" type="submit">Add Me to Launch List</button>
-    </form>
-    <p style="max-width:600px;color:var(--color-text-soft);margin-top:1rem;font-size:0.9rem;">You'll get early access, exclusive invites, and sneak peeks.</p>
-  </section>
+    <section class="container">
+      <h2>Coming Soon</h2>
+      <p>RydeSync is currently in development. Check back for updates!</p>
+    </section>
+  </main>
 
   <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
 

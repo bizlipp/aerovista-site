@@ -12,6 +12,28 @@ This project implements a local, high-performance image processing pipeline usin
 - Image caching for performance
 - REST API for image processing
 
+## Navigation & Accessibility Updates
+
+The site has been updated with standardized navigation and improved accessibility:
+
+- **Standardized Navigation**: All pages now use the same navigation order and consistent URLs.
+- **Mobile Navigation**: All pages now support a responsive mobile menu toggle.
+- **Active Link Highlighting**: Current page links are highlighted and include `aria-current` attributes.
+- **Skip Links**: All pages now include a skip-to-content link for keyboard users.
+- **Breadcrumbs**: Subpages now include breadcrumb navigation for improved orientation.
+- **URL Casing**: All URLs now use lowercase for consistency (e.g., `store.html` not `Store.html`).
+
+### Usage Information
+
+#### Navigation Component
+The site uses a shared navigation component that adds:
+- Mobile navigation toggle
+- Active link highlighting
+- Skip to content links
+- Breadcrumb navigation
+
+This is automatically initialized when pages load.
+
 ## Implementation
 
 ### Server-Side

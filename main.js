@@ -11,6 +11,9 @@ import { initLazyLoading } from './src/imageUtil.js';
 import { colors, gradients, shadows } from './src/theme.js';
 import { createOrganizationSchema, createDivisionSchema, createAppSchema, injectSchema } from './src/schemaHelper.js';
 
+// Import the navigation components
+import { initNavigation, insertBreadcrumbs } from './src/navigation.js';
+
 // 1. CONTENT -----------------------------------------------------------------
 export const divisions = [
   {
@@ -496,6 +499,15 @@ function init() {
   
   // Add alt text variation to enhance accessibility
   enhanceImageAccessibility();
+  
+  // Initialize navigation components
+  initNavigation();
+  
+  // Insert breadcrumbs on subpages
+  const currentPath = window.location.pathname;
+  if (currentPath !== '/' && currentPath !== '/index.html') {
+    insertBreadcrumbs();
+  }
 }
 
 /**

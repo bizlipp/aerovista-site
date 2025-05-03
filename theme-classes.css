@@ -74,6 +74,11 @@
   background: linear-gradient(135deg, rgba(71, 77, 255, 0.33) 0%, rgba(0, 210, 255, 0.2) 100%);
 }
 
+/* Seasons of Change Hero Background */
+.hero.seasons-bg {
+  background: linear-gradient(135deg, #e64a1955 0%, #8E5D3D55 100%);
+}
+
 /* Division Feature Layout */
 .division-feature {
   display: flex;
