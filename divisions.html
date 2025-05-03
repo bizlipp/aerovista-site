@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AeroVista | Divisions</title>
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-page="divisions-hub">
+  <!-- Navbar -->
+  <header>
+    <div class="logo"><strong>AeroVista</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="apps.html">Apps</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" style="background:linear-gradient(135deg,#3a47d589 0%,#ff3caf44 100%);">
+    <h1>Our Seven Divisions</h1>
+    <p>Each branch of AeroVista brings a unique craft to the table. Browse them below and discover opportunities to collaborate.</p>
+  </section>
+
+  <!-- Divisions Grid -->
+  <section>
+    <h2>Explore the Spectrum</h2>
+    <div id="divisionsHub" class="grid grid-cols-2 grid-cols-3 container"></div>
+  </section>
+
+  <!-- Contact CTA (reuse index anchor) -->
+  <section id="contact">
+    <h2>Let’s Collaborate</h2>
+    <form id="contactForm" class="container">
+      <input required type="text" placeholder="Your Name" />
+      <input required type="email" placeholder="Email" />
+      <textarea required rows="5" placeholder="Tell us about your project..."></textarea>
+      <button class="btn" type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About AeroVista</title>
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Simple vertical timeline */
+    .timeline { position: relative; margin: 2rem 0; padding-left: 2rem; }
+    .timeline::before { content:''; position: absolute; left:0; top:0; width:4px; height:100%; background:var(--color-accent); }
+    .timeline-entry { position: relative; margin-bottom:2rem; }
+    .timeline-entry h4 { margin-bottom:0.25rem; font-family:var(--font-heading); }
+    .timeline-entry::before { content:''; position:absolute; left:-12px; top:4px; width:14px; height:14px; border-radius:50%; background:var(--color-accent); }
+    .team-grid { display:grid; gap:2rem; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); margin-top:2rem; }
+    .team-card { text-align:center; }
+    .team-card img { width:120px; height:120px; object-fit:cover; border-radius:50%; margin-inline:auto 1rem; margin-bottom:1rem; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <div class="logo"><strong>AeroVista</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="divisions.html">Divisions</a>
+      <a href="apps.html">Apps</a>
+      <a href="store.html">Store</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" style="background:linear-gradient(135deg,#3a47d589 0%,#ff3caf44 100%);min-height:50vh;">
+    <h1>Our Story</h1>
+    <p>From garage‑level prototypes to a multi‑division powerhouse, AeroVista has always championed creative tech that empowers real‑world impact.</p>
+  </section>
+
+  <!-- Timeline -->
+  <section class="container">
+    <h2>Milestones</h2>
+    <div class="timeline">
+      <div class="timeline-entry">
+        <h4>2019 — First Drone Footage Project</h4>
+        <p>Horizon Aerial & Visual captures cinematic landscapes, sparking the vision for a multi‑disciplinary studio.</p>
+      </div>
+      <div class="timeline-entry">
+        <h4>2021 — BytePad Alpha</h4>
+        <p>Our local‑first sticky notes prototype sets the foundation for user‑centric productivity tools.</p>
+      </div>
+      <div class="timeline-entry">
+        <h4>2023 — AeroVista LLC Formation</h4>
+        <p>Seven divisions unite under a single banner with cohesive branding and shared resources.</p>
+      </div>
+      <div class="timeline-entry">
+        <h4>2025 — First Public Product Launch</h4>
+        <p>BytePad Pro hits the store, marking the beginning of our commercial lineup.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Grid -->
+  <section class="container">
+    <h2>Meet the Core Team</h2>
+    <div class="team-grid">
+      <div class="team-card" data-animate="fade-up">
+        <img src="https://placehold.co/120x120?text=TC" alt="Timbr" />
+        <h3>Tim "Timbr" Camacho</h3>
+        <p>Founder & CEO</p>
+      </div>
+      <div class="team-card" data-animate="fade-up">
+        <img src="https://placehold.co/120x120?text=AL" alt="Alex" />
+        <h3>Alex Li</h3>
+        <p>Lead Engineer, Nexus TechWorks</p>
+      </div>
+      <div class="team-card" data-animate="fade-up">
+        <img src="https://placehold.co/120x120?text=JR" alt="Jade" />
+        <h3>Jade Rivera</h3>
+        <p>Creative Director, SkyForge Creative</p>
+      </div>
+      <div class="team-card" data-animate="fade-up">
+        <img src="https://placehold.co/120x120?text=MK" alt="Mika" />
+        <h3>Mika Kwon</h3>
+        <p>Head of Publishing, Vespera</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BytePad — Sticky‑Note Productivity | AeroVista</title>
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    /* Simple horizontal scroll gallery */
+    .carousel { display:flex; overflow-x:auto; gap:1rem; padding:1rem 0; scroll-snap-type:x mandatory; }
+    .carousel img { width:300px; height:180px; object-fit:cover; border-radius:var(--radius-base); scroll-snap-align:center; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <div class="logo"><strong>AeroVista</strong></div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../apps.html">Apps</a>
+      <a href="../divisions.html">Divisions</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- App Hero -->
+  <section class="hero" style="background:linear-gradient(135deg,#00d2ff33 0%,#3a47d589 100%);min-height:60vh;">
+    <h1>BytePad</h1>
+    <p>Sticky‑notes that sync everywhere—desk, phone, cloud—without the clutter.</p>
+    <a href="#buy" class="btn" style="margin-top:1rem;">Download / Buy</a>
+  </section>
+
+  <!-- Gallery -->
+  <section class="container">
+    <h2>Screenshots</h2>
+    <div class="carousel">
+      <img src="https://placehold.co/300x180?text=Desktop+View" alt="Desktop screenshot" />
+      <img src="https://placehold.co/300x180?text=Mobile+View" alt="Mobile screenshot" />
+      <img src="https://placehold.co/300x180?text=Sync+in+Action" alt="Sync screenshot" />
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="container">
+    <h2>Key Features</h2>
+    <ul style="list-style:disc;padding-left:1.25rem;line-height:1.8;">
+      <li>Drag‑and‑drop sticky notes with color tags and timestamps.</li>
+      <li>Offline‑first—works even when your Wi‑Fi ghosts you.</li>
+      <li>Real‑time sync between desktop Electron and mobile web.</li>
+      <li>Search & quick‑jump with keyboard shortcuts.</li>
+      <li>Export board to JSON or image for easy sharing.</li>
+    </ul>
+  </section>
+
+  <!-- Buy / Download CTA -->
+  <section id="buy" class="hero" style="min-height:auto;padding:3rem 1rem;background:#1a1d24;">
+    <h2 style="margin-bottom:1rem;">Ready to level‑up your notes?</h2>
+    <a href="#" class="btn" style="margin:0.5rem;">Download Free</a>
+    <a href="#" class="btn alt" style="margin:0.5rem;">Buy Pro $9</a>
+    <p style="max-width:600px;color:var(--color-text-soft);margin-top:1rem;font-size:0.9rem;">BytePad Pro unlocks unlimited boards, team sharing, and theme packs.</p>
+  </section>
+
+  <!-- Contact CTA -->
+  <section id="contact">
+    <h2>Questions or Feedback?</h2>
+    <form id="contactForm" class="container">
+      <input required type="text" placeholder="Your Name" />
+      <input required type="email" placeholder="Email" />
+      <textarea required rows="5" placeholder="Tell us more..."></textarea>
+      <button class="btn" type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+
+  <script type="module" src="../main.js"></script>
+</body>
+</html>

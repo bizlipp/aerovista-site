@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AeroVista | Store</title>
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .product-grid { display:grid; gap:2rem; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); }
+    .product-card { background:var(--color-surface); border-radius:var(--radius-base); padding:1.5rem; border:1px solid #ffffff0f; text-align:center; transition:transform .25s, box-shadow .25s; }
+    .product-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-soft); }
+    .product-card img { border-radius:var(--radius-base); margin-bottom:1rem; height:160px; object-fit:cover; width:100%; }
+    .price { font-weight:600; margin:0.5rem 0 1rem; }
+  </style>
+</head>
+<body data-page="store">
+  <!-- Navbar -->
+  <header>
+    <div class="logo"><strong>AeroVista</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="divisions.html">Divisions</a>
+      <a href="apps.html">Apps</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero" style="background:linear-gradient(135deg,#008abf44 0%,#ff3caf44 100%);min-height:50vh;">
+    <h1>AeroVista Store</h1>
+    <p>Grab our latest releases—secure payments powered by Stripe, downloads delivered instantly.</p>
+  </section>
+
+  <!-- Product Grid -->
+  <section class="container">
+    <h2>Products</h2>
+    <div class="product-grid">
+      <!-- BytePad Pro -->
+      <div class="product-card" data-animate="fade-up">
+        <img src="https://placehold.co/400x160?text=BytePad+Pro" alt="BytePad Pro cover" />
+        <h3>BytePad Pro</h3>
+        <p class="price">$9</p>
+        <p class="desc">Unlimited boards, team sharing, and theme packs.</p>
+        <a href="https://buy.stripe.com/test_4gw9DxEYk0dy3K4bII" class="btn" target="_blank">Buy Now</a>
+      </div>
+      <!-- VaultMaster Early Access -->
+      <div class="product-card" data-animate="fade-up">
+        <img src="https://placehold.co/400x160?text=VaultMaster+EA" alt="VaultMaster" />
+        <h3>VaultMaster Early‑Access</h3>
+        <p class="price">$15</p>
+        <p class="desc">Get the glitch‑punk file manager before public launch.</p>
+        <a href="https://buy.stripe.com/test_28o5lDGcg4vW3K48wz" class="btn" target="_blank">Buy Now</a>
+      </div>
+      <!-- Supporter Bundle -->
+      <div class="product-card" data-animate="fade-up">
+        <img src="https://placehold.co/400x160?text=Supporter+Bundle" alt="Supporter Bundle" />
+        <h3>Supporter Bundle</h3>
+        <p class="price">$25</p>
+        <p class="desc">Includes BytePad Pro, VaultMaster EA, plus exclusive desktop wallpapers.</p>
+        <a href="https://buy.stripe.com/test_4gw9E1fYkx3Caa8bIJ" class="btn" target="_blank">Buy Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VaultMaster — Glitch‑Punk File Manager | AeroVista</title>
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .carousel { display:flex; overflow-x:auto; gap:1rem; padding:1rem 0; scroll-snap-type:x mandatory; }
+    .carousel img { width:300px; height:180px; object-fit:cover; border-radius:var(--radius-base); scroll-snap-align:center; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <div class="logo"><strong>AeroVista</strong></div>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../apps.html">Apps</a>
+      <a href="../divisions.html">Divisions</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <!-- App Hero -->
+  <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#3a47d589 100%);min-height:60vh;">
+    <h1>VaultMaster</h1>
+    <p>The local‑first, glitch‑punk file manager that turns hard‑drive chaos into curated order.</p>
+    <a href="#buy" class="btn" style="margin-top:1rem;">Join Early Access</a>
+  </section>
+
+  <!-- Gallery -->
+  <section class="container">
+    <h2>Screenshots</h2>
+    <div class="carousel">
+      <img src="https://placehold.co/300x180?text=Traveler+Mode" alt="Traveler Mode" />
+      <img src="https://placehold.co/300x180?text=Glitch+UI" alt="Glitch UI" />
+      <img src="https://placehold.co/300x180?text=File+Preview" alt="File Preview" />
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="container">
+    <h2>Key Features</h2>
+    <ul style="list-style:disc;padding-left:1.25rem;line-height:1.8;">
+      <li>Traveler Mode for rapid navigation and inline previews.</li>
+      <li>Abandonment detection highlights forgotten files.</li>
+      <li>Plugin architecture—integrate BytePad, media players, and more.</li>
+      <li>Glitch‑punk dark UI with resizable split layout.</li>
+      <li>Offline‑first, no cloud required—your data stays on your drive.</li>
+    </ul>
+  </section>
+
+  <!-- Buy / Download CTA -->
+  <section id="buy" class="hero" style="min-height:auto;padding:3rem 1rem;background:#1a1d24;">
+    <h2 style="margin-bottom:1rem;">Get VaultMaster Early‑Access</h2>
+    <a href="#" class="btn" style="margin:0.5rem;">Download Demo</a>
+    <a href="#" class="btn alt" style="margin:0.5rem;">Buy Early Access $15</a>
+    <p style="max-width:600px;color:var(--color-text-soft);margin-top:1rem;font-size:0.9rem;">Early supporters receive lifetime updates and priority feature requests.</p>
+  </section>
+
+  <!-- Contact CTA -->
+  <section id="contact">
+    <h2>Feedback & Feature Ideas</h2>
+    <form id="contactForm" class="container">
+      <input required type="text" placeholder="Your Name" />
+      <input required type="email" placeholder="Email" />
+      <textarea required rows="5" placeholder="Tell us what you’d like to see in VaultMaster"></textarea>
+      <button class="btn" type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+
+  <script type="module" src="../main.js"></script>
+</body>
+</html>
