@@ -3,27 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AeroVista | Store</title>
+  <title>AeroVista | Tools & Resources</title>
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="responsive-fixes.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <meta name="description" content="Browse and purchase premium apps and digital products from AeroVista, with secure payments powered by Stripe.">
-  <meta property="og:title" content="AeroVista | Store">
-  <meta property="og:description" content="Shop AeroVista's latest releases with secure payments and instant downloads.">
+  <meta name="description" content="Explore creative tools, reflection journals, and resources from AeroVista's divisions to empower your creative process.">
+  <meta property="og:title" content="AeroVista | Tools & Resources">
+  <meta property="og:description" content="From creative plugins to reflection journals, discover unique tools that empower creators and learners.">
   <meta property="og:image" content="https://aerovista.us/preview-image.png">
-  <meta property="og:url" content="https://aerovista.us/store.html">
+  <meta property="og:url" content="https://aerovista.us/tools-resources.html">
   <meta property="og:type" content="website">
   <style>
-    .product-grid { display:grid; gap:2rem; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); }
-    .product-card { background:var(--color-surface); border-radius:var(--radius-base); padding:1.5rem; border:1px solid #ffffff0f; text-align:center; transition:transform .25s, box-shadow .25s; }
+    .product-grid { display:grid; gap:2rem; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); }
+    .product-card { background:var(--color-surface); border-radius:var(--radius-base); padding:1.5rem; border:1px solid #ffffff0f; text-align:center; transition:transform .25s, box-shadow .25s; position:relative; overflow:hidden; }
     .product-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-soft); }
-    .product-card img { border-radius:var(--radius-base); margin-bottom:1rem; height:160px; object-fit:cover; width:100%; }
+    .product-card img { border-radius:var(--radius-base); margin-bottom:1rem; height:200px; object-fit:cover; width:100%; }
     .price { font-weight:600; margin:0.5rem 0 1rem; }
+    .coming-soon-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: var(--color-accent);
+      color: var(--color-bg);
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      font-weight: bold;
+      z-index: 2;
+    }
+    .resource-desc {
+      color: var(--color-text-soft);
+      margin-bottom: 1.5rem;
+      min-height: 4.5rem;
+    }
   </style>
 </head>
-<body data-page="store">
+<body data-page="tools-resources">
   <!-- Accessibility skip link -->
   <a href="#main-content" class="skip-to-content">Skip to content</a>
 
@@ -42,64 +59,116 @@
 
   <!-- Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#008abf44 0%,#ff3caf44 100%);min-height:50vh;">
-    <h1 class="text-gradient glitch" data-text="AeroVista Store">AeroVista Store</h1>
-    <p>Grab our latest releases—secure payments powered by Stripe, downloads delivered instantly.</p>
+    <h1 class="text-gradient glitch" data-text="Tools & Resources">Tools & Resources</h1>
+    <p>From creative plugins to reflection journals, our divisions publish unique tools that empower creators and learners. Explore what's available—and what's coming soon.</p>
   </section>
 
-  <!-- Product Grid -->
+  <!-- Resources Grid -->
   <section class="container">
-    <h2>Products</h2>
+    <h2>Available Now</h2>
     <div class="product-grid">
       <!-- BytePad Pro -->
       <div class="product-card" data-animate="fade-up">
         <img 
-          data-src="https://placehold.co/400x160?text=BytePad+Pro" 
-          data-width="400" 
-          data-height="160" 
+          data-src="https://placehold.co/600x300?text=BytePad+Pro" 
+          data-width="600" 
+          data-height="300" 
           data-format="webp" 
           data-quality="85" 
           alt="BytePad Pro cover" 
           loading="lazy"
-          width="400"
-          height="160" />
+          width="600"
+          height="300" />
         <h3>BytePad Pro</h3>
-        <p class="price">$9</p>
-        <p class="desc">Unlimited boards, team sharing, and theme packs.</p>
-        <a href="https://buy.stripe.com/test_4gw9DxEYk0dy3K4bII" class="btn" target="_blank">Buy Now</a>
+        <p class="resource-desc">The ultimate sticky-note productivity tool with unlimited boards, team sharing, and customizable theme packs.</p>
+        <a href="Apps/bytepad.html" class="btn">Learn More</a>
       </div>
-      <!-- VaultMaster Early Access -->
+      <!-- Seasons of Change Journal -->
       <div class="product-card" data-animate="fade-up">
         <img 
-          data-src="https://placehold.co/400x160?text=VaultMaster+EA" 
-          data-width="400" 
-          data-height="160" 
+          data-src="https://placehold.co/600x300?text=Seasons+Journal" 
+          data-width="600" 
+          data-height="300" 
+          data-format="webp" 
+          data-quality="85" 
+          alt="Seasons of Change Journal" 
+          loading="lazy"
+          width="600"
+          height="300" />
+        <h3>Seasons of Change</h3>
+        <p class="resource-desc">A guided reflection journal with seasonal prompts to inspire personal growth and creative exploration.</p>
+        <a href="#" class="btn">Preview</a>
+      </div>
+      <!-- Plugin Pack -->
+      <div class="product-card" data-animate="fade-up">
+        <img 
+          data-src="https://placehold.co/600x300?text=Creator+Toolkit" 
+          data-width="600" 
+          data-height="300" 
+          data-format="webp" 
+          data-quality="85" 
+          alt="Creator Toolkit" 
+          loading="lazy"
+          width="600"
+          height="300" />
+        <h3>Creator Toolkit</h3>
+        <p class="resource-desc">Essential digital assets, templates, and plugins to enhance your creative workflow across multiple platforms.</p>
+        <a href="#" class="btn">Explore</a>
+      </div>
+    </div>
+
+    <h2 style="margin-top:4rem;">Coming Soon</h2>
+    <div class="product-grid">
+      <!-- VaultMaster -->
+      <div class="product-card" data-animate="fade-up">
+        <div class="coming-soon-badge">Coming Soon</div>
+        <img 
+          data-src="https://placehold.co/600x300?text=VaultMaster" 
+          data-width="600" 
+          data-height="300" 
           data-format="webp" 
           data-quality="85" 
           alt="VaultMaster" 
           loading="lazy"
-          width="400"
-          height="160" />
-        <h3>VaultMaster Early‑Access</h3>
-        <p class="price">$15</p>
-        <p class="desc">Get the glitch‑punk file manager before public launch.</p>
-        <a href="https://buy.stripe.com/test_28o5lDGcg4vW3K48wz" class="btn" target="_blank">Buy Now</a>
+          width="600"
+          height="300" />
+        <h3>VaultMaster</h3>
+        <p class="resource-desc">A glitch-punk file manager with advanced encryption and a unique visual interface. Join the waiting list for early access.</p>
+        <a href="#" class="btn alt">Join Waitlist</a>
       </div>
-      <!-- Supporter Bundle -->
+      <!-- Audio Sample Pack -->
       <div class="product-card" data-animate="fade-up">
+        <div class="coming-soon-badge">Coming Soon</div>
         <img 
-          data-src="https://placehold.co/400x160?text=Supporter+Bundle" 
-          data-width="400" 
-          data-height="160" 
+          data-src="https://placehold.co/600x300?text=EchoVerse+Samples" 
+          data-width="600" 
+          data-height="300" 
           data-format="webp" 
           data-quality="85" 
-          alt="Supporter Bundle" 
+          alt="EchoVerse Sample Pack" 
           loading="lazy"
-          width="400"
-          height="160" />
-        <h3>Supporter Bundle</h3>
-        <p class="price">$25</p>
-        <p class="desc">Includes BytePad Pro, VaultMaster EA, plus exclusive desktop wallpapers.</p>
-        <a href="https://buy.stripe.com/test_4gw9E1fYkx3Caa8bIJ" class="btn" target="_blank">Buy Now</a>
+          width="600"
+          height="300" />
+        <h3>EchoVerse Sample Pack</h3>
+        <p class="resource-desc">AI-generated audio samples and loops for music producers and sound designers. Pre-register for notification.</p>
+        <a href="#" class="btn alt">Pre-register</a>
+      </div>
+      <!-- Workshop Materials -->
+      <div class="product-card" data-animate="fade-up">
+        <div class="coming-soon-badge">Coming Soon</div>
+        <img 
+          data-src="https://placehold.co/600x300?text=Creative+Catalyst" 
+          data-width="600" 
+          data-height="300" 
+          data-format="webp" 
+          data-quality="85" 
+          alt="Creative Catalyst Workshop" 
+          loading="lazy"
+          width="600"
+          height="300" />
+        <h3>Creative Catalyst Workshop</h3>
+        <p class="resource-desc">Digital workshop materials and exercises to spark innovation and creative problem-solving in teams and individuals.</p>
+        <a href="#" class="btn alt">Get Notified</a>
       </div>
     </div>
   </section>
@@ -107,7 +176,28 @@
   </main>
 
   <!-- Footer -->
-  <footer role="contentinfo">© 2025 AeroVista LLC — All rights reserved.</footer>
+  <footer role="contentinfo">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><strong>AeroVista</strong></div>
+        <p>Our work is fueled by a dynamic network of contributors, guided by clear creative leadership and a shared commitment to excellence.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="about.html" aria-label="About AeroVista">About</a>
+        <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
+        <a href="apps.html" aria-label="View our apps">Apps</a>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
+        <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 AeroVista LLC — All rights reserved.
+    </div>
+  </footer>
 
   <script type="module" src="main.js"></script>
   <script type="module">
