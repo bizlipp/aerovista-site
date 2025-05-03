@@ -2,6 +2,56 @@
    These styles complement the main CSS and improve mobile layout and accessibility
 */
 
+/* Fix for banner heading alignment */
+.container.banner {
+  padding: 3rem 1rem;
+  text-align: center;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-base);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.container.banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gradient-primary);
+  opacity: 0.5;
+}
+
+.container.banner::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--gradient-primary);
+  opacity: 0.5;
+}
+
+.container.banner h2 {
+  text-align: center;
+  margin: 1rem auto 1.5rem;
+  width: 100%;
+  max-width: 100%;
+  font-size: 2.5rem;
+}
+
+.container.banner p {
+  margin: 0 auto;
+  max-width: 700px;
+  color: var(--color-text-soft);
+  line-height: 1.6;
+}
+
 /* Improved Hero Section on Mobile */
 @media (max-width: 768px) {
   .hero {

@@ -82,7 +82,7 @@ export const apps = [
 // 2. RENDER HELPERS -----------------------------------------------------------
 function createCard({ name, title, desc, status, slug, color }, type = 'division') {
   const card = document.createElement('a');
-  card.href = type === 'division' ? `divisions/${slug}.html` : `apps/${slug}.html`;
+  card.href = type === 'division' ? `Divisions/${slug}.html` : `Apps/${slug}.html`;
   card.className = 'card';
   card.setAttribute('data-animate', 'fade-up');
   
@@ -129,6 +129,9 @@ function createCard({ name, title, desc, status, slug, color }, type = 'division
 function renderGrid(items, targetId, type) {
   const wrap = document.getElementById(targetId);
   if (!wrap) return;
+  
+  // Clear any existing content to prevent duplication
+  wrap.innerHTML = '';
   
   // Add staggered animation class
   wrap.classList.add('stagger');
@@ -376,9 +379,9 @@ function init() {
   // Page-specific initializations
   if (pageType === 'home') {
     initHome();
-  } else if (pageType === 'divisions') {
+  } else if (pageType === 'divisions-hub') {
     initDivisionsHub();
-  } else if (pageType === 'apps') {
+  } else if (pageType === 'apps-hub') {
     initAppsHub();
   }
   
@@ -388,131 +391,3 @@ function init() {
 
 // Initialize on DOM content loaded
 document.addEventListener('DOMContentLoaded', init);
-
-// 5. BOOTSTRAP ---------------------------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
-  const page = document.body.dataset.page;
-  
-  // Initialize common elements
-  initMobileMenu();
-  initScrollAnimations();
-  initParallaxEffects();
-  initDynamicBackgrounds();
-  
-  // Page-specific initializations
-  switch (page) {
-    case 'home':
-      initHome();
-      break;
-    case 'divisions-hub':
-      initDivisionsHub();
-      break;
-    case 'apps-hub':
-      initAppsHub();
-      break;
-  }
-  
-  // Always initialize common components
-  initContactForm();
-  
-  // Add custom cursor effect (for desktop)
-  if (window.innerWidth > 768) {
-    const cursor = document.createElement('div');
-    cursor.className = 'custom-cursor';
-    document.body.appendChild(cursor);
-    
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = `${e.clientX}px`;
-      cursor.style.top = `${e.clientY}px`;
-    });
-    
-    // Enhance cursor on interactive elements
-    const interactives = document.querySelectorAll('a, button, input, textarea, .card');
-    interactives.forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('active'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('active'));
-    });
-  }
-  
-  // Add CSS for new dynamic elements
-  const style = document.createElement('style');
-  style.textContent = `
-    .particle {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      pointer-events: none;
-      opacity: 0;
-      animation: float linear infinite, pulse 2s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.8; }
-      90% { opacity: 0.5; }
-      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-    }
-    
-    .shine {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 80%);
-      pointer-events: none;
-      z-index: 1;
-      mix-blend-mode: overlay;
-    }
-    
-    .custom-cursor {
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--color-accent);
-      border-radius: 50%;
-      position: fixed;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 9999;
-      transition: width 0.2s, height 0.2s, background 0.2s;
-      mix-blend-mode: difference;
-    }
-    
-    .custom-cursor.active {
-      width: 40px;
-      height: 40px;
-      background: rgba(0, 210, 255, 0.2);
-      mix-blend-mode: normal;
-    }
-    
-    .success-message {
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--glass-blur));
-      padding: 1rem;
-      border-radius: var(--radius-base);
-      margin-top: 1rem;
-      border: 1px solid var(--color-success);
-      text-align: center;
-      color: var(--color-success);
-    }
-    
-    button.loading::after {
-      content: '';
-      display: inline-block;
-      width: 1rem;
-      height: 1rem;
-      margin-left: 0.5rem;
-      border: 2px solid #fff;
-      border-bottom-color: transparent;
-      border-radius: 50%;
-      animation: rotate 1s linear infinite;
-    }
-    
-    input.focused, textarea.focused {
-      border-color: var(--color-accent);
-      box-shadow: 0 0 0 2px rgba(0, 210, 255, 0.2);
-    }
-  `;
-  
-  document.head.appendChild(style);
-});
