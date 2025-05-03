@@ -1,0 +1,33 @@
+{
+  "name": "aerovista.us",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "node src/server/index.js",
+    "dev": "nodemon src/server/index.js",
+    "build": "npm install",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bizlipp/aerovista-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bizlipp/aerovista-site/issues"
+  },
+  "homepage": "https://github.com/bizlipp/aerovista-site#readme",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^7.0.0",
+    "sharp": "^0.34.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

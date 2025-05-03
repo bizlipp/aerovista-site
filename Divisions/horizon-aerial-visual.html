@@ -416,7 +416,17 @@
     <div class="aerial-grid">
       <div class="aerial-card" data-animate="fade-up">
         <div class="aerial-image">
-          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Cinematic Landscape">
+          <img 
+            data-src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4" 
+            data-width="600" 
+            data-height="400" 
+            data-format="webp" 
+            data-quality="85" 
+            data-responsive 
+            alt="Cinematic Landscape" 
+            loading="lazy"
+            width="600"
+            height="400">
           <div class="aerial-overlay">
             <button class="btn">View Project</button>
           </div>
@@ -429,7 +439,17 @@
       
       <div class="aerial-card" data-animate="fade-up">
         <div class="aerial-image">
-          <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Crop Mapping">
+          <img 
+            data-src="https://images.unsplash.com/photo-1500382017468-9049fed747ef" 
+            data-width="600" 
+            data-height="400" 
+            data-format="webp" 
+            data-quality="85" 
+            data-responsive 
+            alt="Crop Mapping" 
+            loading="lazy"
+            width="600"
+            height="400">
           <div class="aerial-overlay">
             <button class="btn">View Project</button>
           </div>
@@ -442,7 +462,17 @@
       
       <div class="aerial-card" data-animate="fade-up">
         <div class="aerial-image">
-          <img src="https://images.unsplash.com/photo-1506260408121-e353d10b87c7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="VR Flight">
+          <img 
+            data-src="https://images.unsplash.com/photo-1506260408121-e353d10b87c7" 
+            data-width="600" 
+            data-height="400" 
+            data-format="webp" 
+            data-quality="85" 
+            data-responsive 
+            alt="VR Flight" 
+            loading="lazy"
+            width="600"
+            height="400">
           <div class="aerial-overlay">
             <button class="btn">View Project</button>
           </div>
@@ -498,7 +528,10 @@
   </footer>
 
   <script type="module" src="../main.js"></script>
-  <script>
+  <script type="module">
+    // Import the image processing utilities
+    import { initLazyLoading } from '../src/imageUtil.js';
+    
     document.addEventListener('DOMContentLoaded', () => {
       // Create clouds in the sky background
       const skyBg = document.getElementById('skyBg');
@@ -523,6 +556,9 @@
         
         skyBg.appendChild(cloud);
       }
+      
+      // Initialize lazy loading for images
+      initLazyLoading();
     });
   </script>
 </body>

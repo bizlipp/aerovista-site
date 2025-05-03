@@ -6,6 +6,9 @@
    <body data-page="..."> for targeted functionality.
    ====================================================== */
 
+// Import image utilities
+import { initLazyLoading } from './src/imageUtil.js';
+
 // 1. CONTENT -----------------------------------------------------------------
 export const divisions = [
   {
@@ -351,6 +354,40 @@ function initContactForm() {
     }, 1500);
   });
 }
+
+// Initialize image processing
+function initImageProcessing() {
+  // Initialize lazy loading for all images with data-src attribute
+  initLazyLoading();
+}
+
+// Include image processing in the init function
+function init() {
+  // Get page type from body attribute
+  const pageType = document.body.dataset.page;
+  
+  // Common initializations for all pages
+  initScrollAnimations();
+  initMobileMenu();
+  initDynamicBackgrounds();
+  initParallaxEffects();
+  initImageProcessing();
+  
+  // Page-specific initializations
+  if (pageType === 'home') {
+    initHome();
+  } else if (pageType === 'divisions') {
+    initDivisionsHub();
+  } else if (pageType === 'apps') {
+    initAppsHub();
+  }
+  
+  // Forms can be on multiple pages
+  initContactForm();
+}
+
+// Initialize on DOM content loaded
+document.addEventListener('DOMContentLoaded', init);
 
 // 5. BOOTSTRAP ---------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {

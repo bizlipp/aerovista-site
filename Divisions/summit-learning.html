@@ -13,50 +13,61 @@
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
+      width: 100%;
+      height: 100%;
       z-index: 0;
-      opacity: 0.15;
+      opacity: 0.2;
       pointer-events: none;
-      overflow: hidden;
     }
     
-    .growth-element {
+    .growth-item {
       position: absolute;
-      width: 100px;
-      height: 300px;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300' fill='none'%3E%3Cpath d='M50 0V300' stroke='url(%23grad)' stroke-width='3'/%3E%3Cpath d='M50 250C50 250 30 200 20 180C10 160 0 100 30 70C60 40 50 20 50 20' stroke='url(%23grad)' stroke-width='2'/%3E%3Cpath d='M50 200C50 200 70 150 80 130C90 110 100 70 70 40C40 10 50 20 50 20' stroke='url(%23grad)' stroke-width='2'/%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ff3caf'/%3E%3Cstop offset='100%25' stop-color='%23ffb347'/%3E%3C/linearGradient%3E%3C/defs%3E%3C/svg%3E");
-      background-size: contain;
-      background-repeat: no-repeat;
-      animation: grow 8s ease-in-out infinite;
-      opacity: 0.7;
+      width: 60px;
+      height: 60px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      opacity: 0.2;
+      animation: growth 8s ease-in-out infinite;
     }
     
-    @keyframes grow {
-      0%, 100% {
-        transform: translateY(10%) scale(0.9);
+    @keyframes growth {
+      0% {
+        transform: scale(0);
+        opacity: 0;
       }
-      50% {
-        transform: translateY(0) scale(1);
+      20% {
+        opacity: 0.3;
+      }
+      80% {
+        opacity: 0.2;
+      }
+      100% {
+        transform: scale(8);
+        opacity: 0;
       }
     }
     
-    .program-cards {
+    .program-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 2rem;
       margin: 2rem 0;
     }
     
     .program-card {
+      padding: 2rem;
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-base);
-      padding: 2rem;
       transition: transform var(--transition-medium) ease, box-shadow var(--transition-medium) ease;
       position: relative;
       overflow: hidden;
+    }
+    
+    .program-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-card);
     }
     
     .program-card::before {
@@ -64,131 +75,129 @@
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
+      right: 0;
       height: 4px;
-      background: linear-gradient(90deg, var(--color-hot), var(--color-accent));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform var(--transition-medium) ease;
-    }
-    
-    .program-card:hover::before {
-      transform: scaleX(1);
-    }
-    
-    .program-card:hover {
-      transform: translateY(-10px);
-      box-shadow: var(--shadow-hot);
-    }
-    
-    .program-icon {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      background: linear-gradient(45deg, var(--color-hot), var(--color-accent));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    
-    .values-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin: 3rem 0;
-    }
-    
-    .value-item {
-      flex: 1;
-      min-width: 180px;
-      max-width: 250px;
-      text-align: center;
-      position: relative;
-    }
-    
-    .value-icon {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 80px;
-      height: 80px;
-      margin-bottom: 1.5rem;
-      background: var(--color-surface);
-      border-radius: 50%;
-      font-size: 2rem;
-      position: relative;
-      transition: transform var(--transition-medium) ease;
-    }
-    
-    .value-icon::before {
-      content: '';
-      position: absolute;
-      top: -3px;
-      left: -3px;
-      right: -3px;
-      bottom: -3px;
-      background: linear-gradient(45deg, var(--color-hot), var(--color-accent));
-      border-radius: 50%;
-      z-index: -1;
-      opacity: 0.7;
+      background: var(--gradient-primary);
+      opacity: 0;
       transition: opacity var(--transition-medium) ease;
     }
     
-    .value-item:hover .value-icon {
-      transform: scale(1.1);
-    }
-    
-    .value-item:hover .value-icon::before {
+    .program-card:hover::before {
       opacity: 1;
     }
     
-    .testimonials {
-      margin: 4rem 0;
+    .progress-wrapper {
       position: relative;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 1.5rem;
     }
     
-    .testimonial-container {
-      max-width: 800px;
-      margin: 0 auto;
+    .progress-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(var(--color-accent) var(--progress), rgba(255,255,255,0.1) var(--progress));
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+    }
+    
+    .progress-circle::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      background: var(--color-surface);
+      border-radius: 50%;
+    }
+    
+    .progress-text {
+      position: relative;
+      z-index: 1;
+      font-size: 1.2rem;
+      font-weight: bold;
+      font-family: var(--font-heading);
+    }
+    
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .value-card {
+      text-align: center;
       padding: 2rem;
       background: var(--glass-bg);
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-base);
-      position: relative;
+      transition: transform var(--transition-medium) ease;
     }
     
-    .testimonial-quote {
-      font-size: 1.2rem;
-      line-height: 1.6;
+    .value-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .value-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      animation: pulse 2s infinite;
+    }
+    
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .testimonial-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-base);
+      padding: 2rem;
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .testimonial-card:hover {
+      transform: translateY(-10px);
+    }
+    
+    .testimonial-content {
       font-style: italic;
       margin-bottom: 1.5rem;
       position: relative;
     }
     
-    .testimonial-quote::before {
+    .testimonial-content::before {
       content: '"';
-      font-size: 4rem;
+      font-size: 3rem;
       position: absolute;
-      left: -1.5rem;
-      top: -1.5rem;
-      font-family: Georgia, serif;
+      top: -1rem;
+      left: -1rem;
       opacity: 0.2;
-      color: var(--color-hot);
+      font-family: sans-serif;
     }
     
     .testimonial-author {
       display: flex;
       align-items: center;
-      gap: 1rem;
     }
     
     .author-avatar {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
+      margin-right: 1rem;
       overflow: hidden;
-      border: 2px solid var(--color-hot);
     }
     
     .author-avatar img {
@@ -197,74 +206,46 @@
       object-fit: cover;
     }
     
-    .author-info h4 {
-      margin: 0;
-      font-size: 1.1rem;
+    .author-name {
+      font-weight: bold;
     }
     
-    .author-info p {
-      margin: 0;
+    .author-title {
       font-size: 0.9rem;
-      opacity: 0.8;
-    }
-    
-    .progress-circle {
-      position: relative;
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background: conic-gradient(var(--color-hot) var(--progress), transparent 0);
-      margin: 0 auto 2rem;
-    }
-    
-    .progress-circle::before {
-      content: '';
-      position: absolute;
-      inset: 10px;
-      border-radius: 50%;
-      background: var(--color-surface);
-    }
-    
-    .progress-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 1.5rem;
-      font-weight: 700;
-      font-family: var(--font-heading);
+      color: var(--color-text-soft);
     }
     
     .stats-container {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-around;
-      text-align: center;
       margin: 3rem 0;
       gap: 2rem;
     }
     
     .stat-item {
-      flex: 1;
-      min-width: 180px;
+      text-align: center;
     }
     
-    .stat-value {
+    .stat-number {
       font-size: 3rem;
       font-weight: 700;
       font-family: var(--font-heading);
-      margin-bottom: 0.5rem;
-      background: linear-gradient(45deg, var(--color-hot), var(--color-accent));
+      background: var(--gradient-primary);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      margin-bottom: 0.5rem;
     }
     
     @media (max-width: 768px) {
-      .testimonial-quote::before {
-        left: -1rem;
-        top: -1rem;
-        font-size: 3rem;
+      .values-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .stats-container {
+        flex-direction: column;
+        align-items: center;
       }
     }
   </style>
@@ -284,8 +265,8 @@
   <!-- Division Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#ffb34733 0%,#ff3caf44 100%);">
     <div class="growth-bg" id="growthBg"></div>
-    <h1 class="text-gradient-hot glitch" data-text="Summit Learning">Summit Learning</h1>
-    <p>Holistic personal development programs and trainings designed to elevate mind, body, and spirit.</p>
+    <h1 class="text-gradient glitch" data-text="Summit Learning">Summit Learning</h1>
+    <p>Personal development & training programs that empower individuals and organizations to reach new heights.</p>
     <a href="#programs" class="btn" data-animate="fade-up">Explore Programs</a>
   </section>
 
@@ -293,133 +274,174 @@
   <section class="container">
     <h2>Our Mission</h2>
     <div class="text-center" data-animate="fade-up">
-      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">Summit Learning curates experiential curricula that weave together neuroscience, mindfulness, and movement practices—helping individuals and organizations reach their highest potential through evidence-based approaches.</p>
+      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">Summit Learning delivers transformative education experiences—online, in-person, and hybrid—designed to unlock potential and create sustainable growth for professionals and organizations.</p>
     </div>
     
     <div class="stats-container">
       <div class="stat-item" data-animate="fade-up">
-        <div class="stat-value">5K+</div>
-        <p>Program Graduates</p>
+        <div class="stat-number">15K+</div>
+        <p>Professionals Trained</p>
       </div>
       <div class="stat-item" data-animate="fade-up">
-        <div class="stat-value">94%</div>
+        <div class="stat-number">98%</div>
         <p>Satisfaction Rate</p>
       </div>
       <div class="stat-item" data-animate="fade-up">
-        <div class="stat-value">12</div>
-        <p>Countries Reached</p>
+        <div class="stat-number">12+</div>
+        <p>Tailored Programs</p>
       </div>
     </div>
   </section>
-  
+
+  <!-- Programs -->
+  <section id="programs" class="container">
+    <h2>Featured Programs</h2>
+    <div class="program-grid">
+      <div class="program-card" data-animate="fade-up">
+        <div class="progress-wrapper">
+          <div class="progress-circle" style="--progress: 85%">
+            <div class="progress-text">8 Weeks</div>
+          </div>
+        </div>
+        <h3>Leadership Accelerator</h3>
+        <p>Intensive coaching and workshops for emerging leaders to develop strategic vision, team management, and effective communication skills.</p>
+        <a href="#contact" class="btn outline w-full" style="margin-top:1.5rem;">Program Details</a>
+      </div>
+      
+      <div class="program-card" data-animate="fade-up">
+        <div class="progress-wrapper">
+          <div class="progress-circle" style="--progress: 65%">
+            <div class="progress-text">6 Weeks</div>
+          </div>
+        </div>
+        <h3>Digital Transformation</h3>
+        <p>Guide your organization through technological change with frameworks for adoption, change management, and cultural evolution.</p>
+        <a href="#contact" class="btn outline w-full" style="margin-top:1.5rem;">Program Details</a>
+      </div>
+      
+      <div class="program-card" data-animate="fade-up">
+        <div class="progress-wrapper">
+          <div class="progress-circle" style="--progress: 40%">
+            <div class="progress-text">4 Weeks</div>
+          </div>
+        </div>
+        <h3>Creative Problem-Solving</h3>
+        <p>Unlock innovative thinking with techniques for approaching challenges from multiple perspectives and implementing effective solutions.</p>
+        <a href="#contact" class="btn outline w-full" style="margin-top:1.5rem;">Program Details</a>
+      </div>
+    </div>
+  </section>
+
   <!-- Core Values -->
   <section class="container">
     <h2>Our Core Values</h2>
-    <div class="values-container">
-      <div class="value-item" data-animate="fade-up">
+    <div class="values-grid">
+      <div class="value-card" data-animate="fade-up">
+        <div class="value-icon">🚀</div>
+        <h3>Continuous Growth</h3>
+        <p>We believe in lifelong learning and constant improvement in all areas of life.</p>
+      </div>
+      <div class="value-card" data-animate="fade-up">
+        <div class="value-icon">🤝</div>
+        <h3>Authentic Connection</h3>
+        <p>Real transformation happens through genuine relationships and open communication.</p>
+      </div>
+      <div class="value-card" data-animate="fade-up">
         <div class="value-icon">🧠</div>
         <h3>Evidence-Based</h3>
-        <p>Programs designed using the latest research in neuroscience and behavioral psychology.</p>
+        <p>Our methods are grounded in research, best practices, and measurable outcomes.</p>
       </div>
-      <div class="value-item" data-animate="fade-up">
+      <div class="value-card" data-animate="fade-up">
         <div class="value-icon">🌱</div>
-        <h3>Sustainable Growth</h3>
-        <p>Creating lasting change through iterative practice and personalized approaches.</p>
-      </div>
-      <div class="value-item" data-animate="fade-up">
-        <div class="value-icon">🔄</div>
-        <h3>Integration</h3>
-        <p>Harmonizing mind, body, and spirit for holistic wellbeing and performance.</p>
-      </div>
-      <div class="value-item" data-animate="fade-up">
-        <div class="value-icon">🤝</div>
-        <h3>Community</h3>
-        <p>Building supportive networks that amplify individual growth and collective wisdom.</p>
+        <h3>Holistic Approach</h3>
+        <p>We address the whole person—professional, personal, and interpersonal growth.</p>
       </div>
     </div>
   </section>
 
-  <!-- Signature Programs -->
-  <section id="programs" class="container">
-    <h2>Signature Programs</h2>
-    <div class="program-cards">
-      <div class="program-card" data-animate="fade-up">
-        <div class="program-icon">🚀</div>
-        <h3>Peak Performance Bootcamp</h3>
-        <p>Six‑week intensive blending cognitive science, journaling, and biohacking strategies for breakthrough results in your career and personal goals.</p>
-        <div class="progress-circle" style="--progress: 75%;">
-          <div class="progress-text">Next: May</div>
-        </div>
-      </div>
-      <div class="program-card" data-animate="fade-up">
-        <div class="program-icon">🧘</div>
-        <h3>Mind‑Body Flow Series</h3>
-        <p>Guided movement and breathwork sessions streamed weekly for sustained wellbeing and stress management in today's fast-paced world.</p>
-        <div class="progress-circle" style="--progress: 25%;">
-          <div class="progress-text">Ongoing</div>
-        </div>
-      </div>
-      <div class="program-card" data-animate="fade-up">
-        <div class="program-icon">👥</div>
-        <h3>Summit Mentorship</h3>
-        <p>One‑on‑one coaching tailored to personal goals and professional growth with dedicated mentors trained in our proprietary methods.</p>
-        <div class="progress-circle" style="--progress: 50%;">
-          <div class="progress-text">Limited</div>
-        </div>
-      </div>
-      <div class="program-card" data-animate="fade-up">
-        <div class="program-icon">🏢</div>
-        <h3>Corporate Wellness</h3>
-        <p>Customized team programs that enhance workplace culture, reduce burnout, and improve collaboration through mindfulness practices.</p>
-        <div class="progress-circle" style="--progress: 90%;">
-          <div class="progress-text">Available</div>
-        </div>
-      </div>
-      <div class="program-card" data-animate="fade-up">
-        <div class="program-icon">🎓</div>
-        <h3>Summit Certification</h3>
-        <p>Become a certified Summit facilitator and bring our methodologies to your community or organization with ongoing support.</p>
-        <div class="progress-circle" style="--progress: 10%;">
-          <div class="progress-text">Q3 2025</div>
-        </div>
-      </div>
-      <div class="program-card" data-animate="fade-up">
-        <div class="program-icon">🏝️</div>
-        <h3>Immersive Retreats</h3>
-        <p>Multi-day destination experiences that combine intensive learning with nature connection and community building.</p>
-        <div class="progress-circle" style="--progress: 60%;">
-          <div class="progress-text">July 2025</div>
-        </div>
-      </div>
-    </div>
-  </section>
-  
   <!-- Testimonials -->
   <section class="container">
     <h2>Success Stories</h2>
-    <div class="testimonials">
-      <div class="testimonial-container" data-animate="fade-up">
-        <div class="testimonial-quote">
-          Summit Learning's Peak Performance Bootcamp completely transformed how I approach challenges in both my professional and personal life. The combination of science-based strategies and practical tools gave me exactly what I needed to break through plateaus I'd been stuck on for years.
+    <div class="testimonial-grid">
+      <div class="testimonial-card" data-animate="fade-up">
+        <div class="testimonial-content">
+          <p>Summit's Leadership Accelerator completely transformed how I approach team dynamics. The combination of theory and practical application helped me implement changes immediately.</p>
         </div>
         <div class="testimonial-author">
           <div class="author-avatar">
-            <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Sarah J.">
+            <img 
+              data-src="https://placehold.co/50x50?text=JD" 
+              data-width="50" 
+              data-height="50" 
+              data-format="webp" 
+              data-quality="85" 
+              alt="Jamie Davis" 
+              loading="lazy"
+              width="50"
+              height="50">
           </div>
-          <div class="author-info">
-            <h4>Sarah J.</h4>
-            <p>Creative Director, Peak Performance Graduate</p>
+          <div>
+            <div class="author-name">Jamie Davis</div>
+            <div class="author-title">CTO, TechFlow Solutions</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card" data-animate="fade-up">
+        <div class="testimonial-content">
+          <p>The Digital Transformation program gave our entire management team a shared vocabulary and framework. Six months later, we're seeing dramatic improvements in adoption rates.</p>
+        </div>
+        <div class="testimonial-author">
+          <div class="author-avatar">
+            <img 
+              data-src="https://placehold.co/50x50?text=SK" 
+              data-width="50" 
+              data-height="50" 
+              data-format="webp" 
+              data-quality="85" 
+              alt="Sarah Kim" 
+              loading="lazy"
+              width="50"
+              height="50">
+          </div>
+          <div>
+            <div class="author-name">Sarah Kim</div>
+            <div class="author-title">Operations Director, Meridian Health</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card" data-animate="fade-up">
+        <div class="testimonial-content">
+          <p>I was skeptical about yet another creative thinking workshop, but Summit's program was different. The techniques they taught have become essential tools in my daily workflow.</p>
+        </div>
+        <div class="testimonial-author">
+          <div class="author-avatar">
+            <img 
+              data-src="https://placehold.co/50x50?text=MJ" 
+              data-width="50" 
+              data-height="50" 
+              data-format="webp" 
+              data-quality="85" 
+              alt="Marcus Johnson" 
+              loading="lazy"
+              width="50"
+              height="50">
+          </div>
+          <div>
+            <div class="author-name">Marcus Johnson</div>
+            <div class="author-title">Creative Director, Studio Infinity</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Collaboration Callout -->
+  <!-- Approach Callout -->
   <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));">
-    <h2 style="margin-bottom:1rem;" class="text-gradient-hot">Partner with Summit Learning</h2>
-    <p style="max-width:600px;color:var(--color-text-soft);">Organizations and educators can license our curricula or co‑develop new modules for their teams. Build a culture of continuous growth and wellbeing.</p>
-    <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Inquire About Partnerships</a>
+    <h2 style="margin-bottom:1rem;" class="text-gradient">Our Learning Approach</h2>
+    <p style="max-width:600px;color:var(--color-text-soft);">We combine cognitive science, behavioral psychology, and industry expertise to create immersive learning experiences that stick. Every program balances theory, practice, and accountability.</p>
+    <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Schedule a Consultation</a>
   </section>
 
   <!-- Contact CTA -->
@@ -428,7 +450,7 @@
     <form id="contactForm" class="bg-glass" style="border-radius:var(--radius-base);padding:2rem;border:1px solid var(--glass-border);">
       <input required type="text" placeholder="Your Name" data-animate="fade-up" />
       <input required type="email" placeholder="Email" data-animate="fade-up" />
-      <textarea required rows="5" placeholder="How can we help you grow?" data-animate="fade-up"></textarea>
+      <textarea required rows="5" placeholder="Tell us about your learning goals..." data-animate="fade-up"></textarea>
       <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
     </form>
   </section>
@@ -460,24 +482,24 @@
   <script type="module" src="../main.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Create growth elements in the background
-      const growthBg = document.getElementById('growthBg');
-      const elementCount = 5;
+      // Create growth animation
+      const growthContainer = document.getElementById('growthBg');
+      const itemCount = 5;
       
-      for (let i = 0; i < elementCount; i++) {
-        const element = document.createElement('div');
-        element.className = 'growth-element';
+      for (let i = 0; i < itemCount; i++) {
+        const growthItem = document.createElement('div');
+        growthItem.className = 'growth-item';
         
-        // Random position and size
+        // Random positioning
         const posX = Math.random() * 100;
-        const scale = Math.random() * 0.5 + 0.7;
-        const delay = Math.random() * 4;
+        const posY = Math.random() * 100;
+        const delay = Math.random() * 8;
         
-        element.style.left = `${posX}%`;
-        element.style.transform = `scale(${scale})`;
-        element.style.animationDelay = `${delay}s`;
+        growthItem.style.left = `${posX}%`;
+        growthItem.style.top = `${posY}%`;
+        growthItem.style.animationDelay = `${delay}s`;
         
-        growthBg.appendChild(element);
+        growthContainer.appendChild(growthItem);
       }
     });
   </script>

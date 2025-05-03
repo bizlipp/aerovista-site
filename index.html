@@ -1,110 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AeroVista | Visionary Tools</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AeroVista | Home</title>
+  <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <!-- Preload important assets -->
-  <link rel="preload" href="styles.css" as="style">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body data-page="home">
-<header>
-  <div class="logo"><strong>AeroVista</strong></div>
-  <nav>
-    <a href="#divisions">Divisions</a>
-    <a href="#apps">Apps</a>
-    <a href="store.html">Store</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
+  <!-- Navbar -->
+  <header>
+    <div class="logo"><strong>AeroVista</strong></div>
+    <nav>
+      <a href="divisions.html">Divisions</a>
+      <a href="apps.html">Apps</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-<section class="hero">
-  <h1 class="text-gradient">Visionary Tools for Real‑World Impact</h1>
-  <p>AeroVista unites seven specialist divisions under one mission: crafting bold tech &amp; creative experiences that empower businesses and people alike.</p>
-  <div class="flex gap-md">
-    <a href="#divisions" class="btn" data-animate="fade-up">Explore Divisions</a>
-    <a href="#apps" class="btn alt" data-animate="fade-up">Browse Apps</a>
-  </div>
-</section>
-
-<section id="divisions">
-  <h2>Our Divisions</h2>
-  <div id="divisionGrid" class="grid grid-cols-3 container"></div>
-</section>
-
-<section id="apps" data-bg="gradient">
-  <h2>Featured Apps</h2>
-  <div id="appGrid" class="grid grid-cols-3 container"></div>
-</section>
-
-<section class="container text-center" data-animate="fade-up">
-  <h2>Why Choose AeroVista?</h2>
-  <div class="grid grid-cols-3">
-    <div class="feature-box" data-animate="fade-up">
-      <div class="icon-circle">
-        <div class="icon">✨</div>
-      </div>
-      <h3>Creative Excellence</h3>
-      <p>Bold designs and innovative concepts that captivate audiences and elevate brands</p>
+  <!-- Hero -->
+  <section class="hero">
+    <h1 class="text-gradient-hot glitch" data-text="AeroVista">AeroVista</h1>
+    <p>Transforming ideas into stellar digital experiences through seven visionary divisions.</p>
+    <div class="flex gap-md" style="margin-top:1.5rem;">
+      <a href="divisions.html" class="btn" data-animate="fade-up">Explore Divisions</a>
+      <a href="apps.html" class="btn alt" data-animate="fade-up">Our Apps</a>
     </div>
-    <div class="feature-box" data-animate="fade-up">
-      <div class="icon-circle">
-        <div class="icon">💻</div>
-      </div>
-      <h3>Technical Mastery</h3>
-      <p>Cutting-edge development powered by modern frameworks and efficient architectures</p>
-    </div>
-    <div class="feature-box" data-animate="fade-up">
-      <div class="icon-circle">
-        <div class="icon">🔄</div>
-      </div>
-      <h3>Seamless Integration</h3>
-      <p>Cross-discipline teams that unite design, technology, and strategy for cohesive solutions</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section id="contact" class="bg-glass">
-  <div class="container">
-    <h2>Let's Collaborate</h2>
+  <!-- Divisions Grid -->
+  <section class="container">
+    <h2 class="mb-lg">Our Divisions</h2>
+    <div id="divisionGrid" class="grid grid-cols-3 stagger"></div>
+  </section>
+
+  <!-- Apps Teaser -->
+  <section class="hero" style="min-height:auto;padding:4rem 1rem;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));">
+    <h2 style="margin-bottom:1.5rem;" class="text-gradient">Apps & Products</h2>
+    <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">
+      From productivity tools to immersive games, our apps showcase cross‑division talent with AeroVista style.
+    </p>
+    <div id="appGrid" class="grid grid-cols-3 stagger"></div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="container">
+    <h2>Get in Touch</h2>
     <form id="contactForm">
-      <input required type="text" placeholder="Your Name">
-      <input required type="email" placeholder="Email">
-      <textarea required placeholder="Tell us about your project..." rows="5"></textarea>
-      <button class="btn" type="submit">Send Message</button>
+      <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+      <input required type="email" placeholder="Email" data-animate="fade-up" />
+      <textarea required rows="5" placeholder="Tell us about your project..." data-animate="fade-up"></textarea>
+      <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
     </form>
-  </div>
-</section>
+  </section>
 
-<footer>
-  <div class="container">
+  <!-- Footer -->
+  <footer>
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="logo"><strong>AeroVista</strong></div>
-        <p>Crafting bold tech &amp; creative experiences since 2019.</p>
+        <p>Transforming ideas into exceptional digital experiences.</p>
       </div>
       <div class="footer-links">
         <h4>Quick Links</h4>
-        <a href="about.html">About Us</a>
+        <a href="about.html">About</a>
         <a href="divisions.html">Divisions</a>
         <a href="apps.html">Apps</a>
-        <a href="store.html">Store</a>
       </div>
       <div class="footer-links">
-        <h4>Legal</h4>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
+        <h4>Connect</h4>
+        <a href="mailto:hello@aerovista.us">Email Us</a>
+        <a href="tel:+15551234567">Call Us</a>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2025 AeroVista LLC — All rights reserved.</p>
+      © 2025 AeroVista LLC — All rights reserved.
     </div>
-  </div>
-</footer>
+  </footer>
 
-<script type="module" src="main.js"></script>
+  <script type="module" src="main.js"></script>
 </body>
 </html>
