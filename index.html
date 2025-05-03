@@ -66,85 +66,61 @@
     <div class="grid grid-cols-3 stagger">
       <div class="card glass" data-animate="fade-up">
         <img 
-          data-src="https://placehold.co/600x400?text=SkyForge+Creative" 
-          data-width="600" 
-          data-height="400" 
-          data-format="webp" 
-          data-quality="85" 
-          alt="SkyForge Creative" 
+          src="public/images/portfolio/portfolio-1.png" 
+          alt="SkyForge Creative - Immersive game world concept" 
           loading="lazy"
-          width="100%"
-          height="auto">
+          width="600"
+          height="400">
         <h3>SkyForge Creative</h3>
         <p>Concept art from upcoming SkyForge immersive game worlds.</p>
       </div>
       <div class="card glass" data-animate="fade-up">
         <img 
-          data-src="https://placehold.co/600x400?text=Vespera+Publishing" 
-          data-width="600" 
-          data-height="400" 
-          data-format="webp" 
-          data-quality="85" 
-          alt="Vespera Publishing" 
+          src="public/images/portfolio/portfolio-2.png" 
+          alt="Vespera Publishing - Seasons of Change book" 
           loading="lazy"
-          width="100%"
-          height="auto">
+          width="600"
+          height="400">
         <h3>Vespera Publishing</h3>
         <p>Seasonal curriculum design from 'Seasons of Change'.</p>
       </div>
       <div class="card glass" data-animate="fade-up">
         <img 
-          data-src="https://placehold.co/600x400?text=EchoVerse+Audio" 
-          data-width="600" 
-          data-height="400" 
-          data-format="webp" 
-          data-quality="85" 
-          alt="EchoVerse Audio" 
+          src="public/images/portfolio/portfolio-3.png" 
+          alt="EchoVerse Audio - AI music generation" 
           loading="lazy"
-          width="100%"
-          height="auto">
+          width="600"
+          height="400">
         <h3>EchoVerse Audio</h3>
         <p>AI-generated music from the EchoVerse collective.</p>
       </div>
       <div class="card glass" data-animate="fade-up">
         <img 
-          data-src="https://placehold.co/600x400?text=Nexus+TechWorks" 
-          data-width="600" 
-          data-height="400" 
-          data-format="webp" 
-          data-quality="85" 
-          alt="Nexus TechWorks" 
+          src="public/images/portfolio/portfolio-4.png" 
+          alt="Nexus TechWorks - Productivity interface" 
           loading="lazy"
-          width="100%"
-          height="auto">
+          width="600"
+          height="400">
         <h3>Nexus TechWorks</h3>
         <p>Interface design from our collaborative productivity tools.</p>
       </div>
       <div class="card glass" data-animate="fade-up">
         <img 
-          data-src="https://placehold.co/600x400?text=Summit+Learning" 
-          data-width="600" 
-          data-height="400" 
-          data-format="webp" 
-          data-quality="85" 
-          alt="Summit Learning" 
+          src="public/images/portfolio/portfolio-5.png" 
+          alt="Summit Learning - Reflection journal" 
           loading="lazy"
-          width="100%"
-          height="auto">
+          width="600"
+          height="400">
         <h3>Summit Learning</h3>
         <p>Guided self-reflection in holistic learning spaces.</p>
       </div>
       <div class="card glass" data-animate="fade-up">
         <img 
-          data-src="https://placehold.co/600x400?text=Lumina+Creative" 
-          data-width="600" 
-          data-height="400" 
-          data-format="webp" 
-          data-quality="85" 
-          alt="Lumina Creative" 
+          src="public/images/portfolio/portfolio-6.png" 
+          alt="Lumina Creative - Brand identity design" 
           loading="lazy"
-          width="100%"
-          height="auto">
+          width="600"
+          height="400">
         <h3>Lumina Creative</h3>
         <p>Identity and motion design for visionary brands.</p>
       </div>
@@ -200,6 +176,7 @@
   <script type="module">
     import { initLazyLoading } from './src/imageUtil.js'; 
     document.addEventListener('DOMContentLoaded', () => {
+      // Call initLazyLoading for compatibility, but it now uses native lazy loading
       initLazyLoading();
       
       // Add body-loaded class for glitch animation
