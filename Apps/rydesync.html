@@ -94,5 +94,11 @@
   <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
 
   <script type="module" src="../main.js"></script>
+  <script type="module">
+    import { initLazyLoading } from '../src/imageUtil.js'; 
+    document.addEventListener('DOMContentLoaded', () => {
+      initLazyLoading();
+    });
+  </script>
 </body>
 </html>

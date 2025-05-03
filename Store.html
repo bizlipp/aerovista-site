@@ -7,6 +7,13 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Browse and purchase premium apps and digital products from AeroVista, with secure payments powered by Stripe.">
+  <meta property="og:title" content="AeroVista | Store">
+  <meta property="og:description" content="Shop AeroVista's latest releases with secure payments and instant downloads.">
+  <meta property="og:image" content="https://aerovista.us/preview-image.png">
+  <meta property="og:url" content="https://aerovista.us/store.html">
+  <meta property="og:type" content="website">
   <style>
     .product-grid { display:grid; gap:2rem; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); }
     .product-card { background:var(--color-surface); border-radius:var(--radius-base); padding:1.5rem; border:1px solid #ffffff0f; text-align:center; transition:transform .25s, box-shadow .25s; }
@@ -28,7 +35,7 @@
 
   <!-- Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#008abf44 0%,#ff3caf44 100%);min-height:50vh;">
-    <h1>AeroVista Store</h1>
+    <h1 class="text-gradient glitch" data-text="AeroVista Store">AeroVista Store</h1>
     <p>Grab our latest releases—secure payments powered by Stripe, downloads delivered instantly.</p>
   </section>
 
@@ -94,5 +101,11 @@
   <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
 
   <script type="module" src="main.js"></script>
+  <script type="module">
+    import { initLazyLoading } from './src/imageUtil.js'; 
+    document.addEventListener('DOMContentLoaded', () => {
+      initLazyLoading();
+    });
+  </script>
 </body>
 </html>

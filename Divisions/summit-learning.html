@@ -503,5 +503,11 @@
       }
     });
   </script>
+  <script type="module">
+    import { initLazyLoading } from '../src/imageUtil.js'; 
+    document.addEventListener('DOMContentLoaded', () => {
+      initLazyLoading();
+    });
+  </script>
 </body>
 </html>

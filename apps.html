@@ -8,6 +8,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Explore AeroVista's sleek, local-first apps – from sticky-note productivity to glitch-punk file managers and more.">
+  <meta property="og:title" content="AeroVista | Apps & Products">
+  <meta property="og:description" content="Browse our flagship tools built with a local-first mindset and sleek AeroVista polish.">
+  <meta property="og:image" content="https://aerovista.us/preview-image.png">
+  <meta property="og:url" content="https://aerovista.us/apps.html">
+  <meta property="og:type" content="website">
   <style>
     .app-showcase {
       position: relative;
@@ -249,7 +255,7 @@
 
   <!-- Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#00d2ff33 100%);">
-    <h1 class="text-gradient">Apps & Products</h1>
+    <h1 class="text-gradient glitch" data-text="Apps & Products">Apps & Products</h1>
     <p>Browse our flagship tools—shipped, in beta, or coming soon. Each built with a local‑first mindset and sleek AeroVista polish.</p>
     <a href="#apps" class="btn" data-animate="fade-up">Explore Apps</a>
   </section>
@@ -467,5 +473,11 @@
   </footer>
 
   <script type="module" src="main.js"></script>
+  <script type="module">
+    import { initLazyLoading } from './src/imageUtil.js'; 
+    document.addEventListener('DOMContentLoaded', () => {
+      initLazyLoading();
+    });
+  </script>
 </body>
 </html>

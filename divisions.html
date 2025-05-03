@@ -8,6 +8,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Explore AeroVista's seven specialist divisions, each bringing unique expertise in tech, media, and creative services.">
+  <meta property="og:title" content="AeroVista | Divisions">
+  <meta property="og:description" content="Discover our seven specialized divisions offering expertise in game development, audio production, creative services, and more.">
+  <meta property="og:image" content="https://aerovista.us/preview-image.png">
+  <meta property="og:url" content="https://aerovista.us/divisions.html">
+  <meta property="og:type" content="website">
   <style>
     .division-spotlight {
       position: relative;
@@ -167,7 +173,7 @@
 
   <!-- Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#3a47d589 0%,#ff3caf44 100%);">
-    <h1 class="text-gradient">Our Seven Divisions</h1>
+    <h1 class="text-gradient glitch" data-text="Our Seven Divisions">Our Seven Divisions</h1>
     <p>Each branch of AeroVista brings a unique craft to the table. Explore them below and discover opportunities to collaborate.</p>
     <a href="#divisions" class="btn" data-animate="fade-up">Explore All Divisions</a>
   </section>
@@ -313,5 +319,11 @@
   </footer>
 
   <script type="module" src="main.js"></script>
+  <script type="module">
+    import { initLazyLoading } from './src/imageUtil.js'; 
+    document.addEventListener('DOMContentLoaded', () => {
+      initLazyLoading();
+    });
+  </script>
 </body>
 </html>
