@@ -7,6 +7,7 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="responsive-fixes.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="description" content="Explore AeroVista's seven specialist divisions, each bringing unique expertise in tech, media, and creative services.">
   <meta property="og:title" content="AeroVista | Divisions">
@@ -160,16 +161,22 @@
   </style>
 </head>
 <body data-page="divisions-hub">
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
   <!-- Navbar -->
-  <header>
+  <header role="banner">
     <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="apps.html">Apps</a>
-      <a href="store.html">Store</a>
-      <a href="#contact">Contact</a>
+    <nav role="navigation" aria-label="Main Navigation">
+      <a href="index.html" aria-label="Return to home page">Home</a>
+      <a href="apps.html" aria-label="View our apps">Apps</a>
+      <a href="store.html" aria-label="Visit our store">Store</a>
+      <a href="#contact" aria-label="Contact us">Contact</a>
     </nav>
   </header>
+
+  <!-- Main content area -->
+  <main id="main-content">
 
   <!-- Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#3a47d589 0%,#ff3caf44 100%);">
@@ -279,6 +286,8 @@
     <a href="#contact" class="btn alt" data-animate="fade-up">Start a Conversation</a>
   </section>
 
+  </main>
+
   <!-- Contact CTA -->
   <section id="contact">
     <div class="container">
@@ -323,6 +332,11 @@
     import { initLazyLoading } from './src/imageUtil.js'; 
     document.addEventListener('DOMContentLoaded', () => {
       initLazyLoading();
+      
+      // Add body-loaded class for glitch animation
+      setTimeout(() => {
+        document.body.classList.add('body-loaded');
+      }, 100);
     });
   </script>
 </body>

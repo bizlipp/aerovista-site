@@ -7,28 +7,34 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="responsive-fixes.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 </head>
 <body data-page="home">
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
   <!-- Navbar -->
-  <header>
+  <header role="banner">
     <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
-      <a href="divisions.html">Divisions</a>
-      <a href="apps.html">Apps</a>
-      <a href="#contact">Contact</a>
+    <nav role="navigation" aria-label="Main Navigation">
+      <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
+      <a href="apps.html" aria-label="View our apps">Apps</a>
+      <a href="#contact" aria-label="Contact us">Contact</a>
     </nav>
   </header>
 
   <!-- Hero -->
-  <section class="hero">
-    <h1 class="text-gradient-hot glitch" data-text="AeroVista">AeroVista</h1>
-    <p>Transforming ideas into stellar digital experiences through seven visionary divisions.</p>
-    <div class="flex gap-md" style="margin-top:1.5rem;">
-      <a href="divisions.html" class="btn" data-animate="fade-up">Explore Divisions</a>
-      <a href="apps.html" class="btn alt" data-animate="fade-up">Our Apps</a>
-    </div>
-  </section>
+  <main id="main-content">
+    <section class="hero">
+      <h1 class="text-gradient-hot glitch" data-text="AeroVista">AeroVista</h1>
+      <p>Transforming ideas into stellar digital experiences through seven visionary divisions.</p>
+      <div class="flex gap-md" style="margin-top:1.5rem;">
+        <a href="divisions.html" class="btn" data-animate="fade-up">Explore Divisions</a>
+        <a href="apps.html" class="btn alt" data-animate="fade-up">Our Apps</a>
+      </div>
+    </section>
+  </main>
 
   <!-- Divisions Grid -->
   <section class="container">
@@ -48,16 +54,16 @@
   <!-- Contact Section -->
   <section id="contact" class="container">
     <h2>Get in Touch</h2>
-    <form id="contactForm">
-      <input required type="text" placeholder="Your Name" data-animate="fade-up" />
-      <input required type="email" placeholder="Email" data-animate="fade-up" />
-      <textarea required rows="5" placeholder="Tell us about your project..." data-animate="fade-up"></textarea>
+    <form id="contactForm" role="form" aria-label="Contact form">
+      <input required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
+      <input required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
+      <textarea required rows="5" placeholder="Tell us about your project..." data-animate="fade-up" aria-label="Your message"></textarea>
       <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
     </form>
   </section>
 
   <!-- Footer -->
-  <footer>
+  <footer role="contentinfo">
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="logo"><strong>AeroVista</strong></div>
@@ -65,14 +71,14 @@
       </div>
       <div class="footer-links">
         <h4>Quick Links</h4>
-        <a href="about.html">About</a>
-        <a href="divisions.html">Divisions</a>
-        <a href="apps.html">Apps</a>
+        <a href="about.html" aria-label="About AeroVista">About</a>
+        <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
+        <a href="apps.html" aria-label="View our apps">Apps</a>
       </div>
       <div class="footer-links">
         <h4>Connect</h4>
-        <a href="mailto:hello@aerovista.us">Email Us</a>
-        <a href="tel:+15551234567">Call Us</a>
+        <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
+        <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -85,6 +91,11 @@
     import { initLazyLoading } from './src/imageUtil.js'; 
     document.addEventListener('DOMContentLoaded', () => {
       initLazyLoading();
+      
+      // Add body-loaded class for glitch animation
+      setTimeout(() => {
+        document.body.classList.add('body-loaded');
+      }, 100);
     });
   </script>
 </body>

@@ -7,6 +7,7 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="responsive-fixes.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="description" content="Explore AeroVista's sleek, local-first apps – from sticky-note productivity to glitch-punk file managers and more.">
   <meta property="og:title" content="AeroVista | Apps & Products">
@@ -242,16 +243,22 @@
   </style>
 </head>
 <body data-page="apps-hub">
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
   <!-- Navbar -->
-  <header>
+  <header role="banner">
     <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="divisions.html">Divisions</a>
-      <a href="store.html">Store</a>
-      <a href="#contact">Contact</a>
+    <nav role="navigation" aria-label="Main Navigation">
+      <a href="index.html" aria-label="Return to home page">Home</a>
+      <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
+      <a href="store.html" aria-label="Visit our store">Store</a>
+      <a href="#contact" aria-label="Contact us">Contact</a>
     </nav>
   </header>
+
+  <!-- Main content area -->
+  <main id="main-content">
 
   <!-- Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#00d2ff33 100%);">
@@ -433,6 +440,8 @@
     </div>
   </section>
 
+  </main>
+
   <!-- Contact CTA -->
   <section id="contact">
     <div class="container">
@@ -477,6 +486,11 @@
     import { initLazyLoading } from './src/imageUtil.js'; 
     document.addEventListener('DOMContentLoaded', () => {
       initLazyLoading();
+      
+      // Add body-loaded class for glitch animation
+      setTimeout(() => {
+        document.body.classList.add('body-loaded');
+      }, 100);
     });
   </script>
 </body>

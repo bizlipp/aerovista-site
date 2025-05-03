@@ -1,0 +1,247 @@
+/* AeroVista - Responsive Fixes and Improvements 
+   These styles complement the main CSS and improve mobile layout and accessibility
+*/
+
+/* Improved Hero Section on Mobile */
+@media (max-width: 768px) {
+  .hero {
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero .flex {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.75rem;
+  }
+  
+  .hero .btn {
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+}
+
+/* Smoother Glitch Animation - Only on Hover/Start */
+.glitch {
+  position: relative;
+  animation: none; /* Disable constant animation */
+  transition: all 0.3s ease;
+}
+
+.glitch:hover::before,
+.glitch:hover::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+.glitch:hover::before {
+  animation: glitch-animation 0.4s linear 2;
+  color: var(--color-hot);
+  z-index: -1;
+}
+
+.glitch:hover::after {
+  animation: glitch-animation 0.4s linear reverse 2;
+  color: var(--color-accent);
+  z-index: -2;
+}
+
+@keyframes glitch-animation {
+  0% {
+    clip-path: inset(80% 0 0 0);
+    transform: translate(-2px, 0);
+  }
+  20% {
+    clip-path: inset(30% 0 55% 0);
+    transform: translate(2px, 0);
+  }
+  40% {
+    clip-path: inset(15% 0 80% 0);
+    transform: translate(-2px, 0);
+  }
+  60% {
+    clip-path: inset(40% 0 43% 0);
+    transform: translate(2px, 0);
+  }
+  80% {
+    clip-path: inset(60% 0 30% 0);
+    transform: translate(-2px, 0);
+  }
+  100% {
+    clip-path: inset(0 0 95% 0);
+    transform: translate(2px, 0);
+  }
+}
+
+/* Initial page load glitch effect */
+.body-loaded .glitch {
+  animation: glitch-animation-once 1s linear;
+}
+
+@keyframes glitch-animation-once {
+  0% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  10% {
+    clip-path: inset(60% 0 30% 0);
+    transform: translate(-2px, 0);
+  }
+  20% {
+    clip-path: inset(30% 0 55% 0);
+    transform: translate(2px, 0);
+  }
+  30% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    transform: translate(0);
+  }
+}
+
+/* Consistent button styles */
+.btn {
+  background: var(--gradient-primary);
+  color: var(--color-bg);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-base);
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-family: var(--font-heading);
+  text-align: center;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card);
+}
+
+.btn.alt {
+  background: transparent;
+  border: 2px solid var(--color-accent);
+  color: var(--color-text);
+}
+
+.btn.outline {
+  background: transparent;
+  border: 2px solid var(--color-accent);
+  color: var(--color-text);
+}
+
+.btn.w-full {
+  width: 100%;
+}
+
+/* Image Loading Shimmer Animation */
+img[data-src] {
+  background: linear-gradient(90deg, #121212 25%, #1a1a1a 50%, #121212 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Improved form field accessibility */
+input, textarea, select {
+  border: 1px solid var(--glass-border);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(0, 210, 255, 0.2);
+  outline: none;
+}
+
+/* Skip to content for keyboard users */
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  z-index: 1000;
+  padding: 1rem;
+  background: var(--color-hot);
+  color: var(--color-bg);
+  font-weight: bold;
+  transition: top 0.3s ease;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Reduce motion option for users with vestibular disorders */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .glitch::before,
+  .glitch::after {
+    display: none !important;
+  }
+}
+
+/* Style update for emoji with text for accessibility */
+.emoji-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.emoji-label .emoji {
+  font-size: 1.2em;
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Add focus styles for keyboard navigation */
+a:focus, button:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+} 
