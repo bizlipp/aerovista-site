@@ -8,9 +8,192 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css" />
   <style>
-    /* Simple horizontal scroll gallery */
-    .carousel { display:flex; overflow-x:auto; gap:1rem; padding:1rem 0; scroll-snap-type:x mandatory; }
-    .carousel img { width:300px; height:180px; object-fit:cover; border-radius:var(--radius-base); scroll-snap-align:center; }
+    /* App-specific styling */
+    .app-hero {
+      position: relative;
+      overflow: visible;
+    }
+    
+    .floating-device {
+      position: absolute;
+      bottom: -50px;
+      right: 10%;
+      width: 300px;
+      height: 200px;
+      border-radius: var(--radius-base);
+      box-shadow: var(--shadow-card);
+      z-index: 10;
+      animation: float 6s ease-in-out infinite;
+      transform-style: preserve-3d;
+      perspective: 1000px;
+    }
+    
+    .floating-device img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: var(--radius-base);
+    }
+    
+    .carousel {
+      display: flex;
+      overflow-x: auto;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* IE/Edge */
+    }
+    
+    .carousel::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Opera */
+    }
+    
+    .carousel img {
+      width: 350px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: var(--radius-base);
+      scroll-snap-align: center;
+      box-shadow: var(--shadow-card);
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .carousel img:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-neon);
+    }
+    
+    .features-list {
+      list-style: none;
+      padding: 0;
+      margin: 2rem 0;
+    }
+    
+    .feature-item {
+      position: relative;
+      padding-left: 2.5rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
+    }
+    
+    .feature-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 1.5rem;
+      height: 1.5rem;
+      background: var(--gradient-primary);
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+    
+    .feature-item::after {
+      content: '✓';
+      position: absolute;
+      left: 0.45rem;
+      top: 0.35rem;
+      color: var(--color-bg);
+      font-weight: bold;
+    }
+    
+    .pricing-grid {
+      display: flex;
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .pricing-tier {
+      flex: 1;
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      padding: 2rem;
+      border-radius: var(--radius-base);
+      border: 1px solid var(--glass-border);
+      text-align: center;
+      transition: transform var(--transition-medium) ease, border-color var(--transition-medium) ease;
+    }
+    
+    .pricing-tier:hover {
+      transform: translateY(-10px);
+      border-color: rgba(0,210,255,0.3);
+    }
+    
+    .pricing-tier.featured {
+      position: relative;
+      border: 1px solid rgba(0,210,255,0.3);
+    }
+    
+    .pricing-tier.featured::before {
+      content: 'Most Popular';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--color-hot);
+      color: #000;
+      padding: 0.25rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+    }
+    
+    .price {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin: 1rem 0;
+      font-family: var(--font-heading);
+    }
+    
+    .price-desc {
+      color: var(--color-text-soft);
+      margin-bottom: 2rem;
+    }
+    
+    .pricing-features {
+      text-align: left;
+      margin: 2rem 0;
+      min-height: 200px;
+    }
+    
+    .pricing-features li {
+      margin-bottom: 0.75rem;
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    
+    .pricing-features li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--color-accent);
+    }
+    
+    @media (max-width: 768px) {
+      .floating-device {
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin: 2rem auto -50px;
+      }
+      
+      .pricing-grid {
+        flex-direction: column;
+      }
+      
+      .pricing-tier {
+        margin-bottom: 1rem;
+      }
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0) rotateX(0deg); }
+      50% { transform: translateY(-20px) rotateX(5deg); }
+      100% { transform: translateY(0) rotateX(0deg); }
+    }
   </style>
 </head>
 <body>
@@ -26,54 +209,177 @@
   </header>
 
   <!-- App Hero -->
-  <section class="hero" style="background:linear-gradient(135deg,#00d2ff33 0%,#3a47d589 100%);min-height:60vh;">
-    <h1>BytePad</h1>
+  <section class="hero app-hero" style="background:linear-gradient(135deg,#00d2ff33 0%,#3a47d589 100%);min-height:70vh;">
+    <h1 class="text-gradient glitch" data-text="BytePad">BytePad</h1>
     <p>Sticky‑notes that sync everywhere—desk, phone, cloud—without the clutter.</p>
-    <a href="#buy" class="btn" style="margin-top:1rem;">Download / Buy</a>
+    <div class="flex gap-md" style="margin-top:1.5rem;">
+      <a href="#buy" class="btn" data-animate="fade-up">Download Free</a>
+      <a href="#buy" class="btn alt" data-animate="fade-up">Buy Pro</a>
+    </div>
+    
+    <div class="floating-device">
+      <img src="https://placehold.co/600x400?text=BytePad+App" alt="BytePad App Interface">
+    </div>
   </section>
 
   <!-- Gallery -->
-  <section class="container">
-    <h2>Screenshots</h2>
+  <section class="container" style="margin-top:80px;">
+    <h2>Intuitive Interface</h2>
     <div class="carousel">
-      <img src="https://placehold.co/300x180?text=Desktop+View" alt="Desktop screenshot" />
-      <img src="https://placehold.co/300x180?text=Mobile+View" alt="Mobile screenshot" />
-      <img src="https://placehold.co/300x180?text=Sync+in+Action" alt="Sync screenshot" />
+      <img src="https://placehold.co/350x220?text=Desktop+View" alt="Desktop screenshot" data-animate="fade-up" />
+      <img src="https://placehold.co/350x220?text=Mobile+View" alt="Mobile screenshot" data-animate="fade-up" />
+      <img src="https://placehold.co/350x220?text=Sync+in+Action" alt="Sync screenshot" data-animate="fade-up" />
+      <img src="https://placehold.co/350x220?text=Organization+View" alt="Organization view" data-animate="fade-up" />
     </div>
   </section>
 
   <!-- Features -->
   <section class="container">
     <h2>Key Features</h2>
-    <ul style="list-style:disc;padding-left:1.25rem;line-height:1.8;">
-      <li>Drag‑and‑drop sticky notes with color tags and timestamps.</li>
-      <li>Offline‑first—works even when your Wi‑Fi ghosts you.</li>
-      <li>Real‑time sync between desktop Electron and mobile web.</li>
-      <li>Search & quick‑jump with keyboard shortcuts.</li>
-      <li>Export board to JSON or image for easy sharing.</li>
+    <div class="grid grid-cols-3">
+      <div class="feature-box" data-animate="fade-up">
+        <div class="icon-circle">
+          <div class="icon">🔄</div>
+        </div>
+        <h3>Seamless Sync</h3>
+        <p>Real-time synchronization between desktop (Electron) and mobile web versions ensures your notes are always up to date.</p>
+      </div>
+      <div class="feature-box" data-animate="fade-up">
+        <div class="icon-circle">
+          <div class="icon">🔍</div>
+        </div>
+        <h3>Smart Search</h3>
+        <p>Quick search with keyboard shortcuts and color tag filtering helps you find exactly what you need, instantly.</p>
+      </div>
+      <div class="feature-box" data-animate="fade-up">
+        <div class="icon-circle">
+          <div class="icon">🌐</div>
+        </div>
+        <h3>Offline First</h3>
+        <p>Work offline with full functionality—your changes sync automatically when connection is restored.</p>
+      </div>
+    </div>
+    
+    <ul class="features-list" data-animate="fade-up">
+      <li class="feature-item">Drag‑and‑drop sticky notes with color tags and timestamps.</li>
+      <li class="feature-item">Offline‑first—works even when your Wi‑Fi ghosts you.</li>
+      <li class="feature-item">Real‑time sync between desktop Electron and mobile web.</li>
+      <li class="feature-item">Search & quick‑jump with keyboard shortcuts.</li>
+      <li class="feature-item">Export board to JSON or image for easy sharing.</li>
     </ul>
   </section>
 
-  <!-- Buy / Download CTA -->
-  <section id="buy" class="hero" style="min-height:auto;padding:3rem 1rem;background:#1a1d24;">
-    <h2 style="margin-bottom:1rem;">Ready to level‑up your notes?</h2>
-    <a href="#" class="btn" style="margin:0.5rem;">Download Free</a>
-    <a href="#" class="btn alt" style="margin:0.5rem;">Buy Pro $9</a>
-    <p style="max-width:600px;color:var(--color-text-soft);margin-top:1rem;font-size:0.9rem;">BytePad Pro unlocks unlimited boards, team sharing, and theme packs.</p>
+  <!-- Pricing Section -->
+  <section id="buy" class="container">
+    <h2>Choose Your Plan</h2>
+    <div class="pricing-grid">
+      <div class="pricing-tier" data-animate="fade-up">
+        <h3>Free</h3>
+        <div class="price">$0</div>
+        <div class="price-desc">Perfect for getting started</div>
+        <ul class="pricing-features">
+          <li>Up to 3 boards</li>
+          <li>Basic color tags</li>
+          <li>Mobile and desktop apps</li>
+          <li>7-day sync history</li>
+        </ul>
+        <a href="#" class="btn outline w-full">Download Free</a>
+      </div>
+      
+      <div class="pricing-tier featured" data-animate="fade-up">
+        <h3>Pro</h3>
+        <div class="price">$9</div>
+        <div class="price-desc">One-time purchase, lifetime updates</div>
+        <ul class="pricing-features">
+          <li>Unlimited boards</li>
+          <li>Advanced color tagging system</li>
+          <li>Team sharing features</li>
+          <li>Custom theme packs</li>
+          <li>Export to multiple formats</li>
+          <li>30-day sync history</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#" class="btn w-full">Buy Pro</a>
+      </div>
+      
+      <div class="pricing-tier" data-animate="fade-up">
+        <h3>Team</h3>
+        <div class="price">$29</div>
+        <div class="price-desc">For up to 5 team members</div>
+        <ul class="pricing-features">
+          <li>Everything in Pro</li>
+          <li>Team collaboration tools</li>
+          <li>Shared workspaces</li>
+          <li>Admin controls</li>
+          <li>Activity dashboard</li>
+          <li>90-day sync history</li>
+          <li>Priority support</li>
+        </ul>
+        <a href="#" class="btn outline w-full">Buy Team License</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="hero" style="min-height:auto;padding:4rem 0;background:linear-gradient(135deg,#474dff33 0%,#ff3caf33 100%);">
+    <div class="container">
+      <h2>What Our Users Say</h2>
+      <div class="grid grid-cols-3">
+        <div class="card glass" data-animate="fade-up">
+          <p style="font-style:italic;">"BytePad completely changed how I organize my thoughts. The sync feature is flawless—I start a note on desktop and finish it on mobile without missing a beat."</p>
+          <p style="margin-top:1rem;font-weight:bold;">— Alex K., Product Designer</p>
+        </div>
+        
+        <div class="card glass" data-animate="fade-up">
+          <p style="font-style:italic;">"As someone who lives by sticky notes, having them digital but just as flexible is a game-changer. The search function alone is worth the Pro upgrade."</p>
+          <p style="margin-top:1rem;font-weight:bold;">— Taylor J., Project Manager</p>
+        </div>
+        
+        <div class="card glass" data-animate="fade-up">
+          <p style="font-style:italic;">"Our team uses BytePad to track ideas during sprints. Being able to organize by color and quickly share boards has revolutionized our brainstorming sessions."</p>
+          <p style="margin-top:1rem;font-weight:bold;">— Maya R., Development Team Lead</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Contact CTA -->
   <section id="contact">
-    <h2>Questions or Feedback?</h2>
-    <form id="contactForm" class="container">
-      <input required type="text" placeholder="Your Name" />
-      <input required type="email" placeholder="Email" />
-      <textarea required rows="5" placeholder="Tell us more..."></textarea>
-      <button class="btn" type="submit">Send Message</button>
-    </form>
+    <div class="container">
+      <h2>Questions or Feedback?</h2>
+      <form id="contactForm">
+        <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+        <input required type="email" placeholder="Email" data-animate="fade-up" />
+        <textarea required rows="5" placeholder="Tell us more..." data-animate="fade-up"></textarea>
+        <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
+      </form>
+    </div>
   </section>
 
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><strong>AeroVista</strong></div>
+          <p>BytePad is a product of the Nexus TechWorks division of AeroVista LLC.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="../index.html">Home</a>
+          <a href="../apps.html">Apps</a>
+          <a href="../divisions.html">Divisions</a>
+        </div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script type="module" src="../main.js"></script>
 </body>

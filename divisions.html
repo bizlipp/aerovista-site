@@ -7,6 +7,151 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    .division-spotlight {
+      position: relative;
+      margin: 4rem 0;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    
+    .division-spotlight:nth-child(even) {
+      grid-template-columns: 1fr 1fr;
+    }
+    
+    .division-spotlight:nth-child(odd) {
+      grid-template-columns: 1fr 1fr;
+      direction: rtl;
+    }
+    
+    .division-spotlight:nth-child(odd) .spotlight-content {
+      direction: ltr;
+    }
+    
+    .division-spotlight:nth-child(odd) .spotlight-image {
+      direction: ltr;
+    }
+    
+    .spotlight-content {
+      padding: 2rem;
+    }
+    
+    .spotlight-content h3 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-heading);
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .spotlight-content p {
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: var(--color-text-soft);
+      line-height: 1.7;
+    }
+    
+    .spotlight-image {
+      position: relative;
+      border-radius: var(--radius-base);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      transform-style: preserve-3d;
+    }
+    
+    .spotlight-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: var(--radius-base);
+      box-shadow: var(--shadow-card);
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .spotlight-image:hover img {
+      transform: scale(1.05);
+    }
+    
+    .spotlight-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--gradient-primary);
+      opacity: 0.2;
+      z-index: 1;
+      border-radius: var(--radius-base);
+      transition: opacity var(--transition-medium) ease;
+    }
+    
+    .spotlight-image:hover::before {
+      opacity: 0;
+    }
+    
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    
+    .overview-box {
+      padding: 2rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border-radius: var(--radius-base);
+      border: 1px solid var(--glass-border);
+      text-align: center;
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .overview-box:hover {
+      transform: translateY(-10px);
+    }
+    
+    .overview-box .count {
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-family: var(--font-heading);
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .overview-box .label {
+      font-size: 1.1rem;
+      color: var(--color-text-soft);
+    }
+    
+    @media (max-width: 768px) {
+      .division-spotlight,
+      .division-spotlight:nth-child(even),
+      .division-spotlight:nth-child(odd) {
+        grid-template-columns: 1fr;
+        direction: ltr;
+      }
+      
+      .division-spotlight .spotlight-content,
+      .division-spotlight:nth-child(odd) .spotlight-content {
+        direction: ltr;
+        padding: 0;
+      }
+      
+      .division-spotlight .spotlight-image,
+      .division-spotlight:nth-child(odd) .spotlight-image {
+        direction: ltr;
+      }
+    }
+  </style>
 </head>
 <body data-page="divisions-hub">
   <!-- Navbar -->
@@ -15,34 +160,130 @@
     <nav>
       <a href="index.html">Home</a>
       <a href="apps.html">Apps</a>
+      <a href="store.html">Store</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
   <!-- Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#3a47d589 0%,#ff3caf44 100%);">
-    <h1>Our Seven Divisions</h1>
-    <p>Each branch of AeroVista brings a unique craft to the table. Browse them below and discover opportunities to collaborate.</p>
+    <h1 class="text-gradient">Our Seven Divisions</h1>
+    <p>Each branch of AeroVista brings a unique craft to the table. Explore them below and discover opportunities to collaborate.</p>
+    <a href="#divisions" class="btn" data-animate="fade-up">Explore All Divisions</a>
   </section>
 
-  <!-- Divisions Grid -->
-  <section>
-    <h2>Explore the Spectrum</h2>
-    <div id="divisionsHub" class="grid grid-cols-2 grid-cols-3 container"></div>
+  <!-- Stats Overview -->
+  <section class="container">
+    <h2>Division Overview</h2>
+    <div class="overview-grid">
+      <div class="overview-box" data-animate="fade-up">
+        <div class="count">7</div>
+        <div class="label">Specialist Divisions</div>
+      </div>
+      <div class="overview-box" data-animate="fade-up">
+        <div class="count">35+</div>
+        <div class="label">Team Members</div>
+      </div>
+      <div class="overview-box" data-animate="fade-up">
+        <div class="count">12</div>
+        <div class="label">Years Combined Experience</div>
+      </div>
+      <div class="overview-box" data-animate="fade-up">
+        <div class="count">100+</div>
+        <div class="label">Completed Projects</div>
+      </div>
+    </div>
   </section>
 
-  <!-- Contact CTA (reuse index anchor) -->
+  <!-- Featured Divisions -->
+  <section class="container">
+    <h2>Featured Divisions</h2>
+    
+    <div class="division-spotlight" data-animate="fade-up">
+      <div class="spotlight-content">
+        <h3>SkyForge Creative</h3>
+        <p>Our game development and virtual storytelling studio crafts immersive experiences that transport users beyond the screen. Using cutting-edge technologies, we create interactive worlds that engage, educate, and entertain across AR, VR, and traditional platforms.</p>
+        <a href="Divisions/skyforge-creative.html" class="btn">Learn More</a>
+      </div>
+      <div class="spotlight-image">
+        <img src="https://placehold.co/600x450?text=SkyForge+Creative" alt="SkyForge Creative">
+      </div>
+    </div>
+    
+    <div class="division-spotlight" data-animate="fade-up">
+      <div class="spotlight-content">
+        <h3>Nexus TechWorks</h3>
+        <p>Our engineering powerhouse develops full-stack web applications, AI solutions, and innovative products focused on performance and user experience. We specialize in offline-first architecture, ensuring our digital solutions work reliably even in challenging connectivity environments.</p>
+        <a href="Divisions/nexus-techworks.html" class="btn">Learn More</a>
+      </div>
+      <div class="spotlight-image">
+        <img src="https://placehold.co/600x450?text=Nexus+TechWorks" alt="Nexus TechWorks">
+      </div>
+    </div>
+    
+    <div class="division-spotlight" data-animate="fade-up">
+      <div class="spotlight-content">
+        <h3>Horizon Aerial & Visual</h3>
+        <p>Capturing breathtaking aerial cinematography and providing precision mapping solutions, our drone specialists elevate perspectives both literally and figuratively. We serve clients across real estate, agriculture, construction, and entertainment with professional-grade aerial services.</p>
+        <a href="Divisions/horizon-aerial-visual.html" class="btn">Learn More</a>
+      </div>
+      <div class="spotlight-image">
+        <img src="https://placehold.co/600x450?text=Horizon+Aerial" alt="Horizon Aerial & Visual">
+      </div>
+    </div>
+  </section>
+
+  <!-- All Divisions Grid -->
+  <section id="divisions" class="container">
+    <h2>Explore All Divisions</h2>
+    <div id="divisionsHub" class="grid grid-cols-3 stagger"></div>
+  </section>
+
+  <!-- Collaboration Callout -->
+  <section class="hero" style="min-height:auto;padding:4rem 1rem;background:var(--color-surface);">
+    <h2 style="margin-bottom:1.5rem;">Need Specialized Expertise?</h2>
+    <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">Our divisions can work independently or in concert to deliver comprehensive solutions for your most complex challenges. Let's explore how our specialized teams can help you.</p>
+    <a href="#contact" class="btn alt" data-animate="fade-up">Start a Conversation</a>
+  </section>
+
+  <!-- Contact CTA -->
   <section id="contact">
-    <h2>Let’s Collaborate</h2>
-    <form id="contactForm" class="container">
-      <input required type="text" placeholder="Your Name" />
-      <input required type="email" placeholder="Email" />
-      <textarea required rows="5" placeholder="Tell us about your project..."></textarea>
-      <button class="btn" type="submit">Send Message</button>
-    </form>
+    <div class="container">
+      <h2>Let's Collaborate</h2>
+      <form id="contactForm">
+        <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+        <input required type="email" placeholder="Email" data-animate="fade-up" />
+        <textarea required rows="5" placeholder="Tell us about your project..." data-animate="fade-up"></textarea>
+        <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
+      </form>
+    </div>
   </section>
 
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><strong>AeroVista</strong></div>
+          <p>Crafting bold tech &amp; creative experiences since 2019.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="about.html">About Us</a>
+          <a href="divisions.html">Divisions</a>
+          <a href="apps.html">Apps</a>
+          <a href="store.html">Store</a>
+        </div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script type="module" src="main.js"></script>
 </body>

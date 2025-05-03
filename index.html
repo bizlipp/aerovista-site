@@ -4,94 +4,107 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AeroVista | Visionary Tools</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <style>
-
-  </style>
+  <!-- Preload important assets -->
+  <link rel="preload" href="styles.css" as="style">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
-<body>
+<body data-page="home">
 <header>
   <div class="logo"><strong>AeroVista</strong></div>
   <nav>
     <a href="#divisions">Divisions</a>
     <a href="#apps">Apps</a>
+    <a href="store.html">Store</a>
     <a href="#contact">Contact</a>
   </nav>
 </header>
 
 <section class="hero">
-  <h1>Visionary Tools for Real‑World Impact</h1>
+  <h1 class="text-gradient">Visionary Tools for Real‑World Impact</h1>
   <p>AeroVista unites seven specialist divisions under one mission: crafting bold tech &amp; creative experiences that empower businesses and people alike.</p>
-  <div>
-    <a href="#divisions" class="btn">Explore Divisions</a>
-    <a href="#apps" class="btn" style="margin-left:1rem;background:var(--accent-dark);color:#fff;">Browse Apps</a>
+  <div class="flex gap-md">
+    <a href="#divisions" class="btn" data-animate="fade-up">Explore Divisions</a>
+    <a href="#apps" class="btn alt" data-animate="fade-up">Browse Apps</a>
   </div>
 </section>
 
 <section id="divisions">
-  <h2 style="text-align:center;font-size:2rem;margin-bottom:2rem;">Our Divisions</h2>
-  <div id="divisionGrid" class="grid grid-cols-2 lg:grid-cols-3"></div>
+  <h2>Our Divisions</h2>
+  <div id="divisionGrid" class="grid grid-cols-3 container"></div>
 </section>
 
-<section id="apps">
-  <h2 style="text-align:center;font-size:2rem;margin-bottom:2rem;">Featured Apps</h2>
-  <div id="appGrid" class="grid grid-cols-2 lg:grid-cols-3"></div>
+<section id="apps" data-bg="gradient">
+  <h2>Featured Apps</h2>
+  <div id="appGrid" class="grid grid-cols-3 container"></div>
 </section>
 
-<section id="contact">
-  <h2 style="text-align:center;font-size:2rem;margin-bottom:2rem;">Let's Collaborate</h2>
-  <form style="max-width:640px;margin-inline:auto;" id="contactForm">
-    <input required type="text" placeholder="Your Name" style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:6px;border:none;">
-    <input required type="email" placeholder="Email" style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:6px;border:none;">
-    <textarea required placeholder="Tell us about your project..." rows="5" style="width:100%;padding:0.75rem;margin-bottom:1rem;border-radius:6px;border:none;"></textarea>
-    <button class="btn" type="submit">Send Message</button>
-  </form>
+<section class="container text-center" data-animate="fade-up">
+  <h2>Why Choose AeroVista?</h2>
+  <div class="grid grid-cols-3">
+    <div class="feature-box" data-animate="fade-up">
+      <div class="icon-circle">
+        <div class="icon">✨</div>
+      </div>
+      <h3>Creative Excellence</h3>
+      <p>Bold designs and innovative concepts that captivate audiences and elevate brands</p>
+    </div>
+    <div class="feature-box" data-animate="fade-up">
+      <div class="icon-circle">
+        <div class="icon">💻</div>
+      </div>
+      <h3>Technical Mastery</h3>
+      <p>Cutting-edge development powered by modern frameworks and efficient architectures</p>
+    </div>
+    <div class="feature-box" data-animate="fade-up">
+      <div class="icon-circle">
+        <div class="icon">🔄</div>
+      </div>
+      <h3>Seamless Integration</h3>
+      <p>Cross-discipline teams that unite design, technology, and strategy for cohesive solutions</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="bg-glass">
+  <div class="container">
+    <h2>Let's Collaborate</h2>
+    <form id="contactForm">
+      <input required type="text" placeholder="Your Name">
+      <input required type="email" placeholder="Email">
+      <textarea required placeholder="Tell us about your project..." rows="5"></textarea>
+      <button class="btn" type="submit">Send Message</button>
+    </form>
+  </div>
 </section>
 
 <footer>
-  © 2025 AeroVista LLC — All rights reserved.
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><strong>AeroVista</strong></div>
+        <p>Crafting bold tech &amp; creative experiences since 2019.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <a href="about.html">About Us</a>
+        <a href="divisions.html">Divisions</a>
+        <a href="apps.html">Apps</a>
+        <a href="store.html">Store</a>
+      </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 AeroVista LLC — All rights reserved.</p>
+    </div>
+  </div>
 </footer>
 
-<script>
-const divisions=[
-  {name:'SkyForge Creative',desc:'Immersive game development & virtual storytelling studio.'},
-  {name:'Horizon Aerial & Visual',desc:'Professional drone cinematography & mapping.'},
-  {name:'Vespera Publishing',desc:'Books & educational media for holistic growth.'},
-  {name:'Summit Learning',desc:'Personal development & training programs.'},
-  {name:'Lumina Creative',desc:'Branding, marketing & digital media.'},
-  {name:'Nexus TechWorks',desc:'Web, AI & product engineering services.'},
-  {name:'EchoVerse Audio',desc:'AI‑driven music production & sound design.'}
-];
-
-const apps=[
-  {title:'BytePad',status:'Released',desc:'Sticky‑note productivity app that syncs across devices.'},
-  {title:'VaultMaster',status:'Beta',desc:'Local‑first file manager with glitch‑punk UI.'},
-  {title:'RydeSync',status:'Coming Soon',desc:'Offline‑first ride community with synced music rooms.'}
-];
-
-function renderCards(items,targetId){
-  const wrap=document.getElementById(targetId);
-  items.forEach(item=>{
-    const div=document.createElement('div');
-    div.className='card';
-    div.innerHTML=`<h3>${item.name||item.title}</h3><p>${item.desc}</p>`;
-    if(item.status){
-      const badge=document.createElement('span');
-      badge.textContent=item.status;
-      badge.style="display:inline-block;margin-top:1rem;padding:0.25rem 0.5rem;font-size:0.75rem;border-radius:4px;background:var(--accent-dark);color:#fff;";
-      div.appendChild(badge);
-    }
-    wrap.appendChild(div);
-  });
-}
-renderCards(divisions,'divisionGrid');
-renderCards(apps,'appGrid');
-
-document.getElementById('contactForm').addEventListener('submit',e=>{
-  e.preventDefault();
-  alert('Thanks! We\'ll be in touch soon.');
-  e.target.reset();
-});
-</script>
+<script type="module" src="main.js"></script>
 </body>
 </html>

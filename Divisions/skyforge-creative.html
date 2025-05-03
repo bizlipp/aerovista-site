@@ -7,6 +7,100 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css" />
+  <style>
+    .showcase-gallery {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: repeat(12, 1fr);
+      height: 500px;
+      gap: 1rem;
+      margin: 3rem 0;
+    }
+    
+    .showcase-item {
+      border-radius: var(--radius-base);
+      overflow: hidden;
+      position: relative;
+      transition: transform var(--transition-medium) ease, box-shadow var(--transition-medium) ease;
+    }
+    
+    .showcase-item:hover {
+      transform: scale(1.02);
+      box-shadow: var(--shadow-neon);
+      z-index: 2;
+    }
+    
+    .showcase-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .showcase-item:nth-child(1) {
+      grid-column: 1 / 8;
+      grid-row: 1 / 7;
+    }
+    
+    .showcase-item:nth-child(2) {
+      grid-column: 8 / 13;
+      grid-row: 1 / 5;
+    }
+    
+    .showcase-item:nth-child(3) {
+      grid-column: 1 / 5;
+      grid-row: 7 / 13;
+    }
+    
+    .showcase-item:nth-child(4) {
+      grid-column: 5 / 13;
+      grid-row: 5 / 13;
+    }
+    
+    .services-list {
+      margin: 2rem 0;
+    }
+    
+    .service-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border-radius: var(--radius-base);
+      border: 1px solid var(--glass-border);
+      transition: transform var(--transition-medium) ease, border-color var(--transition-medium) ease;
+    }
+    
+    .service-item:hover {
+      transform: translateY(-5px);
+      border-color: rgba(0,210,255,0.3);
+    }
+    
+    .service-icon {
+      font-size: 2rem;
+      margin-right: 1.5rem;
+      color: var(--color-accent);
+    }
+    
+    .service-content h3 {
+      margin-bottom: 0.5rem;
+      font-family: var(--font-heading);
+    }
+    
+    @media (max-width: 768px) {
+      .showcase-gallery {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .showcase-item {
+        height: 200px;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
@@ -22,54 +116,135 @@
 
   <!-- Division Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#492eff66 100%);">
-    <h1>SkyForge Creative</h1>
+    <h1 class="text-gradient glitch" data-text="SkyForge Creative">SkyForge Creative</h1>
     <p>Immersive game development & virtual storytelling studio crafting worlds that resonate beyond the screen.</p>
+    <a href="#contact" class="btn" data-animate="fade-up">Start a Project</a>
   </section>
 
   <!-- Overview -->
   <section class="container">
-    <h2>Mission</h2>
-    <p>SkyForge Creative fuses cutting‑edge tech with evocative artistry to build interactive experiences—spanning AR, VR, and traditional platforms—that inspire, educate, and entertain.</p>
+    <h2>Our Mission</h2>
+    <div class="text-center" data-animate="fade-up">
+      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">SkyForge Creative fuses cutting‑edge tech with evocative artistry to build interactive experiences—spanning AR, VR, and traditional platforms—that inspire, educate, and entertain.</p>
+    </div>
+    
+    <div class="showcase-gallery" data-animate="fade-up">
+      <div class="showcase-item" data-animate="fade-in">
+        <img src="https://placehold.co/600x400?text=Game+Development" alt="Game Development">
+      </div>
+      <div class="showcase-item" data-animate="fade-in">
+        <img src="https://placehold.co/400x300?text=AR+Experiences" alt="AR Experiences">
+      </div>
+      <div class="showcase-item" data-animate="fade-in">
+        <img src="https://placehold.co/400x400?text=VR+Solutions" alt="VR Solutions">
+      </div>
+      <div class="showcase-item" data-animate="fade-in">
+        <img src="https://placehold.co/700x400?text=Interactive+Storytelling" alt="Interactive Storytelling">
+      </div>
+    </div>
   </section>
 
-  <!-- Featured Projects Slider (static placeholder) -->
+  <!-- Featured Projects -->
   <section class="container">
     <h2>Featured Projects</h2>
-    <div class="grid grid-cols-2 grid-cols-3">
-      <div class="card" data-animate="fade-up">
-        <h3>Project EchoVerse</h3>
-        <p>A rhythm‑based action adventure tapping into adaptive music systems.</p>
+    <div class="grid grid-cols-3 stagger">
+      <div class="card glass" data-animate="fade-up">
+        <h3 class="glitch" data-text="Project EchoVerse">Project EchoVerse</h3>
+        <p>A rhythm‑based action adventure tapping into adaptive music systems that evolve with player actions and in-game environments.</p>
+        <a href="#" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
       </div>
-      <div class="card" data-animate="fade-up">
-        <h3>Lumina Chronicles</h3>
-        <p>Story‑driven AR scavenger hunt blending physical and digital lore.</p>
+      <div class="card glass" data-animate="fade-up">
+        <h3 class="glitch" data-text="Lumina Chronicles">Lumina Chronicles</h3>
+        <p>Story‑driven AR scavenger hunt blending physical and digital lore, activated across urban landscapes and public spaces.</p>
+        <a href="#" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
       </div>
-      <div class="card" data-animate="fade-up">
-        <h3>ForgeVR Toolkit</h3>
-        <p>In‑house XR framework powering rapid prototyping & scene choreography.</p>
+      <div class="card glass" data-animate="fade-up">
+        <h3 class="glitch" data-text="ForgeVR Toolkit">ForgeVR Toolkit</h3>
+        <p>In‑house XR framework powering rapid prototyping & scene choreography for immersive storytelling and training simulations.</p>
+        <a href="#" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Services Section -->
+  <section class="container">
+    <h2>Our Services</h2>
+    <div class="services-list">
+      <div class="service-item" data-animate="fade-left">
+        <div class="service-icon">🎮</div>
+        <div class="service-content">
+          <h3>Game Development</h3>
+          <p>From concept to launch, we create engaging gameplay experiences using Unity, Unreal Engine, and custom frameworks. Specializing in procedural content, adaptive systems, and player-driven narratives.</p>
+        </div>
+      </div>
+      <div class="service-item" data-animate="fade-right">
+        <div class="service-icon">📱</div>
+        <div class="service-content">
+          <h3>AR/VR Experiences</h3>
+          <p>Crafting immersive extended reality solutions that bridge digital and physical worlds. Projects span enterprise training, cultural exhibitions, and interactive entertainment.</p>
+        </div>
+      </div>
+      <div class="service-item" data-animate="fade-left">
+        <div class="service-icon">📖</div>
+        <div class="service-content">
+          <h3>Interactive Storytelling</h3>
+          <p>Narrative design and branching storylines that respond to user choices. We combine traditional writing talent with technical implementation for truly dynamic stories.</p>
+        </div>
+      </div>
+      <div class="service-item" data-animate="fade-right">
+        <div class="service-icon">📊</div>
+        <div class="service-content">
+          <h3>Consulting & Prototyping</h3>
+          <p>Strategic guidance and rapid prototyping services for businesses looking to explore game mechanics, virtual worlds, or interactive media. We help validate ideas quickly.</p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:#1a1d24;">
-    <h2 style="margin-bottom:1rem;">Looking to Level Up Your Story?</h2>
-    <p style="max-width:600px;color:var(--color-text-soft);">Whether you need full‑scale game dev, narrative design, or XR consulting, our doors are open. Let’s build the next world together.</p>
-    <a href="#contact" class="btn" style="margin-top:1.5rem;">Start the Conversation</a>
+  <section class="hero" style="min-height:auto;padding:4rem 1rem;background:#1a1d24;">
+    <h2 style="margin-bottom:1.5rem;">Looking to Level Up Your Story?</h2>
+    <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">Whether you need full‑scale game development, narrative design, or XR consulting, our team is ready to bring your vision to life. Let's build the next world together.</p>
+    <a href="#contact" class="btn alt" data-animate="fade-up">Start the Conversation</a>
   </section>
 
   <!-- Contact CTA -->
   <section id="contact">
-    <h2>Contact SkyForge Creative</h2>
-    <form id="contactForm" class="container">
-      <input required type="text" placeholder="Your Name" />
-      <input required type="email" placeholder="Email" />
-      <textarea required rows="5" placeholder="How can we collaborate?"></textarea>
-      <button class="btn" type="submit">Send Message</button>
-    </form>
+    <div class="container">
+      <h2>Contact SkyForge Creative</h2>
+      <form id="contactForm">
+        <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+        <input required type="email" placeholder="Email" data-animate="fade-up" />
+        <textarea required rows="5" placeholder="How can we collaborate?" data-animate="fade-up"></textarea>
+        <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
+      </form>
+    </div>
   </section>
 
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><strong>AeroVista</strong></div>
+          <p>SkyForge Creative is a division of AeroVista LLC.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="../index.html">Home</a>
+          <a href="../divisions.html">Divisions</a>
+          <a href="../apps.html">Apps</a>
+        </div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script type="module" src="../main.js"></script>
 </body>

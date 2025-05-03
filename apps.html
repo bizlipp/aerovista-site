@@ -7,6 +7,233 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    .app-showcase {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 4rem 0;
+    }
+    
+    .app-devices {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 3rem;
+      width: 100%;
+      max-width: 900px;
+    }
+    
+    .device {
+      position: relative;
+      border-radius: var(--radius-base);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .device.desktop {
+      width: 60%;
+      z-index: 2;
+      aspect-ratio: 16/10;
+      transform: translateY(0);
+    }
+    
+    .device.mobile {
+      width: 20%;
+      aspect-ratio: 9/16;
+      position: absolute;
+      z-index: 3;
+    }
+    
+    .device.mobile.left {
+      left: 5%;
+      transform: translateY(20px) rotate(-5deg);
+    }
+    
+    .device.mobile.right {
+      right: 5%;
+      transform: translateY(20px) rotate(5deg);
+    }
+    
+    .device:hover {
+      transform: translateY(-10px) scale(1.05);
+      z-index: 10;
+    }
+    
+    .device.mobile.left:hover {
+      transform: translateY(-10px) rotate(-5deg) scale(1.05);
+    }
+    
+    .device.mobile.right:hover {
+      transform: translateY(-10px) rotate(5deg) scale(1.05);
+    }
+    
+    .device img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .app-feature {
+      display: flex;
+      gap: 3rem;
+      align-items: center;
+      margin: 6rem 0;
+    }
+    
+    .app-feature:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+    
+    .app-feature-content {
+      flex: 1;
+    }
+    
+    .app-feature-content h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      font-family: var(--font-heading);
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .app-feature-content p {
+      margin-bottom: 2rem;
+      color: var(--color-text-soft);
+      line-height: 1.7;
+    }
+    
+    .app-feature-image {
+      flex: 1;
+      border-radius: var(--radius-base);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      box-shadow: var(--shadow-card);
+      transition: transform var(--transition-medium) ease, box-shadow var(--transition-medium) ease;
+    }
+    
+    .app-feature-image:hover {
+      transform: scale(1.05);
+      box-shadow: var(--shadow-neon);
+    }
+    
+    .app-feature-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .app-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .workflow-steps {
+      display: flex;
+      margin: 3rem 0;
+      position: relative;
+    }
+    
+    .workflow-steps::before {
+      content: '';
+      position: absolute;
+      top: 3rem;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-primary);
+      z-index: 0;
+    }
+    
+    .step {
+      flex: 1;
+      text-align: center;
+      padding: 0 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background: var(--color-accent);
+      color: var(--color-bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      font-weight: bold;
+      font-size: 1.5rem;
+      font-family: var(--font-heading);
+      position: relative;
+    }
+    
+    .step-number::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+      border: 2px solid var(--color-accent);
+      animation: pulse 2s infinite;
+    }
+    
+    .step-title {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-family: var(--font-heading);
+    }
+    
+    .step-desc {
+      color: var(--color-text-soft);
+      font-size: 0.9rem;
+    }
+    
+    @media (max-width: 768px) {
+      .app-feature, 
+      .app-feature:nth-child(even) {
+        flex-direction: column;
+        gap: 2rem;
+      }
+      
+      .workflow-steps {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+      }
+      
+      .workflow-steps::before {
+        top: 0;
+        bottom: 0;
+        right: auto;
+        width: 4px;
+        height: auto;
+        left: 30px;
+      }
+      
+      .step {
+        display: flex;
+        align-items: center;
+        text-align: left;
+        padding: 0;
+      }
+      
+      .step-number {
+        margin: 0 2rem 0 0;
+      }
+    }
+  </style>
 </head>
 <body data-page="apps-hub">
   <!-- Navbar -->
@@ -15,34 +242,175 @@
     <nav>
       <a href="index.html">Home</a>
       <a href="divisions.html">Divisions</a>
+      <a href="store.html">Store</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
   <!-- Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#00d2ff33 100%);">
-    <h1>Apps & Products</h1>
+    <h1 class="text-gradient">Apps & Products</h1>
     <p>Browse our flagship tools—shipped, in beta, or coming soon. Each built with a local‑first mindset and sleek AeroVista polish.</p>
+    <a href="#apps" class="btn" data-animate="fade-up">Explore Apps</a>
+  </section>
+
+  <!-- App Showcase -->
+  <section class="container app-showcase">
+    <h2>Crafted for Performance</h2>
+    
+    <div class="app-devices" data-animate="fade-up">
+      <div class="device desktop">
+        <img src="https://placehold.co/800x500?text=Desktop+App" alt="Desktop App">
+      </div>
+      <div class="device mobile left">
+        <img src="https://placehold.co/300x600?text=Mobile" alt="Mobile App Left">
+      </div>
+      <div class="device mobile right">
+        <img src="https://placehold.co/300x600?text=Mobile" alt="Mobile App Right">
+      </div>
+    </div>
+    
+    <p style="text-align:center;max-width:700px;margin:0 auto;color:var(--color-text-soft);font-size:1.1rem;">
+      Our apps are designed to work seamlessly across platforms, with native desktop applications and responsive web interfaces that adapt to any device.
+    </p>
+  </section>
+
+  <!-- App Philosophy -->
+  <section class="container">
+    <h2>Our App Philosophy</h2>
+    
+    <div class="app-feature" data-animate="fade-up">
+      <div class="app-feature-content">
+        <h3>Local-First Approach</h3>
+        <p>We believe your data belongs to you. Our apps work offline by default, storing your information locally first and syncing only when you're ready. This ensures privacy, reliability, and performance even in low-connectivity environments.</p>
+      </div>
+      <div class="app-feature-image">
+        <img src="https://placehold.co/600x450?text=Local+First" alt="Local-First Approach">
+      </div>
+    </div>
+    
+    <div class="app-feature" data-animate="fade-up">
+      <div class="app-feature-content">
+        <h3>Minimalist Design</h3>
+        <p>Clean interfaces with purposeful animations create an environment where your content takes center stage. Our design language focuses on reducing cognitive load while providing powerful features that enhance rather than distract.</p>
+      </div>
+      <div class="app-feature-image">
+        <img src="https://placehold.co/600x450?text=Minimalist+Design" alt="Minimalist Design">
+      </div>
+    </div>
+    
+    <div class="app-feature" data-animate="fade-up">
+      <div class="app-feature-content">
+        <h3>Cross-Platform Integration</h3>
+        <p>Start on your desktop and continue on mobile without skipping a beat. Our synchronized experiences ensure your workflows remain consistent regardless of which device you're using, adapting to each platform's unique strengths.</p>
+      </div>
+      <div class="app-feature-image">
+        <img src="https://placehold.co/600x450?text=Cross+Platform" alt="Cross-Platform Integration">
+      </div>
+    </div>
+  </section>
+
+  <!-- Development Process -->
+  <section class="container">
+    <h2>Our Development Process</h2>
+    
+    <div class="workflow-steps">
+      <div class="step" data-animate="fade-up">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Research</div>
+          <div class="step-desc">We identify real user needs through interviews, surveys, and market analysis.</div>
+        </div>
+      </div>
+      
+      <div class="step" data-animate="fade-up">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Design</div>
+          <div class="step-desc">Our designers create intuitive interfaces focused on user experience.</div>
+        </div>
+      </div>
+      
+      <div class="step" data-animate="fade-up">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Develop</div>
+          <div class="step-desc">Engineers build performant, reliable solutions with modern technologies.</div>
+        </div>
+      </div>
+      
+      <div class="step" data-animate="fade-up">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Test</div>
+          <div class="step-desc">Rigorous testing ensures quality across devices and use cases.</div>
+        </div>
+      </div>
+      
+      <div class="step" data-animate="fade-up">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <div class="step-title">Iterate</div>
+          <div class="step-desc">Continuous improvement based on user feedback and performance data.</div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Apps Grid -->
-  <section>
+  <section id="apps" class="container">
     <h2>Featured Line‑up</h2>
-    <div id="appsHub" class="grid grid-cols-2 grid-cols-3 container"></div>
+    <div id="appsHub" class="grid grid-cols-3 stagger"></div>
+  </section>
+
+  <!-- CTA -->
+  <section class="hero" style="min-height:auto;padding:4rem 1rem;background:var(--color-surface);">
+    <h2 style="margin-bottom:1.5rem;">Ready to Enhance Your Workflow?</h2>
+    <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">Our apps are designed to help you work more efficiently while maintaining control over your data. Try them today and experience the difference.</p>
+    <div class="flex gap-md">
+      <a href="store.html" class="btn" data-animate="fade-up">Visit Store</a>
+      <a href="#contact" class="btn alt" data-animate="fade-up">Request Demo</a>
+    </div>
   </section>
 
   <!-- Contact CTA -->
   <section id="contact">
-    <h2>Have an Idea or Need a Demo?</h2>
-    <form id="contactForm" class="container">
-      <input required type="text" placeholder="Your Name" />
-      <input required type="email" placeholder="Email" />
-      <textarea required rows="5" placeholder="Tell us about your request..."></textarea>
-      <button class="btn" type="submit">Send Message</button>
-    </form>
+    <div class="container">
+      <h2>Have an Idea or Need a Demo?</h2>
+      <form id="contactForm">
+        <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+        <input required type="email" placeholder="Email" data-animate="fade-up" />
+        <textarea required rows="5" placeholder="Tell us about your request..." data-animate="fade-up"></textarea>
+        <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
+      </form>
+    </div>
   </section>
 
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><strong>AeroVista</strong></div>
+          <p>Crafting bold tech &amp; creative experiences since 2019.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="about.html">About Us</a>
+          <a href="divisions.html">Divisions</a>
+          <a href="apps.html">Apps</a>
+          <a href="store.html">Store</a>
+        </div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script type="module" src="main.js"></script>
 </body>
