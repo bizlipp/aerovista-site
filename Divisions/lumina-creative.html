@@ -7,6 +7,281 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <style>
+    .gradient-orbs {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.4;
+      animation: float-orb 20s ease-in-out infinite;
+    }
+    
+    .orb:nth-child(1) {
+      background: var(--color-hot);
+      width: 400px;
+      height: 400px;
+      top: -100px;
+      left: -100px;
+      animation-delay: 0s;
+    }
+    
+    .orb:nth-child(2) {
+      background: var(--color-secondary);
+      width: 350px;
+      height: 350px;
+      top: 60%;
+      right: -100px;
+      animation-delay: -5s;
+    }
+    
+    .orb:nth-child(3) {
+      background: var(--color-accent);
+      width: 250px;
+      height: 250px;
+      bottom: -100px;
+      left: 40%;
+      animation-delay: -10s;
+    }
+    
+    @keyframes float-orb {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      25% {
+        transform: translate(50px, 50px) scale(1.1);
+      }
+      50% {
+        transform: translate(0, 100px) scale(0.9);
+      }
+      75% {
+        transform: translate(-50px, 50px) scale(1.05);
+      }
+    }
+    
+    .brand-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .brand-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-base);
+      padding: 2rem;
+      transition: all var(--transition-medium) ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .brand-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--gradient-hot);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .brand-card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .brand-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-hot);
+    }
+    
+    .service-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      background: var(--gradient-hot);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius-base);
+      aspect-ratio: 1/1;
+      cursor: pointer;
+    }
+    
+    .portfolio-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .portfolio-item:hover img {
+      transform: scale(1.1);
+    }
+    
+    .portfolio-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      padding: 1rem;
+      transform: translateY(100%);
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .portfolio-item:hover .portfolio-overlay {
+      transform: translateY(0);
+    }
+    
+    .portfolio-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      font-family: var(--font-heading);
+    }
+    
+    .client-logos {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 3rem;
+      margin: 3rem 0;
+    }
+    
+    .client-logo {
+      height: 40px;
+      opacity: 0.7;
+      filter: brightness(0) invert(1);
+      transition: all var(--transition-medium) ease;
+    }
+    
+    .client-logo:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    
+    .process-steps {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin: 3rem 0;
+    }
+    
+    .process-step {
+      flex: 1;
+      min-width: 200px;
+      max-width: 300px;
+      text-align: center;
+      padding: 2rem 1rem;
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-base);
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .process-step:hover {
+      transform: translateY(-10px);
+    }
+    
+    .step-number {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background: var(--gradient-hot);
+      border-radius: 50%;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-family: var(--font-heading);
+    }
+    
+    .color-swatches {
+      display: flex;
+      gap: 1rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .color-swatch {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      position: relative;
+      animation: pulse 3s infinite;
+    }
+    
+    .color-swatch:nth-child(1) {
+      background: var(--color-hot);
+      animation-delay: 0s;
+    }
+    
+    .color-swatch:nth-child(2) {
+      background: var(--color-accent);
+      animation-delay: 0.5s;
+    }
+    
+    .color-swatch:nth-child(3) {
+      background: var(--color-secondary);
+      animation-delay: 1s;
+    }
+    
+    .color-swatch:nth-child(4) {
+      background: var(--color-success);
+      animation-delay: 1.5s;
+    }
+    
+    .color-swatch:nth-child(5) {
+      background: white;
+      animation-delay: 2s;
+    }
+    
+    @media (max-width: 768px) {
+      .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
@@ -22,54 +297,198 @@
 
   <!-- Division Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#3a47d589 0%,#c471ed55 100%);">
-    <h1>Lumina Creative</h1>
+    <div class="gradient-orbs">
+      <div class="orb"></div>
+      <div class="orb"></div>
+      <div class="orb"></div>
+    </div>
+    <h1 class="text-gradient-hot glitch" data-text="Lumina Creative">Lumina Creative</h1>
     <p>Branding, marketing, and digital media that amplifies stories with bold visuals and strategic clarity.</p>
+    <a href="#contact" class="btn" data-animate="fade-up">Book a Discovery Call</a>
   </section>
 
   <!-- Overview -->
   <section class="container">
-    <h2>Mission</h2>
-    <p>Lumina Creative distills complex ideas into compelling narratives and visuals—powering brand visibility and engagement across every channel.</p>
+    <h2>Our Mission</h2>
+    <div class="text-center" data-animate="fade-up">
+      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">Lumina Creative distills complex ideas into compelling narratives and visuals—powering brand visibility and engagement across every channel with fresh, bold design that speaks to your audience.</p>
+    </div>
+    
+    <div class="color-swatches" data-animate="fade-up">
+      <div class="color-swatch"></div>
+      <div class="color-swatch"></div>
+      <div class="color-swatch"></div>
+      <div class="color-swatch"></div>
+      <div class="color-swatch"></div>
+    </div>
+  </section>
+
+  <!-- Portfolio Showcase -->
+  <section class="container">
+    <h2>Selected Work</h2>
+    <div class="portfolio-grid">
+      <div class="portfolio-item" data-animate="fade-up">
+        <img src="https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Brand Identity Design">
+        <div class="portfolio-overlay">
+          <div class="portfolio-title">Nebula Tech Rebrand</div>
+          <p>Complete identity redesign & guidelines</p>
+        </div>
+      </div>
+      <div class="portfolio-item" data-animate="fade-up">
+        <img src="https://images.unsplash.com/photo-1563986768711-b3bde3dc821e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Marketing Campaign">
+        <div class="portfolio-overlay">
+          <div class="portfolio-title">Solstice Apparel</div>
+          <p>Summer campaign & social strategy</p>
+        </div>
+      </div>
+      <div class="portfolio-item" data-animate="fade-up">
+        <img src="https://images.unsplash.com/photo-1600262300121-409dac3d0ad1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="UI/UX Design">
+        <div class="portfolio-overlay">
+          <div class="portfolio-title">Pulse Finance</div>
+          <p>Mobile app UI/UX & interaction design</p>
+        </div>
+      </div>
+      <div class="portfolio-item" data-animate="fade-up">
+        <img src="https://images.unsplash.com/photo-1614036634991-566d93a375ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Packaging Design">
+        <div class="portfolio-overlay">
+          <div class="portfolio-title">Aether Botanicals</div>
+          <p>Product packaging & retail experience</p>
+        </div>
+      </div>
+      <div class="portfolio-item" data-animate="fade-up">
+        <img src="https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Motion Graphics">
+        <div class="portfolio-overlay">
+          <div class="portfolio-title">Vertex Conference</div>
+          <p>Motion graphics & event materials</p>
+        </div>
+      </div>
+      <div class="portfolio-item" data-animate="fade-up">
+        <img src="https://images.unsplash.com/photo-1542744095-fcf48d80b0fd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1000&q=80" alt="Website Design">
+        <div class="portfolio-overlay">
+          <div class="portfolio-title">Helix Architecture</div>
+          <p>Website redesign & digital presence</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Client Showcase -->
+  <section class="container">
+    <h2>Trusted By</h2>
+    <div class="client-logos">
+      <img class="client-logo" src="https://cdn.worldvectorlogo.com/logos/slack-new-logo.svg" alt="Client Logo">
+      <img class="client-logo" src="https://cdn.worldvectorlogo.com/logos/spotify-1.svg" alt="Client Logo">
+      <img class="client-logo" src="https://cdn.worldvectorlogo.com/logos/airbnb.svg" alt="Client Logo">
+      <img class="client-logo" src="https://cdn.worldvectorlogo.com/logos/dropbox-1.svg" alt="Client Logo">
+      <img class="client-logo" src="https://cdn.worldvectorlogo.com/logos/adobe-1.svg" alt="Client Logo">
+    </div>
+  </section>
+
+  <!-- Our Process -->
+  <section class="container">
+    <h2>Our Creative Process</h2>
+    <div class="process-steps">
+      <div class="process-step" data-animate="fade-up">
+        <div class="step-number">1</div>
+        <h3>Discover</h3>
+        <p>Deep dive into your brand's goals, audience, market position, and competitive landscape.</p>
+      </div>
+      <div class="process-step" data-animate="fade-up">
+        <div class="step-number">2</div>
+        <h3>Strategize</h3>
+        <p>Develop creative directions and strategic frameworks aligned with your business objectives.</p>
+      </div>
+      <div class="process-step" data-animate="fade-up">
+        <div class="step-number">3</div>
+        <h3>Create</h3>
+        <p>Craft compelling visuals, messaging, and experiences that captivate your target audience.</p>
+      </div>
+      <div class="process-step" data-animate="fade-up">
+        <div class="step-number">4</div>
+        <h3>Launch</h3>
+        <p>Execute meticulous rollout plans across channels and measure performance against KPIs.</p>
+      </div>
+    </div>
   </section>
 
   <!-- Highlighted Services -->
   <section class="container">
     <h2>What We Deliver</h2>
-    <div class="grid grid-cols-2 grid-cols-3">
-      <div class="card" data-animate="fade-up">
+    <div class="brand-cards">
+      <div class="brand-card" data-animate="fade-up">
+        <div class="service-icon">🎨</div>
         <h3>Brand Identity Systems</h3>
-        <p>Logo suites, typography, color palettes, and style guides that stand out and stay consistent.</p>
+        <p>Logo suites, typography, color palettes, and style guides that stand out and stay consistent across all touchpoints.</p>
       </div>
-      <div class="card" data-animate="fade-up">
+      <div class="brand-card" data-animate="fade-up">
+        <div class="service-icon">🎬</div>
         <h3>Motion Graphics & Video</h3>
-        <p>High‑impact promos and explainers using After Effects and Blender magic.</p>
+        <p>High‑impact promos and explainers using After Effects and Blender magic that brings your story to life.</p>
       </div>
-      <div class="card" data-animate="fade-up">
+      <div class="brand-card" data-animate="fade-up">
+        <div class="service-icon">📊</div>
         <h3>Campaign Strategy</h3>
-        <p>Data‑driven content calendars, social rollouts, and launch assets for maximum reach.</p>
+        <p>Data‑driven content calendars, social rollouts, and launch assets for maximum reach and engagement.</p>
+      </div>
+      <div class="brand-card" data-animate="fade-up">
+        <div class="service-icon">📱</div>
+        <h3>Digital Experience Design</h3>
+        <p>User-centered websites, apps, and digital products that blend aesthetics with intuitive functionality.</p>
+      </div>
+      <div class="brand-card" data-animate="fade-up">
+        <div class="service-icon">📦</div>
+        <h3>Packaging & Print</h3>
+        <p>Tactile brand experiences that translate digital excellence into physical touchpoints.</p>
+      </div>
+      <div class="brand-card" data-animate="fade-up">
+        <div class="service-icon">🔍</div>
+        <h3>Brand Strategy</h3>
+        <p>Positioning, messaging architecture, and audience personas that give direction to creative execution.</p>
       </div>
     </div>
   </section>
 
   <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:#1a1d24;">
-    <h2 style="margin-bottom:1rem;">Let’s Light Up Your Brand</h2>
-    <p style="max-width:600px;color:var(--color-text-soft);">From startups to enterprise rebrands, Lumina Creative crafts visuals that resonate and strategies that convert.</p>
-    <a href="#contact" class="btn" style="margin-top:1.5rem;">Book a Discovery Call</a>
+  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));">
+    <h2 style="margin-bottom:1rem;" class="text-gradient-hot">Let's Light Up Your Brand</h2>
+    <p style="max-width:600px;color:var(--color-text-soft);">From startups to enterprise rebrands, Lumina Creative crafts visuals that resonate and strategies that convert. Ready to stand out?</p>
+    <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Book a Discovery Call</a>
   </section>
 
   <!-- Contact CTA -->
-  <section id="contact">
+  <section id="contact" class="container">
     <h2>Contact Lumina Creative</h2>
-    <form id="contactForm" class="container">
-      <input required type="text" placeholder="Your Name" />
-      <input required type="email" placeholder="Email" />
-      <textarea required rows="5" placeholder="Tell us about your branding needs..."></textarea>
-      <button class="btn" type="submit">Send Message</button>
+    <form id="contactForm" class="bg-glass" style="border-radius:var(--radius-base);padding:2rem;border:1px solid var(--glass-border);">
+      <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+      <input required type="email" placeholder="Email" data-animate="fade-up" />
+      <textarea required rows="5" placeholder="Tell us about your branding needs..." data-animate="fade-up"></textarea>
+      <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
     </form>
   </section>
 
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><strong>AeroVista</strong></div>
+        <p>Transforming ideas into exceptional digital experiences.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Divisions</h4>
+        <a href="skyforge-creative.html">SkyForge Creative</a>
+        <a href="echoverse-audio.html">EchoVerse Audio</a>
+        <a href="lumina-creative.html">Lumina Creative</a>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <a href="../index.html">Home</a>
+        <a href="../divisions.html">Divisions</a>
+        <a href="../apps.html">Apps</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 AeroVista LLC — All rights reserved.
+    </div>
+  </footer>
 
   <script type="module" src="../main.js"></script>
 </body>

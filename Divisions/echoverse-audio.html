@@ -7,6 +7,157 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <style>
+    .audio-waves {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
+      opacity: 0.1;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' y1='0%25' x2='100%25' y2='0%25' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0' stop-color='%2300d2ff'/%3E%3Cstop offset='1' stop-color='%23ff3caf'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M 0,50 Q 25,30 50,50 Q 75,70 100,50 Q 125,30 150,50 Q 175,70 200,50' stroke='url(%23a)' stroke-width='2' fill='none' stroke-dasharray='205' stroke-dashoffset='0' stroke-linecap='round'%3E%3Canimate attributeName='stroke-dashoffset' values='0;205' dur='4s' repeatCount='indefinite'/%3E%3C/path%3E%3Cpath d='M 0,50 Q 25,40 50,50 Q 75,60 100,50 Q 125,40 150,50 Q 175,60 200,50' stroke='url(%23a)' stroke-width='2' fill='none' opacity='0.6' stroke-dasharray='205' stroke-dashoffset='0' stroke-linecap='round' transform='translate(0,10)'%3E%3Canimate attributeName='stroke-dashoffset' values='205;0' dur='5s' repeatCount='indefinite'/%3E%3C/path%3E%3Cpath d='M 0,50 Q 25,45 50,50 Q 75,55 100,50 Q 125,45 150,50 Q 175,55 200,50' stroke='url(%23a)' stroke-width='1' fill='none' opacity='0.4' stroke-dasharray='205' stroke-dashoffset='0' stroke-linecap='round' transform='translate(0,20)'%3E%3Canimate attributeName='stroke-dashoffset' values='0;205' dur='6s' repeatCount='indefinite'/%3E%3C/path%3E%3C/svg%3E");
+      animation: wave-movement 15s linear infinite;
+    }
+    
+    @keyframes wave-movement {
+      0% { background-position: 0 0; }
+      100% { background-position: 1000px 0; }
+    }
+    
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .service-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-base);
+      padding: 2rem;
+      transition: transform var(--transition-medium) ease, box-shadow var(--transition-medium) ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--gradient-primary);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-card);
+    }
+    
+    .service-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .projects-showcase {
+      margin: 3rem 0;
+    }
+    
+    .project-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      gap: 2rem;
+    }
+    
+    .project-item:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+    
+    .project-content {
+      flex: 1;
+    }
+    
+    .project-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      font-family: var(--font-heading);
+    }
+    
+    .project-image {
+      flex: 1;
+      border-radius: var(--radius-base);
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      box-shadow: var(--shadow-card);
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .project-image:hover {
+      transform: scale(1.05);
+    }
+    
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .waveform {
+      margin: 2rem auto;
+      max-width: 800px;
+      height: 100px;
+      position: relative;
+      background: var(--color-surface);
+      border-radius: var(--radius-base);
+      overflow: hidden;
+    }
+    
+    .waveform::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0' stop-color='%2300d2ff'/%3E%3Cstop offset='1' stop-color='%23ff3caf'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,50 C5,30 10,10 15,20 C20,30 25,60 30,70 C35,80 40,80 45,70 C50,60 55,30 60,10 C65,0 70,0 75,10 C80,20 85,50 90,60 C95,70 100,70 105,60 C110,50 115,20 120,10 C125,0 130,10 135,30 C140,50 145,80 150,90 C155,100 160,90 165,70 C170,50 175,20 180,10 C185,0 190,10 195,20 C200,30 205,40 210,50 C215,60 220,70 225,70 C230,70 235,60 240,50 C245,40 250,30 255,30 C260,30 265,50 270,60 C275,70 280,70 285,60 C290,50 295,30 300,20' stroke='url(%23a)' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+      background-size: 300px 100px;
+      animation: waveform-movement 15s linear infinite;
+    }
+    
+    @keyframes waveform-movement {
+      0% { background-position: 0 0; }
+      100% { background-position: 3000px 0; }
+    }
+    
+    @media (max-width: 768px) {
+      .project-item,
+      .project-item:nth-child(even) {
+        flex-direction: column;
+      }
+      
+      .waveform {
+        height: 80px;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
@@ -22,54 +173,145 @@
 
   <!-- Division Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#474dff55 100%);">
-    <h1>EchoVerse Audio</h1>
+    <div class="audio-waves"></div>
+    <h1 class="text-gradient glitch" data-text="EchoVerse Audio">EchoVerse Audio</h1>
     <p>AI‑driven music production and sound design crafting immersive sonic experiences across media.</p>
+    <a href="#contact" class="btn" data-animate="fade-up">Request a Demo Reel</a>
   </section>
 
   <!-- Overview -->
   <section class="container">
-    <h2>Mission</h2>
-    <p>EchoVerse Audio merges cutting‑edge generative tools with human artistry, delivering unique scores, samples, and adaptive soundscapes.</p>
+    <h2>Our Mission</h2>
+    <div class="text-center" data-animate="fade-up">
+      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">EchoVerse Audio merges cutting‑edge generative tools with human artistry, delivering unique scores, samples, and adaptive soundscapes that resonate with audiences and enhance storytelling.</p>
+    </div>
+    
+    <div class="waveform" data-animate="fade-up"></div>
   </section>
 
-  <!-- Signature Offerings -->
+  <!-- Services -->
   <section class="container">
-    <h2>What We Create</h2>
-    <div class="grid grid-cols-2 grid-cols-3">
-      <div class="card" data-animate="fade-up">
+    <h2>Our Services</h2>
+    <div class="services-grid">
+      <div class="service-card" data-animate="fade-up">
+        <div class="service-icon">🎵</div>
         <h3>Custom Scores</h3>
-        <p>Dynamic soundtracks for games, film, and interactive installations.</p>
+        <p>Dynamic soundtracks for games, film, and interactive installations tailored to your project's emotional arc and technical requirements.</p>
       </div>
-      <div class="card" data-animate="fade-up">
+      
+      <div class="service-card" data-animate="fade-up">
+        <div class="service-icon">🔊</div>
         <h3>Generative Sample Packs</h3>
-        <p>AI‑crafted loops and stems ready for producers and creators.</p>
+        <p>AI‑crafted loops and stems ready for producers and creators, with usage rights cleared for commercial projects.</p>
       </div>
-      <div class="card" data-animate="fade-up">
+      
+      <div class="service-card" data-animate="fade-up">
+        <div class="service-icon">🎧</div>
         <h3>Spatial Audio Design</h3>
-        <p>360° and ambisonic mixes for VR, AR, and themed attractions.</p>
+        <p>360° and ambisonic mixes for VR, AR, and themed attractions that create truly immersive sonic environments.</p>
+      </div>
+      
+      <div class="service-card" data-animate="fade-up">
+        <div class="service-icon">🔄</div>
+        <h3>Adaptive Audio Systems</h3>
+        <p>Responsive audio frameworks that evolve based on user interactions, enhancing gameplay and interactive experiences.</p>
+      </div>
+      
+      <div class="service-card" data-animate="fade-up">
+        <div class="service-icon">🎤</div>
+        <h3>Voice Synthesis</h3>
+        <p>Natural-sounding AI voice generation for narration, dialogue, and interactive applications with custom voice models.</p>
+      </div>
+      
+      <div class="service-card" data-animate="fade-up">
+        <div class="service-icon">🧠</div>
+        <h3>Audio Consultation</h3>
+        <p>Expert guidance on audio integration, middleware implementation, and sound design strategy for your projects.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Projects -->
+  <section class="container">
+    <h2>Recent Projects</h2>
+    
+    <div class="projects-showcase">
+      <div class="project-item" data-animate="fade-up">
+        <div class="project-content">
+          <h3 class="project-title">Nebula Dreams VR Experience</h3>
+          <p>Full spatial audio design and procedurally generated ambient score for an award-winning virtual reality meditation experience.</p>
+        </div>
+        <div class="project-image">
+          <img src="https://placehold.co/600x340?text=Nebula+Dreams" alt="Nebula Dreams VR">
+        </div>
+      </div>
+      
+      <div class="project-item" data-animate="fade-up">
+        <div class="project-content">
+          <h3 class="project-title">Quantum Pulse Sample Library</h3>
+          <p>A collection of over 2,000 AI-generated sounds, loops, and samples created using our proprietary neural synthesis engine.</p>
+        </div>
+        <div class="project-image">
+          <img src="https://placehold.co/600x340?text=Quantum+Pulse" alt="Quantum Pulse">
+        </div>
+      </div>
+      
+      <div class="project-item" data-animate="fade-up">
+        <div class="project-content">
+          <h3 class="project-title">Echoes of Terra Game Soundtrack</h3>
+          <p>Adaptive soundtrack that evolves based on player actions and environmental conditions for an open-world RPG.</p>
+        </div>
+        <div class="project-image">
+          <img src="https://placehold.co/600x340?text=Echoes+of+Terra" alt="Echoes of Terra">
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:#1a1d24;">
-    <h2 style="margin-bottom:1rem;">Need a Signature Sound?</h2>
-    <p style="max-width:600px;color:var(--color-text-soft);">From high‑octane trailers to meditative ambience, EchoVerse Audio composes sonic worlds that resonate.</p>
-    <a href="#contact" class="btn" style="margin-top:1.5rem;">Request a Demo Reel</a>
+  <section class="hero" style="min-height:auto;padding:4rem 1rem;background:var(--color-surface);">
+    <h2 style="margin-bottom:1.5rem;">Need a Signature Sound?</h2>
+    <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">From high‑octane trailers to meditative ambience, EchoVerse Audio composes sonic worlds that resonate with audiences and elevate your creative vision.</p>
+    <a href="#contact" class="btn alt" data-animate="fade-up">Request a Demo Reel</a>
   </section>
 
   <!-- Contact CTA -->
   <section id="contact">
-    <h2>Contact EchoVerse Audio</h2>
-    <form id="contactForm" class="container">
-      <input required type="text" placeholder="Your Name" />
-      <input required type="email" placeholder="Email" />
-      <textarea required rows="5" placeholder="Describe your audio needs..."></textarea>
-      <button class="btn" type="submit">Send Message</button>
-    </form>
+    <div class="container">
+      <h2>Contact EchoVerse Audio</h2>
+      <form id="contactForm">
+        <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+        <input required type="email" placeholder="Email" data-animate="fade-up" />
+        <textarea required rows="5" placeholder="Describe your audio needs..." data-animate="fade-up"></textarea>
+        <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
+      </form>
+    </div>
   </section>
 
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo"><strong>AeroVista</strong></div>
+          <p>EchoVerse Audio is a division of AeroVista LLC.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <a href="../index.html">Home</a>
+          <a href="../divisions.html">Divisions</a>
+          <a href="../apps.html">Apps</a>
+        </div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
   <script type="module" src="../main.js"></script>
 </body>

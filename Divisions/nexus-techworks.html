@@ -7,6 +7,285 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <style>
+    .tech-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
+      opacity: 0.1;
+      pointer-events: none;
+      background-image: linear-gradient(to right, rgba(0, 210, 255, 0.2) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(0, 210, 255, 0.2) 1px, transparent 1px);
+      background-size: 50px 50px;
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      animation: grid-movement 30s linear infinite;
+    }
+    
+    @keyframes grid-movement {
+      0% { transform: rotateX(60deg) translateZ(-100px) translateY(0); }
+      100% { transform: rotateX(60deg) translateZ(-100px) translateY(100px); }
+    }
+    
+    .particles-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: float 15s linear infinite;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+      }
+      50% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100px) translateX(100px);
+        opacity: 0;
+      }
+    }
+    
+    .tech-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+    
+    .tech-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-base);
+      padding: 2rem;
+      transition: transform var(--transition-medium) ease, box-shadow var(--transition-medium) ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tech-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--gradient-primary);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .tech-card:hover::before {
+      transform: scaleX(1);
+    }
+    
+    .tech-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--shadow-card);
+    }
+    
+    .tech-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .project-showcase {
+      margin: 3rem 0;
+    }
+    
+    .project-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      gap: 2rem;
+    }
+    
+    .project-item:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+    
+    .project-content {
+      flex: 1;
+    }
+    
+    .project-title {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
+      font-family: var(--font-heading);
+    }
+    
+    .project-image {
+      flex: 1;
+      border-radius: var(--radius-base);
+      overflow: hidden;
+      aspect-ratio: 16/9;
+      box-shadow: var(--shadow-card);
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    .project-image:hover {
+      transform: scale(1.05);
+    }
+    
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .code-animation {
+      position: relative;
+      margin: 2rem auto;
+      max-width: 800px;
+      height: 100px;
+      background: var(--color-surface);
+      border-radius: var(--radius-base);
+      overflow: hidden;
+      padding: 1rem;
+      font-family: monospace;
+      color: var(--color-accent);
+      line-height: 1.4;
+      font-size: 0.9rem;
+    }
+    
+    .code-animation::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        transparent 20%, 
+        rgba(0, 210, 255, 0.1) 30%, 
+        transparent 40%);
+      animation: code-scan 3s linear infinite;
+    }
+    
+    @keyframes code-scan {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+      margin: 3rem 0;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    
+    .stat-item {
+      flex: 1;
+      min-width: 180px;
+    }
+    
+    .stat-value {
+      font-size: 3rem;
+      font-weight: 700;
+      font-family: var(--font-heading);
+      margin-bottom: 0.5rem;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .workflow-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      position: relative;
+      margin: 3rem 0;
+    }
+    
+    .workflow-steps::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 28px;
+      width: 2px;
+      background: var(--gradient-primary);
+    }
+    
+    .workflow-step {
+      display: flex;
+      gap: 2rem;
+      position: relative;
+    }
+    
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background: var(--color-surface);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      z-index: 1;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      position: relative;
+    }
+    
+    .step-number::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border-radius: 50%;
+      background: var(--gradient-primary);
+      z-index: -1;
+    }
+    
+    .step-content {
+      flex: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .project-item,
+      .project-item:nth-child(even) {
+        flex-direction: column;
+      }
+      
+      .code-animation {
+        height: 150px;
+      }
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
@@ -22,55 +301,257 @@
 
   <!-- Division Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#00d2ff33 0%,#474dff55 100%);">
-    <h1>Nexus TechWorks</h1>
+    <div class="tech-grid"></div>
+    <div class="particles-container" id="particles"></div>
+    <h1 class="text-gradient glitch" data-text="Nexus TechWorks">Nexus TechWorks</h1>
     <p>Full‑stack web, AI, and product engineering services focused on performant, local‑first solutions.</p>
+    <a href="#contact" class="btn" data-animate="fade-up">Start Your Project</a>
   </section>
 
   <!-- Overview -->
   <section class="container">
-    <h2>Mission</h2>
-    <p>Nexus TechWorks bridges visionary concepts with robust engineering—delivering bespoke software that scales, secures, and delights.</p>
+    <h2>Our Mission</h2>
+    <div class="text-center" data-animate="fade-up">
+      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">Nexus TechWorks bridges visionary concepts with robust engineering—delivering bespoke software that scales, secures, and delights through innovative technical solutions.</p>
+    </div>
+    
+    <div class="code-animation" data-animate="fade-up">
+      <div id="code-text">
+        // Loading modern web solutions...
+        const nexus = new TechSolution({
+          performance: true,
+          security: true,
+          userExperience: 'exceptional'
+        });
+        
+        await nexus.deploy();
+      </div>
+    </div>
+  </section>
+
+  <!-- Tech Stats -->
+  <section class="container">
+    <h2>Our Impact</h2>
+    <div class="stats-container">
+      <div class="stat-item" data-animate="fade-up">
+        <div class="stat-value">99.9%</div>
+        <p>Uptime Guarantee</p>
+      </div>
+      <div class="stat-item" data-animate="fade-up">
+        <div class="stat-value">200+</div>
+        <p>Projects Delivered</p>
+      </div>
+      <div class="stat-item" data-animate="fade-up">
+        <div class="stat-value">50ms</div>
+        <p>Average Response Time</p>
+      </div>
+    </div>
   </section>
 
   <!-- Core Capabilities -->
   <section class="container">
     <h2>Core Capabilities</h2>
-    <div class="grid grid-cols-2 grid-cols-3">
-      <div class="card" data-animate="fade-up">
+    <div class="tech-cards">
+      <div class="tech-card" data-animate="fade-up">
+        <div class="tech-icon">🧠</div>
         <h3>AI‑Driven Apps</h3>
-        <p>TensorFlow & PyTorch integrations turning data into intelligent features.</p>
+        <p>TensorFlow & PyTorch integrations turning data into intelligent features. From NLP to computer vision, we build AI that enhances user experiences.</p>
       </div>
-      <div class="card" data-animate="fade-up">
+      <div class="tech-card" data-animate="fade-up">
+        <div class="tech-icon">🔄</div>
         <h3>Offline‑First Architecture</h3>
-        <p>Building resilient PWAs and Electron apps with seamless sync.</p>
+        <p>Building resilient PWAs and Electron apps with seamless sync. Create apps that work everywhere, even when connectivity fails.</p>
       </div>
-      <div class="card" data-animate="fade-up">
+      <div class="tech-card" data-animate="fade-up">
+        <div class="tech-icon">☁️</div>
         <h3>Cloud & DevOps</h3>
-        <p>AWS, Docker, and Kubernetes pipelines that keep deployments smooth.</p>
+        <p>AWS, Docker, and Kubernetes pipelines that keep deployments smooth. Automate your infrastructure for reliability and scalability.</p>
+      </div>
+      <div class="tech-card" data-animate="fade-up">
+        <div class="tech-icon">🔒</div>
+        <h3>Security Engineering</h3>
+        <p>End-to-end encryption, penetration testing, and secure data handling. Protect your users and your business with robust security practices.</p>
+      </div>
+      <div class="tech-card" data-animate="fade-up">
+        <div class="tech-icon">📱</div>
+        <h3>Cross-Platform Mobile</h3>
+        <p>React Native and Flutter solutions for iOS and Android with native performance. Build once, deploy everywhere with codebases that scale.</p>
+      </div>
+      <div class="tech-card" data-animate="fade-up">
+        <div class="tech-icon">⚡</div>
+        <h3>Performance Optimization</h3>
+        <p>Profile-driven optimization, efficient state management, and blazing-fast load times. Create experiences that feel instantaneous.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Development Process -->
+  <section class="container">
+    <h2>Our Development Process</h2>
+    <div class="workflow-steps">
+      <div class="workflow-step" data-animate="fade-up">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <h3>Discovery & Strategy</h3>
+          <p>We begin with deep research into your business objectives, user needs, and technical requirements to create a solid foundation for your project.</p>
+        </div>
+      </div>
+      <div class="workflow-step" data-animate="fade-up">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <h3>Architecture & Design</h3>
+          <p>Our architects design scalable systems while UX experts craft intuitive interfaces, ensuring both technical excellence and exceptional usability.</p>
+        </div>
+      </div>
+      <div class="workflow-step" data-animate="fade-up">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <h3>Agile Development</h3>
+          <p>Through iterative sprints, we build, test, and refine your solution, delivering incremental value while adapting to changing requirements.</p>
+        </div>
+      </div>
+      <div class="workflow-step" data-animate="fade-up">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <h3>Testing & Quality Assurance</h3>
+          <p>Comprehensive testing across devices, browsers, and scenarios ensures your product performs flawlessly in all conditions.</p>
+        </div>
+      </div>
+      <div class="workflow-step" data-animate="fade-up">
+        <div class="step-number">5</div>
+        <div class="step-content">
+          <h3>Deployment & Continuous Improvement</h3>
+          <p>We don't just launch—we monitor, optimize, and iterate based on real-world performance and user feedback.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Project Showcase -->
+  <section class="container">
+    <h2>Featured Projects</h2>
+    <div class="project-showcase">
+      <div class="project-item" data-animate="fade-up">
+        <div class="project-content">
+          <h3 class="project-title">QuantumSync Platform</h3>
+          <p>A distributed data synchronization service powering offline-first applications with conflict-free data resolution and end-to-end encryption.</p>
+          <p><strong>Tech Stack:</strong> Node.js, WebRTC, CRDTs, React, WebAssembly</p>
+        </div>
+        <div class="project-image">
+          <img src="https://images.unsplash.com/photo-1633356122102-3fe601e05bd2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="QuantumSync Dashboard">
+        </div>
+      </div>
+      <div class="project-item" data-animate="fade-up">
+        <div class="project-content">
+          <h3 class="project-title">Meridian AI Analytics</h3>
+          <p>An enterprise analytics platform that processes terabytes of data in real-time to deliver actionable insights through an intuitive dashboard.</p>
+          <p><strong>Tech Stack:</strong> Python, TensorFlow, Kubernetes, GraphQL, Vue.js</p>
+        </div>
+        <div class="project-image">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Meridian AI Dashboard">
+        </div>
+      </div>
+      <div class="project-item" data-animate="fade-up">
+        <div class="project-content">
+          <h3 class="project-title">NexScan Security Suite</h3>
+          <p>A comprehensive security monitoring system that combines ML-powered threat detection with real-time vulnerability assessment.</p>
+          <p><strong>Tech Stack:</strong> Rust, AWS Lambda, Elasticsearch, React, WebSockets</p>
+        </div>
+        <div class="project-image">
+          <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="NexScan Security Dashboard">
+        </div>
       </div>
     </div>
   </section>
 
   <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:#1a1d24;">
-    <h2 style="margin-bottom:1rem;">Let’s Build the Future</h2>
-    <p style="max-width:600px;color:var(--color-text-soft);">From MVPs to enterprise platforms, Nexus TechWorks turns ambitious ideas into scalable reality.</p>
-    <a href="#contact" class="btn" style="margin-top:1.5rem;">Start Your Project</a>
+  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));">
+    <h2 style="margin-bottom:1rem;" class="text-gradient">Let's Build the Future</h2>
+    <p style="max-width:600px;color:var(--color-text-soft);">From MVPs to enterprise platforms, Nexus TechWorks turns ambitious ideas into scalable reality. Ready to transform your concept into code?</p>
+    <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Start Your Project</a>
   </section>
 
   <!-- Contact CTA -->
-  <section id="contact">
+  <section id="contact" class="container">
     <h2>Contact Nexus TechWorks</h2>
-    <form id="contactForm" class="container">
-      <input required type="text" placeholder="Your Name" />
-      <input required type="email" placeholder="Email" />
-      <textarea required rows="5" placeholder="Project overview and tech stack..."></textarea>
-      <button class="btn" type="submit">Send Message</button>
+    <form id="contactForm" class="bg-glass" style="border-radius:var(--radius-base);padding:2rem;border:1px solid var(--glass-border);">
+      <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+      <input required type="email" placeholder="Email" data-animate="fade-up" />
+      <textarea required rows="5" placeholder="Project overview and tech stack..." data-animate="fade-up"></textarea>
+      <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
     </form>
   </section>
 
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo"><strong>AeroVista</strong></div>
+        <p>Transforming ideas into exceptional digital experiences.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Divisions</h4>
+        <a href="skyforge-creative.html">SkyForge Creative</a>
+        <a href="echoverse-audio.html">EchoVerse Audio</a>
+        <a href="nexus-techworks.html">Nexus TechWorks</a>
+      </div>
+      <div class="footer-links">
+        <h4>Connect</h4>
+        <a href="../index.html">Home</a>
+        <a href="../divisions.html">Divisions</a>
+        <a href="../apps.html">Apps</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2025 AeroVista LLC — All rights reserved.
+    </div>
+  </footer>
 
   <script type="module" src="../main.js"></script>
+  <script>
+    // Create floating tech particles
+    document.addEventListener('DOMContentLoaded', () => {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 15;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random position and size
+        const size = Math.random() * 4 + 2;
+        const posX = Math.random() * 100;
+        const delay = Math.random() * 10;
+        const duration = Math.random() * 10 + 10;
+        const opacity = Math.random() * 0.5 + 0.1;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.opacity = opacity;
+        
+        particlesContainer.appendChild(particle);
+      }
+      
+      // Animated code typing effect
+      const codeText = document.getElementById('code-text');
+      if (codeText) {
+        const text = codeText.innerHTML;
+        let i = 0;
+        codeText.innerHTML = '';
+        
+        function typeWriter() {
+          if (i < text.length) {
+            codeText.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, 30);
+          }
+        }
+        
+        setTimeout(typeWriter, 1000);
+      }
+    });
+  </script>
 </body>
 </html>
