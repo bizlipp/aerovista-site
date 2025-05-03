@@ -16,6 +16,22 @@
   overflow: hidden;
 }
 
+/* Hero overlay for image backgrounds */
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(26, 29, 36, 0.7); /* Semi-transparent overlay */
+  z-index: 1;
+}
+
+.hero h1, .hero p, .hero .flex {
+  position: relative;
+  z-index: 2;
+}
+
 /* Division Hero Backgrounds */
 .hero.skyforge-bg {
   background: linear-gradient(135deg, rgba(255, 60, 175, 0.27) 0%, rgba(73, 46, 255, 0.4) 100%);
@@ -56,6 +72,77 @@
 
 .hero.rydesync-bg {
   background: linear-gradient(135deg, rgba(71, 77, 255, 0.33) 0%, rgba(0, 210, 255, 0.2) 100%);
+}
+
+/* Division Feature Layout */
+.division-feature {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5rem;
+  gap: 2rem;
+}
+
+.division-feature.reversed {
+  flex-direction: row-reverse;
+}
+
+.division-feature-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.division-feature-content h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.division-feature-content p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.division-feature-image {
+  flex: 1;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.division-feature-image:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.division-feature-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.division-feature-image:hover img {
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments for division features */
+@media (max-width: 768px) {
+  .division-feature,
+  .division-feature.reversed {
+    flex-direction: column;
+  }
+  
+  .division-feature-content {
+    order: 2;
+    padding: 1rem 0;
+  }
+  
+  .division-feature-image {
+    order: 1;
+    margin-bottom: 1rem;
+  }
 }
 
 /* General Backgrounds */

@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="responsive-fixes.css" />
+  <link rel="stylesheet" href="theme-classes.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="description" content="AeroVista is a visionary creative and technology studio uniting talent across immersive media, learning innovation, and future-forward development.">
   <meta property="og:title" content="AeroVista | Where Vision Takes Flight">
@@ -32,7 +33,8 @@
 
   <!-- Hero -->
   <main id="main-content">
-    <section class="hero">
+    <section class="hero" style="background-image: url('public/images/visionary_tools_real-world_impact.png'); background-size: cover; background-position: center;">
+      <div class="hero-overlay"></div>
       <h1 class="text-gradient-hot glitch" data-text="AeroVista">AeroVista</h1>
       <p><strong>AeroVista LLC</strong> is a visionary creative and technology studio uniting talent across immersive media, learning innovation, and future-forward development.</p>
       <p><strong>Where vision takes flight.</strong></p>
@@ -57,37 +59,73 @@
     <div id="divisionGrid" class="grid grid-cols-3 stagger"></div>
   </section>
 
-  <!-- Featured Work by Division -->
+  <!-- Featured Division Showcase -->
   <section class="container">
-    <h2 class="mb-lg">Featured Work by Division</h2>
+    <h2 class="mb-lg">Featured Divisions</h2>
+    
+    <!-- SkyForge Creative Feature -->
+    <div class="division-feature">
+      <div class="division-feature-content">
+        <h3 class="text-gradient">SkyForge Creative</h3>
+        <p>Immersive game development and virtual storytelling studio creating captivating digital worlds and innovative interactive experiences.</p>
+        <a href="Divisions/skyforge-creative.html" class="btn">Explore SkyForge</a>
+      </div>
+      <div class="division-feature-image">
+        <img 
+          src="public/images/skyforge.png" 
+          alt="SkyForge Creative - Game development studio creating a futuristic cityscape with neon elements and geometric structures" 
+          loading="lazy"
+          width="600"
+          height="600">
+      </div>
+    </div>
+    
+    <!-- Horizon Aerial Feature -->
+    <div class="division-feature reversed">
+      <div class="division-feature-content">
+        <h3 class="text-gradient">Horizon Aerial & Visual</h3>
+        <p>Professional drone cinematography, aerial mapping, and visual production services capturing breathtaking perspectives from above.</p>
+        <a href="Divisions/horizon-aerial-visual.html" class="btn">Explore Horizon</a>
+      </div>
+      <div class="division-feature-image">
+        <img 
+          src="public/images/horizon.png" 
+          alt="Horizon Aerial & Visual - Advanced drone capturing nighttime city skyline with vibrant blue and purple lighting" 
+          loading="lazy"
+          width="600"
+          height="600">
+      </div>
+    </div>
+    
+    <!-- Nexus TechWorks Feature -->
+    <div class="division-feature">
+      <div class="division-feature-content">
+        <h3 class="text-gradient">Nexus TechWorks</h3>
+        <p>Cutting-edge web development, AI solutions, and product engineering bringing advanced technical expertise to digital innovation.</p>
+        <a href="Divisions/nexus-techworks.html" class="btn">Explore Nexus</a>
+      </div>
+      <div class="division-feature-image">
+        <img 
+          src="public/images/nexus.png" 
+          alt="Nexus TechWorks - Advanced development workspace with multiple code windows and a glowing green data visualization" 
+          loading="lazy"
+          width="600"
+          height="600">
+      </div>
+    </div>
+  </section>
+
+  <!-- Other Work by Division -->
+  <section class="container">
+    <h2 class="mb-lg">Other Division Work</h2>
     <p style="max-width:700px;margin:0 auto 2rem;text-align:center;">
-      From immersive games to original books, branding projects, and AI music, our divisions produce work that merges storytelling, technology, and design. Here's a glimpse into the diverse creations across AeroVista.
+      From immersive games to original books, branding projects, and AI music, our divisions produce work that merges storytelling, technology, and design.
     </p>
     <div class="grid grid-cols-3 stagger">
       <div class="card glass" data-animate="fade-up">
         <img 
-          src="public/images/portfolio/portfolio-1.png" 
-          alt="SkyForge Creative - Immersive game world concept" 
-          loading="lazy"
-          width="600"
-          height="400">
-        <h3>SkyForge Creative</h3>
-        <p>Concept art from upcoming SkyForge immersive game worlds.</p>
-      </div>
-      <div class="card glass" data-animate="fade-up">
-        <img 
-          src="public/images/portfolio/portfolio-2.png" 
-          alt="Vespera Publishing - Seasons of Change book" 
-          loading="lazy"
-          width="600"
-          height="400">
-        <h3>Vespera Publishing</h3>
-        <p>Seasonal curriculum design from 'Seasons of Change'.</p>
-      </div>
-      <div class="card glass" data-animate="fade-up">
-        <img 
-          src="public/images/portfolio/portfolio-3.png" 
-          alt="EchoVerse Audio - AI music generation" 
+          src="public/images/echoverse.png" 
+          alt="EchoVerse Audio - AI-driven music production studio with holographic band members and neon visualization" 
           loading="lazy"
           width="600"
           height="400">
@@ -96,39 +134,29 @@
       </div>
       <div class="card glass" data-animate="fade-up">
         <img 
-          src="public/images/portfolio/portfolio-4.png" 
-          alt="Nexus TechWorks - Productivity interface" 
+          src="public/images/vespera.png" 
+          alt="Vespera Publishing - Digital library in a futuristic cityscape with floating digital books" 
           loading="lazy"
           width="600"
           height="400">
-        <h3>Nexus TechWorks</h3>
-        <p>Interface design from our collaborative productivity tools.</p>
+        <h3>Vespera Publishing</h3>
+        <p>Digital publishing and educational media for holistic growth.</p>
       </div>
       <div class="card glass" data-animate="fade-up">
         <img 
-          src="public/images/portfolio/portfolio-5.png" 
-          alt="Summit Learning - Reflection journal" 
+          src="public/images/autumns_harvest.png" 
+          alt="Summit Learning - Autumn's Harvest publication featuring seasonal themes for personal growth" 
           loading="lazy"
           width="600"
           height="400">
         <h3>Summit Learning</h3>
         <p>Guided self-reflection in holistic learning spaces.</p>
       </div>
-      <div class="card glass" data-animate="fade-up">
-        <img 
-          src="public/images/portfolio/portfolio-6.png" 
-          alt="Lumina Creative - Brand identity design" 
-          loading="lazy"
-          width="600"
-          height="400">
-        <h3>Lumina Creative</h3>
-        <p>Identity and motion design for visionary brands.</p>
-      </div>
     </div>
   </section>
 
   <!-- Apps Teaser -->
-  <section class="hero" style="min-height:auto;padding:4rem 1rem;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));">
+  <section class="hero cta-section">
     <h2 style="margin-bottom:1.5rem;" class="text-gradient">Apps & Products</h2>
     <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">
       From productivity tools to immersive games, our apps showcase cross‑division talent with AeroVista style.
