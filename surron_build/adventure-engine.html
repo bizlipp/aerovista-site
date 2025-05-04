@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Surron Squad: Adventure Mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=Permanent+Marker&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="surron_squad.css">
+  <style>
+    .adventure-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: rgba(10, 10, 10, 0.8);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: var(--squad-shadow);
+      color: var(--squad-text);
+    }
+
+    .adventure-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .adventure-header h1 {
+      font-family: 'Bangers', cursive;
+      font-size: 3rem;
+      color: var(--squad-neon);
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+      margin-bottom: 0.5rem;
+    }
+
+    .adventure-header p {
+      font-size: 1.2rem;
+      color: var(--squad-text);
+      opacity: 0.8;
+    }
+
+    .adventure-scene {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .scene-image-container {
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      min-height: 200px;
+      margin-bottom: 1.5rem;
+    }
+
+    .scene-image {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: var(--squad-shadow);
+    }
+
+    .dialogue-box {
+      background: rgba(23, 23, 25, 0.9);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      position: relative;
+      width: 100%;
+      border-left: 4px solid var(--squad-primary);
+    }
+
+    .dialogue-text {
+      font-size: 1.25rem;
+      line-height: 1.6;
+    }
+
+    .speaker {
+      font-weight: bold;
+      color: var(--squad-primary);
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .speaker.charlie {
+      color: #e63946;
+    }
+
+    .speaker.billy {
+      color: #7d8260;
+    }
+
+    .speaker.tbd {
+      color: #264653;
+    }
+
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .choice-button {
+      padding: 1rem 1.5rem;
+      background: var(--squad-dark);
+      border: 2px solid var(--squad-primary);
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .choice-button:hover {
+      background: var(--squad-primary);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      color: black;
+    }
+
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      background: var(--squad-primary);
+      color: black;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn.secondary {
+      background: transparent;
+      border: 2px solid var(--squad-primary);
+      color: var(--squad-primary);
+    }
+
+    .character-portrait {
+      position: absolute;
+      bottom: -50px;
+      left: 20px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.5);
+      border: 3px solid;
+      z-index: 10;
+      object-fit: contain;
+    }
+
+    .character-portrait.charlie {
+      border-color: #e63946;
+    }
+
+    .character-portrait.billy {
+      border-color: #7d8260;
+    }
+
+    .character-portrait.tbd {
+      border-color: #264653;
+    }
+
+    .stats-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(23, 23, 25, 0.5);
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .stat-value {
+      font-weight: bold;
+      color: var(--squad-neon);
+    }
+
+    /* Comic panel styling */
+    .comic-panel {
+      position: relative;
+      border: 4px solid black;
+      padding: 0;
+      margin-bottom: 2rem;
+      background: white;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+    }
+
+    .comic-caption {
+      background: rgba(255, 255, 255, 0.9);
+      color: black;
+      padding: 0.75rem;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1rem;
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      max-width: 80%;
+      border: 2px solid black;
+    }
+
+    .speech-bubble {
+      position: absolute;
+      background: white;
+      border: 3px solid black;
+      border-radius: 50%;
+      padding: 1rem;
+      max-width: 200px;
+      text-align: center;
+      font-family: 'Permanent Marker', cursive;
+      color: black;
+      box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .speech-bubble:after {
+      content: '';
+      position: absolute;
+      border: 15px solid transparent;
+    }
+
+    .speech-bubble.top-right {
+      top: 30px;
+      right: 30px;
+    }
+
+    .speech-bubble.bottom-left {
+      bottom: 30px;
+      left: 30px;
+    }
+
+    .speech-bubble.top-right:after {
+      border-top-color: black;
+      border-right: 0;
+      bottom: -28px;
+      right: 40px;
+    }
+
+    .speech-bubble.bottom-left:after {
+      border-bottom-color: black;
+      border-left: 0;
+      top: -28px;
+      left: 40px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .adventure-container {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+
+      .adventure-header h1 {
+        font-size: 2.5rem;
+      }
+
+      .dialogue-box {
+        padding: 1rem;
+      }
+
+      .dialogue-text {
+        font-size: 1.1rem;
+      }
+
+      .character-portrait {
+        width: 80px;
+        height: 80px;
+        bottom: -40px;
+      }
+
+      .choice-button {
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+      }
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dialogue-box, .choice-button {
+      animation: fadeIn 0.5s ease;
+    }
+  </style>
+</head>
+<body class="surron-squad-theme">
+  <div class="adventure-container">
+    <div class="adventure-header">
+      <h1>Surron Squad Adventures</h1>
+      <p>Chapter 1: The Midnight Parts Raid</p>
+    </div>
+
+    <div id="adventure-scene" class="adventure-scene">
+      <div class="scene-image-container">
+        <img id="scene-image" class="scene-image" src="" alt="Scene image">
+        <img id="character-portrait" class="character-portrait" src="" alt="Character portrait">
+      </div>
+      
+      <div class="dialogue-box">
+        <span id="speaker-name" class="speaker">Narrator</span>
+        <div id="dialogue-text" class="dialogue-text">Loading adventure...</div>
+      </div>
+      
+      <div id="choices-container" class="choices">
+        <!-- Choice buttons will be inserted here by JS -->
+      </div>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-item">
+        <span>Parts: </span>
+        <span id="parts-stat" class="stat-value">0</span>
+      </div>
+      <div class="stat-item">
+        <span>Reputation: </span>
+        <span id="rep-stat" class="stat-value">0</span>
+      </div>
+      <div class="stat-item">
+        <span>Energy: </span>
+        <span id="energy-stat" class="stat-value">100%</span>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <a href="surron_squad.html" class="btn secondary">← Back to Squad HQ</a>
+      <a href="buildpartsSelector.html" class="btn">Build Your Bike →</a>
+    </div>
+  </div>
+
+  <script src="adventure-engine.js"></script>
+</body>
+</html> 
