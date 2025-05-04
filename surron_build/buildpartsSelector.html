@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surron Squad 72V Build Selector</title>
+  <link rel="stylesheet" href="surron_squad.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <style>
+    /* Additional styles specific to parts selector */
+    .part-selector {
+      background-color: rgba(23, 23, 25, 0.7);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--squad-primary);
+      box-shadow: var(--squad-shadow);
+    }
+    
+    .part-selector select {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 6px;
+      background-color: var(--squad-dark);
+      color: var(--squad-text);
+      border: 1px solid var(--squad-border);
+      margin-top: 0.5rem;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .part-selector select:focus {
+      border-color: var(--squad-primary);
+      box-shadow: 0 0 0 2px rgba(255, 72, 0, 0.2);
+      outline: none;
+    }
+    
+    .squad-comment {
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 0.9rem;
+      position: relative;
+    }
+    
+    .squad-comment.charlie {
+      background-color: rgba(230, 57, 70, 0.1);
+      border-left: 3px solid #e63946;
+      color: #e63946;
+    }
+    
+    .squad-comment.billy {
+      background-color: rgba(125, 130, 96, 0.1);
+      border-left: 3px solid #7d8260;
+      color: #7d8260;
+    }
+    
+    .squad-comment.tbd {
+      background-color: rgba(38, 70, 83, 0.1);
+      border-left: 3px solid #264653;
+      color: #264653;
+    }
+    
+    .squad-comment:before {
+      content: "🍕";
+      margin-right: 0.5rem;
+    }
+    
+    .squad-comment.billy:before {
+      content: "🎣";
+    }
+    
+    .squad-comment.tbd:before {
+      content: "🧠";
+    }
+    
+    #total-price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--squad-primary);
+    }
+    
+    #selected-parts-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    #selected-parts-list li {
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      background-color: rgba(23, 23, 25, 0.5);
+      border-radius: 6px;
+      border-left: 3px solid var(--squad-primary);
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    
+    .share-build {
+      background: var(--squad-secondary);
+    }
+    
+    .price-breakdown {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .price-label {
+      font-size: 1.5rem;
+      margin-right: 1rem;
+    }
+    
+    .build-name-input {
+      background-color: var(--squad-dark);
+      color: var(--squad-text);
+      border: 1px solid var(--squad-border);
+      padding: 0.75rem;
+      border-radius: 6px;
+      margin-top: 1rem;
+      width: 100%;
+    }
+    
+    .build-name-input:focus {
+      border-color: var(--squad-primary);
+      outline: none;
+    }
+    
+    .price-tag {
+      animation: glow-pulse 2s infinite;
+    }
+    
+    .error-message {
+      background-color: rgba(230, 57, 70, 0.2);
+      color: #e63946;
+      padding: 1rem;
+      border-radius: 6px;
+      margin: 1rem 0;
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body class="surron-squad-theme">
+  <header>
+    <h1>Surron Squad 72V Build Selector</h1>
+    <p class="subtitle">Choose your parts & pretend you're as cool as the squad</p>
+    <a href="surron_squad.html" class="btn">← Back to Squad HQ</a>
+  </header>
+
+  <main>
+    <section id="build-intro">
+      <div class="squad-boxes">
+        <div class="squad-member charlie">
+          <h3><span class="member-icon">🍕</span>Charlie <span class="nickname">"Throttle"</span></h3>
+          <p class="quote">"Let's overvolt it. What's the worst that could happen? Third-degree burns are just spicy memories."</p>
+        </div>
+        <div class="squad-member billy">
+          <h3><span class="member-icon">🎣</span>Billy <span class="nickname">"Baggin's"</span></h3>
+          <p class="quote">"I'd rather fish, but I guess we're building bikes. Again."</p>
+        </div>
+        <div class="squad-member tbd">
+          <h3><span class="member-icon">🧠</span>TBD <span class="nickname">"TBD"</span></h3>
+          <p class="quote">"Parts compatibility matrix loaded. Efficiency optimization at 97.3%."</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="two-column">
+      <section id="parts-select-section" class="column">
+        <h2>Select Your Parts</h2>
+        <p class="section-intro">Configure your 72V Sur-Ron build with real parts and pricing from our strange cast of experts:</p>
+        <div id="error-message" class="error-message">Oops! Something went wrong loading parts. Charlie probably spilled pizza on the server.</div>
+        <div id="parts-select"></div>
+      </section>
+
+      <section id="summary" class="column">
+        <h2>Build Summary</h2>
+        <input type="text" class="build-name-input" id="build-name" placeholder="Name your build (e.g. 'Thunder Donkey 3000')">
+        
+        <div id="build-summary">
+          <div class="price-breakdown">
+            <span class="price-label">Total:</span>
+            <div class="price-tag">
+              <span id="total-price">$0</span>
+            </div>
+          </div>
+          <ul id="selected-parts-list"></ul>
+        </div>
+        
+        <div class="squad-comment" id="build-comment">
+          Name your build and select some parts to get Squad commentary!
+        </div>
+        
+        <div class="action-buttons">
+          <button class="btn" id="save-build">Save Build</button>
+          <button class="btn share-build" id="share-build">Share with Squad</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="surron_squad.js"></script>
+  <script>
+    // Character-specific comments for each part category
+    const squadComments = {
+      'Frame': {
+        charlie: "If it bends, it's temporary. If it breaks, you needed a new one anyway.",
+        billy: "Make sure it fits in the truck. And has a place for my tackle box.",
+        tbd: "Structural integrity calculations complete. This will hold. Probably."
+      },
+      'Motor': {
+        charlie: "More power! MORE POWER! Did I mention we need more power?",
+        billy: "Can we make it quieter? The fish can hear us coming from a mile away.",
+        tbd: "Thermal management is critical. I've installed additional sensors on mine."
+      },
+      'Battery': {
+        charlie: "Bigger is better! And if it catches fire, that's just bonus heat for winter rides.",
+        billy: "I just want it to last the whole fishing trip without dying on the way back.",
+        tbd: "I've developed a custom BMS. 42.7% more efficient than commercial options."
+      },
+      'Controller': {
+        charlie: "Does it have ludicrous mode? It needs ludicrous mode.",
+        billy: "Make sure it's waterproof. You know, for reasons.",
+        tbd: "I've modified my firmware to optimize for torque delivery during creek crossings."
+      },
+      'Suspension – Front': {
+        charlie: "Stiffer isn't always better... except when it is. SEND IT!",
+        billy: "Good front suspension means I can bring more beers without them exploding.",
+        tbd: "I've mapped the optimal compression settings for 17 different terrain types."
+      },
+      'Suspension – Rear': {
+        charlie: "This is what separates the riders from the cryers. Go big or go to the hospital!",
+        billy: "The rear shock is important when Charlie talks you into terrible ideas.",
+        tbd: "My telemetry indicates the stock spring rate is insufficient for optimal damping."
+      },
+      'Brakes': {
+        charlie: "Brakes are for people who don't commit. But I guess we need them sometimes.",
+        billy: "The most important part of the bike, especially when riding with Charlie.",
+        tbd: "Brake fluid temperature becomes critical after 7.2 minutes of sustained downhill."
+      },
+      'Wheels': {
+        charlie: "These things take ABUSE. Go strong or go walking!",
+        billy: "Wheels are like good fishing spots. Everyone has opinions, most are wrong.",
+        tbd: "I've calculated the optimal spoke tension for maximum torsional rigidity."
+      },
+      'Electronics – Throttle & Controls': {
+        charlie: "The more sensitive the better. I want it to MOVE when I twitch!",
+        billy: "I just want a throttle that works when my hands are cold and wet.",
+        tbd: "My throttle response curve has been recalibrated 27 times for optimal delivery."
+      },
+      'Electronics – Wiring': {
+        charlie: "Zip ties and electrical tape. The universal solution to everything.",
+        billy: "Label everything. Future you will thank you when something breaks.",
+        tbd: "I've created a redundant parallel circuit for critical systems."
+      },
+      'Charger': {
+        charlie: "Faster charging means more riding! Science!",
+        billy: "Don't cheap out here. A fire in the garage is bad for the fishing gear.",
+        tbd: "My charging algorithm extends cell life by an estimated 34.8%."
+      }
+    };
+    
+    // Random build comments based on total price
+    function getRandomBuildComment(price, name) {
+      const buildName = name || "your build";
+      
+      // Comments for different price ranges
+      const priceComments = {
+        cheap: [
+          { character: "charlie", text: `${buildName}? More like "Budget Betty." But hey, it'll probably survive... the driveway.` },
+          { character: "billy", text: `${buildName} looks reasonable. At least you'll have money left for fishing gear.` },
+          { character: "tbd", text: `${buildName} is operating at 67.2% of optimal performance potential. Acceptable for beginners.` }
+        ],
+        mid: [
+          { character: "charlie", text: `${buildName} is getting there! Might survive a weekend with the squad.` },
+          { character: "billy", text: `${buildName} looks solid. Should get you to the lake and back without breaking down.` },
+          { character: "tbd", text: `${buildName} achieves 82.4% performance efficiency. A statistically sound build.` }
+        ],
+        expensive: [
+          { character: "charlie", text: `DUDE! ${buildName} is INSANE! Let's go break it in spectacular fashion!` },
+          { character: "billy", text: `Wow. ${buildName} costs more than my first truck. Better not get it muddy... but we will.` },
+          { character: "tbd", text: `${buildName} approaches theoretical performance limits. I've added it to my database.` }
+        ]
+      };
+      
+      // Determine price range
+      let range;
+      if (price < 4000) range = "cheap";
+      else if (price < 7000) range = "mid";
+      else range = "expensive";
+      
+      // Get random comment for this price range
+      const comments = priceComments[range];
+      return comments[Math.floor(Math.random() * comments.length)];
+    }
+
+    // Format currency properly
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      }).format(amount);
+    }
+
+    // Extract price from string safely
+    function extractPrice(priceString) {
+      // This improved regex handles commas in price format
+      const match = priceString.match(/\$([0-9,]+(?:\.[0-9]+)?)/);
+      if (match && match[1]) {
+        // Remove commas before parsing
+        return parseFloat(match[1].replace(/,/g, ''));
+      }
+      return 0;
+    }
+
+    async function loadPartsFromJSON() {
+      try {
+        const response = await fetch('s_parts.json');
+        if (!response.ok) {
+          throw new Error(`Failed to load parts: ${response.status}`);
+        }
+        
+        const partsData = await response.json();
+        const container = document.getElementById("parts-select");
+        container.innerHTML = '';  // Clear container
+
+        partsData.forEach(part => {
+          const section = document.createElement("div");
+          section.classList.add("part-selector");
+
+          const label = document.createElement("h3");
+          label.textContent = part.Category;
+          section.appendChild(label);
+
+          // Description text
+          const description = document.createElement("p");
+          description.className = "description";
+          description.textContent = part["Part Name & Details"];
+          section.appendChild(description);
+
+          // Create select element
+          const select = document.createElement("select");
+          select.dataset.category = part.Category;
+          select.addEventListener("change", updateSummary);
+
+          // Add options for each sourcing option
+          const options = [
+            { text: part["Sourcing Option 1 (Price - Vendor)"], value: extractPrice(part["Sourcing Option 1 (Price - Vendor)"]) },
+            { text: part["Sourcing Option 2 (Price - Vendor)"], value: extractPrice(part["Sourcing Option 2 (Price - Vendor)"]) }
+          ];
+
+          options.forEach(option => {
+            const opt = document.createElement("option");
+            opt.value = option.value;
+            opt.textContent = option.text;
+            select.appendChild(opt);
+          });
+
+          section.appendChild(select);
+
+          // Add random squad comment
+          const commentKeys = Object.keys(squadComments[part.Category]);
+          const randomMember = commentKeys[Math.floor(Math.random() * commentKeys.length)];
+          
+          const comment = document.createElement("div");
+          comment.classList.add("squad-comment", randomMember);
+          comment.textContent = squadComments[part.Category][randomMember];
+          section.appendChild(comment);
+
+          container.appendChild(section);
+        });
+
+        updateSummary();
+      } catch (error) {
+        console.error("Error loading parts:", error);
+        document.getElementById("error-message").style.display = "block";
+      }
+    }
+
+    function updateSummary() {
+      const selections = document.querySelectorAll("#parts-select select");
+      const list = document.getElementById("selected-parts-list");
+      const total = document.getElementById("total-price");
+      const buildName = document.getElementById("build-name").value;
+      list.innerHTML = "";
+
+      let sum = 0;
+      selections.forEach(sel => {
+        const category = sel.dataset.category;
+        const option = sel.options[sel.selectedIndex];
+        const price = parseFloat(option.value);
+        sum += price;
+
+        const li = document.createElement("li");
+        li.textContent = `${category}: ${option.textContent}`;
+        list.appendChild(li);
+      });
+
+      total.textContent = formatCurrency(sum);
+      
+      // Update squad comment on the build
+      const buildComment = document.getElementById("build-comment");
+      const comment = getRandomBuildComment(sum, buildName);
+      buildComment.className = `squad-comment ${comment.character}`;
+      buildComment.textContent = comment.text;
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      loadPartsFromJSON();
+      
+      // Handle build name changes
+      document.getElementById("build-name").addEventListener("input", updateSummary);
+      
+      // Handle save button
+      document.getElementById("save-build").addEventListener("click", saveBuild);
+      
+      // Handle share button
+      document.getElementById("share-build").addEventListener("click", shareBuild);
+    });
+  </script>
+</body>
+</html>
