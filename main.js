@@ -436,14 +436,37 @@ function initContactForm() {
     const btn = form.querySelector('button');
     btn.innerHTML = 'Sending...';
     btn.classList.add('loading');
+    btn.disabled = true;
     
-    // Simulate send (replace with actual AJAX in production)
-    setTimeout(() => {
+    // Get form data
+    const formData = new FormData(form);
+    const formObject = Object.fromEntries(formData.entries());
+    
+    // Get the page information to track form source
+    const pagePath = window.location.pathname;
+    const pageTitle = document.title;
+    formObject.source = { page: pagePath, title: pageTitle };
+    
+    // Send data to server
+    fetch('https://api.aerovista.us/contact', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formObject)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      // Show success message
       btn.innerHTML = 'Sent!';
       btn.classList.remove('loading');
       btn.classList.add('success');
       
-      // Show success message
       const successMsg = document.createElement('div');
       successMsg.className = 'success-message';
       successMsg.innerHTML = '<p>Thanks! We\'ll be in touch soon.</p>';
@@ -456,10 +479,34 @@ function initContactForm() {
         form.reset();
         btn.innerHTML = 'Send Message';
         btn.classList.remove('success');
+        btn.disabled = false;
         successMsg.remove();
         inputs.forEach(input => input.classList.remove('focused'));
       }, 3000);
-    }, 1500);
+    })
+    .catch(error => {
+      console.error('Error submitting form:', error);
+      
+      // Show error message
+      btn.innerHTML = 'Error';
+      btn.classList.remove('loading');
+      btn.classList.add('error');
+      
+      const errorMsg = document.createElement('div');
+      errorMsg.className = 'error-message';
+      errorMsg.innerHTML = '<p>Sorry, there was a problem sending your message. Please try again or email us directly at <a href="mailto:hello@aerovista.us">hello@aerovista.us</a>.</p>';
+      errorMsg.setAttribute('data-animate', 'fade-up');
+      
+      form.appendChild(errorMsg);
+      
+      // Reset button after delay
+      setTimeout(() => {
+        btn.innerHTML = 'Send Message';
+        btn.classList.remove('error');
+        btn.disabled = false;
+        errorMsg.remove();
+      }, 5000);
+    });
   });
 }
 

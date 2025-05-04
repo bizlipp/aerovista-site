@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Style Explorer – Lumina Creative</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&family=Playfair+Display&family=Orbitron&family=Open+Sans&family=Raleway&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* AeroVista themed variables */
+      --color-bg: #0a0d14;
+      --color-surface: #161a24;
+      --color-surface-alt: #14171f;
+      --color-text: #ffffffde;
+      --color-text-soft: #ffffffa0;
+      --color-accent: #00d2ff;
+      --color-accent-dark: #008abf;
+      --color-hot: #ff3caf;
+      --color-secondary: #474dff;
+      --color-success: #0acd8d;
+      
+      --radius-sm: 6px;
+      --radius-base: 12px;
+      --radius-lg: 24px;
+      --shadow-soft: 0 10px 30px -10px rgba(0,210,255,.25);
+      --shadow-card: 0 20px 40px -20px rgba(0,0,0,.5);
+      --shadow-neon: 0 0 15px rgba(0,210,255,.35), 0 0 30px rgba(0,210,255,.15);
+      
+      --font-heading: 'Chakra Petch', sans-serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      
+      --transition-fast: 0.2s;
+      --transition-medium: 0.4s;
+      --z-navbar: 100;
+    }
+    
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      margin: 0;
+      padding: 0;
+      color: var(--color-text);
+      background-image: 
+        radial-gradient(circle at 15% 50%, rgba(0,210,255,0.08) 0%, transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(255,60,175,0.08) 0%, transparent 25%);
+      background-attachment: fixed;
+    }
+    
+    /* Header styles */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(10, 13, 20, 0.8);
+      backdrop-filter: blur(10px);
+      padding: 1rem 2rem;
+      z-index: var(--z-navbar);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    header .logo {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+    
+    header .logo strong {
+      position: relative;
+      transition: color var(--transition-fast) ease;
+    }
+    
+    header .logo strong::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 2px;
+      background: var(--gradient-primary);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--transition-medium) ease;
+    }
+    
+    header .logo:hover strong::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    nav a {
+      color: var(--color-text-soft);
+      text-decoration: none;
+      position: relative;
+      transition: color var(--transition-fast) ease;
+    }
+    
+    nav a:hover {
+      color: var(--color-accent);
+    }
+    
+    main {
+      padding: 5rem 2rem 2rem;
+    }
+    
+    h1 {
+      font-family: var(--font-heading);
+      text-align: center;
+      color: var(--color-text);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+    
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: var(--color-surface);
+      padding: 2rem;
+      border-radius: var(--radius-base);
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+    
+    select, button {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      margin-top: 0.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface-alt);
+      color: var(--color-text);
+      transition: all var(--transition-fast) ease;
+    }
+    
+    select:focus, button:focus {
+      outline: none;
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 2px rgba(0, 210, 255, 0.25);
+    }
+    
+    button {
+      background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+      color: var(--color-bg);
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      position: relative;
+      overflow: hidden;
+      border: none;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-neon);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .output {
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 2rem;
+      animation: fadeIn 0.5s ease-out;
+    }
+    
+    .palette {
+      display: flex;
+      gap: 10px;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .swatch {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      transition: transform var(--transition-fast) ease;
+    }
+    
+    .swatch:hover {
+      transform: scale(1.1);
+      z-index: 1;
+    }
+    
+    .swatch::after {
+      content: attr(title);
+      position: absolute;
+      bottom: -25px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      font-size: 0.75rem;
+      opacity: 0;
+      transition: opacity var(--transition-fast) ease;
+    }
+    
+    .swatch:hover::after {
+      opacity: 1;
+    }
+    
+    .font-sample {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
+    }
+    
+    .logo-preview {
+      font-size: 2.5rem;
+      margin-top: 2rem;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all var(--transition-medium) ease;
+    }
+    
+    .logo-preview:hover {
+      box-shadow: var(--shadow-neon);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .style-description {
+      margin-top: 1rem;
+      font-style: italic;
+      padding: 1rem;
+      border-left: 3px solid var(--color-accent);
+      background: rgba(0, 210, 255, 0.05);
+    }
+    
+    .tag-line {
+      background: linear-gradient(90deg, var(--color-accent), var(--color-hot));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <a href="../../index.html" class="logo">
+      <strong>AeroVista</strong>
+    </a>
+    <nav>
+      <a href="../lumina-creative.html">Lumina Creative</a>
+      <a href="../../divisions.html">Divisions</a>
+      <a href="../../apps.html">Apps</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>✦ Brand Style Explorer</h1>
+      <p style="text-align:center">Select 2 words that describe your vibe. <span class="tag-line">We'll do the rest.</span></p>
+      <label for="adj1">Primary Trait</label>
+      <select id="adj1">
+        <option value="Bold">Bold</option>
+        <option value="Minimal">Minimal</option>
+        <option value="Elegant">Elegant</option>
+        <option value="Energetic">Energetic</option>
+        <option value="Futuristic">Futuristic</option>
+        <option value="Organic">Organic</option>
+      </select>
+
+      <label for="adj2">Secondary Trait</label>
+      <select id="adj2">
+        <option value="Poetic">Poetic</option>
+        <option value="Luxe">Luxe</option>
+        <option value="Rebellious">Rebellious</option>
+        <option value="Playful">Playful</option>
+        <option value="Grounded">Grounded</option>
+        <option value="Retro">Retro</option>
+      </select>
+
+      <button onclick="generateStyle()">Generate Brand Style</button>
+
+      <div class="output" id="output"></div>
+    </div>
+  </main>
+
+  <script>
+    const combos = {
+      'Bold+Poetic': {
+        palette: ['#D35400', '#6C3483', '#F7DC6F', '#1A1A2E'],
+        fonts: ['Playfair Display', 'Open Sans'],
+        logo: 'AetherFlame',
+        description: 'Your brand is intense yet refined — a poetic powerhouse that leaves a visual imprint.'
+      },
+      'Bold+Luxe': {
+        palette: ['#000000', '#D4AF37', '#8B0000', '#2C3E50'],
+        fonts: ['Playfair Display', 'Raleway'],
+        logo: 'OPULENT',
+        description: 'Rich, dramatic, and commanding. Luxury with audacity and confidence.'
+      },
+      'Bold+Rebellious': {
+        palette: ['#111111', '#E74C3C', '#ECF0F1', '#333333'],
+        fonts: ['Orbitron', 'Inter'],
+        logo: 'REVOLT',
+        description: 'In-your-face and unapologetic. A visual shout that challenges conventions.'
+      },
+      'Bold+Playful': {
+        palette: ['#FF4500', '#FFC300', '#3498DB', '#2E4053'],
+        fonts: ['Chakra Petch', 'Open Sans'],
+        logo: 'BOUNCE!',
+        description: 'Powerful yet approachable. Commands attention with vibrant energy and charm.'
+      },
+      'Bold+Grounded': {
+        palette: ['#5D4037', '#A1887F', '#212121', '#EEEEEE'],
+        fonts: ['Chakra Petch', 'Open Sans'],
+        logo: 'TERRA FIRM',
+        description: 'Solid and dependable with an unmistakable presence. Earthy strength.'
+      },
+      'Bold+Retro': {
+        palette: ['#E63946', '#F1FAEE', '#1D3557', '#FFD166'],
+        fonts: ['Chakra Petch', 'Inter'],
+        logo: 'ATOMIC',
+        description: 'Vintage boldness reimagined. Powerful callbacks to another era with modern edge.'
+      },
+      'Minimal+Poetic': {
+        palette: ['#F5F5F5', '#333333', '#9E9E9E', '#D6D6D6'],
+        fonts: ['Raleway', 'Open Sans'],
+        logo: 'w h i s p e r',
+        description: 'Subtle elegance with thoughtful restraint. Every element carries meaning.'
+      },
+      'Minimal+Luxe': {
+        palette: ['#FFFFFF', '#D1CCC0', '#2C3E50', '#8E7866'],
+        fonts: ['Raleway', 'Open Sans'],
+        logo: 'Sable&Light',
+        description: 'Luxury in restraint. Clean lines, soft light, timeless typography.'
+      },
+      'Minimal+Rebellious': {
+        palette: ['#F7F7F7', '#292929', '#E63946', '#CCCCCC'],
+        fonts: ['Inter', 'Open Sans'],
+        logo: 'NO',
+        description: 'Rebellion through reduction. Stripping away the unnecessary to make a statement.'
+      },
+      'Minimal+Playful': {
+        palette: ['#FFFFFF', '#FFD166', '#06D6A0', '#073B4C'],
+        fonts: ['Raleway', 'Open Sans'],
+        logo: 'plink',
+        description: 'Playfully simple. Finds joy in subtlety and unexpected moments of delight.'
+      },
+      'Minimal+Grounded': {
+        palette: ['#F5F5F5', '#E0E0E0', '#616161', '#BDBDBD'],
+        fonts: ['Inter', 'Raleway'],
+        logo: 'earth',
+        description: 'Practical minimalism with warm undertones. Straightforward and reliable.'
+      },
+      'Minimal+Retro': {
+        palette: ['#F5F5F5', '#AEC5EB', '#F9C5BD', '#EAE3C9'],
+        fonts: ['Inter', 'Open Sans'],
+        logo: 'mod',
+        description: 'Past simplicity brought forward. Understated nostalgia with clean modern lines.'
+      },
+      'Elegant+Poetic': {
+        palette: ['#F0EAD6', '#7D6E83', '#3F2E3E', '#D8B384'],
+        fonts: ['Playfair Display', 'Raleway'],
+        logo: 'Sonnet',
+        description: 'Gracefully lyrical. A refined expression of beauty through subtle sophistication.'
+      },
+      'Elegant+Luxe': {
+        palette: ['#F5EEE6', '#8C7A69', '#0F1E32', '#A88A70'],
+        fonts: ['Playfair Display', 'Raleway'],
+        logo: 'REGAL',
+        description: 'Sumptuous refinement. The height of sophisticated luxury with timeless appeal.'
+      },
+      'Elegant+Rebellious': {
+        palette: ['#DFD8C8', '#41444B', '#52575D', '#FDCB9E'],
+        fonts: ['Playfair Display', 'Inter'],
+        logo: 'Contrarian',
+        description: 'Revolutionary grace. Breaking conventions while maintaining dignified poise.'
+      },
+      'Elegant+Playful': {
+        palette: ['#FFF1E6', '#FDE2E4', '#FAD2E1', '#5E6472'],
+        fonts: ['Playfair Display', 'Raleway'],
+        logo: 'Whimsy',
+        description: 'Graceful with a touch of whimsy. Sophisticated yet approachable and delightful.'
+      },
+      'Elegant+Grounded': {
+        palette: ['#E8DACB', '#685C46', '#818479', '#3A3238'],
+        fonts: ['Playfair Display', 'Inter'],
+        logo: 'TERRA',
+        description: 'Practical sophistication. Down-to-earth elegance for authentic experiences.'
+      },
+      'Elegant+Retro': {
+        palette: ['#FADBD8', '#884EA0', '#154360', '#F5EEF8'],
+        fonts: ['Playfair Display', 'Raleway'],
+        logo: 'GoldenHour',
+        description: 'A vintage soul with modern grace. Balanced, expressive, and warm.'
+      },
+      'Energetic+Poetic': {
+        palette: ['#FF9A76', '#637373', '#FFEADB', '#916EF0'],
+        fonts: ['Chakra Petch', 'Raleway'],
+        logo: 'Vivid Verse',
+        description: 'Lively yet thoughtful. Dynamic energy channeled through meaningful expression.'
+      },
+      'Energetic+Luxe': {
+        palette: ['#FFD500', '#232931', '#4ECCA3', '#393E46'],
+        fonts: ['Chakra Petch', 'Inter'],
+        logo: 'SPARK',
+        description: 'High-octane luxury. Premium experiences delivered with vitality and excitement.'
+      },
+      'Energetic+Rebellious': {
+        palette: ['#FF0054', '#390099', '#FFBD00', '#181818'],
+        fonts: ['Orbitron', 'Inter'],
+        logo: 'RIOT',
+        description: 'A rebellious pulse that can\'t be ignored. Disruptive energy that challenges norms.'
+      },
+      'Energetic+Playful': {
+        palette: ['#F1C40F', '#E74C3C', '#2ECC71', '#3498DB'],
+        fonts: ['Raleway', 'Open Sans'],
+        logo: 'Zippy Pop',
+        description: 'Vivid, joyful, and unafraid to stand out. Colorful energy in motion.'
+      },
+      'Energetic+Grounded': {
+        palette: ['#FF7F50', '#396E60', '#2B2D2D', '#D8D8D8'],
+        fonts: ['Chakra Petch', 'Open Sans'],
+        logo: 'VOLT',
+        description: 'Grounded energy. Excitement tempered with reliability and purpose.'
+      },
+      'Energetic+Retro': {
+        palette: ['#FF4081', '#536DFE', '#FFC107', '#424242'],
+        fonts: ['Chakra Petch', 'Inter'],
+        logo: 'RETROBLAST',
+        description: 'Nostalgic vitality. Yesteryear\'s excitement reimagined with contemporary energy.'
+      },
+      'Futuristic+Poetic': {
+        palette: ['#080630', '#00C2D1', '#7BE0FF', '#4B48A0'],
+        fonts: ['Orbitron', 'Raleway'],
+        logo: 'ZEPHYRIA',
+        description: 'Tomorrow\'s poetry. Ethereal yet technological, speaking to what lies beyond.'
+      },
+      'Futuristic+Luxe': {
+        palette: ['#0A192F', '#C8A2C8', '#2A2A72', '#FAFAFC'],
+        fonts: ['Orbitron', 'Inter'],
+        logo: 'NEBULA',
+        description: 'Luxury from the future. Advanced aesthetics with premium sophistication.'
+      },
+      'Futuristic+Rebellious': {
+        palette: ['#111111', '#FF3131', '#6C5CE7', '#333333'],
+        fonts: ['Orbitron', 'Open Sans'],
+        logo: 'ZeroSignal',
+        description: 'Visceral glitchpunk. A loud, defiant aesthetic that challenges the norm.'
+      },
+      'Futuristic+Playful': {
+        palette: ['#2C3E50', '#E74C3C', '#3498DB', '#1ABC9C'],
+        fonts: ['Orbitron', 'Raleway'],
+        logo: 'BLIP',
+        description: 'Playful innovation. Approachable technology with a sense of wonder and fun.'
+      },
+      'Futuristic+Grounded': {
+        palette: ['#383838', '#00ADB5', '#EEEEEE', '#222831'],
+        fonts: ['Orbitron', 'Inter'],
+        logo: 'BASE:ZERO',
+        description: 'Practical futurism. Forward-thinking solutions rooted in real-world needs.'
+      },
+      'Futuristic+Retro': {
+        palette: ['#3A0CA3', '#F72585', '#4CC9F0', '#111111'],
+        fonts: ['Orbitron', 'Chakra Petch'],
+        logo: 'NEON:1986',
+        description: 'Retrofuturism incarnate. Yesterday\'s tomorrow, reimagined for today.'
+      },
+      'Organic+Poetic': {
+        palette: ['#A7C957', '#6A994E', '#386641', '#F2E8CF'],
+        fonts: ['Raleway', 'Open Sans'],
+        logo: 'Wildflower',
+        description: 'Natural lyricism. Gentle, flowing aesthetics inspired by natural patterns.'
+      },
+      'Organic+Luxe': {
+        palette: ['#DDD1C7', '#2C4032', '#CFA77F', '#F4F2EE'],
+        fonts: ['Playfair Display', 'Raleway'],
+        logo: 'Verdant',
+        description: 'Natural luxury. Organic textures and materials elevated to premium experiences.'
+      },
+      'Organic+Rebellious': {
+        palette: ['#344E41', '#A3B18A', '#DAD7CD', '#3A5A40'],
+        fonts: ['Raleway', 'Inter'],
+        logo: 'Wild:Kind',
+        description: 'Nature\'s rebellion. Untamed organic elements that refuse to be contained.'
+      },
+      'Organic+Playful': {
+        palette: ['#C6DEA6', '#7EBC89', '#58A46E', '#3C885B'],
+        fonts: ['Raleway', 'Open Sans'],
+        logo: 'Sprout',
+        description: 'Playful naturalism. Finding joy in growth, exploration, and organic forms.'
+      },
+      'Organic+Grounded': {
+        palette: ['#7DCEA0', '#FAD7A0', '#6E2C00', '#186A3B'],
+        fonts: ['Raleway', 'Open Sans'],
+        logo: 'Root + Flow',
+        description: 'Rooted in the earth. Soft, natural tones and a calming energy.'
+      },
+      'Organic+Retro': {
+        palette: ['#DAD7CD', '#A3B18A', '#588157', '#3A5A40'],
+        fonts: ['Raleway', 'Inter'],
+        logo: 'HARVEST',
+        description: 'Vintage naturalism. Traditional organic aesthetics with timeless appeal.'
+      }
+    };
+
+    function generateStyle() {
+      const adj1 = document.getElementById('adj1').value;
+      const adj2 = document.getElementById('adj2').value;
+      const key = `${adj1}+${adj2}`;
+      const match = combos[key];
+
+      const output = document.getElementById('output');
+      if (!match) {
+        output.innerHTML = `<p>✨ We're still training our style engine for that combo. Try a different pair!</p>`;
+        return;
+      }
+
+      const fontLink = document.createElement('link');
+      fontLink.href = `https://fonts.googleapis.com/css2?family=${match.fonts[0].replace(/ /g,'+')}&family=${match.fonts[1].replace(/ /g,'+')}&display=swap`;
+      fontLink.rel = 'stylesheet';
+      document.head.appendChild(fontLink);
+
+      output.innerHTML = `
+        <h2 style="font-family: var(--font-heading);">✦ Your Brand Style</h2>
+        <div class="style-description">${match.description}</div>
+        
+        <h3 style="font-family: var(--font-heading); margin-top: 2rem;">Color Palette</h3>
+        <div class="palette">
+          ${match.palette.map(color => `<div class="swatch" style="background:${color}" title="${color}"></div>`).join('')}
+        </div>
+        
+        <div class="font-sample">
+          <h3 style="font-family: var(--font-heading); margin-bottom: 1rem;">Typography</h3>
+          <p style="font-family: '${match.fonts[0]}', serif; font-size: 1.5rem; margin-bottom:1rem;">Headline Font: ${match.fonts[0]}</p>
+          <p style="font-family: '${match.fonts[1]}', sans-serif; font-size: 1rem; margin-bottom:0.5rem;">Body Font: ${match.fonts[1]}</p>
+          <p style="font-family: '${match.fonts[1]}', sans-serif; font-size: 0.875rem; opacity: 0.8;">This is how your body text will appear in paragraphs. The right typography balance creates harmony between headlines and content.</p>
+        </div>
+        
+        <h3 style="font-family: var(--font-heading); margin-top: 2rem;">Logo Concept</h3>
+        <div class="logo-preview" style="font-family: '${match.fonts[0]}', serif; color: ${match.palette[0]};">
+          ${match.logo}
+        </div>
+        
+        <p style="margin-top: 2rem; text-align: center; font-size: 0.875rem; opacity: 0.7;">
+          Generated by Lumina Creative • Brand Exploration Tool
+        </p>
+      `;
+    }
+  </script>
+</body>
+</html>

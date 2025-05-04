@@ -129,4 +129,45 @@ Returns JSON metadata for a processed image.
 
 Returns the processed image directly.
 
-**Parameters:** Same as `/api/image` 
+**Parameters:** Same as `/api/image`
+
+## Contact Form Implementation
+
+The contact forms across the site now use a real backend service instead of simulating submissions:
+
+- Implemented with Nodemailer for sending emails
+- Server endpoint `/api/contact` handles submissions
+- Error handling and validation for all submissions
+- User feedback for successful/failed submissions
+- Email confirmation sent to submitters
+- Contact details logged as backup
+
+### Configuration
+
+To set up the contact form:
+
+1. Install required dependencies:
+   ```
+   npm install
+   ```
+
+2. Create a `.env` file based on `.env.example`:
+   ```
+   # Email Configuration
+   SMTP_HOST=your.smtp.server
+   SMTP_PORT=587
+   SMTP_SECURE=false
+   SMTP_USER=your_email@example.com
+   SMTP_PASS=your_password
+   
+   # Contact Form Configuration
+   CONTACT_FROM="AeroVista Website <no-reply@aerovista.us>"
+   CONTACT_TO=recipient@example.com
+   ```
+
+3. Start the server:
+   ```
+   npm start
+   ```
+
+The contact form will automatically send submissions to the configured email address. 
