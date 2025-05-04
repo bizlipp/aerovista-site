@@ -1,0 +1,43 @@
+[
+    {
+      "Category": "Lighting – Headlight",
+      "Part Name & Details": "High-Output LED Headlight – Aftermarket headlamp (12 V) for Sur-Ron, greatly increasing light output (e.g. ~2000+ lumens) over stock for night riding:contentReference[oaicite:0]{index=0}.",
+      "Stock Equivalent": "Sur-Ron Light Bee OEM headlight (~12 V LED unit with limited output).",
+      "Sourcing Option 1 (Price - Vendor)": "$99.99 – Steady Garage (Chimera 20W LED headlight, ~2000 lm):contentReference[oaicite:1]{index=1}",
+      "Sourcing Option 2 (Price - Vendor)": "$224.95 – Baja Designs (S2 Pro headlight kit for Sur-Ron):contentReference[oaicite:2]{index=2}",
+      "Notes on Quality/Compatibility Tradeoffs": "Stock headlight is only a few hundred lumens, so upgrades like Chimera or Baja provide far greater brightness for safer night riding:contentReference[oaicite:3]{index=3}. Lower-cost units (~$50) improve output but may have narrower beams or shorter lifespan, while premium kits (e.g. Baja) offer robust build and maximum illumination at higher cost. All plug into the bike’s 12 V lighting circuit:contentReference[oaicite:4]{index=4}; for 72 V battery conversions ensure the DC-DC converter is upgraded to handle 72 V input so the headlight still runs on 12 V."
+    },
+    {
+      "Category": "Electronics – Display",
+      "Part Name & Details": "Digital Dashboard Display – Multi-function LCD or TFT gauge to monitor speed, battery, etc. Upgrades can include color screens with advanced data (torque, diagnostics):contentReference[oaicite:5]{index=5}.",
+      "Stock Equivalent": "Basic Sur-Ron speedometer (shows speed, battery level, trip).",
+      "Sourcing Option 1 (Price - Vendor)": "$69.99 – Electric Cycle Rider (OEM-style LCD display):contentReference[oaicite:6]{index=6}",
+      "Sourcing Option 2 (Price - Vendor)": "~$140 – Torp Motors (Torp Color TFT display upgrade):contentReference[oaicite:7]{index=7}",
+      "Notes on Quality/Compatibility Tradeoffs": "The stock display provides minimal info. Upgraded displays like the Torp Color unit offer detailed metrics (motor torque, detailed battery stats) and a modern interface:contentReference[oaicite:8]{index=8}. A basic replacement LCD is a cost-effective fix or spare, while the color TFT adds premium features but requires a bigger budget. Both options are plug-and-play with the Sur-Ron harness; they work on 60 V or 72 V systems (the display reads data from the controller, not directly from battery voltage)."
+    },
+    {
+      "Category": "Body – Fenders",
+      "Part Name & Details": "Extended Front/Rear Fenders – Longer and wider mudguards for improved debris protection. Typical upgrades include a lengthened rear fender to reduce mud spray and a larger front fender for better coverage.",
+      "Stock Equivalent": "Minimal OEM front mudguard and short rear fender (limited splash protection).",
+      "Sourcing Option 1 (Price - Vendor)": "$23.99 – Skrmod (45 cm extended rear mudguard):contentReference[oaicite:9]{index=9}",
+      "Sourcing Option 2 (Price - Vendor)": "$23.00 – DirtyBike/American SurRon (\"Fat Boy\" wide front fender):contentReference[oaicite:10]{index=10}",
+      "Notes on Quality/Compatibility Tradeoffs": "Stock fenders often let mud and water hit the rider. An extended rear fender is a “must-have” to stop mud spray:contentReference[oaicite:11]{index=11} – affordable plastic extensions (e.g. Skrmod) add length and strength to the stock design. Wider front fenders (like the DirtyBike “Fat Boy”) protect the fork and rider from front tire throw. Higher-end fenders may integrate metal reinforcement for durability:contentReference[oaicite:12]{index=12}. All fender upgrades bolt onto existing mounts and are purely physical, so they are compatible with any voltage (no electrical factor)."
+    },
+    {
+      "Category": "Body – Seat",
+      "Part Name & Details": "Comfort/Extended Seat – Replacement saddle with thicker foam or longer profile for improved comfort and control. Options include taller seats with extra padding or MX-style extended seats covering the battery for better rider mobility.",
+      "Stock Equivalent": "Sur-Ron OEM seat (low profile, firm foam).",
+      "Sourcing Option 1 (Price - Vendor)": "$94.99 – GritShift (EBikeZilla upgraded plush seat):contentReference[oaicite:13]{index=13}",
+      "Sourcing Option 2 (Price - Vendor)": "~$160 – Race Spec (MX long seat kit):contentReference[oaicite:14]{index=14}",
+      "Notes on Quality/Compatibility Tradeoffs": "The stock saddle is notoriously stiff:contentReference[oaicite:15]{index=15}. Upgraded comfort seats add height (∼1\" thicker foam) and better weight distribution, helping to prevent soreness on long rides:contentReference[oaicite:16]{index=16}. Extended “MX” seats (e.g. Race Spec) raise the seating position and provide more surface area for knee grip, greatly improving control during aggressive riding:contentReference[oaicite:17]{index=17}. However, taller seats can necessitate handlebar risers for ergonomics:contentReference[oaicite:18]{index=18} and are costlier. All seat upgrades attach to the stock subframe with no electrical changes, so they fit both 60 V and 72 V builds."
+    },
+    {
+      "Category": "Controls – Foot Pegs",
+      "Part Name & Details": "Wide Foot Pegs (Rider Footrests) – Larger CNC-machined pegs that replace the small stock footrests. These provide a broader platform (often ~75×100 mm) with aggressive pins for better boot grip off-road.",
+      "Stock Equivalent": "Sur-Ron OEM pegs (narrow steel folding pegs).",
+      "Sourcing Option 1 (Price - Vendor)": "$39.99 – NiceCNC (enlarged aluminum foot peg pair):contentReference[oaicite:19]{index=19}",
+      "Sourcing Option 2 (Price - Vendor)": "$109.00 – Warp9 Racing (billet wide foot pegs):contentReference[oaicite:20]{index=20}",
+      "Notes on Quality/Compatibility Tradeoffs": "The slim stock pegs can feel insecure underfoot. Wider aftermarket pegs offer much more surface area and replaceable grip pins for traction:contentReference[oaicite:21]{index=21}, improving rider confidence and comfort. Budget pegs (e.g. NiceCNC) use decent aluminum alloys, while premium pegs (like Warp9 or Prickly) use higher-grade 7075-T6 aluminum and boast the absolute widest platform:contentReference[oaicite:22]{index=22} for extreme riders. All these pegs mount to the existing brackets (some riders also add lowering brackets for ergonomics). No electrical considerations—peg upgrades are compatible with any setup (60 V or 72 V)."
+    }
+  ]
+  

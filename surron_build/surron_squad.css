@@ -116,6 +116,7 @@
     border-top: 3px solid transparent;
     box-shadow: var(--squad-shadow);
     cursor: pointer;
+    overflow: hidden;
 }
 
 .squad-member:hover {
@@ -182,6 +183,36 @@
     top: -15px;
     left: -10px;
     opacity: 0.2;
+}
+
+/* Character Profile Image Styling */
+.member-profile {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.member-profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.squad-member:hover .member-profile img {
+    transform: scale(1.05);
+}
+
+.member-details {
+    position: relative;
+    z-index: 1;
 }
 
 /* Parts styling */
@@ -696,6 +727,10 @@
     
     .surron-squad-theme h1 {
         font-size: 2.5rem;
+    }
+    
+    .member-profile {
+        height: 180px;
     }
 }
 

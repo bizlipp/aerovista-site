@@ -1,91 +1,90 @@
 [
-    {
-      "Category": "Frame",
-      "Part Name & Details": "Sur-Ron Light Bee Main Frame + Swingarm Kit – Aluminum alloy chassis including main frame, rear swingarm, and seat subframe.",
-      "Stock Equivalent": "Sur-Ron Light Bee X OEM frame (same components)",
-      "Sourcing Option 1 (Price - Vendor)": "$1,300 – FactoryZ (OEM full frame kit) factoryz.co",
-      "Sourcing Option 2 (Price - Vendor)": "$1,190 – SurRonshop (OEM main frame only) surronshop.world",
-      "Notes on Quality/Compatibility Tradeoffs": "OEM quality frame. Full kit includes all frame sections; buying main frame alone (second option) requires purchasing the swingarm separately. The OEM frame is robust; no known \"high-performance\" alternative frame, but used or clone frames can save cost with possible trade-offs in condition."
-    },
-    {
-      "Category": "Motor",
-      "Part Name & Details": "Sur-Ron Mid-Drive Motor (Stock) – 3000W nominal BLDC motor (peak ~6 kW) with built-in reduction for chain/belt drive.",
-      "Stock Equivalent": "Sur-Ron Light Bee X stock motor (6 kW peak)",
-      "Sourcing Option 1 (Price - Vendor)": "$650 – Luna Cycle (OEM Sur-Ron motor assembly) lunacycle.com",
-      "Sourcing Option 2 (Price - Vendor)": "$1,059 – KO Moto Sur-Ron Upgrade Motor ko-moto.com",
-      "Notes on Quality/Compatibility Tradeoffs": "Stock motor is reliable for ~6–8 kW bursts. The KO upgrade motor allows far higher power (10–12 kW or more) with improved torque and cooling, but at a much higher cost. Note that the upgraded motor may require an upgraded controller and careful setup."
-    },
-    {
-      "Category": "Battery",
-      "Part Name & Details": "72V Lithium Battery Pack (Internal BMS) – 20s Li-ion pack designed to fit in frame, ~3–4 kWh capacity (e.g. 45–60Ah).",
-      "Stock Equivalent": "Sur-Ron stock 60V 32Ah battery (20s upgrade needed)",
-      "Sourcing Option 1 (Price - Vendor)": "$1,599 – ChiBatterySystems 'Gladiator 72V 45Ah' (upgrade pack) chibatterysystems.com",
-      "Sourcing Option 2 (Price - Vendor)": "$2,199 – EBMX 72V 42Ah 'Worx' Battery (high-discharge pack) parts.electriccyclerider.com",
-      "Notes on Quality/Compatibility Tradeoffs": "A 72V pack provides higher voltage for more speed/power but must fit the frame. ChiBattery’s 45Ah pack is slightly lower cost per capacity and fits the stock tray, while EBMX’s 42Ah pack is a premium build tuned for high-discharge applications. Higher capacity (Ah) gives longer range but adds weight – be sure the BMS and dimensions match the frame."
-    },
-    {
-      "Category": "Controller",
-      "Part Name & Details": "Programmable Sine-Wave Controller – High-performance motor controller capable of 72V input and custom tuning.",
-      "Stock Equivalent": "Sur-Ron X stock 60V controller (not 72V-compatible)",
-      "Sourcing Option 1 (Price - Vendor)": "$749 – GLE/ASI BAC4000 12kW Kit (plug-and-play for Sur-Ron) glengineering.co",
-      "Sourcing Option 2 (Price - Vendor)": "$343 – Sabvoton SVMC72200 (72V 200A controller) cnqsmotor.com",
-      "Notes on Quality/Compatibility Tradeoffs": "The BAC4000 kit offers refined throttle control, Bluetooth tuning, and plug-and-play installation, while the Sabvoton SVMC72200 is a more budget-oriented 72V controller with strong output (up to ~12 kW) but may require manual tuning and extra wiring integration."
-    },
-    {
-      "Category": "Suspension – Front",
-      "Part Name & Details": "Inverted Front Fork (USD) – e.g. 37 mm stanchion dual-crown fork with ~8\" travel, adjustable damping.",
-      "Stock Equivalent": "Fast Ace RS or RST Killah fork (stock base model)",
-      "Sourcing Option 1 (Price - Vendor)": "$599 – FastAce ALX13 RC 2.0 Fork (37 mm, adjustable) chargedcycleworks.com",
-      "Sourcing Option 2 (Price - Vendor)": "~$1,395 – Manitou Dorado Expert 203 mm Fork (premium inverted DH fork) chainedandcharged.com",
-      "Notes on Quality/Compatibility Tradeoffs": "The FastAce ALX13 offers a significant upgrade over stock with tunable damping suitable for heavier e-bike use, while the Manitou Dorado provides top-tier performance for aggressive riding. Verify compatibility with the 20 mm axle and rotor options (203–220 mm)."
-    },
-    {
-      "Category": "Suspension – Rear",
-      "Part Name & Details": "Rear Shock (Coil-Over) – 250–270 mm eye-to-eye length shock with a spring (e.g. 450 lb/in rate), rebound and preload adjustable.",
-      "Stock Equivalent": "DNM RCP-2 coil shock (cheap stock unit)",
-      "Sourcing Option 1 (Price - Vendor)": "$199 – DNM Burner RCP2S Shock 450 lb spring (OEM replacement) factoryz.co",
-      "Sourcing Option 2 (Price - Vendor)": "$649 – Fox DHX2 Coil Shock 267 mm (high-end 2-way adjustable) goldenmotor.bike",
-      "Notes on Quality/Compatibility Tradeoffs": "The DNM shock is an affordable option for moderate riding, whereas the Fox DHX2 offers advanced damping, better bump absorption and tuning—ideal for high-performance setups but at greater cost and with stricter spring/linkage requirements."
-    },
-    {
-      "Category": "Brakes",
-      "Part Name & Details": "Hydraulic Disc Brake Set (Front & Rear) – 4-piston calipers with 203–220 mm rotors and brake levers with motor cut-off switch.",
-      "Stock Equivalent": "Tektro Auriga 2-piston e-bike brakes (stock)",
-      "Sourcing Option 1 (Price - Vendor)": "~$440 – Magura MT5e Brake Set (2× $219 kits for front & rear) goldenmotor.bike",
-      "Sourcing Option 2 (Price - Vendor)": "~$520 – Hope Tech 4 V4 Brake Set (2× $260, front & rear) masherz.com",
-      "Notes on Quality/Compatibility Tradeoffs": "Stock brakes are marginal for 72V builds. Magura MT5e brakes offer strong stopping power with integrated features, while Hope Tech 4 V4 provides top-of-the-line performance with alloy construction and higher heat capacity."
-    },
-    {
-      "Category": "Wheels",
-      "Part Name & Details": "Wheel Set (Spoked) – 19\" front and 19\" rear rims (or 16\" rear for improved acceleration), laced to hubs with 32–36 spokes, with off-road tires.",
-      "Stock Equivalent": "Sur-Ron LBX 19\" alloy wheels w/ 70/100-19 tires",
-      "Sourcing Option 1 (Price - Vendor)": "$375 – Sur-Ron OEM 19\" Wheel Set (Front+Rear, with tires) lunacycle.com",
-      "Sourcing Option 2 (Price - Vendor)": "$825 – Warp9 Upgraded Wheels 16\" rear / 19\" front (set, no tires) tbelectricmoto.com",
-      "Notes on Quality/Compatibility Tradeoffs": "OEM wheels are cost-effective with basic CST tires but can dent under heavy abuse. The Warp9 set uses stronger, lighter rims for improved performance, though tires/rotors may need to be purchased separately."
-    },
-    {
-      "Category": "Electronics – Throttle & Controls",
-      "Part Name & Details": "Throttle & Controls – Hall-effect twist throttle (e.g. half-twist grip) with basic display/ignition; includes a recommended keyed on/off switch or power relay.",
-      "Stock Equivalent": "Sur-Ron OEM electronic throttle + key switch",
-      "Sourcing Option 1 (Price - Vendor)": "$36 – Sur-Ron OEM Twist Throttle (hall sensor type) lunacycle.com",
-      "Sourcing Option 2 (Price - Vendor)": "$125 – Domino Twist Throttle (upgrade, DIY wiring) chargedcycleworks.com",
-      "Notes on Quality/Compatibility Tradeoffs": "The OEM throttle delivers basic, reliable performance but can feel loose. The Domino option provides a shorter, sturdier feel with finer control, though it may need DIY wiring or an adapter."
-    },
-    {
-      "Category": "Electronics – Wiring",
-      "Part Name & Details": "Main Wiring Harness – Complete loom connecting battery, controller, motor, throttle, brakes, and lights; includes high-current cables and connectors (e.g. XT90 or QS8).",
-      "Stock Equivalent": "Sur-Ron stock wiring harness (60V rated)",
-      "Sourcing Option 1 (Price - Vendor)": "$36 – Aftermarket OEM-Style Harness (Light Bee X) radmotousa.com",
-      "Sourcing Option 2 (Price - Vendor)": "$100 – Chi Battery Systems Heavy-Duty Harness (72V upgrade) chibatterysystems.com",
-      "Notes on Quality/Compatibility Tradeoffs": "The stock harness is adequate for 60V setups, but for a 72V build a heavier gauge or upgraded harness is recommended to safely handle higher current and reduce voltage sag."
-    },
-    {
-      "Category": "Charger",
-      "Part Name & Details": "72V Charger (Li-ion) – Appropriate 84V output charger for 20s battery with a CC/CV profile, aluminum case, and cooling.",
-      "Stock Equivalent": "Sur-Ron 67.2V stock charger (not usable for 72V)",
-      "Sourcing Option 1 (Price - Vendor)": "$115 – Chi 84V 5A Charger (standard portable charger) chibatterysystems.com",
-      "Sourcing Option 2 (Price - Vendor)": "$230 – Chi 84V 30A 'Rapid' Charger (fast charger, 110–220V) chibatterysystems.com",
-      "Notes on Quality/Compatibility Tradeoffs": "A dedicated 72V (84V max) charger is required. The 5A option is budget-friendly and slower (8–10 hours to fully charge a ~45Ah pack), while the 30A charger offers rapid charging (2–3 hours) but may stress the battery and require additional power considerations."
-    }
-  ]
-  
+  {
+    "Category": "Frame",
+    "Part Name & Details": "Sur-Ron Light Bee Main Frame + Swingarm Kit – Aluminum alloy chassis including main frame, rear swingarm, and seat subframe.",
+    "Stock Equivalent": "Sur-Ron Light Bee X OEM frame (same components)",
+    "Sourcing Option 1 (Price - Vendor)": "$1,300 – FactoryZ (OEM full frame kit) factoryz.co",
+    "Sourcing Option 2 (Price - Vendor)": "$1,190 – SurRonshop (OEM main frame only) surronshop.world",
+    "Notes on Quality/Compatibility Tradeoffs": "OEM quality frame. Full kit includes all frame sections; buying main frame alone (second option) requires purchasing the swingarm separately. The OEM frame is robust; no known \"high-performance\" alternative frame, but used or clone frames can save cost with possible trade-offs in condition."
+  },
+  {
+    "Category": "Motor",
+    "Part Name & Details": "Sur-Ron Mid-Drive Motor (Stock) – 3000W nominal BLDC motor (peak ~6 kW) with built-in reduction for chain/belt drive.",
+    "Stock Equivalent": "Sur-Ron Light Bee X stock motor (6 kW peak)",
+    "Sourcing Option 1 (Price - Vendor)": "$650 – Luna Cycle (OEM Sur-Ron motor assembly) lunacycle.com",
+    "Sourcing Option 2 (Price - Vendor)": "$1,059 – KO Moto Sur-Ron Upgrade Motor ko-moto.com",
+    "Notes on Quality/Compatibility Tradeoffs": "Stock motor is reliable for ~6–8 kW bursts. The KO upgrade motor allows far higher power (10–12 kW or more) with improved torque and cooling, but at a much higher cost. Note that the upgraded motor may require an upgraded controller and careful setup."
+  },
+  {
+    "Category": "Battery",
+    "Part Name & Details": "72V Lithium Battery Pack (Internal BMS) – 20s Li-ion pack designed to fit in frame, ~3–4 kWh capacity (e.g. 45–60Ah).",
+    "Stock Equivalent": "Sur-Ron stock 60V 32Ah battery (20s upgrade needed)",
+    "Sourcing Option 1 (Price - Vendor)": "$1,599 – ChiBatterySystems 'Gladiator 72V 45Ah' (upgrade pack) chibatterysystems.com",
+    "Sourcing Option 2 (Price - Vendor)": "$2,199 – EBMX 72V 42Ah 'Worx' Battery (high-discharge pack) parts.electriccyclerider.com",
+    "Notes on Quality/Compatibility Tradeoffs": "A 72V pack provides higher voltage for more speed/power but must fit the frame. ChiBattery’s 45Ah pack is slightly lower cost per capacity and fits the stock tray, while EBMX’s 42Ah pack is a premium build tuned for high-discharge applications. Higher capacity (Ah) gives longer range but adds weight – be sure the BMS and dimensions match the frame."
+  },
+  {
+    "Category": "Controller",
+    "Part Name & Details": "Programmable Sine-Wave Controller – High-performance motor controller capable of 72V input and custom tuning.",
+    "Stock Equivalent": "Sur-Ron X stock 60V controller (not 72V-compatible)",
+    "Sourcing Option 1 (Price - Vendor)": "$749 – GLE/ASI BAC4000 12kW Kit (plug-and-play for Sur-Ron) glengineering.co",
+    "Sourcing Option 2 (Price - Vendor)": "$343 – Sabvoton SVMC72200 (72V 200A controller) cnqsmotor.com",
+    "Notes on Quality/Compatibility Tradeoffs": "The BAC4000 kit offers refined throttle control, Bluetooth tuning, and plug-and-play installation, while the Sabvoton SVMC72200 is a more budget-oriented 72V controller with strong output (up to ~12 kW) but may require manual tuning and extra wiring integration."
+  },
+  {
+    "Category": "Suspension – Front",
+    "Part Name & Details": "Inverted Front Fork (USD) – e.g. 37 mm stanchion dual-crown fork with ~8\" travel, adjustable damping.",
+    "Stock Equivalent": "Fast Ace RS or RST Killah fork (stock base model)",
+    "Sourcing Option 1 (Price - Vendor)": "$599 – FastAce ALX13 RC 2.0 Fork (37 mm, adjustable) chargedcycleworks.com",
+    "Sourcing Option 2 (Price - Vendor)": "~$1,395 – Manitou Dorado Expert 203 mm Fork (premium inverted DH fork) chainedandcharged.com",
+    "Notes on Quality/Compatibility Tradeoffs": "The FastAce ALX13 offers a significant upgrade over stock with tunable damping suitable for heavier e-bike use, while the Manitou Dorado provides top-tier performance for aggressive riding. Verify compatibility with the 20 mm axle and rotor options (203–220 mm)."
+  },
+  {
+    "Category": "Suspension – Rear",
+    "Part Name & Details": "Rear Shock (Coil-Over) – 250–270 mm eye-to-eye length shock with a spring (e.g. 450 lb/in rate), rebound and preload adjustable.",
+    "Stock Equivalent": "DNM RCP-2 coil shock (cheap stock unit)",
+    "Sourcing Option 1 (Price - Vendor)": "$199 – DNM Burner RCP2S Shock 450 lb spring (OEM replacement) factoryz.co",
+    "Sourcing Option 2 (Price - Vendor)": "$649 – Fox DHX2 Coil Shock 267 mm (high-end 2-way adjustable) goldenmotor.bike",
+    "Notes on Quality/Compatibility Tradeoffs": "The DNM shock is an affordable option for moderate riding, whereas the Fox DHX2 offers advanced damping, better bump absorption and tuning—ideal for high-performance setups but at greater cost and with stricter spring/linkage requirements."
+  },
+  {
+    "Category": "Brakes",
+    "Part Name & Details": "Hydraulic Disc Brake Set (Front & Rear) – 4-piston calipers with 203–220 mm rotors and brake levers with motor cut-off switch.",
+    "Stock Equivalent": "Tektro Auriga 2-piston e-bike brakes (stock)",
+    "Sourcing Option 1 (Price - Vendor)": "~$440 – Magura MT5e Brake Set (2× $219 kits for front & rear) goldenmotor.bike",
+    "Sourcing Option 2 (Price - Vendor)": "~$520 – Hope Tech 4 V4 Brake Set (2× $260, front & rear) masherz.com",
+    "Notes on Quality/Compatibility Tradeoffs": "Stock brakes are marginal for 72V builds. Magura MT5e brakes offer strong stopping power with integrated features, while Hope Tech 4 V4 provides top-of-the-line performance with alloy construction and higher heat capacity."
+  },
+  {
+    "Category": "Wheels",
+    "Part Name & Details": "Wheel Set (Spoked) – 19\" front and 19\" rear rims (or 16\" rear for improved acceleration), laced to hubs with 32–36 spokes, with off-road tires.",
+    "Stock Equivalent": "Sur-Ron LBX 19\" alloy wheels w/ 70/100-19 tires",
+    "Sourcing Option 1 (Price - Vendor)": "$375 – Sur-Ron OEM 19\" Wheel Set (Front+Rear, with tires) lunacycle.com",
+    "Sourcing Option 2 (Price - Vendor)": "$825 – Warp9 Upgraded Wheels 16\" rear / 19\" front (set, no tires) tbelectricmoto.com",
+    "Notes on Quality/Compatibility Tradeoffs": "OEM wheels are cost-effective with basic CST tires but can dent under heavy abuse. The Warp9 set uses stronger, lighter rims for improved performance, though tires/rotors may need to be purchased separately."
+  },
+  {
+    "Category": "Electronics – Throttle & Controls",
+    "Part Name & Details": "Throttle & Controls – Hall-effect twist throttle (e.g. half-twist grip) with basic display/ignition; includes a recommended keyed on/off switch or power relay.",
+    "Stock Equivalent": "Sur-Ron OEM electronic throttle + key switch",
+    "Sourcing Option 1 (Price - Vendor)": "$36 – Sur-Ron OEM Twist Throttle (hall sensor type) lunacycle.com",
+    "Sourcing Option 2 (Price - Vendor)": "$125 – Domino Twist Throttle (upgrade, DIY wiring) chargedcycleworks.com",
+    "Notes on Quality/Compatibility Tradeoffs": "The OEM throttle delivers basic, reliable performance but can feel loose. The Domino option provides a shorter, sturdier feel with finer control, though it may need DIY wiring or an adapter."
+  },
+  {
+    "Category": "Electronics – Wiring",
+    "Part Name & Details": "Main Wiring Harness – Complete loom connecting battery, controller, motor, throttle, brakes, and lights; includes high-current cables and connectors (e.g. XT90 or QS8).",
+    "Stock Equivalent": "Sur-Ron stock wiring harness (60V rated)",
+    "Sourcing Option 1 (Price - Vendor)": "$36 – Aftermarket OEM-Style Harness (Light Bee X) radmotousa.com",
+    "Sourcing Option 2 (Price - Vendor)": "$100 – Chi Battery Systems Heavy-Duty Harness (72V upgrade) chibatterysystems.com",
+    "Notes on Quality/Compatibility Tradeoffs": "The stock harness is adequate for 60V setups, but for a 72V build a heavier gauge or upgraded harness is recommended to safely handle higher current and reduce voltage sag."
+  },
+  {
+    "Category": "Charger",
+    "Part Name & Details": "72V Charger (Li-ion) – Appropriate 84V output charger for 20s battery with a CC/CV profile, aluminum case, and cooling.",
+    "Stock Equivalent": "Sur-Ron 67.2V stock charger (not usable for 72V)",
+    "Sourcing Option 1 (Price - Vendor)": "$115 – Chi 84V 5A Charger (standard portable charger) chibatterysystems.com",
+    "Sourcing Option 2 (Price - Vendor)": "$230 – Chi 84V 30A 'Rapid' Charger (fast charger, 110–220V) chibatterysystems.com",
+    "Notes on Quality/Compatibility Tradeoffs": "A dedicated 72V (84V max) charger is required. The 5A option is budget-friendly and slower (8–10 hours to fully charge a ~45Ah pack), while the 30A charger offers rapid charging (2–3 hours) but may stress the battery and require additional power considerations."
+  }
+]

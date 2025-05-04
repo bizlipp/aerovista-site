@@ -38,11 +38,14 @@
     
     .squad-comment {
       margin-top: 0.75rem;
-      padding: 0.75rem;
+      padding: 0.75rem 0.75rem 0.75rem 40px;
       border-radius: 8px;
       font-family: 'Permanent Marker', cursive;
       font-size: 0.9rem;
       position: relative;
+      min-height: 50px;
+      display: flex;
+      align-items: center;
     }
     
     .squad-comment.charlie {
@@ -64,16 +67,26 @@
     }
     
     .squad-comment:before {
-      content: "🍕";
-      margin-right: 0.5rem;
+      content: "";
+      background-image: url('images/surron-charlie-alert-pose.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      width: 30px;
+      height: 30px;
+      position: absolute;
+      left: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 50%;
     }
     
     .squad-comment.billy:before {
-      content: "🎣";
+      background-image: url('images/surron-billy-fishing_ready-pose.png');
     }
     
     .squad-comment.tbd:before {
-      content: "🧠";
+      background-image: url('images/surron-tbd-terminal-ready.png');
     }
     
     #total-price {
@@ -156,22 +169,38 @@
     <h1>Surron Squad 72V Build Selector</h1>
     <p class="subtitle">Choose your parts & pretend you're as cool as the squad</p>
     <a href="surron_squad.html" class="btn">← Back to Squad HQ</a>
+    <a href="saved_builds.html" class="btn">💾 Saved Builds</a>
   </header>
 
   <main>
     <section id="build-intro">
       <div class="squad-boxes">
         <div class="squad-member charlie">
-          <h3><span class="member-icon">🍕</span>Charlie <span class="nickname">"Throttle"</span></h3>
-          <p class="quote">"Let's overvolt it. What's the worst that could happen? Third-degree burns are just spicy memories."</p>
+          <div class="member-profile">
+            <img src="images/surron-charlie-alert-pose.png" alt="Charlie 'Throttle' holding a pizza box and pointing dramatically">
+          </div>
+          <div class="member-details">
+            <h3><span class="member-icon">🍕</span>Charlie <span class="nickname">"Throttle"</span></h3>
+            <p class="quote">"Let's overvolt it. What's the worst that could happen? Third-degree burns are just spicy memories."</p>
+          </div>
         </div>
         <div class="squad-member billy">
-          <h3><span class="member-icon">🎣</span>Billy <span class="nickname">"Baggin's"</span></h3>
-          <p class="quote">"I'd rather fish, but I guess we're building bikes. Again."</p>
+          <div class="member-profile">
+            <img src="images/surron-billy-fishing_ready-pose.png" alt="Billy 'Baggin's' with fishing rod ready to fish">
+          </div>
+          <div class="member-details">
+            <h3><span class="member-icon">🎣</span>Billy <span class="nickname">"Baggin's"</span></h3>
+            <p class="quote">"I'd rather fish, but I guess we're building bikes. Again."</p>
+          </div>
         </div>
         <div class="squad-member tbd">
-          <h3><span class="member-icon">🧠</span>TBD <span class="nickname">"TBD"</span></h3>
-          <p class="quote">"Parts compatibility matrix loaded. Efficiency optimization at 97.3%."</p>
+          <div class="member-profile">
+            <img src="images/surron-tbd-terminal-ready.png" alt="TBD 'TBD' working on a laptop with perfect beard">
+          </div>
+          <div class="member-details">
+            <h3><span class="member-icon">🧠</span>TBD <span class="nickname">"TBD"</span></h3>
+            <p class="quote">"Parts compatibility matrix loaded. Efficiency optimization at 97.3%."</p>
+          </div>
         </div>
       </div>
     </section>
@@ -382,6 +411,9 @@
         });
 
         updateSummary();
+        
+        // Check if we're coming from the main build page with selections
+        checkForPartSelections();
       } catch (error) {
         console.error("Error loading parts:", error);
         document.getElementById("error-message").style.display = "block";
@@ -429,6 +461,194 @@
       // Handle share button
       document.getElementById("share-build").addEventListener("click", shareBuild);
     });
+
+    function loadSavedBuilds() {
+      try {
+        // Check if we have a loadBuild parameter in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const loadBuildIndex = urlParams.get('loadBuild');
+        
+        if (loadBuildIndex !== null) {
+          // We're loading a specific build from the saved builds page
+          const savedBuilds = JSON.parse(localStorage.getItem('surronSquadBuilds') || '[]');
+          
+          if (savedBuilds.length > 0 && savedBuilds[loadBuildIndex]) {
+            const buildToLoad = savedBuilds[loadBuildIndex];
+            
+            // Set the build name
+            document.getElementById('build-name').value = buildToLoad.name;
+            
+            // Set the selections based on part prices
+            const selects = document.querySelectorAll('#parts-select select');
+            
+            buildToLoad.parts.forEach(savedPart => {
+              // Find the select element for this category
+              const categorySelect = Array.from(selects).find(
+                select => select.dataset.category === savedPart.category
+              );
+              
+              if (categorySelect) {
+                // Find the option with the matching price
+                const options = Array.from(categorySelect.options);
+                const matchingOption = options.find(
+                  option => Math.abs(parseFloat(option.value) - savedPart.price) < 0.01
+                );
+                
+                if (matchingOption) {
+                  categorySelect.value = matchingOption.value;
+                }
+              }
+            });
+            
+            // Update the summary to reflect the loaded build
+            updateSummary();
+            
+            // Show a success message
+            alert(`"${buildToLoad.name}" loaded successfully!`);
+            
+            return; // Exit early, we've loaded the build
+          }
+        }
+        
+        // If we didn't load a specific build, check if we should suggest loading one
+        const savedBuilds = JSON.parse(localStorage.getItem('surronSquadBuilds') || '[]');
+        
+        if (savedBuilds.length > 0 && confirm('You have saved builds. Would you like to load your most recent build?')) {
+          // Get most recent build
+          const mostRecent = savedBuilds[savedBuilds.length - 1];
+          
+          // Set the build name
+          document.getElementById('build-name').value = mostRecent.name;
+          
+          // TODO: Set the selections based on part names
+          // This would require matching the part categories and options
+          
+          // Update the summary
+          if (typeof updateSummary === 'function') {
+            updateSummary();
+          }
+        }
+      } catch (error) {
+        console.error('Error loading saved builds:', error);
+      }
+    }
+    
+    // Function to check for parts selections from the main build page
+    function checkForPartSelections() {
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromSelection = urlParams.get('fromSelection');
+        
+        if (fromSelection === 'true') {
+          // Get selected parts from localStorage
+          const selectedParts = JSON.parse(localStorage.getItem('selectedSurronParts') || '[]');
+          
+          if (selectedParts.length > 0) {
+            // Map the selected parts to the corresponding categories
+            const partCategoryMap = {
+              0: 'Frame', // Frame & Chassis maps to Frame
+              1: 'Motor',
+              2: 'Battery',
+              3: 'Controller',
+              4: 'Suspension – Front', // Suspension maps to Front Suspension (simplified)
+              5: 'Brakes',
+              7: 'Wheels', // Wheels & Tires maps to Wheels
+              8: 'Electronics – Throttle & Controls', // Electrical Components maps to Electronics
+              9: 'Charger'
+            };
+            
+            // Get all select elements
+            const selects = document.querySelectorAll('#parts-select select');
+            
+            // For each selected part, select the corresponding option (default to option 1)
+            selectedParts.forEach(partIndex => {
+              const mappedCategory = partCategoryMap[partIndex];
+              
+              if (mappedCategory) {
+                // Find the select for this category
+                const categorySelect = Array.from(selects).find(
+                  select => select.dataset.category === mappedCategory
+                );
+                
+                if (categorySelect && categorySelect.options.length > 0) {
+                  // Default to first option (typically cheaper)
+                  categorySelect.selectedIndex = 0;
+                }
+              }
+            });
+            
+            // Set a default build name that includes the number of selected components
+            document.getElementById('build-name').value = `Custom ${selectedParts.length}-Part Build`;
+            
+            // Update the summary
+            updateSummary();
+            
+            // Show success message
+            alert(`Your selected components (${selectedParts.length}) have been loaded! Review and customize your build.`);
+          }
+        }
+      } catch (error) {
+        console.error('Error processing selected parts:', error);
+      }
+    }
+    
+    function saveBuild() {
+      try {
+        // Get build name
+        const buildName = document.getElementById('build-name').value.trim();
+        if (!buildName) {
+          alert('Please enter a name for your build!');
+          return;
+        }
+        
+        // Get all selected parts
+        const selections = document.querySelectorAll('#parts-select select');
+        const parts = [];
+        
+        selections.forEach(sel => {
+          const category = sel.dataset.category;
+          const option = sel.options[sel.selectedIndex];
+          const price = parseFloat(option.value);
+          
+          parts.push({
+            category: category,
+            option: option.textContent,
+            price: price
+          });
+        });
+        
+        // Calculate total price
+        const totalPrice = parts.reduce((sum, part) => sum + part.price, 0);
+        
+        // Create build object
+        const build = {
+          name: buildName,
+          parts: parts,
+          totalPrice: totalPrice,
+          date: new Date().toISOString()
+        };
+        
+        // Get existing builds or create empty array
+        const savedBuilds = JSON.parse(localStorage.getItem('surronSquadBuilds') || '[]');
+        
+        // Add new build
+        savedBuilds.push(build);
+        
+        // Save to localStorage
+        localStorage.setItem('surronSquadBuilds', JSON.stringify(savedBuilds));
+        
+        // Show confirmation
+        alert(`"${buildName}" has been saved to your build library!`);
+        
+      } catch (error) {
+        console.error('Error saving build:', error);
+        alert('There was an error saving your build. Please try again.');
+      }
+    }
+    
+    function shareBuild() {
+      alert("The squad would love to see this build, but social sharing is coming in a future update. For now, save your build and show your friends on your device!");
+    }
   </script>
 </body>
 </html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surron Squad - Saved Builds Library</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=Permanent+Marker&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="surron_squad.css">
+  <style>
+    /* Saved builds page specific styles */
+    .build-card {
+      background-color: rgba(23, 23, 25, 0.7);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid var(--squad-primary);
+      box-shadow: var(--squad-shadow);
+      transition: transform 0.2s ease;
+    }
+    
+    .build-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .build-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--squad-border);
+    }
+    
+    .build-name {
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
+      color: var(--squad-primary);
+      margin: 0;
+    }
+    
+    .build-date {
+      font-size: 0.9rem;
+      color: var(--squad-secondary);
+    }
+    
+    .build-price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--squad-accent);
+      margin: 0.5rem 0;
+    }
+    
+    .parts-list {
+      list-style: none;
+      padding: 0;
+      margin: 1rem 0;
+    }
+    
+    .parts-list li {
+      padding: 0.5rem 0;
+      border-bottom: 1px dotted var(--squad-border);
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .parts-list li:last-child {
+      border-bottom: none;
+    }
+    
+    .build-card-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    
+    .btn-small {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .btn-delete {
+      background-color: #e63946;
+    }
+    
+    .btn-load {
+      background-color: var(--squad-accent);
+    }
+    
+    .btn-compare {
+      background-color: var(--squad-secondary);
+    }
+    
+    .comparison-view {
+      display: none;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .comparison-view.active {
+      display: grid;
+    }
+    
+    .squad-commentary {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background-color: rgba(23, 23, 25, 0.5);
+      border-radius: 12px;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      background-color: rgba(23, 23, 25, 0.5);
+      border-radius: 12px;
+      margin: 2rem 0;
+    }
+    
+    .empty-state h3 {
+      font-family: 'Bangers', cursive;
+      color: var(--squad-primary);
+      font-size: 2rem;
+    }
+    
+    .empty-state p {
+      color: var(--squad-text);
+      margin: 1rem 0;
+    }
+    
+    @media (max-width: 768px) {
+      .comparison-view {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .comment-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
+      object-fit: cover;
+      vertical-align: middle;
+    }
+    
+    .squad-comment {
+      margin-bottom: 1rem;
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .squad-comment.charlie {
+      background-color: rgba(230, 57, 70, 0.1);
+      border-left: 3px solid #e63946;
+    }
+    
+    .squad-comment.billy {
+      background-color: rgba(125, 130, 96, 0.1);
+      border-left: 3px solid #7d8260;
+    }
+    
+    .squad-comment.tbd {
+      background-color: rgba(38, 70, 83, 0.1);
+      border-left: 3px solid #264653;
+    }
+  </style>
+</head>
+<body class="surron-squad-theme">
+  <header>
+    <h1>Surron Squad - Build Library</h1>
+    <p class="subtitle">Your saved builds, squad-approved... or roasted mercilessly</p>
+    <div class="nav-buttons">
+      <a href="surron_squad.html" class="btn">← Back to Squad HQ</a>
+      <a href="buildpartsSelector.html" class="btn glow-effect">Build a New Sur-Ron</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Squad commentary section -->
+    <section id="squad-quotes">
+      <div class="squad-boxes">
+        <div class="squad-member charlie">
+          <div class="member-profile">
+            <img src="images/surron-charlie-alert-pose.png" alt="Charlie 'Throttle' pointing enthusiastically">
+          </div>
+          <div class="member-details">
+            <h3><span class="member-icon">🍕</span>Charlie <span class="nickname">"Throttle"</span></h3>
+            <p class="quote">"Your builds are like yearbooks. They document bad decisions and weird phases."</p>
+          </div>
+        </div>
+        <div class="squad-member billy">
+          <div class="member-profile">
+            <img src="images/surron-billy-fishing_ready-pose.png" alt="Billy 'Baggin's' with fishing rod">
+          </div>
+          <div class="member-details">
+            <h3><span class="member-icon">🎣</span>Billy <span class="nickname">"Baggin's"</span></h3>
+            <p class="quote">"I keep trying to save a build with a fishing rod holder. No one will add it."</p>
+          </div>
+        </div>
+        <div class="squad-member tbd">
+          <div class="member-profile">
+            <img src="images/surron-tbd-terminal-ready.png" alt="TBD 'TBD' on laptop">
+          </div>
+          <div class="member-details">
+            <h3><span class="member-icon">🧠</span>TBD <span class="nickname">"TBD"</span></h3>
+            <p class="quote">"Your build evolution indicates improving judgment. Statistically unusual."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filter and sort controls -->
+    <section id="build-controls">
+      <div class="controls-wrapper">
+        <div class="control-group">
+          <label for="sort-builds">Sort by:</label>
+          <select id="sort-builds" class="control-select">
+            <option value="date-desc">Newest First</option>
+            <option value="date-asc">Oldest First</option>
+            <option value="price-desc">Price (High to Low)</option>
+            <option value="price-asc">Price (Low to High)</option>
+            <option value="name">Name (A-Z)</option>
+          </select>
+        </div>
+        <button id="clear-all-builds" class="btn btn-delete">Clear All Builds</button>
+      </div>
+    </section>
+
+    <!-- Saved builds container -->
+    <section id="saved-builds-container">
+      <!-- This will be populated by JavaScript -->
+      <div class="empty-state" id="empty-state">
+        <h3>No Saved Builds Yet!</h3>
+        <p>You haven't saved any builds. Start by creating one in the Build Selector.</p>
+        <a href="buildpartsSelector.html" class="btn glow-effect">Create Your First Build</a>
+      </div>
+    </section>
+
+    <!-- Comparison view -->
+    <section id="comparison-section" class="comparison-view">
+      <div id="build-compare-1" class="build-card">
+        <h3 class="section-header">Select a build to compare</h3>
+      </div>
+      <div id="build-compare-2" class="build-card">
+        <h3 class="section-header">Select another build to compare</h3>
+      </div>
+    </section>
+
+    <!-- Squad commentary on builds -->
+    <section id="squad-commentary" class="squad-commentary">
+      <h2>Squad Analysis</h2>
+      <div id="squad-analysis">
+        <!-- Will be populated when builds are compared -->
+        <p>Select two builds to compare for the squad's detailed analysis.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="surron_squad.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedBuildsContainer = document.getElementById('saved-builds-container');
+      const emptyState = document.getElementById('empty-state');
+      const sortSelect = document.getElementById('sort-builds');
+      const clearAllButton = document.getElementById('clear-all-builds');
+      const comparisonSection = document.getElementById('comparison-section');
+      const compareSlot1 = document.getElementById('build-compare-1');
+      const compareSlot2 = document.getElementById('build-compare-2');
+      const squadAnalysis = document.getElementById('squad-analysis');
+      
+      // Load saved builds
+      function loadSavedBuilds() {
+        try {
+          // Get builds from localStorage
+          const savedBuilds = JSON.parse(localStorage.getItem('surronSquadBuilds') || '[]');
+          
+          // Check if we have any builds
+          if (savedBuilds.length === 0) {
+            emptyState.style.display = 'block';
+            return;
+          }
+          
+          // Hide empty state
+          emptyState.style.display = 'none';
+          
+          // Sort builds based on current selection
+          sortBuilds(savedBuilds);
+          
+          // Clear the container
+          savedBuildsContainer.innerHTML = '';
+          
+          // Add each build card
+          savedBuilds.forEach((build, index) => {
+            const buildCard = createBuildCard(build, index);
+            savedBuildsContainer.appendChild(buildCard);
+          });
+        } catch (error) {
+          console.error('Error loading builds:', error);
+          savedBuildsContainer.innerHTML = `
+            <div class="error-message" style="display: block;">
+              Error loading saved builds. ${error.message}
+            </div>
+          `;
+        }
+      }
+      
+      // Create a build card element
+      function createBuildCard(build, index) {
+        const card = document.createElement('div');
+        card.className = 'build-card';
+        card.dataset.index = index;
+        
+        // Format the date
+        const buildDate = new Date(build.date);
+        const formattedDate = buildDate.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+        
+        // Format the price
+        const formattedPrice = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        }).format(build.totalPrice);
+        
+        // Generate parts list HTML
+        let partsListHTML = '<ul class="parts-list">';
+        build.parts.forEach(part => {
+          partsListHTML += `
+            <li>
+              <span>${part.category}</span>
+              <span>${new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+              }).format(part.price)}</span>
+            </li>
+          `;
+        });
+        partsListHTML += '</ul>';
+        
+        // Create the card content
+        card.innerHTML = `
+          <div class="build-card-header">
+            <h3 class="build-name">${build.name}</h3>
+            <span class="build-date">${formattedDate}</span>
+          </div>
+          <div class="build-price">${formattedPrice}</div>
+          ${partsListHTML}
+          <div class="build-card-actions">
+            <button class="btn btn-small btn-load" data-action="load" data-index="${index}">Load Build</button>
+            <button class="btn btn-small btn-compare" data-action="compare" data-index="${index}">Compare</button>
+            <button class="btn btn-small btn-delete" data-action="delete" data-index="${index}">Delete</button>
+          </div>
+        `;
+        
+        // Add event listeners
+        const buttons = card.querySelectorAll('button');
+        buttons.forEach(button => {
+          button.addEventListener('click', handleBuildAction);
+        });
+        
+        return card;
+      }
+      
+      // Handle build card actions (load, delete, compare)
+      function handleBuildAction(event) {
+        const action = event.target.dataset.action;
+        const index = parseInt(event.target.dataset.index);
+        
+        // Get saved builds
+        const savedBuilds = JSON.parse(localStorage.getItem('surronSquadBuilds') || '[]');
+        const build = savedBuilds[index];
+        
+        switch(action) {
+          case 'load':
+            // Redirect to build selector with build data
+            window.location.href = `buildpartsSelector.html?loadBuild=${index}`;
+            break;
+            
+          case 'delete':
+            if (confirm(`Are you sure you want to delete "${build.name}"?`)) {
+              // Remove the build
+              savedBuilds.splice(index, 1);
+              
+              // Save back to localStorage
+              localStorage.setItem('surronSquadBuilds', JSON.stringify(savedBuilds));
+              
+              // Reload the builds
+              loadSavedBuilds();
+            }
+            break;
+            
+          case 'compare':
+            // Add to comparison view
+            addToComparison(build);
+            break;
+        }
+      }
+      
+      // Add a build to the comparison view
+      function addToComparison(build) {
+        // Show the comparison section
+        comparisonSection.classList.add('active');
+        
+        // Create the build comparison card
+        const buildCard = document.createElement('div');
+        
+        // Format the price
+        const formattedPrice = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        }).format(build.totalPrice);
+        
+        // Generate parts list HTML
+        let partsListHTML = '<ul class="parts-list">';
+        build.parts.forEach(part => {
+          partsListHTML += `
+            <li>
+              <span>${part.category}</span>
+              <span>${new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD'
+              }).format(part.price)}</span>
+            </li>
+          `;
+        });
+        partsListHTML += '</ul>';
+        
+        // Create the card content
+        buildCard.innerHTML = `
+          <div class="build-card-header">
+            <h3 class="build-name">${build.name}</h3>
+          </div>
+          <div class="build-price">${formattedPrice}</div>
+          ${partsListHTML}
+        `;
+        
+        // Check which comparison slot to fill
+        if (compareSlot1.querySelector('.build-name') === null) {
+          // First slot is empty
+          compareSlot1.innerHTML = '';
+          compareSlot1.appendChild(buildCard);
+        } else if (compareSlot2.querySelector('.build-name') === null) {
+          // Second slot is empty
+          compareSlot2.innerHTML = '';
+          compareSlot2.appendChild(buildCard);
+          
+          // Both slots are filled, generate comparison
+          generateComparison();
+        } else {
+          // Both slots are already filled, replace the first and shift
+          compareSlot1.innerHTML = compareSlot2.innerHTML;
+          compareSlot2.innerHTML = '';
+          compareSlot2.appendChild(buildCard);
+          
+          // Regenerate comparison
+          generateComparison();
+        }
+      }
+      
+      // Generate a comparison analysis
+      function generateComparison() {
+        const build1Name = compareSlot1.querySelector('.build-name').textContent;
+        const build2Name = compareSlot2.querySelector('.build-name').textContent;
+        
+        const build1Price = parseFloat(compareSlot1.querySelector('.build-price').textContent.replace(/[^0-9.-]+/g, ''));
+        const build2Price = parseFloat(compareSlot2.querySelector('.build-price').textContent.replace(/[^0-9.-]+/g, ''));
+        
+        // Determine which build is more expensive
+        const priceDiff = Math.abs(build1Price - build2Price);
+        const formattedPriceDiff = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD'
+        }).format(priceDiff);
+        
+        // Generate squad comments based on the comparison
+        let charlieComment, billyComment, tbdComment;
+        
+        if (build1Price > build2Price) {
+          charlieComment = `"${build1Name}" has the goods! ${formattedPriceDiff} more worth of SEND IT! That's like... ${Math.round(priceDiff/20)} pizzas worth of upgrades.`;
+          billyComment = `"${build2Name}" is the sensible choice. Save ${formattedPriceDiff} for fishing gear or bail money when riding with Charlie.`;
+          tbdComment = `"${build1Name}" provides ${(build1Price/build2Price*100-100).toFixed(1)}% increased performance potential over "${build2Name}". Cost efficiency analysis inconclusive.`;
+        } else if (build2Price > build1Price) {
+          charlieComment = `"${build2Name}" is where it's at! ${formattedPriceDiff} extra means ${Math.round(priceDiff/500)} more hospital visits worth of FUN!`;
+          billyComment = `"${build1Name}" makes more sense to me. That's ${formattedPriceDiff} you could spend on a nice tackle box.`;
+          tbdComment = `"${build2Name}" offers ${(build2Price/build1Price*100-100).toFixed(1)}% enhanced capabilities over "${build1Name}". ROI calculation requires usage data.`;
+        } else {
+          charlieComment = `Same price, different builds? One of them obviously needs more POWER!`;
+          billyComment = `Two builds at the same price point. One of them should have a fishing rod attachment.`;
+          tbdComment = `Identical investment with divergent component allocation. Interesting optimization problem.`;
+        }
+        
+        // Update squad analysis
+        squadAnalysis.innerHTML = `
+          <div class="squad-comment charlie">
+            <img src="images/surron-charlie-alert-pose.png" class="comment-avatar" alt="Charlie">
+            ${charlieComment}
+          </div>
+          <div class="squad-comment billy">
+            <img src="images/surron-billy-fishing_ready-pose.png" class="comment-avatar" alt="Billy">
+            ${billyComment}
+          </div>
+          <div class="squad-comment tbd">
+            <img src="images/surron-tbd-terminal-ready.png" class="comment-avatar" alt="TBD">
+            ${tbdComment}
+          </div>
+        `;
+      }
+      
+      // Sort builds based on selected option
+      function sortBuilds(builds) {
+        const sortType = sortSelect.value;
+        
+        switch(sortType) {
+          case 'date-desc':
+            builds.sort((a, b) => new Date(b.date) - new Date(a.date));
+            break;
+          case 'date-asc':
+            builds.sort((a, b) => new Date(a.date) - new Date(b.date));
+            break;
+          case 'price-desc':
+            builds.sort((a, b) => b.totalPrice - a.totalPrice);
+            break;
+          case 'price-asc':
+            builds.sort((a, b) => a.totalPrice - b.totalPrice);
+            break;
+          case 'name':
+            builds.sort((a, b) => a.name.localeCompare(b.name));
+            break;
+        }
+        
+        return builds;
+      }
+      
+      // Handle sort change
+      sortSelect.addEventListener('change', function() {
+        loadSavedBuilds();
+      });
+      
+      // Handle clear all builds
+      clearAllButton.addEventListener('click', function() {
+        if (confirm('Are you sure you want to delete ALL saved builds? This cannot be undone.')) {
+          localStorage.removeItem('surronSquadBuilds');
+          loadSavedBuilds();
+          
+          // Reset comparison
+          comparisonSection.classList.remove('active');
+          compareSlot1.innerHTML = '<h3 class="section-header">Select a build to compare</h3>';
+          compareSlot2.innerHTML = '<h3 class="section-header">Select another build to compare</h3>';
+          
+          squadAnalysis.innerHTML = '<p>Select two builds to compare for the squad\'s detailed analysis.</p>';
+        }
+      });
+      
+      // Load builds on page load
+      loadSavedBuilds();
+    });
+  </script>
+</body>
+</html> 
