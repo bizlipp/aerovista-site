@@ -102,7 +102,11 @@ class AdventureEngine {
               reputation: +3
             }
           }
-        ]
+        ],
+        rewards: {
+          character: "tbd",
+          relationship: 1
+        }
       },
       'parts-details': {
         background: "images/backgrounds/workshop-table.jpg",
@@ -124,7 +128,10 @@ class AdventureEngine {
               parts: +2
             }
           }
-        ]
+        ],
+        rewards: {
+          xp: 15
+        }
       },
       'late-night': {
         background: "images/backgrounds/workshop-night.jpg",
@@ -146,7 +153,11 @@ class AdventureEngine {
               reputation: +2
             }
           }
-        ]
+        ],
+        rewards: {
+          character: "billy",
+          relationship: 1
+        }
       },
       'pizza-response': {
         background: "images/backgrounds/workshop-table.jpg",
@@ -172,7 +183,12 @@ class AdventureEngine {
               reputation: +1
             }
           }
-        ]
+        ],
+        rewards: {
+          character: "charlie",
+          relationship: 2,
+          xp: 10
+        }
       },
       'transport-question': {
         background: "images/backgrounds/truck-loading.jpg",
@@ -197,7 +213,12 @@ class AdventureEngine {
             text: "\"Let's just focus on getting in first.\"",
             nextScene: "infiltration-plan"
           }
-        ]
+        ],
+        rewards: {
+          character: "billy",
+          relationship: 1,
+          xp: 15
+        }
       },
       'infiltration-plan': {
         background: "images/backgrounds/warehouse-exterior.jpg",
@@ -226,7 +247,12 @@ class AdventureEngine {
               reputation: +3
             }
           }
-        ]
+        ],
+        rewards: {
+          character: "tbd",
+          relationship: 1,
+          xp: 20
+        }
       },
       // More scenes would be defined here
       'side-entrance-choice': {
@@ -238,7 +264,10 @@ class AdventureEngine {
             text: "Continue...",
             nextScene: "inside-warehouse"
           }
-        ]
+        ],
+        rewards: {
+          xp: 25
+        }
       },
       'inside-warehouse': {
         background: "images/backgrounds/warehouse-interior.jpg",
@@ -263,7 +292,13 @@ class AdventureEngine {
               reputation: +2
             }
           }
-        ]
+        ],
+        rewards: {
+          character: "charlie",
+          relationship: 1,
+          xp: 30,
+          item: "basic_controller"
+        }
       },
       'gathering-parts': {
         background: "images/backgrounds/parts-collection.jpg",
@@ -295,6 +330,116 @@ class AdventureEngine {
               reputation: +3
             }
           }
+        ],
+        rewards: {
+          xp: 50,
+          currency: 100,
+          items: ["motor_part", "battery_cell", "controller"]
+        }
+      },
+      'help-tbd': {
+        background: "images/backgrounds/parts-collection.jpg",
+        speaker: "tbd",
+        text: "Your assistance is appreciated. I've identified the optimal controller components with 99.7% efficiency. These will be... satisfactory.",
+        choices: [
+          {
+            text: "Continue...",
+            nextScene: "escape-warehouse"
+          }
+        ],
+        rewards: {
+          character: "tbd",
+          relationship: 2,
+          xp: 40,
+          items: ["premium_controller", "display_unit"]
+        }
+      },
+      'help-billy': {
+        background: "images/backgrounds/parts-collection.jpg",
+        speaker: "billy",
+        text: "Thanks for the help. These motors will make solid builds. Grab that chromoly frame too - it'll handle Charlie's crazy riding without breaking.",
+        choices: [
+          {
+            text: "Continue...",
+            nextScene: "escape-warehouse"
+          }
+        ],
+        rewards: {
+          character: "billy",
+          relationship: 2,
+          xp: 40,
+          items: ["motor_part", "frame_kit"]
+        }
+      },
+      'help-charlie': {
+        background: "images/backgrounds/parts-collection.jpg",
+        speaker: "charlie",
+        text: "YES! That's the spirit! Grab everything shiny! This battery pack is INSANE - it'll push 100 amps continuous. We're gonna melt tires with this setup!",
+        choices: [
+          {
+            text: "Continue...",
+            nextScene: "escape-warehouse"
+          }
+        ],
+        rewards: {
+          character: "charlie",
+          relationship: 2,
+          xp: 40,
+          items: ["high_discharge_battery", "performance_controller"]
+        }
+      },
+      'escape-warehouse': {
+        background: "images/backgrounds/warehouse-exterior.jpg",
+        speaker: "narrator",
+        text: "With bags full of valuable parts, the squad makes a hasty exit. Billy's truck is loaded up, and you all speed away into the night. The heist was a success!",
+        choices: [
+          {
+            text: "\"That was actually fun!\"",
+            nextScene: "mission-complete"
+          },
+          {
+            text: "\"Let's never do this again.\"",
+            nextScene: "mission-complete"
+          },
+          {
+            text: "\"What's our next target?\"",
+            nextScene: "mission-complete",
+            effect: {
+              reputation: +5
+            }
+          }
+        ],
+        rewards: {
+          xp: 100,
+          currency: 250
+        }
+      },
+      'mission-complete': {
+        background: "images/backgrounds/workshop-night.jpg",
+        speaker: "charlie",
+        text: "Mission accomplished! With these parts, we can build the most insane Sur-Rons the world has ever seen. You're officially part of the Squad now!",
+        choices: [
+          {
+            text: "Return to HQ",
+            nextScene: "chapter-complete"
+          }
+        ],
+        rewards: {
+          quest_complete: "midnight_heist",
+          xp: 200,
+          currency: 500,
+          reputation: 10
+        }
+      },
+      'chapter-complete': {
+        background: "images/backgrounds/workshop-night.jpg",
+        speaker: "narrator",
+        text: "Congratulations! You've completed the first chapter of the Surron Squad adventure. Return to Squad HQ to continue your journey.",
+        choices: [
+          {
+            text: "Return to Squad HQ",
+            action: "returnToHQ"
+          }
         ]
       }
       // Additional scenes would continue the story
@@ -315,14 +460,64 @@ class AdventureEngine {
     this.repDisplay = document.getElementById('rep-stat');
     this.energyDisplay = document.getElementById('energy-stat');
     
+    // Level-up notification container
+    this.createLevelUpContainer();
+    
+    // Check if global player state exists
+    this.hasGlobalState = typeof window.playerState !== 'undefined';
+    
     // Initialize the game with the first scene
     this.init();
   }
   
   // Initialize the game
   init() {
+    // If we have global player state, check for saved adventure progress
+    if (this.hasGlobalState && window.playerState.adventureProgress) {
+      // If there's a saved current scene, use it
+      if (window.playerState.adventureProgress.currentScene) {
+        this.currentScene = window.playerState.adventureProgress.currentScene;
+      }
+      
+      // Update local stats from global player state
+      this.updateStatsFromGlobal();
+    }
+    
     this.loadScene(this.currentScene);
     this.updateStats();
+  }
+  
+  // Create level-up notification container
+  createLevelUpContainer() {
+    this.levelUpContainer = document.createElement('div');
+    this.levelUpContainer.className = 'level-up-notification';
+    this.levelUpContainer.style.display = 'none';
+    this.levelUpContainer.style.position = 'fixed';
+    this.levelUpContainer.style.top = '50%';
+    this.levelUpContainer.style.left = '50%';
+    this.levelUpContainer.style.transform = 'translate(-50%, -50%)';
+    this.levelUpContainer.style.background = 'rgba(0, 0, 0, 0.9)';
+    this.levelUpContainer.style.padding = '2rem';
+    this.levelUpContainer.style.borderRadius = '12px';
+    this.levelUpContainer.style.border = '3px solid var(--squad-neon)';
+    this.levelUpContainer.style.color = 'white';
+    this.levelUpContainer.style.textAlign = 'center';
+    this.levelUpContainer.style.zIndex = '1000';
+    this.levelUpContainer.style.boxShadow = '0 0 30px rgba(57, 255, 20, 0.5)';
+    document.body.appendChild(this.levelUpContainer);
+  }
+  
+  // Update local stats from global player state
+  updateStatsFromGlobal() {
+    if (!this.hasGlobalState) return;
+    
+    // Parts is now inventory count
+    this.playerState.parts = window.playerState.inventory.length;
+    
+    // Copy reputation
+    this.playerState.reputation = window.playerState.reputation;
+    
+    // Energy remains local (not stored in global state)
   }
   
   // Load a specific scene
@@ -339,6 +534,12 @@ class AdventureEngine {
     if (!scene) {
       console.error(`Scene ${sceneId} not found!`);
       return;
+    }
+    
+    // If we have global player state, mark this scene as the current scene
+    if (this.hasGlobalState) {
+      window.playerState.adventureProgress.currentScene = sceneId;
+      window.playerState.save();
     }
     
     // Set the background image
@@ -374,9 +575,25 @@ class AdventureEngine {
       button.textContent = choice.text;
       
       button.addEventListener('click', () => {
+        // Mark current scene as completed in global state
+        if (this.hasGlobalState && !window.playerState.adventureProgress.completedScenes.includes(sceneId)) {
+          window.playerState.completeScene(sceneId);
+        }
+        
         // Apply any effects from this choice
         if (choice.effect) {
           this.applyEffects(choice.effect);
+        }
+        
+        // Award rewards if this scene has them
+        if (scene.rewards) {
+          this.awardRewards(scene.rewards);
+        }
+        
+        // Handle special actions
+        if (choice.action === 'returnToHQ') {
+          window.location.href = 'squad-hq.html';
+          return;
         }
         
         // Move to the next scene
@@ -395,6 +612,11 @@ class AdventureEngine {
     
     if (effects.reputation !== undefined) {
       this.playerState.reputation += effects.reputation;
+      
+      // Also update global state if available
+      if (this.hasGlobalState) {
+        window.playerState.reputation += effects.reputation;
+      }
     }
     
     if (effects.energy !== undefined) {
@@ -405,6 +627,106 @@ class AdventureEngine {
     
     // Update the displayed stats
     this.updateStats();
+    
+    // Save global state if available
+    if (this.hasGlobalState) {
+      window.playerState.save();
+    }
+  }
+  
+  // Award rewards for completing a scene
+  awardRewards(rewards) {
+    // Only process rewards if we have global player state
+    if (!this.hasGlobalState) return;
+    
+    let levelUp = null;
+    
+    // Award XP
+    if (rewards.xp) {
+      levelUp = window.playerState.addXP(rewards.xp);
+    }
+    
+    // Award currency
+    if (rewards.currency) {
+      window.playerState.addCurrency(rewards.currency);
+    }
+    
+    // Award relationship points
+    if (rewards.character && rewards.relationship) {
+      window.playerState.changeRelationship(rewards.character, rewards.relationship);
+    }
+    
+    // Award items
+    if (rewards.item) {
+      window.playerState.addItem(rewards.item);
+    }
+    
+    // Award multiple items
+    if (rewards.items && Array.isArray(rewards.items)) {
+      rewards.items.forEach(item => window.playerState.addItem(item));
+    }
+    
+    // Complete quest
+    if (rewards.quest_complete) {
+      // In a real implementation, we'd have a more complex quest system
+      // For now, just mark it as completed
+      if (!window.playerState.completedMissions.includes(rewards.quest_complete)) {
+        window.playerState.completedMissions.push(rewards.quest_complete);
+      }
+    }
+    
+    // Save state
+    window.playerState.save();
+    
+    // Show level up notification if player leveled up
+    if (levelUp) {
+      this.showLevelUp(levelUp);
+    }
+  }
+  
+  // Show level up notification
+  showLevelUp(levelUp) {
+    // Build notification content
+    let content = `
+      <h2 style="color: var(--squad-neon); font-family: 'Bangers', cursive; font-size: 2rem; margin-top: 0;">LEVEL UP!</h2>
+      <p style="font-size: 1.5rem; margin-bottom: 1.5rem;">You've reached level ${levelUp.newLevel}</p>
+      <div style="text-align: left; margin-bottom: 1.5rem;">
+        <p style="font-weight: bold; color: var(--squad-neon);">Rewards:</p>
+        <ul style="list-style: none; padding-left: 1rem;">
+    `;
+    
+    if (levelUp.rewards.currency) {
+      content += `<li>🪙 ${levelUp.rewards.currency} SurCoins</li>`;
+    }
+    
+    if (levelUp.rewards.items && levelUp.rewards.items.length > 0) {
+      levelUp.rewards.items.forEach(item => {
+        content += `<li>📦 ${item.name}</li>`;
+      });
+    }
+    
+    if (levelUp.rewards.unlockedFeatures && levelUp.rewards.unlockedFeatures.length > 0) {
+      levelUp.rewards.unlockedFeatures.forEach(feature => {
+        let featureName = feature.replace(/_/g, ' ');
+        featureName = featureName.charAt(0).toUpperCase() + featureName.slice(1);
+        content += `<li>🔓 New Feature: ${featureName}</li>`;
+      });
+    }
+    
+    content += `
+        </ul>
+      </div>
+      <button id="close-level-up" style="background: var(--squad-neon); color: black; border: none; padding: 0.75rem 1.5rem; border-radius: 4px; font-weight: bold; font-size: 1.1rem; cursor: pointer;">AWESOME!</button>
+    `;
+    
+    // Set content and show notification
+    this.levelUpContainer.innerHTML = content;
+    this.levelUpContainer.style.display = 'block';
+    
+    // Add event listener to close button
+    document.getElementById('close-level-up').addEventListener('click', () => {
+      this.levelUpContainer.style.display = 'none';
+    });
   }
   
   // Update stat displays
@@ -423,6 +745,11 @@ class AdventureEngine {
     };
     
     localStorage.setItem('surronSquadAdventure', JSON.stringify(gameData));
+    
+    // Also save to global player state if available
+    if (this.hasGlobalState) {
+      window.playerState.save();
+    }
   }
   
   // Load saved game
@@ -465,21 +792,23 @@ class AdventureEngine {
 
 // Initialize the adventure engine when the document is loaded
 document.addEventListener('DOMContentLoaded', function() {
-  const adventure = new AdventureEngine();
-  
-  // Check for saved game
-  const hasSavedGame = adventure.loadGame();
-  
-  // If no saved game, start a new adventure
-  if (!hasSavedGame) {
-    adventure.loadScene('intro');
+  // Check if player state is already loaded
+  if (window.playerState) {
+    initializeAdventure();
+  } else {
+    // Wait for player state to be ready
+    document.addEventListener('playerStateReady', initializeAdventure);
   }
   
-  // Auto-save every 30 seconds
-  setInterval(() => {
-    adventure.saveGame();
-  }, 30000);
-  
-  // Make the adventure available globally for debugging
-  window.adventure = adventure;
+  function initializeAdventure() {
+    const adventure = new AdventureEngine();
+    
+    // Auto-save every 30 seconds
+    setInterval(() => {
+      adventure.saveGame();
+    }, 30000);
+    
+    // Make the adventure available globally for debugging
+    window.adventure = adventure;
+  }
 }); 

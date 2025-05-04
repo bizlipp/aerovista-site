@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surron Squad HQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=Permanent+Marker&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="surron_squad.css">
+  <style>
+    /* HQ-specific styles */
+    .hq-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .player-profile {
+      background-color: rgba(23, 23, 25, 0.7);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--squad-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .profile-details {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .profile-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: var(--squad-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+    }
+    
+    .profile-info h2 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.5rem;
+    }
+    
+    .profile-stats {
+      display: flex;
+      gap: 1.5rem;
+    }
+    
+    .stat-box {
+      text-align: center;
+    }
+    
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--squad-neon);
+    }
+    
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--squad-text);
+      opacity: 0.8;
+    }
+    
+    .xp-bar {
+      background-color: rgba(0, 0, 0, 0.3);
+      height: 8px;
+      border-radius: 4px;
+      width: 100%;
+      max-width: 200px;
+      margin-top: 0.5rem;
+    }
+    
+    .xp-fill {
+      height: 100%;
+      border-radius: 4px;
+      background-color: var(--squad-neon);
+      width: 0%;
+    }
+    
+    .game-modules {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    .module-card {
+      background-color: rgba(23, 23, 25, 0.7);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--squad-shadow);
+      transition: transform 0.3s;
+      position: relative;
+      min-height: 250px;
+    }
+    
+    .module-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .module-image {
+      width: 100%;
+      height: 150px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      position: relative;
+    }
+    
+    .module-image::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: linear-gradient(to top, rgba(23, 23, 25, 1), transparent);
+    }
+    
+    .module-content {
+      padding: 1.5rem;
+    }
+    
+    .module-title {
+      margin: 0 0 0.5rem 0;
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
+      color: var(--squad-primary);
+    }
+    
+    .module-description {
+      color: var(--squad-text);
+      margin: 0 0 1rem 0;
+      font-size: 0.9rem;
+    }
+    
+    .module-status {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: white;
+      background-color: var(--squad-primary);
+    }
+    
+    .module-status.new {
+      background-color: var(--squad-neon);
+      color: black;
+    }
+    
+    .module-status.locked {
+      background-color: #555;
+    }
+    
+    .btn-module {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      background-color: var(--squad-primary);
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    
+    .btn-module:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-module.locked {
+      background-color: #555;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    
+    .character-connection {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    
+    .character-card {
+      background-color: rgba(23, 23, 25, 0.7);
+      border-radius: 12px;
+      padding: 1.5rem;
+      width: 30%;
+      box-shadow: var(--squad-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .character-card.charlie {
+      border-top: 4px solid #e63946;
+    }
+    
+    .character-card.billy {
+      border-top: 4px solid #7d8260;
+    }
+    
+    .character-card.tbd {
+      border-top: 4px solid #264653;
+    }
+    
+    .character-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .character-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    
+    .character-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .character-name {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+    
+    .relationship-level {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    .relationship-meter {
+      display: flex;
+      gap: 3px;
+      margin-top: 0.5rem;
+    }
+    
+    .relationship-point {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #555;
+    }
+    
+    .relationship-point.filled {
+      background-color: var(--squad-primary);
+    }
+    
+    .charlie .relationship-point.filled {
+      background-color: #e63946;
+    }
+    
+    .billy .relationship-point.filled {
+      background-color: #7d8260;
+    }
+    
+    .tbd .relationship-point.filled {
+      background-color: #264653;
+    }
+    
+    .character-action {
+      display: block;
+      padding: 0.5rem;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.2);
+      color: var(--squad-text);
+      text-decoration: none;
+      border-radius: 4px;
+      margin-top: 1rem;
+      transition: all 0.2s;
+    }
+    
+    .character-action:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .notifications {
+      background-color: rgba(23, 23, 25, 0.7);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--squad-shadow);
+    }
+    
+    .notifications h2 {
+      margin-top: 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.5rem;
+    }
+    
+    .notification-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .notification-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+    
+    .notification-content {
+      flex: 1;
+    }
+    
+    .notification-content h3 {
+      margin: 0 0 0.25rem 0;
+      font-size: 1.1rem;
+    }
+    
+    .notification-content p {
+      margin: 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    
+    .notification-time {
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+    
+    @media (max-width: 768px) {
+      .profile-details {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .profile-stats {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+      }
+      
+      .character-connection {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .character-card {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body class="surron-squad-theme">
+  <div class="hq-container">
+    <header>
+      <h1>Surron Squad HQ</h1>
+      <p class="subtitle">Your command center for all Surron Squad adventures</p>
+    </header>
+    
+    <div class="player-profile">
+      <div class="profile-details">
+        <div class="profile-avatar">R</div>
+        <div class="profile-info">
+          <h2>Rider</h2>
+          <div class="level-info">
+            Level <span id="player-level">1</span>
+            <div class="xp-bar">
+              <div id="xp-fill" class="xp-fill" style="width: 25%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="profile-stats">
+        <div class="stat-box">
+          <div id="currency-value" class="stat-value">250</div>
+          <div class="stat-label">SurCoins</div>
+        </div>
+        <div class="stat-box">
+          <div id="reputation-value" class="stat-value">0</div>
+          <div class="stat-label">Reputation</div>
+        </div>
+        <div class="stat-box">
+          <div id="builds-value" class="stat-value">0</div>
+          <div class="stat-label">Bike Builds</div>
+        </div>
+        <div class="stat-box">
+          <div id="parts-value" class="stat-value">0</div>
+          <div class="stat-label">Parts Collected</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="notifications">
+      <h2>Latest Updates</h2>
+      <div id="notifications-container">
+        <!-- Notifications will be filled by JavaScript -->
+        <div class="notification-item">
+          <div class="notification-icon">🚀</div>
+          <div class="notification-content">
+            <h3>Welcome to the Squad!</h3>
+            <p>Your journey into the world of Surron Squad begins now.</p>
+          </div>
+          <div class="notification-time">Just now</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="game-modules">
+      <div class="module-card">
+        <div class="module-status new">NEW</div>
+        <div class="module-image" style="background-image: url('images/surron-squad-builder-garagepose.png');"></div>
+        <div class="module-content">
+          <h3 class="module-title">Adventure Mode</h3>
+          <p class="module-description">Join Charlie, Billy and TBD on their quest for parts in an interactive story.</p>
+          <a href="adventure-engine.html" class="btn-module">Start Adventure</a>
+        </div>
+      </div>
+      
+      <div class="module-card">
+        <div class="module-image" style="background-image: url('images/surron-squad-builder-garagepose.png');"></div>
+        <div class="module-content">
+          <h3 class="module-title">Build Your Bike</h3>
+          <p class="module-description">Design and customize your perfect Surron with expert parts selection.</p>
+          <a href="buildpartsSelector.html" class="btn-module">Enter Workshop</a>
+        </div>
+      </div>
+      
+      <div class="module-card">
+        <div class="module-image" style="background-image: url('images/surron-billy-fishing_ready-pose.png');"></div>
+        <div class="module-content">
+          <h3 class="module-title">Fishing with Billy</h3>
+          <p class="module-description">Relax by the lake and catch some fish to earn extra SurCoins.</p>
+          <a href="adventure.html" class="btn-module">Go Fishing</a>
+        </div>
+      </div>
+      
+      <div class="module-card">
+        <div class="module-status locked">LEVEL 5</div>
+        <div class="module-image" style="background-image: url('images/surron-tbd-terminal-ready.png'); filter: brightness(0.5);"></div>
+        <div class="module-content">
+          <h3 class="module-title">Test Track</h3>
+          <p class="module-description">Test your bike builds on challenging terrain and obstacles.</p>
+          <a href="#" class="btn-module locked">Locked</a>
+        </div>
+      </div>
+    </div>
+    
+    <div class="character-connection">
+      <div class="character-card charlie">
+        <div class="character-header">
+          <div class="character-avatar">
+            <img src="images/surron-charlie-alert-pose.png" alt="Charlie">
+          </div>
+          <div>
+            <h3 class="character-name">Charlie</h3>
+            <div class="relationship-level">Relationship: <span id="charlie-relationship">Acquaintance</span></div>
+            <div class="relationship-meter" id="charlie-meter">
+              <div class="relationship-point filled"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+            </div>
+          </div>
+        </div>
+        <p class="character-quote">"Let's overvolt it. What's the worst that could happen? Third-degree burns are just spicy memories."</p>
+        <a href="adventure-engine.html" class="character-action">Join Charlie's Adventure</a>
+      </div>
+      
+      <div class="character-card billy">
+        <div class="character-header">
+          <div class="character-avatar">
+            <img src="images/surron-billy-fishing_ready-pose.png" alt="Billy">
+          </div>
+          <div>
+            <h3 class="character-name">Billy</h3>
+            <div class="relationship-level">Relationship: <span id="billy-relationship">Acquaintance</span></div>
+            <div class="relationship-meter" id="billy-meter">
+              <div class="relationship-point filled"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+            </div>
+          </div>
+        </div>
+        <p class="character-quote">"I'd rather fish, but I guess we're building bikes. Again."</p>
+        <a href="adventure.html" class="character-action">Go Fishing with Billy</a>
+      </div>
+      
+      <div class="character-card tbd">
+        <div class="character-header">
+          <div class="character-avatar">
+            <img src="images/surron-tbd-terminal-ready.png" alt="TBD">
+          </div>
+          <div>
+            <h3 class="character-name">TBD</h3>
+            <div class="relationship-level">Relationship: <span id="tbd-relationship">Acquaintance</span></div>
+            <div class="relationship-meter" id="tbd-meter">
+              <div class="relationship-point filled"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+              <div class="relationship-point"></div>
+            </div>
+          </div>
+        </div>
+        <p class="character-quote">"Parts compatibility matrix loaded. Efficiency optimization at 97.3%."</p>
+        <a href="#" class="character-action">TBD's Lab (Locked)</a>
+      </div>
+    </div>
+    
+  </div>
+
+  <script src="player-state.js"></script>
+  <script>
+    // Wait for player state to be ready
+    document.addEventListener('playerStateReady', function() {
+      // Update UI from player state
+      updatePlayerProfile();
+      updateCharacterRelationships();
+      
+      // Check for unlocked features
+      checkUnlockedFeatures();
+    });
+    
+    function updatePlayerProfile() {
+      if (!window.playerState) return;
+      
+      // Update level and XP
+      document.getElementById('player-level').textContent = playerState.level;
+      const xpPercentage = (playerState.xp / playerState.xpToNextLevel) * 100;
+      document.getElementById('xp-fill').style.width = `${xpPercentage}%`;
+      
+      // Update stats
+      document.getElementById('currency-value').textContent = playerState.currency;
+      document.getElementById('reputation-value').textContent = playerState.reputation;
+      document.getElementById('builds-value').textContent = playerState.builds.length;
+      document.getElementById('parts-value').textContent = playerState.inventory.length;
+    }
+    
+    function updateCharacterRelationships() {
+      if (!window.playerState) return;
+      
+      // Update relationship meters
+      updateRelationshipMeter('charlie', playerState.relationships.charlie);
+      updateRelationshipMeter('billy', playerState.relationships.billy);
+      updateRelationshipMeter('tbd', playerState.relationships.tbd);
+      
+      // Update relationship text descriptions
+      document.getElementById('charlie-relationship').textContent = getRelationshipLabel(playerState.relationships.charlie);
+      document.getElementById('billy-relationship').textContent = getRelationshipLabel(playerState.relationships.billy);
+      document.getElementById('tbd-relationship').textContent = getRelationshipLabel(playerState.relationships.tbd);
+    }
+    
+    function updateRelationshipMeter(character, level) {
+      const meter = document.getElementById(`${character}-meter`);
+      const points = meter.querySelectorAll('.relationship-point');
+      
+      // Reset all points
+      points.forEach(point => point.classList.remove('filled'));
+      
+      // Fill points based on level
+      for (let i = 0; i < level && i < points.length; i++) {
+        points[i].classList.add('filled');
+      }
+    }
+    
+    function getRelationshipLabel(level) {
+      if (level <= 2) return 'Acquaintance';
+      if (level <= 4) return 'Friend';
+      if (level <= 6) return 'Good Friend';
+      if (level <= 8) return 'Close Ally';
+      return 'Trusted Partner';
+    }
+    
+    function checkUnlockedFeatures() {
+      // This would check player level and unlocked features
+      // For now, we'll just simulate some locked features
+      
+      const testTrackModule = document.querySelector('.module-card:nth-child(4)');
+      const testTrackButton = testTrackModule.querySelector('.btn-module');
+      
+      if (window.playerState && playerState.level >= 5) {
+        // Unlock test track at level 5
+        testTrackModule.querySelector('.module-status').textContent = 'NEW';
+        testTrackModule.querySelector('.module-status').classList.remove('locked');
+        testTrackModule.querySelector('.module-status').classList.add('new');
+        testTrackModule.querySelector('.module-image').style.filter = '';
+        testTrackButton.textContent = 'Enter Test Track';
+        testTrackButton.classList.remove('locked');
+        testTrackButton.href = 'test-track.html';
+      }
+    }
+    
+    // Function to add a notification
+    function addNotification(icon, title, message) {
+      const container = document.getElementById('notifications-container');
+      const notification = document.createElement('div');
+      notification.className = 'notification-item';
+      notification.innerHTML = `
+        <div class="notification-icon">${icon}</div>
+        <div class="notification-content">
+          <h3>${title}</h3>
+          <p>${message}</p>
+        </div>
+        <div class="notification-time">Just now</div>
+      `;
+      
+      // Add to the top
+      if (container.firstChild) {
+        container.insertBefore(notification, container.firstChild);
+      } else {
+        container.appendChild(notification);
+      }
+    }
+  </script>
+</body>
+</html> 
