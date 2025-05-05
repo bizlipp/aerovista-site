@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <script src="player-state.js"></script>
   <style>
     /* Additional styles specific to parts selector */
     .part-selector {
@@ -165,79 +166,102 @@
   </style>
 </head>
 <body class="surron-squad-theme">
-  <header>
-    <h1>Surron Squad 72V Build Selector</h1>
-    <p class="subtitle">Choose your parts & pretend you're as cool as the squad</p>
-    <a href="surron_squad.html" class="btn">← Back to Squad HQ</a>
-    <a href="saved_builds.html" class="btn">💾 Saved Builds</a>
-  </header>
-
-  <main>
-    <section id="build-intro">
-      <div class="squad-boxes">
-        <div class="squad-member charlie">
-          <div class="member-profile">
-            <img src="images/surron-charlie-alert-pose.png" alt="Charlie 'Throttle' holding a pizza box and pointing dramatically">
-          </div>
-          <div class="member-details">
-            <h3><span class="member-icon">🍕</span>Charlie <span class="nickname">"Throttle"</span></h3>
-            <p class="quote">"Let's overvolt it. What's the worst that could happen? Third-degree burns are just spicy memories."</p>
-          </div>
+  <div class="container">
+    <div class="header">
+      <h1 class="main-title">Configure Your Sur-Ron</h1>
+      <p class="subtitle">Select premium parts for your custom 72V build</p>
+      
+      <div style="margin-bottom: 15px;">
+        <a href="squad-hq.html" class="btn">← Back to Squad HQ</a>
+        <a href="saved_builds.html" class="btn">💾 Saved Builds</a>
+      </div>
+      
+      <div id="player-stats" class="player-stats" style="display: none; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-bottom: 20px; display: flex; justify-content: space-between;">
+        <div>
+          <span style="color: #39FF14; font-weight: bold;">Level:</span> <span id="player-level">1</span>
         </div>
-        <div class="squad-member billy">
-          <div class="member-profile">
-            <img src="images/surron-billy-fishing_ready-pose.png" alt="Billy 'Baggin's' with fishing rod ready to fish">
-          </div>
-          <div class="member-details">
-            <h3><span class="member-icon">🎣</span>Billy <span class="nickname">"Baggin's"</span></h3>
-            <p class="quote">"I'd rather fish, but I guess we're building bikes. Again."</p>
-          </div>
+        <div>
+          <span style="color: #39FF14; font-weight: bold;">XP:</span> <span id="player-xp">0</span> / <span id="player-xp-next">100</span>
         </div>
-        <div class="squad-member tbd">
-          <div class="member-profile">
-            <img src="images/surron-tbd-terminal-ready.png" alt="TBD 'TBD' working on a laptop with perfect beard">
-          </div>
-          <div class="member-details">
-            <h3><span class="member-icon">🧠</span>TBD <span class="nickname">"TBD"</span></h3>
-            <p class="quote">"Parts compatibility matrix loaded. Efficiency optimization at 97.3%."</p>
-          </div>
+        <div>
+          <span style="color: #39FF14; font-weight: bold;">SurCoins:</span> <span id="player-coins">0</span>
+        </div>
+        <div>
+          <span style="color: #39FF14; font-weight: bold;">Builds:</span> <span id="player-builds">0</span>
         </div>
       </div>
-    </section>
+      
+      <div id="error-message" class="error-message" style="display: none;">
+        <p>Oops! Something went wrong loading parts. Charlie probably spilled pizza on the server.</p>
+      </div>
+    </div>
 
-    <div class="two-column">
-      <section id="parts-select-section" class="column">
-        <h2>Select Your Parts</h2>
-        <p class="section-intro">Configure your 72V Sur-Ron build with real parts and pricing from our strange cast of experts:</p>
-        <div id="error-message" class="error-message">Oops! Something went wrong loading parts. Charlie probably spilled pizza on the server.</div>
-        <div id="parts-select"></div>
-      </section>
-
-      <section id="summary" class="column">
-        <h2>Build Summary</h2>
-        <input type="text" class="build-name-input" id="build-name" placeholder="Name your build (e.g. 'Thunder Donkey 3000')">
-        
-        <div id="build-summary">
-          <div class="price-breakdown">
-            <span class="price-label">Total:</span>
-            <div class="price-tag">
-              <span id="total-price">$0</span>
+    <main>
+      <section id="build-intro">
+        <div class="squad-boxes">
+          <div class="squad-member charlie">
+            <div class="member-profile">
+              <img src="images/surron-charlie-alert-pose.png" alt="Charlie 'Throttle' holding a pizza box and pointing dramatically">
+            </div>
+            <div class="member-details">
+              <h3><span class="member-icon">🍕</span>Charlie <span class="nickname">"Throttle"</span></h3>
+              <p class="quote">"Let's overvolt it. What's the worst that could happen? Third-degree burns are just spicy memories."</p>
             </div>
           </div>
-          <ul id="selected-parts-list"></ul>
-        </div>
-        
-        <div class="squad-comment" id="build-comment">
-          Name your build and select some parts to get Squad commentary!
-        </div>
-        
-        <div class="action-buttons">
-          <button class="btn" id="save-build">Save Build</button>
-          <button class="btn share-build" id="share-build">Share with Squad</button>
+          <div class="squad-member billy">
+            <div class="member-profile">
+              <img src="images/surron-billy-fishing_ready-pose.png" alt="Billy 'Baggin's' with fishing rod ready to fish">
+            </div>
+            <div class="member-details">
+              <h3><span class="member-icon">🎣</span>Billy <span class="nickname">"Baggin's"</span></h3>
+              <p class="quote">"I'd rather fish, but I guess we're building bikes. Again."</p>
+            </div>
+          </div>
+          <div class="squad-member tbd">
+            <div class="member-profile">
+              <img src="images/surron-tbd-terminal-ready.png" alt="TBD 'TBD' working on a laptop with perfect beard">
+            </div>
+            <div class="member-details">
+              <h3><span class="member-icon">🧠</span>TBD <span class="nickname">"TBD"</span></h3>
+              <p class="quote">"Parts compatibility matrix loaded. Efficiency optimization at 97.3%."</p>
+            </div>
+          </div>
         </div>
       </section>
-    </div>
-  </main>
+
+      <div class="two-column">
+        <section id="parts-select-section" class="column">
+          <h2>Select Your Parts</h2>
+          <p class="section-intro">Configure your 72V Sur-Ron build with real parts and pricing from our strange cast of experts:</p>
+          <div id="parts-select"></div>
+        </section>
+
+        <section id="summary" class="column">
+          <h2>Build Summary</h2>
+          <input type="text" class="build-name-input" id="build-name" placeholder="Name your build (e.g. 'Thunder Donkey 3000')">
+          
+          <div id="build-summary">
+            <div class="price-breakdown">
+              <span class="price-label">Total:</span>
+              <div class="price-tag">
+                <span id="total-price">$0</span>
+              </div>
+            </div>
+            <ul id="selected-parts-list"></ul>
+          </div>
+          
+          <div class="squad-comment" id="build-comment">
+            Name your build and select some parts to get Squad commentary!
+          </div>
+          
+          <div class="action-buttons">
+            <button class="btn" id="save-build">Save Build</button>
+            <button class="btn share-build" id="share-build">Share with Squad</button>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
 
   <script src="surron_squad.js"></script>
   <script>
@@ -355,12 +379,88 @@
 
     async function loadPartsFromJSON() {
       try {
-        const response = await fetch('s_parts.json');
-        if (!response.ok) {
-          throw new Error(`Failed to load parts: ${response.status}`);
-        }
-        
-        const partsData = await response.json();
+        // Instead of fetch, use a hardcoded parts array
+        const partsData = [
+          {
+            "Category": "Frame",
+            "Part Name & Details": "Sur-Ron frame & chassis - core component that determines the foundation of your build.",
+            "Sourcing Option 1 (Price - Vendor)": "$750 - Factory Direct",
+            "Sourcing Option 2 (Price - Vendor)": "$899 - Luna Cycle"
+          },
+          {
+            "Category": "Motor",
+            "Part Name & Details": "Electric motor - determines power and torque of your bike.",
+            "Sourcing Option 1 (Price - Vendor)": "$450 - Sur-Ron Factory",
+            "Sourcing Option 2 (Price - Vendor)": "$649 - Performance Upgrade"
+          },
+          {
+            "Category": "Battery",
+            "Part Name & Details": "72V lithium battery pack - determines range and continuous power output.",
+            "Sourcing Option 1 (Price - Vendor)": "$1,299 - Standard 60V",
+            "Sourcing Option 2 (Price - Vendor)": "$2,199 - Premium 72V"
+          },
+          {
+            "Category": "Controller",
+            "Part Name & Details": "Electronic speed controller - brain of the electric system.",
+            "Sourcing Option 1 (Price - Vendor)": "$379 - Stock Controller",
+            "Sourcing Option 2 (Price - Vendor)": "$699 - BAC 8000 Upgrade"
+          },
+          {
+            "Category": "Front Suspension",
+            "Part Name & Details": "Front fork - affects handling and ride comfort over rough terrain.",
+            "Sourcing Option 1 (Price - Vendor)": "$299 - Standard Fork",
+            "Sourcing Option 2 (Price - Vendor)": "$899 - DNM USD-8"
+          },
+          {
+            "Category": "Rear Suspension",
+            "Part Name & Details": "Rear shock - balances the bike's response to terrain.",
+            "Sourcing Option 1 (Price - Vendor)": "$199 - Stock Shock",
+            "Sourcing Option 2 (Price - Vendor)": "$429 - DNM Upgrade"
+          },
+          {
+            "Category": "Brakes",
+            "Part Name & Details": "Hydraulic disc brakes - essential for control and safety.",
+            "Sourcing Option 1 (Price - Vendor)": "$149 - Stock Tektro",
+            "Sourcing Option 2 (Price - Vendor)": "$399 - Magura MT5e"
+          },
+          {
+            "Category": "Wheels & Tires",
+            "Part Name & Details": "Wheel set with tires - affects traction, handling and ride feel.",
+            "Sourcing Option 1 (Price - Vendor)": "$299 - Stock 19\"/19\"",
+            "Sourcing Option 2 (Price - Vendor)": "$499 - 21\"/18\" Upgrade"
+          },
+          {
+            "Category": "Handlebars & Controls",
+            "Part Name & Details": "Bars, grips and control levers - customize fit and feel.",
+            "Sourcing Option 1 (Price - Vendor)": "$79 - Stock Setup",
+            "Sourcing Option 2 (Price - Vendor)": "$199 - Pro Taper Kit"
+          },
+          {
+            "Category": "Throttle",
+            "Part Name & Details": "Electronic throttle - controls power delivery.",
+            "Sourcing Option 1 (Price - Vendor)": "$39 - Stock Throttle",
+            "Sourcing Option 2 (Price - Vendor)": "$89 - Domino Throttle"
+          },
+          {
+            "Category": "Wiring & Display",
+            "Part Name & Details": "Electrical system and dashboard display.",
+            "Sourcing Option 1 (Price - Vendor)": "$99 - Basic Display",
+            "Sourcing Option 2 (Price - Vendor)": "$299 - Color Display"
+          },
+          {
+            "Category": "Seat",
+            "Part Name & Details": "Rider seat - affects comfort during long rides.",
+            "Sourcing Option 1 (Price - Vendor)": "$59 - Stock Seat",
+            "Sourcing Option 2 (Price - Vendor)": "$149 - Comfort Seat"
+          },
+          {
+            "Category": "Charger",
+            "Part Name & Details": "Battery charging system - affects recharge time.",
+            "Sourcing Option 1 (Price - Vendor)": "$129 - Standard 5A",
+            "Sourcing Option 2 (Price - Vendor)": "$299 - Fast 10A"
+          }
+        ];
+
         const container = document.getElementById("parts-select");
         container.innerHTML = '';  // Clear container
 
@@ -460,7 +560,30 @@
       
       // Handle share button
       document.getElementById("share-build").addEventListener("click", shareBuild);
+      
+      // Wait for player state to be ready
+      document.addEventListener('playerStateReady', function() {
+        updatePlayerStats();
+        // Show player stats area
+        document.getElementById('player-stats').style.display = 'flex';
+      });
+      
+      // If player state already exists, update stats
+      if (window.playerState) {
+        updatePlayerStats();
+        document.getElementById('player-stats').style.display = 'flex';
+      }
     });
+
+    function updatePlayerStats() {
+      if (!window.playerState) return;
+      
+      document.getElementById('player-level').textContent = window.playerState.level;
+      document.getElementById('player-xp').textContent = window.playerState.xp;
+      document.getElementById('player-xp-next').textContent = window.playerState.xpToNextLevel;
+      document.getElementById('player-coins').textContent = window.playerState.currency;
+      document.getElementById('player-builds').textContent = window.playerState.builds ? window.playerState.builds.length : 0;
+    }
 
     function loadSavedBuilds() {
       try {
@@ -637,8 +760,32 @@
         // Save to localStorage
         localStorage.setItem('surronSquadBuilds', JSON.stringify(savedBuilds));
         
-        // Show confirmation
-        alert(`"${buildName}" has been saved to your build library!`);
+        // If we have player state available, add the build there too
+        if (window.playerState) {
+          // Add build to player state
+          if (!window.playerState.builds) {
+            window.playerState.builds = [];
+          }
+          window.playerState.builds.push(build);
+          
+          // Save player state
+          window.playerState.save();
+          
+          // Award XP for completing a build
+          const levelUp = window.playerState.addXP(50);
+          
+          // If leveled up, show notification
+          if (levelUp) {
+            const message = `Level Up! You've reached level ${levelUp.newLevel}!\nYou've earned ${levelUp.rewards.currency} SurCoins and unlocked new rewards!`;
+            alert(message);
+          } else {
+            // Just show regular XP gain
+            alert(`"${buildName}" has been saved to your build library! (+50 XP)`);
+          }
+        } else {
+          // Show confirmation if no player state
+          alert(`"${buildName}" has been saved to your build library!`);
+        }
         
       } catch (error) {
         console.error('Error saving build:', error);
