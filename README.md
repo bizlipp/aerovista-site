@@ -1,3 +1,6 @@
+# AeroVista Site
+Updated: May 5, 2025
+
 # AeroVista Image Processing with Sharp
 
 This project implements a local, high-performance image processing pipeline using [Sharp](https://github.com/lovell/sharp), a high-performance Node.js image processing library.
