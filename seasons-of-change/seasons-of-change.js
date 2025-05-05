@@ -6,25 +6,34 @@
 let currentSeason = 'autumn'; // Default season
 const seasons = ['spring', 'summer', 'autumn', 'winter'];
 
-// 1. Enhanced Seasonal Cards Animation
+// 1. Enhanced Seasonal Cards Animation with Intersection Observer
 function animateSeasonsOnScroll() {
   const cards = document.querySelectorAll('.season-card');
   
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach((entry, index) => {
-      if (entry.isIntersecting) {
-        // Add both animated class and sequential delay classes
-        entry.target.classList.add('animated');
-        entry.target.classList.add(`delay-${index + 1}`);
-        observer.unobserve(entry.target);
-      }
+  // Only setup if IntersectionObserver is supported
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          // Add both animated class and sequential delay classes
+          entry.target.classList.add('animated');
+          entry.target.classList.add(`delay-${index + 1}`);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -100px 0px' });
+    
+    cards.forEach(card => observer.observe(card));
+  } else {
+    // Fallback for browsers that don't support IntersectionObserver
+    cards.forEach((card, index) => {
+      card.classList.add('animated');
+      card.classList.add(`delay-${index + 1}`);
     });
-  }, { threshold: 0.2, rootMargin: '0px 0px -100px 0px' });
-  
-  cards.forEach(card => observer.observe(card));
+  }
 }
 
-// 2. Smooth Scroll with Enhanced Behavior
+// 2. Smooth Scroll with Enhanced Behavior and Accessibility
 function enableSmoothScroll() {
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', e => {
@@ -45,6 +54,10 @@ function enableSmoothScroll() {
           behavior: 'smooth'
         });
         
+        // Move focus to the target for accessibility
+        target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+        
         // Remove highlight after animation completes
         setTimeout(() => {
           target.classList.remove('highlight-section');
@@ -54,31 +67,45 @@ function enableSmoothScroll() {
   });
 }
 
-// 3. Advanced Interactive Card Effects
+// 3. Advanced Interactive Card Effects with Performance Optimizations
 function initSeasonInteractions() {
   const cards = document.querySelectorAll('.season-card');
   
   cards.forEach(card => {
-    // 3D Tilt Effect
+    // Add keyboard accessibility
+    card.setAttribute('tabindex', '0');
+    
+    // Optimized 3D Tilt Effect with debounce
+    let tiltTimeout;
+    
     card.addEventListener('mousemove', e => {
-      const cardRect = card.getBoundingClientRect();
-      const cardCenterX = cardRect.left + cardRect.width / 2;
-      const cardCenterY = cardRect.top + cardRect.height / 2;
+      // Cancel any pending updates
+      cancelAnimationFrame(tiltTimeout);
       
-      // Calculate mouse position relative to card center (in percentage)
-      const mouseX = ((e.clientX - cardCenterX) / (cardRect.width / 2)) * 5;
-      const mouseY = ((e.clientY - cardCenterY) / (cardRect.height / 2)) * 5;
-      
-      // Apply 3D transform
-      card.style.transform = `perspective(1000px) rotateX(${-mouseY}deg) rotateY(${mouseX}deg) scale3d(1.02, 1.02, 1.02)`;
-      
-      // Apply highlight effect
-      const glarePos = `${50 + mouseX * 4}% ${50 + mouseY * 4}%`;
-      card.style.backgroundImage = `radial-gradient(circle at ${glarePos}, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%)`;
+      // Schedule the tilt effect update using requestAnimationFrame
+      tiltTimeout = requestAnimationFrame(() => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenterX = cardRect.left + cardRect.width / 2;
+        const cardCenterY = cardRect.top + cardRect.height / 2;
+        
+        // Calculate mouse position relative to card center (in percentage)
+        const mouseX = ((e.clientX - cardCenterX) / (cardRect.width / 2)) * 5;
+        const mouseY = ((e.clientY - cardCenterY) / (cardRect.height / 2)) * 5;
+        
+        // Apply 3D transform with will-change hint for better performance
+        card.style.willChange = 'transform';
+        card.style.transform = `perspective(1000px) rotateX(${-mouseY}deg) rotateY(${mouseX}deg) scale3d(1.02, 1.02, 1.02)`;
+        
+        // Apply highlight effect
+        const glarePos = `${50 + mouseX * 4}% ${50 + mouseY * 4}%`;
+        card.style.backgroundImage = `radial-gradient(circle at ${glarePos}, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%)`;
+      });
     });
     
     // Reset on mouse leave
     card.addEventListener('mouseleave', () => {
+      cancelAnimationFrame(tiltTimeout);
+      card.style.willChange = 'auto';
       card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
       card.style.backgroundImage = 'none';
       
@@ -91,6 +118,16 @@ function initSeasonInteractions() {
       card.style.transition = 'transform 0.1s ease, box-shadow 0.3s ease';
     });
     
+    // Add keyboard accessibility for season switching
+    card.addEventListener('keydown', (e) => {
+      // Enter or Space key to activate
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const seasonName = card.querySelector('h3').textContent.toLowerCase().split("'")[0]; // Extract season name
+        switchSeason(seasonName);
+      }
+    });
+    
     // Season switcher (when clicking on season cards)
     card.addEventListener('click', () => {
       const seasonName = card.querySelector('h3').textContent.toLowerCase().split("'")[0]; // Extract season name
@@ -99,13 +136,25 @@ function initSeasonInteractions() {
   });
 }
 
-// 4. Season Theme Switcher
+// 4. Season Theme Switcher with improved transitions
 function switchSeason(season) {
   // Only proceed if it's a valid season and different from current
   if (!seasons.includes(season) || season === currentSeason) return;
   
   // Update current season
+  const previousSeason = currentSeason;
   currentSeason = season;
+  
+  // Create a custom event for other components to listen to
+  const seasonChangeEvent = new CustomEvent('seasonChange', {
+    detail: { 
+      season: season,
+      previousSeason: previousSeason
+    }
+  });
+  
+  // Add transition class before changing
+  document.body.classList.add('theme-transition');
   
   // Remove all season theme classes from body
   seasons.forEach(s => document.body.classList.remove(`${s}-theme`));
@@ -116,17 +165,53 @@ function switchSeason(season) {
   // Update hero section background
   updateSeasonalHeroBackground(season);
   
-  // Animate the transition
-  document.body.classList.add('theme-transition');
+  // Update any season-specific content
+  updateSeasonalContent(season);
+  
+  // Update active state on season cards
+  updateActiveSeasonCard(season);
+  
+  // Dispatch the custom event
+  document.dispatchEvent(seasonChangeEvent);
+  
+  // Remove transition class after animation completes
   setTimeout(() => {
     document.body.classList.remove('theme-transition');
   }, 1000);
-  
-  // Update any season-specific content
-  updateSeasonalContent(season);
 }
 
-// 5. Dynamic Seasonal Hero Background
+// Helper function to update active state on season cards
+function updateActiveSeasonCard(season) {
+  // Remove active class from all cards
+  document.querySelectorAll('.season-card').forEach(card => {
+    card.classList.remove('active');
+  });
+  
+  // Add active class to current season card
+  const seasonClass = `${season}-card`;
+  const activeCard = document.querySelector(`.${seasonClass}`);
+  if (activeCard) {
+    activeCard.classList.add('active');
+    
+    // Scroll the card into view if not visible
+    if (!isElementInViewport(activeCard)) {
+      activeCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+}
+
+// Helper function to check if element is in viewport
+function isElementInViewport(el) {
+  const rect = el.getBoundingClientRect();
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  );
+}
+
+// 5. Dynamic Seasonal Hero Background with improved performance
 function updateSeasonalHeroBackground(season) {
   const hero = document.querySelector('.hero');
   
@@ -171,7 +256,10 @@ function updateSeasonalHeroBackground(season) {
   };
   
   // Apply seasonal background styles
-  if (seasonStyles[season]) {
+  if (seasonStyles[season] && hero) {
+    // Add will-change for better performance during transition
+    hero.style.willChange = 'background-image';
+    
     hero.style.backgroundImage = seasonStyles[season].gradient;
     
     // Update the ::before pseudo-element with seasonal image
@@ -191,6 +279,11 @@ function updateSeasonalHeroBackground(season) {
         opacity: ${seasonStyles[season].opacity};
       }
     `;
+    
+    // Reset will-change after transition
+    setTimeout(() => {
+      hero.style.willChange = 'auto';
+    }, 1000);
   }
 }
 
@@ -240,7 +333,7 @@ function updateSeasonalContent(season) {
   }
 }
 
-// 7. Add Seasonal Particle Effects
+// 7. Add Seasonal Particle Effects with optimized rendering
 function initSeasonalParticles() {
   const seasonContainer = document.createElement('div');
   seasonContainer.className = 'seasonal-decor';
@@ -255,16 +348,20 @@ function initSeasonalParticles() {
   });
 }
 
-// 8. Update Seasonal Particles
+// 8. Update Seasonal Particles with performance enhancements
 function updateSeasonalParticles(season) {
   const container = document.querySelector('.seasonal-decor');
   if (!container) return;
   
+  // Use document fragment for better performance
+  const fragment = document.createDocumentFragment();
+  
   // Clear existing particles
   container.innerHTML = '';
   
-  // Number of particles to create
-  const particleCount = 30;
+  // Reduce particle count on mobile
+  const isMobile = window.innerWidth < 768;
+  const particleCount = isMobile ? 15 : 30;
   
   // Particle characteristics by season
   const particleTypes = {
@@ -293,34 +390,49 @@ function updateSeasonalParticles(season) {
     const speed = type.speeds[sizeIndex];
     const duration = 10 + (Math.random() * speed);
     
-    // Apply styles
+    // Apply styles with will-change for better performance
     particle.style.width = `${size}px`;
     particle.style.height = `${size}px`;
     particle.style.left = `${posX}%`;
     particle.style.top = `${posY}%`;
     particle.style.animationDuration = `${duration}s`;
     particle.style.animationDelay = `${Math.random() * 5}s`;
+    particle.style.willChange = 'transform, opacity';
     
-    container.appendChild(particle);
+    fragment.appendChild(particle);
   }
+  
+  container.appendChild(fragment);
 }
 
-// 9. Initialize Everything
+// 9. Initialize Everything with performance detection
 function initSeasonsPage() {
+  // Check if reduced motion is preferred
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  
   // Set initial season theme
   document.body.classList.add(`${currentSeason}-theme`);
   
-  // Init all animations and interactions
-  animateSeasonsOnScroll();
+  // Init interactions regardless of motion preference
   enableSmoothScroll();
   initSeasonInteractions();
-  initSeasonalParticles();
-  
-  // Update hero for initial season
-  updateSeasonalHeroBackground(currentSeason);
-  
-  // Additional polishing touches
   setupResponsiveMenuToggle();
+  
+  // Conditional initialization based on motion preference
+  if (!prefersReducedMotion) {
+    // Full animations
+    animateSeasonsOnScroll();
+    initSeasonalParticles();
+    updateSeasonalHeroBackground(currentSeason);
+  } else {
+    // Simplified animations for reduced motion preference
+    document.body.classList.add('reduced-motion');
+    
+    // Make static seasonal elements visible without animation
+    document.querySelectorAll('.season-card').forEach(card => {
+      card.style.opacity = 1;
+    });
+  }
   
   // Add loaded class to body for entrance animation
   setTimeout(() => {
@@ -328,7 +440,7 @@ function initSeasonsPage() {
   }, 200);
 }
 
-// 10. Responsive Menu Toggle
+// 10. Responsive Menu Toggle with accessibility improvements
 function setupResponsiveMenuToggle() {
   // Only add if we're on mobile size
   const header = document.querySelector('header');
@@ -337,17 +449,25 @@ function setupResponsiveMenuToggle() {
     const logo = document.querySelector('.logo');
     
     if (nav && logo) {
-      // Create menu toggle button
+      // Create menu toggle button with proper accessibility attributes
       const menuToggle = document.createElement('button');
       menuToggle.className = 'menu-toggle';
       menuToggle.setAttribute('aria-label', 'Toggle navigation menu');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-controls', 'nav-menu');
       menuToggle.innerHTML = '<span></span><span></span><span></span>';
+      
+      // Add id to nav for ARIA reference
+      nav.id = 'nav-menu';
       
       // Add toggle functionality
       menuToggle.addEventListener('click', () => {
-        nav.classList.toggle('nav-open');
+        const isOpen = nav.classList.toggle('nav-open');
         menuToggle.classList.toggle('active');
         document.body.classList.toggle('menu-open');
+        
+        // Update ARIA attributes
+        menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
       
       // Add toggle button to header
@@ -361,6 +481,7 @@ function setupResponsiveMenuToggle() {
           nav.classList.remove('nav-open');
           menuToggle.classList.remove('active');
           document.body.classList.remove('menu-open');
+          menuToggle.setAttribute('aria-expanded', 'false');
         }
       });
       
@@ -370,6 +491,10 @@ function setupResponsiveMenuToggle() {
           nav.classList.remove('nav-open');
           menuToggle.classList.remove('active');
           document.body.classList.remove('menu-open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          
+          // Return focus to the menu button
+          menuToggle.focus();
         }
       });
     }
@@ -379,11 +504,15 @@ function setupResponsiveMenuToggle() {
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', initSeasonsPage);
 
-// Reinitialize certain features on resize
+// Debounced resize handler for better performance
+let resizeTimer;
 window.addEventListener('resize', () => {
-  // Only recreate menu toggle if it doesn't exist yet
-  if (window.innerWidth < 768 && !document.querySelector('.menu-toggle')) {
-    setupResponsiveMenuToggle();
-  }
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    // Only recreate menu toggle if it doesn't exist yet
+    if (window.innerWidth < 768 && !document.querySelector('.menu-toggle')) {
+      setupResponsiveMenuToggle();
+    }
+  }, 250);
 });
   

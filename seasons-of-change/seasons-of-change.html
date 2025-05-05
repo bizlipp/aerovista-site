@@ -20,6 +20,27 @@
   <meta property="og:image" content="https://aerovista.us/public/images/autumns_harvest.png">
   <meta property="og:url" content="https://aerovista.us/seasons-of-change/seasons-of-change.html">
   <meta property="og:type" content="website">
+  
+  <!-- Structured Data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Seasons of Change",
+    "description": "A transformative series aligning personal growth with nature's cycles through books, journals, and guided practices.",
+    "image": "https://aerovista.us/public/images/autumns_harvest.png",
+    "brand": {
+      "@type": "Brand",
+      "name": "AeroVista"
+    },
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "price": "49.95",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
 </head>
 
 <body data-page="seasons" class="autumn-theme">
@@ -28,7 +49,7 @@
 
   <!-- Header & Navigation -->
   <header>
-    <div class="logo"><strong>AeroVista</strong></div>
+    <div class="logo"><a href="../index.html"><strong>AeroVista</strong></a></div>
     <nav>
       <a href="../index.html">Home</a>
       <a href="../divisions.html">Divisions</a>
@@ -41,7 +62,7 @@
   <!-- Main Content -->
   <main id="main-content">
     <!-- Hero Section -->
-    <section class="hero seasons-bg">
+    <section class="hero seasons-bg" aria-label="Introduction">
       <div class="hero-overlay"></div>
       <h1>Seasons of Change: Autumn's Harvest</h1>
       <p>Embrace life's natural rhythms. Every season offers wisdom—trust the cycle.</p>
@@ -49,8 +70,8 @@
     </section>
 
     <!-- Overview Section -->
-    <section class="container" id="overview">
-      <h2>🌿 A Transformative Seasonal Series</h2>
+    <section class="container" id="overview" aria-labelledby="overview-heading">
+      <h2 id="overview-heading">🌿 A Transformative Seasonal Series</h2>
       <p>The <strong>Seasons of Change</strong> collection is a holistic growth journey that flows with nature's cycles. This immersive series integrates ancient wisdom and modern practices through beautifully crafted publications, reflective prompts, and sensory experiences.</p>
       <p>Created in collaboration between Summit Learning and Vespera Publishing, each seasonal collection guides you through transformation aligned with the natural world.</p>
 
@@ -84,10 +105,10 @@
     </section>
 
     <!-- Content Section -->
-    <section class="container">
+    <section class="container" aria-labelledby="included-heading">
       <div class="two-column-grid">
         <div class="text-column">
-          <h2>📘 What's Included</h2>
+          <h2 id="included-heading">📘 What's Included</h2>
           <ul class="feature-list">
             <li>
               <strong>Core Book:</strong> 
@@ -120,8 +141,8 @@
     </section>
 
     <!-- Philosophy Section -->
-    <section class="container alt-section">
-      <h2>🍃 Seasonal Philosophy</h2>
+    <section class="container alt-section" aria-labelledby="philosophy-heading">
+      <h2 id="philosophy-heading">🍃 Seasonal Philosophy</h2>
       <div class="philosophy-wrapper">
         <div class="philosophy-cards">
           <div class="philosophy-card">
@@ -145,23 +166,23 @@
     </section>
 
     <!-- Autumn Features (Current Season) -->
-    <section class="container" id="current-season">
-      <h2>🍂 Autumn's Harvest Edition</h2>
+    <section class="container" id="current-season" aria-labelledby="autumn-heading">
+      <h2 id="autumn-heading">🍂 Autumn's Harvest Edition</h2>
       <p class="section-intro">Our current release celebrates autumn's gentle invitation to gather wisdom, express gratitude, and navigate transition with grace.</p>
       
       <div class="seasonal-features">
         <div class="seasonal-feature">
-          <div class="feature-icon"><span>📕</span></div>
+          <div class="feature-icon"><span aria-hidden="true">📕</span></div>
           <h3>The Harvest Book</h3>
           <p>Explore the autumn archetype through essays, stories, and practices focused on gratitude, release, and the beauty of impermanence.</p>
         </div>
         <div class="seasonal-feature">
-          <div class="feature-icon"><span>🍂</span></div>
+          <div class="feature-icon"><span aria-hidden="true">🍂</span></div>
           <h3>Reflective Rituals</h3>
           <p>Ceremony cards guide you through meaningful harvest celebrations, ancestor honoring, and releasing practices.</p>
         </div>
         <div class="seasonal-feature">
-          <div class="feature-icon"><span>🍯</span></div>
+          <div class="feature-icon"><span aria-hidden="true">🍯</span></div>
           <h3>Preservation Recipes</h3>
           <p>Learn to preserve autumn's abundance through fermentation, herbal preparations, and warming comfort foods.</p>
         </div>
@@ -175,8 +196,8 @@
     </section>
 
     <!-- Community Section -->
-    <section class="container">
-      <h2>👥 Join the Seasonal Community</h2>
+    <section class="container" aria-labelledby="community-heading">
+      <h2 id="community-heading">👥 Join the Seasonal Community</h2>
       <p>Connect with others embracing seasonal living through our community gatherings, workshops, and online circles.</p>
       
       <div class="event-grid">
@@ -202,11 +223,12 @@
     </section>
 
     <!-- Contact Section -->
-    <section class="container contact-section" id="contact">
-      <h2>📬 Stay Connected</h2>
+    <section class="container contact-section" id="contact" aria-labelledby="contact-heading">
+      <h2 id="contact-heading">📬 Stay Connected</h2>
       <p>Join our seasonal correspondence to receive early access to new releases, seasonal practices, and exclusive content.</p>
       
-      <form class="subscription-form">
+      <form class="subscription-form" aria-labelledby="form-heading">
+        <h3 id="form-heading" class="visually-hidden">Subscription Form</h3>
         <div class="form-group">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" placeholder="Your name" required>
@@ -242,13 +264,13 @@
         <a href="../store.html">Store</a>
       </div>
       <div class="footer-legal">
-        <p>© 2025 AeroVista LLC. All rights reserved.</p>
+        <p>&copy; 2025 AeroVista LLC. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
   <!-- Particles Container (Added by JS) -->
-  <div class="seasonal-particles-container"></div>
+  <div class="seasonal-particles-container" aria-hidden="true"></div>
 
   <!-- Scripts -->
   <script src="seasons-of-change.js"></script>

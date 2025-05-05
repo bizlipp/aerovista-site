@@ -72,18 +72,23 @@ h1, h2, h3, h4, h5 {
 }
 
 h1 {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(3rem, 8vw, 5rem);
   margin-bottom: var(--spacing-md);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 h2 {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-size: clamp(2rem, 6vw, 3.5rem);
   margin-bottom: var(--spacing-sm);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 h3 {
-  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
   margin-bottom: var(--spacing-sm);
+  line-height: 1.2;
 }
 
 p {
@@ -98,6 +103,11 @@ a {
 
 a:hover {
   color: var(--autumn-accent);
+}
+
+a:focus {
+  outline: 2px solid var(--autumn-dark);
+  outline-offset: 3px;
 }
 
 /* Header */
@@ -238,6 +248,11 @@ nav a:hover::after {
   color: white;
 }
 
+.btn:focus {
+  outline: 2px solid var(--autumn-accent);
+  outline-offset: 3px;
+}
+
 .btn::after {
   content: '';
   position: absolute;
@@ -330,6 +345,12 @@ nav a:hover::after {
   box-shadow: var(--shadow-medium);
 }
 
+.season-card:focus-within {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-medium);
+  outline: 2px solid var(--autumn-dark);
+}
+
 .season-card:hover img {
   transform: scale(1.1) rotate(5deg);
 }
@@ -377,7 +398,7 @@ footer {
   border-top: 1px solid var(--neutral-300);
 }
 
-/* Animations */
+/* Animations - optimized for performance */
 @keyframes fadeUp {
   from {
     opacity: 0;
@@ -392,6 +413,7 @@ footer {
 .animated {
   opacity: 0;
   animation: fadeUp 0.8s ease forwards;
+  will-change: opacity, transform;
 }
 
 .delay-1 { animation-delay: 0.1s; }
