@@ -376,50 +376,6 @@ nav a.active::after {
     top: -8px;
 }
 
-/* Breadcrumb Navigation */
-.breadcrumbs {
-    padding: 0.5rem 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--color-surface-alt);
-    border-radius: var(--radius-base);
-}
-
-.breadcrumb-list {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    padding: 0;
-    margin: 0;
-}
-
-.breadcrumb-list li {
-    display: flex;
-    align-items: center;
-}
-
-.breadcrumb-list li:not(:last-child)::after {
-    content: '/';
-    margin: 0 0.5rem;
-    color: var(--color-text-soft);
-}
-
-.breadcrumb-list a {
-    color: var(--color-text);
-    text-decoration: none;
-    transition: color 0.2s ease;
-}
-
-.breadcrumb-list a:hover,
-.breadcrumb-list a:focus {
-    color: var(--color-accent);
-    text-decoration: underline;
-}
-
-.breadcrumb-list span[aria-current="page"] {
-    color: var(--color-accent);
-    font-weight: 500;
-}
-
 /* Mobile Navigation Styles */
 @media (max-width: 768px) {
     .menu-toggle {
@@ -471,9 +427,11 @@ nav a.active::after {
     }
     
     /* Adjust breadcrumbs for mobile */
+    /*
     .breadcrumb-list {
         font-size: 0.9rem;
     }
+    */
 }
   
 /* --- Hero --- */

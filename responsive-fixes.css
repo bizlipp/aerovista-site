@@ -2,6 +2,32 @@
    These styles complement the main CSS and improve mobile layout and accessibility
 */
 
+/* Global fix to prevent horizontal scrolling on mobile devices */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Prevent touch-based horizontal swiping navigation on all pages */
+@media (max-width: 768px) {
+  html {
+    touch-action: pan-y; /* Only allow vertical scrolling/panning */
+    overflow-x: hidden;
+  }
+  
+  body {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    position: relative; /* Establish positioning context */
+    width: 100%; /* Ensure body doesn't exceed viewport */
+  }
+  
+  /* Prevent horizontal overflow from child elements */
+  main, section, div, header, footer {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
 /* Fix for banner heading alignment */
 .container.banner {
   padding: 3rem 1rem 4rem;

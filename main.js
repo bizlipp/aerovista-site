@@ -12,7 +12,7 @@ import { colors, gradients, shadows } from './src/theme.js';
 import { createOrganizationSchema, createDivisionSchema, createAppSchema, injectSchema } from './src/schemaHelper.js';
 
 // Import the navigation components
-import { initNavigation, insertBreadcrumbs } from './src/navigation.js';
+import { initNavigation } from './src/navigation.js';
 
 // 1. CONTENT -----------------------------------------------------------------
 export const divisions = [
@@ -567,11 +567,14 @@ function init() {
   // Initialize navigation components
   initNavigation();
   
+  // Breadcrumb navigation has been removed
+  /* 
   // Insert breadcrumbs on subpages
   const currentPath = window.location.pathname;
   if (currentPath !== '/' && currentPath !== '/index.html') {
-    insertBreadcrumbs();
+    // insertBreadcrumbs() function has been removed
   }
+  */
 }
 
 /**
