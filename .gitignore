@@ -50,3 +50,6 @@ desktop.ini
 # System files
 .DS_Store
 ehthumbs.db
+
+# Company documentation (not for public version control)
+Company Docs/

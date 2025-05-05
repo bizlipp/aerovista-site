@@ -231,3 +231,61 @@ The tool will generate a report file (`link-report.txt`) with details of any iss
 1. **Case Sensitivity**: Ensure all links use the correct capitalization (e.g., `Store.html` not `store.html`)
 2. **Missing Files**: Create the missing files or update the links to point to existing files
 3. **Anchor References**: Ensure that all anchor references (e.g., `#contact`) have corresponding ID attributes in the HTML 
+
+## New Architecture & Optimizations
+
+### CSS Design System
+We've implemented a comprehensive design system with a clear variable hierarchy:
+
+1. **theme-variables.css** - Contains all design tokens (colors, spacing, typography, etc.)
+2. **styles.css** - Main stylesheet with core layout and components
+3. **theme-classes.css** - Utility classes and themed components
+4. **responsive-fixes.css** - Responsive breakpoints and accessibility features
+
+### Accessibility Improvements
+- Added landmark roles to all major sections (`role="banner"`, `role="navigation"`, etc.)
+- Skip-to-content links on all pages
+- Proper ARIA labels for navigation and interactive elements
+- Semantic heading structure (h1 → h2 → h3)
+- Support for screen readers with aria-hidden for decorative elements
+- Keyboard navigation support
+- High contrast focus states
+
+### Technical Optimizations
+- Implemented responsive typography using `clamp()` function
+- Added throttling to scroll events for better performance
+- Image lazy loading with the native `loading="lazy"` attribute
+- Used CSS variables for consistent styling
+- IIFE pattern and proper scope in JavaScript
+- Added dark mode toggle with local storage for persistence
+- Added a smooth scroll to top button
+- Improved animation performance with requestAnimationFrame
+
+### JavaScript Modernization
+- Converted to ES modules for better organization
+- Replaced `var` with `const`/`let`
+- Added null checking for DOM elements
+- Used modern event handling with throttling
+- Cleanup of animation frames on page exit
+- Added proper error handling for forms
+
+### Responsive Design
+- Consolidated breakpoints (small mobile, tablet, desktop)
+- Mobile-first approach with progressive enhancement
+- Fixed navigation for mobile devices
+- Improved touch interactions
+- Optimized content flow on different device sizes
+
+### Performance
+- Reduced animation complexity for low-end devices
+- Respect user preferences for reduced motion
+- Optimized CSS selectors 
+- Used transforms instead of position changes for animations
+- Implemented will-change for elements with frequent animation
+
+### Future Enhancement Plans
+- Convert images to WebP format
+- Implement tree-shaking for unused CSS
+- Add a service worker for offline support
+- Implement a bundler for production (Vite/Parcel)
+- Create component templates for faster page creation 

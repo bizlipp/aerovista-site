@@ -1,0 +1,167 @@
+/*
+ * AeroVista Design System Variables
+ * Central repository for design tokens and CSS variables
+ */
+
+:root {
+  /* Color System - Base Palette */
+  --color-primary: #474dff;
+  --color-primary-dark: #363deb;
+  --color-secondary: #492eff;
+  --color-secondary-dark: #3a25db;
+  --color-accent: #00d2ff;
+  --color-accent-dark: #00b4db;
+  --color-hot: #ff3caf;
+  --color-hot-dark: #e01c8c;
+  --color-warm: #ffb347;
+  --color-warm-dark: #e69b2f;
+  --color-cool: #05d69e;
+  --color-cool-dark: #02b987;
+  --color-purple: #c471ed;
+  --color-purple-dark: #a74cce;
+  
+  /* UI Colors */
+  --color-success: #05d69e;
+  --color-warning: #ffb347;
+  --color-error: #ff4557;
+  --color-info: #00d2ff;
+  
+  /* Themed Colors */
+  --color-seasons-spring: #7cff96;
+  --color-seasons-summer: #ffd96f;
+  --color-seasons-autumn: #ff793f;
+  --color-seasons-fall: #c471ed;
+  --color-seasons-winter: #00d2ff;
+  
+  /* State-specific Colors */
+  --color-focus-ring: rgba(0, 210, 255, 0.5);
+  --color-hover-overlay: rgba(255, 255, 255, 0.05);
+  --color-active-overlay: rgba(255, 255, 255, 0.1);
+  
+  /* UI Surface Colors */
+  --color-bg: #080a12;
+  --color-bg-rgb: 8, 10, 18; /* For rgba() calculations */
+  --color-surface: #101418;
+  --color-surface-alt: #141822;
+  --color-card: #161c28;
+  --color-card-hover: #1c2435;
+  --color-text: #ffffffee;
+  --color-text-soft: #ffffffaa;
+  --color-text-muted: #ffffff77;
+  --color-border: #ffffff22;
+  
+  /* Transparent Versions for Overlays */
+  --color-primary-transparent: rgba(71, 77, 255, 0.4);
+  --color-secondary-transparent: rgba(73, 46, 255, 0.4); 
+  --color-accent-transparent: rgba(0, 210, 255, 0.33);
+  --color-accent-dark-transparent: rgba(0, 138, 191, 0.4); 
+  --color-hot-transparent: rgba(255, 60, 175, 0.4);
+  --color-warm-transparent: rgba(255, 179, 71, 0.33);
+  --color-cool-transparent: rgba(5, 214, 158, 0.33);
+  --color-purple-transparent: rgba(196, 113, 237, 0.4);
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  --gradient-hot: linear-gradient(135deg, var(--color-hot) 0%, var(--color-purple) 100%);
+  --gradient-cool: linear-gradient(135deg, var(--color-accent) 0%, var(--color-cool) 100%);
+  --gradient-warm: linear-gradient(135deg, var(--color-warm) 0%, var(--color-hot) 100%);
+  
+  /* Glass Effect */
+  --glass-bg: rgba(16, 20, 28, 0.7);
+  --glass-blur: 10px;
+  --glass-border: rgba(255, 255, 255, 0.05);
+  
+  /* Shadows */
+  --shadow-soft: 0 8px 30px -5px rgba(0, 0, 0, 0.3);
+  --shadow-card: 0 15px 35px -15px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0 20px 45px -10px rgba(0, 0, 0, 0.6);
+  --shadow-top: 0 -8px 20px -5px rgba(0, 0, 0, 0.3);
+  --shadow-inner: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+  
+  /* Spacing System (for consistent margins/padding) */
+  --space-3xs: 0.25rem;   /* 4px */
+  --space-2xs: 0.5rem;    /* 8px */
+  --space-xs: 0.75rem;    /* 12px */
+  --space-sm: 1rem;       /* 16px - base */
+  --space-md: 1.5rem;     /* 24px */
+  --space-lg: 2rem;       /* 32px */
+  --space-xl: 3rem;       /* 48px */
+  --space-2xl: 4rem;      /* 64px */
+  --space-3xl: 6rem;      /* 96px */
+  
+  /* Typography */
+  --font-heading: 'Chakra Petch', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', Consolas, monospace;
+  
+  --font-size-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.875rem);
+  --font-size-sm: clamp(0.875rem, 0.8rem + 0.3vw, 1rem);
+  --font-size-base: clamp(1rem, 0.9rem + 0.4vw, 1.125rem);
+  --font-size-md: clamp(1.125rem, 1rem + 0.5vw, 1.25rem);
+  --font-size-lg: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+  --font-size-xl: clamp(1.5rem, 1.3rem + 0.7vw, 2rem);
+  --font-size-2xl: clamp(2rem, 1.8rem + 0.8vw, 2.5rem);
+  --font-size-3xl: clamp(2.5rem, 2.2rem + 1.2vw, 3.5rem);
+  --font-size-4xl: clamp(3.5rem, 3rem + 2vw, 5rem);
+  
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  
+  --line-height-tight: 1.1;
+  --line-height-snug: 1.25;
+  --line-height-normal: 1.4;
+  --line-height-relaxed: 1.6;
+  
+  /* Border Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-base: 12px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 9999px;
+  
+  /* Z-index Layers */
+  --z-below: -1;
+  --z-normal: 1;
+  --z-above: 10;
+  --z-sticky: 100;
+  --z-modal: 200;
+  --z-overlay: 300;
+  --z-tooltip: 400;
+  --z-max: 9999;
+  
+  /* Transitions */
+  --transition-fast: 0.15s;
+  --transition-medium: 0.3s;
+  --transition-slow: 0.5s;
+  --easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  
+  /* Animations */
+  --animation-fade-in: fadeIn 0.3s var(--easing-standard);
+  --animation-fade-up: fadeUp 0.4s var(--easing-decelerate);
+  --animation-fade-down: fadeDown 0.4s var(--easing-decelerate);
+  --animation-scale: scale 0.3s var(--easing-standard);
+  
+  /* Aspect Ratios */
+  --ratio-square: 1/1;
+  --ratio-landscape: 16/9;
+  --ratio-portrait: 9/16;
+  --ratio-ultrawide: 21/9;
+  --ratio-golden: 1.618/1;
+  
+  /* Layout Containers */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+  --container-max: 1440px;
+  
+  /* Grid System */
+  --grid-gap-sm: 1rem;
+  --grid-gap-md: 1.5rem;
+  --grid-gap-lg: 2rem;
+} 

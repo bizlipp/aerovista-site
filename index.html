@@ -6,16 +6,21 @@
   <title>AeroVista | Home</title>
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- CSS: Design System Variables First -->
+  <link rel="stylesheet" href="theme-variables.css" />
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="responsive-fixes.css" />
   <link rel="stylesheet" href="theme-classes.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <!-- Meta Tags for SEO and Open Graph -->
   <meta name="description" content="AeroVista is a visionary creative and technology studio uniting talent across immersive media, learning innovation, and future-forward development.">
   <meta property="og:title" content="AeroVista | Where Vision Takes Flight">
   <meta property="og:description" content="AeroVista is a future-forward studio blending creativity and technology to shape immersive media, learning innovation, and digital experiences across seven divisions.">
   <meta property="og:image" content="https://aerovista.us/preview-image.png">
   <meta property="og:url" content="https://aerovista.us">
   <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://aerovista.us/">
 </head>
 <body data-page="home">
   <!-- Accessibility skip link -->
@@ -31,20 +36,25 @@
       <a href="Store.html">Tools & Resources</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </header>
 
-  <!-- Hero -->
+  <!-- Main content -->
   <main id="main-content">
-    <section class="hero">
+    <section class="hero" aria-label="Hero section">
       <div class="video-background">
         <!-- TODO: Replace with actual video file once created -->
-        <img src="public/images/backgrounds/hero-background.png" alt="AeroVista hero background">
+        <img src="public/images/backgrounds/hero-background.png" alt="Abstract digital landscape with glowing grid lines and particles" loading="lazy">
         <div class="video-overlay"></div>
       </div>
       <div class="hero-overlay"></div>
       
       <!-- Reality-bending elements -->
-      <div class="reality-grid">
+      <div class="reality-grid" aria-hidden="true">
         <div class="reality-cube">
           <div class="cube-face front"></div>
           <div class="cube-face back"></div>
@@ -55,7 +65,7 @@
         </div>
       </div>
       
-      <div class="particle-field"></div>
+      <div class="particle-field" aria-hidden="true"></div>
       
       <div class="glitch-container">
         <h1 class="text-gradient-hot glitch" data-text="AeroVista">AeroVista</h1>
@@ -71,40 +81,40 @@
         </div>
       </div>
       
-      <div class="mouse-follower"></div>
+      <div class="mouse-follower" aria-hidden="true"></div>
     </section>
 
     <!-- Vision Callout Section -->
-    <section class="container banner">
-      <div class="liquid-bg"></div>
-      <h2 class="text-gradient glitch" data-text="Where Vision Takes Flight">Where Vision Takes Flight</h2>
-      <p style="max-width:700px;margin:auto;">More than a studio—AeroVista is a launchpad for bold ideas in storytelling, immersive design, and tech innovation. Our divisions work across boundaries to create meaningful, mission-driven experiences.</p>
+    <section class="container banner" aria-labelledby="vision-heading">
+      <div class="liquid-bg" aria-hidden="true"></div>
+      <h2 id="vision-heading" class="text-gradient glitch" data-text="Where Vision Takes Flight">Where Vision Takes Flight</h2>
+      <p>More than a studio—AeroVista is a launchpad for bold ideas in storytelling, immersive design, and tech innovation. Our divisions work across boundaries to create meaningful, mission-driven experiences.</p>
     </section>
 
     <!-- Vision & Values CTA -->
-    <section class="cta-section glass-panel">
+    <section class="cta-section glass-panel" aria-labelledby="innovation-heading">
       <div class="container">
         <div class="cta-grid">
           <div class="cta-content">
-            <h2 class="text-gradient">Innovation Across Disciplines</h2>
+            <h2 id="innovation-heading" class="text-gradient">Innovation Across Disciplines</h2>
             <p>At AeroVista, we bring together specialists across seven divisions to create cutting-edge digital experiences, immersive worlds, and technological solutions that push boundaries.</p>
             <div class="feature-list">
               <div class="feature-item" data-animate="fade-up">
-                <div class="feature-icon">✦</div>
+                <div class="feature-icon" aria-hidden="true">✦</div>
                 <div class="feature-text">
                   <h3>Creative Vision</h3>
                   <p>Bold ideas that challenge conventions and reimagine possibilities.</p>
                 </div>
               </div>
               <div class="feature-item" data-animate="fade-up">
-                <div class="feature-icon">✦</div>
+                <div class="feature-icon" aria-hidden="true">✦</div>
                 <div class="feature-text">
                   <h3>Technical Excellence</h3>
                   <p>Leveraging cutting-edge tools and emerging technologies.</p>
                 </div>
               </div>
               <div class="feature-item" data-animate="fade-up">
-                <div class="feature-icon">✦</div>
+                <div class="feature-icon" aria-hidden="true">✦</div>
                 <div class="feature-text">
                   <h3>Collaborative Approach</h3>
                   <p>Cross-discipline experts working together to solve complex challenges.</p>
@@ -116,7 +126,7 @@
               <a href="#contact" class="btn alt" data-animate="fade-up">Start a Conversation</a>
             </div>
           </div>
-          <div class="cta-visual">
+          <div class="cta-visual" aria-hidden="true">
             <div class="glass-sphere"></div>
             <div class="floating-elements">
               <div class="floating-element" style="--delay:0s; --size:40px; --top:10%; --left:20%;"></div>
@@ -132,8 +142,8 @@
   </main>
 
   <!-- Contact Section -->
-  <section id="contact" class="container">
-    <h2>Get in Touch</h2>
+  <section id="contact" class="container" aria-labelledby="contact-heading">
+    <h2 id="contact-heading">Get in Touch</h2>
     <form id="contactForm" role="form" aria-label="Contact form">
       <input required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
       <input required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
@@ -162,11 +172,26 @@
         <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
         <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
       </div>
+      <div class="footer-links">
+        <h4>Legal</h4>
+        <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
+        <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
+      </div>
     </div>
     <div class="footer-bottom">
       © 2025 AeroVista LLC — All rights reserved.
     </div>
   </footer>
+
+  <!-- Dark mode toggle -->
+  <button class="dark-mode-toggle" aria-label="Toggle dark mode">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
+  </button>
+
+  <!-- Scroll to top button -->
+  <button class="scroll-top" aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.828L7.05 15.778L5.636 14.364L12 8L18.364 14.364L16.95 15.778L12 10.828Z"></path></svg>
+  </button>
 
   <script type="module" src="main.js"></script>
   <script type="module">
@@ -190,118 +215,85 @@
       // Initialize 3D cube rotation
       initCubeAnimation();
       
-      // Interactive mouse follower
+      // Initialize mouse follower
       initMouseFollower();
       
-      // Interactive hero background effect
-      const hero = document.querySelector('.hero');
-      if (hero) {
-        const maxMovement = 10; // max pixels to move
-        
-        hero.addEventListener('mousemove', (e) => {
-          // Calculate mouse position as percentage of screen width/height
-          const mouseX = e.clientX / window.innerWidth;
-          const mouseY = e.clientY / window.innerHeight;
-          
-          // Calculate offset from center (range: -0.5 to 0.5)
-          const offsetX = mouseX - 0.5;
-          const offsetY = mouseY - 0.5;
-          
-          // Apply parallax effect to background image
-          const bgImg = document.querySelector('.video-background img');
-          if (bgImg) {
-            bgImg.style.transform = `translate(calc(-50% + ${offsetX * maxMovement}px), calc(-50% + ${offsetY * maxMovement}px)) scale(1.05)`;
-          }
-          
-          // Rotate the 3D cube based on mouse position
-          const cube = document.querySelector('.reality-cube');
-          if (cube) {
-            cube.style.transform = `rotateX(${-offsetY * 30}deg) rotateY(${offsetX * 30}deg) translateZ(0)`;
-          }
-          
-          // Apply distortion to content
-          const contentWrapper = document.querySelector('.content-wrapper');
-          if (contentWrapper) {
-            contentWrapper.style.transform = `translate(${offsetX * maxMovement * -0.5}px, ${offsetY * maxMovement * -0.5}px) skew(${offsetX * 3}deg, ${offsetY * 3}deg)`;
-          }
-          
-          // Apply subtle movement to text elements
-          const heroContent = document.querySelectorAll('.hero p');
-          heroContent.forEach((el, i) => {
-            // Different elements move at different speeds for depth effect
-            const depth = 0.8 - (i * 0.15); // first element moves most
-            el.style.transform = `translate(${offsetX * maxMovement * depth * -1}px, ${offsetY * maxMovement * depth * -1}px)`;
-          });
-          
-          // Move the overlay gradients slightly
-          hero.style.setProperty('--light-pos-x', `${20 + offsetX * 15}%`);
-          hero.style.setProperty('--light-pos-y', `${30 + offsetY * 15}%`);
-          
-          // Update mouse follower position
-          updateMouseFollower(e.clientX, e.clientY);
-        });
-        
-        // Reset transforms when mouse leaves
-        hero.addEventListener('mouseleave', () => {
-          const bgImg = document.querySelector('.video-background img');
-          if (bgImg) {
-            bgImg.style.transform = 'translate(-50%, -50%) scale(1.05)';
-          }
-          
-          const cube = document.querySelector('.reality-cube');
-          if (cube) {
-            cube.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
-          }
-          
-          const contentWrapper = document.querySelector('.content-wrapper');
-          if (contentWrapper) {
-            contentWrapper.style.transform = 'translate(0, 0) skew(0deg, 0deg)';
-          }
-          
-          const heroContent = document.querySelectorAll('.hero p');
-          heroContent.forEach(el => {
-            el.style.transform = 'translate(0, 0)';
-          });
-        });
+      // Initialize dark mode toggle
+      initDarkModeToggle();
+      
+      // Initialize scroll to top button
+      initScrollToTop();
+    });
+    
+    function initDarkModeToggle() {
+      const darkModeToggle = document.querySelector('.dark-mode-toggle');
+      if (!darkModeToggle) return;
+      
+      // Check for saved preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+        document.body.classList.toggle('light-theme', savedTheme === 'light');
       }
       
-      // Animate liquid background
-      animateLiquidBackground();
-    });
+      darkModeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('light-theme')) {
+          document.body.classList.remove('light-theme');
+          document.body.classList.add('dark-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.body.classList.remove('dark-theme');
+          document.body.classList.add('light-theme');
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    }
+    
+    function initScrollToTop() {
+      const scrollTopButton = document.querySelector('.scroll-top');
+      if (!scrollTopButton) return;
+      
+      // Show button when scrolling down
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 200) {
+          scrollTopButton.classList.add('visible');
+        } else {
+          scrollTopButton.classList.remove('visible');
+        }
+      });
+      
+      // Scroll to top when clicked
+      scrollTopButton.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
     
     function createParticleField() {
       const particleField = document.querySelector('.particle-field');
       if (!particleField) return;
       
-      // Create particles
-      for (let i = 0; i < 100; i++) {
+      // Generate random particles
+      for (let i = 0; i < 50; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         
-        // Random position
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        const z = Math.random() * 200 - 100; // z between -100 and 100
-        
-        // Random size and opacity
-        const size = Math.random() * 5 + 1;
-        const opacity = Math.random() * 0.5 + 0.2;
-        
-        // Random animation duration and delay
-        const duration = Math.random() * 10 + 5;
+        const size = Math.random() * 6 + 1;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const duration = Math.random() * 20 + 10;
         const delay = Math.random() * 5;
+        const opacity = Math.random() * 0.7 + 0.3;
         
-        // Set styles
-        particle.style.cssText = `
-          left: ${x}%;
-          top: ${y}%;
-          width: ${size}px;
-          height: ${size}px;
-          opacity: ${opacity};
-          transform: translateZ(${z}px);
-          animation-duration: ${duration}s;
-          animation-delay: ${delay}s;
-        `;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}%`;
+        particle.style.top = `${posY}%`;
+        particle.style.animationDuration = `${duration}s`;
+        particle.style.animationDelay = `${delay}s`;
+        particle.style.opacity = opacity;
         
         particleField.appendChild(particle);
       }
@@ -312,11 +304,12 @@
       const glitchEffect = document.querySelector('.glitch-effect');
       if (!glitchText || !glitchEffect) return;
       
+      // Track if animation is in progress to avoid stacking
       let isGlitching = false;
       
       // Create random glitch intervals
       setInterval(() => {
-        // Only apply if not currently glitching and random chance
+        // Only trigger if not already glitching and with random chance
         if (!isGlitching && Math.random() > 0.9) {
           isGlitching = true;
           glitchEffect.classList.add('active');
@@ -326,939 +319,92 @@
           const skewY = (Math.random() - 0.5) * 10;
           const translateX = (Math.random() - 0.5) * 10;
           
-          // Apply distortion - but don't manipulate the DOM element directly
-          // This avoids the conflict that creates the double flash
-          requestAnimationFrame(() => {
-            glitchText.style.transform = `skew(${skewX}deg, ${skewY}deg) translateX(${translateX}px)`;
-          });
+          // Apply distortion
+          glitchText.style.transform = `skew(${skewX}deg, ${skewY}deg) translateX(${translateX}px)`;
           
-          // Reset after short time
+          // Reset after short duration
           setTimeout(() => {
-            requestAnimationFrame(() => {
-              glitchText.style.transform = '';
-              glitchEffect.classList.remove('active');
-            });
-            isGlitching = false;
-          }, 100 + Math.random() * 100); // Shorter duration to prevent overlap
+            glitchEffect.classList.remove('active');
+            glitchText.style.transform = '';
+            
+            // Allow new animations after a cooldown
+            setTimeout(() => {
+              isGlitching = false;
+            }, 300);
+          }, 200);
         }
-      }, 3000); // Longer interval between effects to prevent stacking
+      }, 2000);
     }
     
     function initCubeAnimation() {
       const cube = document.querySelector('.reality-cube');
       if (!cube) return;
       
-      // Set initial rotation
-      cube.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
-      
-      // Subtle automatic rotation when not affected by mouse
       let rotationX = 0;
       let rotationY = 0;
+      let animationFrameId;
       
-      function animateCube() {
-        rotationX += 0.1;
-        rotationY += 0.2;
+      function animate() {
+        rotationX += 0.2;
+        rotationY += 0.4;
         
-        // Only apply auto-rotation if not being controlled by mouse
-        if (!cube.style.transform.includes('rotateX')) {
-          cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg) translateZ(0)`;
-        }
+        cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
         
-        requestAnimationFrame(animateCube);
+        animationFrameId = requestAnimationFrame(animate);
       }
       
-      animateCube();
+      // Start animation
+      animate();
+      
+      // Clean up animation when leaving page
+      window.addEventListener('beforeunload', () => {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+        }
+      });
     }
     
     function initMouseFollower() {
       const follower = document.querySelector('.mouse-follower');
-      if (!follower) return;
+      const hero = document.querySelector('.hero');
+      if (!follower || !hero) return;
       
-      // Set initial position off screen
-      follower.style.transform = 'translate(-100px, -100px)';
-    }
-    
-    function updateMouseFollower(x, y) {
-      const follower = document.querySelector('.mouse-follower');
-      if (!follower) return;
+      let mouseX = 0;
+      let mouseY = 0;
+      let followerX = 0;
+      let followerY = 0;
+      let animationFrameId;
       
-      // Add 30ms delay for slight trailing effect
-      setTimeout(() => {
-        follower.style.transform = `translate(${x}px, ${y}px)`;
+      hero.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      });
+      
+      function animate() {
+        // Calculate distance between mouse and follower
+        const distX = mouseX - followerX;
+        const distY = mouseY - followerY;
         
-        // Random distortion every few movements
-        if (Math.random() > 0.95) {
-          follower.classList.add('pulse');
-          setTimeout(() => {
-            follower.classList.remove('pulse');
-          }, 200);
+        // Smooth follower movement with easing
+        followerX += distX * 0.1;
+        followerY += distY * 0.1;
+        
+        // Apply position with transform for better performance
+        follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
+        
+        animationFrameId = requestAnimationFrame(animate);
+      }
+      
+      // Start animation
+      animate();
+      
+      // Clean up animation when leaving page
+      window.addEventListener('beforeunload', () => {
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
         }
-      }, 30);
+      });
     }
-    
-    function animateLiquidBackground() {
-      const liquidBg = document.querySelector('.liquid-bg');
-      if (!liquidBg) return;
-      
-      // Create dynamic liquid animation
-      let time = 0;
-      
-      function updateLiquid() {
-        time += 0.01;
-        
-        // Create a wavy pattern that changes over time
-        const wave1 = Math.sin(time) * 10;
-        const wave2 = Math.cos(time * 0.8) * 15;
-        
-        liquidBg.style.borderRadius = `${60 + wave1}% ${40 + wave2}% ${35 + wave2}% ${65 + wave1}% / ${40 + wave2}% ${60 + wave1}% ${40 + wave1}% ${60 + wave2}%`;
-        
-        requestAnimationFrame(updateLiquid);
-      }
-      
-      updateLiquid();
-    }
-  </script>
-  <style>
-    /* Video background styles */
-    .video-background {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      z-index: 0;
-    }
-    
-    .video-background img {
-      position: absolute;
-      min-width: 105%;
-      min-height: 105%;
-      width: auto;
-      height: auto;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(1.05);
-      object-fit: cover;
-      z-index: 0;
-      transition: transform 0.1s ease-out;
-      filter: saturate(1.2) contrast(1.1);
-    }
-    
-    /* Reality-bending elements */
-    .hero {
-      position: relative;
-      overflow: hidden;
-      min-height: 100vh;
-      --light-pos-x: 20%;
-      --light-pos-y: 30%;
-      perspective: 1000px;
-    }
-    
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: 
-        radial-gradient(circle at var(--light-pos-x) var(--light-pos-y), rgba(0, 212, 255, 0.15) 0%, transparent 20%),
-        radial-gradient(circle at 70% 60%, rgba(76, 0, 255, 0.1) 0%, transparent 30%),
-        radial-gradient(circle at 50% 50%, rgba(255, 60, 175, 0.08) 0%, transparent 40%);
-      opacity: 0.8;
-      z-index: 1;
-      transition: background-position 0.1s ease-out;
-      mix-blend-mode: screen;
-    }
-    
-    .video-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, rgba(10, 12, 20, 0.85) 0%, rgba(0, 5, 15, 0.95) 100%);
-      mix-blend-mode: multiply;
-      z-index: 1;
-    }
-    
-    .hero-overlay {
-      background: linear-gradient(135deg, rgba(20, 25, 40, 0.4) 0%, rgba(0, 10, 30, 0.5) 100%);
-      mix-blend-mode: color-dodge;
-    }
-    
-    /* 3D Cube */
-    .reality-grid {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      perspective: 1000px;
-      overflow: hidden;
-      pointer-events: none;
-    }
-    
-    .reality-cube {
-      position: absolute;
-      top: 50%;
-      left: 30%;
-      width: 200px;
-      height: 200px;
-      transform-style: preserve-3d;
-      transform: rotateX(0deg) rotateY(0deg) translateZ(0);
-      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    
-    .cube-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(2px);
-      box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-    }
-    
-    .cube-face.front { transform: translateZ(100px); }
-    .cube-face.back { transform: rotateY(180deg) translateZ(100px); }
-    .cube-face.left { transform: rotateY(-90deg) translateZ(100px); }
-    .cube-face.right { transform: rotateY(90deg) translateZ(100px); }
-    .cube-face.top { transform: rotateX(90deg) translateZ(100px); }
-    .cube-face.bottom { transform: rotateX(-90deg) translateZ(100px); }
-    
-    /* Particles field */
-    .particle-field {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      perspective: 1000px;
-      pointer-events: none;
-    }
-    
-    .particle {
-      position: absolute;
-      background: white;
-      border-radius: 50%;
-      box-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
-      animation: float-particle 10s ease-in-out infinite alternate;
-      pointer-events: none;
-    }
-    
-    @keyframes float-particle {
-      0% {
-        transform: translateZ(var(--z)) translateX(0) translateY(0);
-      }
-      33% {
-        transform: translateZ(calc(var(--z) + 50px)) translateX(30px) translateY(-20px);
-      }
-      66% {
-        transform: translateZ(calc(var(--z) - 50px)) translateX(-20px) translateY(40px);
-      }
-      100% {
-        transform: translateZ(var(--z)) translateX(10px) translateY(-30px);
-      }
-    }
-    
-    /* Glitch effect */
-    .glitch-container {
-      position: relative;
-      z-index: 3;
-      display: inline-block;
-    }
-    
-    .glitch-effect {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      mix-blend-mode: overlay;
-      opacity: 0;
-      transition: opacity 0.1s ease;
-      background: linear-gradient(
-        90deg, 
-        transparent 0%, 
-        rgba(255, 60, 175, 0.2) 5%, 
-        transparent 10%, 
-        rgba(0, 212, 255, 0.2) 15%,
-        transparent 20%,
-        rgba(76, 0, 255, 0.1) 25%,
-        transparent 30%
-      );
-      pointer-events: none;
-    }
-    
-    .glitch-effect.active {
-      opacity: 1;
-      animation: glitch-slide 0.2s linear;
-    }
-    
-    @keyframes glitch-slide {
-      0% {
-        transform: translateX(-20%);
-        background-position: 0% 0%;
-      }
-      100% {
-        transform: translateX(100%);
-        background-position: 100% 0%;
-      }
-    }
-    
-    .content-wrapper {
-      position: relative;
-      z-index: 3;
-      transition: transform 0.2s ease-out;
-      transform-origin: center center;
-    }
-    
-    /* Mouse follower */
-    .mouse-follower {
-      position: fixed;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, rgba(76, 0, 255, 0.1) 70%, transparent 100%);
-      backdrop-filter: blur(2px);
-      z-index: 9999;
-      pointer-events: none;
-      transform: translate(-100px, -100px);
-      transition: transform 0.1s ease-out, width 0.2s ease, height 0.2s ease;
-      will-change: transform;
-      mix-blend-mode: screen;
-    }
-    
-    .mouse-follower.pulse {
-      width: 60px;
-      height: 60px;
-      transition: width 0.1s ease, height 0.1s ease;
-    }
-    
-    /* Liquid background */
-    .banner {
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .liquid-bg {
-      position: absolute;
-      top: -50%;
-      left: -25%;
-      width: 150%;
-      height: 200%;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(76, 0, 255, 0.05) 50%, rgba(255, 60, 175, 0.05) 100%);
-      border-radius: 60% 40% 35% 65% / 40% 60% 40% 60%;
-      z-index: -1;
-      opacity: 0.7;
-      filter: blur(40px);
-      transition: border-radius 1s ease-in-out;
-    }
-    
-    /* Add a subtle glow to text elements */
-    .hero h1 {
-      text-shadow: 
-        0 0 15px rgba(0, 212, 255, 0.5),
-        0 0 30px rgba(0, 212, 255, 0.2);
-      transition: transform 0.1s ease-out;
-      will-change: transform;
-      backface-visibility: hidden;
-      position: relative;
-      z-index: 5;
-    }
-    
-    .hero p {
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
-      transition: transform 0.2s ease;
-    }
-    
-    /* Slightly distort page on scroll */
-    @media (min-width: 768px) {
-      body {
-        animation: subtle-page-distort 20s ease-in-out infinite alternate;
-      }
-      
-      @keyframes subtle-page-distort {
-        0% {
-          transform: perspective(1000px) rotateX(0deg);
-        }
-        100% {
-          transform: perspective(1000px) rotateX(2deg);
-        }
-      }
-    }
-    
-    /* Media queries for responsiveness */
-    @media (max-width: 768px) {
-      .reality-cube {
-        width: 100px;
-        height: 100px;
-        top: 30%;
-        left: 20%;
-      }
-      
-      .cube-face.front { transform: translateZ(50px); }
-      .cube-face.back { transform: rotateY(180deg) translateZ(50px); }
-      .cube-face.left { transform: rotateY(-90deg) translateZ(50px); }
-      .cube-face.right { transform: rotateY(90deg) translateZ(50px); }
-      .cube-face.top { transform: rotateX(90deg) translateZ(50px); }
-      .cube-face.bottom { transform: rotateX(-90deg) translateZ(50px); }
-    }
-    
-    /* Glass panel CTA section */
-    .glass-panel {
-      background: rgba(15, 20, 30, 0.5);
-      backdrop-filter: blur(10px);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 5rem 0;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .glass-panel::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: 
-        linear-gradient(135deg, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
-        linear-gradient(45deg, rgba(76, 0, 255, 0.02) 0%, transparent 50%),
-        linear-gradient(to bottom, rgba(255, 60, 175, 0.03) 0%, transparent 100%);
-      z-index: 0;
-    }
-    
-    .cta-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
-    
-    .cta-content {
-      color: var(--color-text);
-    }
-    
-    .cta-content h2 {
-      font-size: 2.5rem;
-      margin-bottom: 1.5rem;
-      font-weight: 700;
-    }
-    
-    .cta-content > p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      margin-bottom: 2.5rem;
-      color: var(--color-text-soft);
-    }
-    
-    .feature-list {
-      display: grid;
-      gap: 1.5rem;
-      margin-bottom: 2.5rem;
-    }
-    
-    .feature-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-    
-    .feature-icon {
-      font-size: 1.5rem;
-      color: var(--color-primary);
-      line-height: 1;
-      flex-shrink: 0;
-      background: linear-gradient(135deg, #00d2ff 0%, #3a47d5 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .feature-text h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.5rem;
-      font-weight: 600;
-    }
-    
-    .feature-text p {
-      font-size: 1rem;
-      line-height: 1.5;
-      color: var(--color-text-muted);
-    }
-    
-    .cta-buttons {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    
-    .cta-visual {
-      position: relative;
-      height: 100%;
-      min-height: 400px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .glass-sphere {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 60%, rgba(255, 255, 255, 0.01) 100%);
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 
-        0 0 30px rgba(0, 212, 255, 0.2),
-        0 0 60px rgba(0, 212, 255, 0.1),
-        inset 0 0 20px rgba(255, 255, 255, 0.05);
-      position: relative;
-      z-index: 1;
-    }
-    
-    .floating-elements {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 0;
-    }
-    
-    .floating-element {
-      position: absolute;
-      width: var(--size, 40px);
-      height: var(--size, 40px);
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(0, 212, 255, 0.4) 0%, rgba(76, 0, 255, 0.4) 100%);
-      filter: blur(5px);
-      top: var(--top, 0);
-      left: var(--left, 0);
-      animation: float 6s ease-in-out infinite;
-      animation-delay: var(--delay, 0s);
-      opacity: 0.7;
-    }
-    
-    @keyframes float {
-      0%, 100% {
-        transform: translate(0, 0) scale(1);
-      }
-      50% {
-        transform: translate(20px, -20px) scale(1.1);
-      }
-    }
-    
-    @media (max-width: 900px) {
-      .cta-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-      
-      .cta-visual {
-        order: -1;
-        min-height: 300px;
-      }
-      
-      .glass-sphere {
-        width: 200px;
-        height: 200px;
-      }
-    }
-    
-    /* Mobile optimizations */
-    @media (max-width: 768px) {
-      /* Simplify or disable CPU-intensive effects */
-      .particle-field {
-        display: none; /* Hide particles on mobile for better performance */
-      }
-      
-      .reality-cube {
-        width: 100px;
-        height: 100px;
-        opacity: 0.5; /* Make cube more subtle */
-      }
-      
-      /* Adjust hero height for mobile */
-      .hero {
-        min-height: 85vh;
-      }
-      
-      /* Stack content vertically */
-      .content-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        padding: 0 15px;
-      }
-      
-      /* Disable hover-specific effects that don't translate to touch */
-      .hero::before {
-        opacity: 0.5; /* Reduce intensity of overlay effects */
-      }
-      
-      /* Adjust glitch effect for better mobile performance */
-      .glitch-effect {
-        display: none;
-      }
-      
-      /* Simplify text animation for better performance */
-      .hero h1, .hero p {
-        transform: none !important;
-        transition: none !important;
-      }
-      
-      /* Disable mouse follower on touch devices */
-      .mouse-follower {
-        display: none;
-      }
-      
-      /* Simpler background effect for mobile */
-      .video-background img {
-        transform: translate(-50%, -50%) !important;
-        transition: none !important;
-        filter: saturate(1.1);
-      }
-      
-      /* Optimize glass panel for mobile */
-      .glass-panel {
-        padding: 3rem 0;
-      }
-      
-      /* Adjust CTA section for mobile */
-      .cta-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        padding: 0 15px;
-      }
-      
-      .glass-sphere {
-        width: 150px;
-        height: 150px;
-      }
-      
-      /* Reduce floating elements for better performance */
-      .floating-elements {
-        opacity: 0.5;
-      }
-      
-      /* Contact form adjustments */
-      #contactForm {
-        padding: 1rem;
-      }
-      
-      #contactForm input, 
-      #contactForm textarea {
-        padding: 12px;
-        font-size: 16px; /* Minimum 16px to prevent zoom on iOS */
-      }
-      
-      /* Footer adjustments */
-      .footer-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        text-align: center;
-      }
-      
-      .footer-brand, 
-      .footer-links {
-        margin: 0 auto;
-      }
-      
-      /* Vision callout adjustments */
-      .banner {
-        padding: 2rem 1rem;
-      }
-      
-      .banner h2 {
-        font-size: 1.8rem;
-      }
-      
-      .banner p {
-        font-size: 1rem;
-      }
-      
-      /* Feature item layout */
-      .feature-item {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-      
-      .feature-icon {
-        margin-bottom: 0.5rem;
-      }
-      
-      /* Button sizing for touch targets */
-      .btn, .btn.alt {
-        padding: 12px 20px;
-        font-size: 16px;
-        min-width: 120px;
-        margin: 5px;
-      }
-      
-      /* Hero text sizing */
-      .hero h1 {
-        font-size: 3rem;
-      }
-      
-      .hero p {
-        font-size: 1rem;
-        max-width: 100%;
-      }
-    }
-    
-    /* Medium-sized devices optimizations */
-    @media (min-width: 769px) and (max-width: 1024px) {
-      /* Reduce particle count for medium devices */
-      .particle-field {
-        opacity: 0.5;
-      }
-      
-      /* Adjust hero responsiveness */
-      .hero {
-        min-height: 90vh;
-      }
-      
-      /* Simplified animations for better performance */
-      .reality-grid {
-        opacity: 0.7;
-      }
-      
-      .footer-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      
-      .footer-brand {
-        grid-column: span 2;
-        text-align: center;
-        margin-bottom: 1rem;
-      }
-      
-      /* CTA section adjustments */
-      .cta-content h2 {
-        font-size: 2rem;
-      }
-      
-      .feature-list {
-        gap: 1rem;
-      }
-    }
-    
-    /* Load detection to disable heavy effects on low-performance devices */
-    @media (prefers-reduced-motion: reduce) {
-      /* Respect user preference for reduced motion */
-      .reality-cube,
-      .particle-field,
-      .glitch-effect,
-      .floating-elements,
-      .liquid-bg {
-        display: none !important;
-      }
-      
-      .hero h1, .hero p, .content-wrapper {
-        transform: none !important;
-        transition: none !important;
-      }
-    }
-    
-    /* Add general mobile-friendly base styles */
-    .container {
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    
-    /* Improve touch targets for all interactive elements */
-    a, button, input, select, textarea {
-      touch-action: manipulation;
-    }
-    
-    /* Prevent page swiping behavior on mobile */
-    html, body {
-      overscroll-behavior: none; /* Prevent pull-to-refresh and browser back/forward navigation gestures */
-      overflow-x: hidden; /* Prevent horizontal scrolling */
-      position: relative; /* Establish a positioning context */
-      width: 100%;
-      height: 100%;
-      touch-action: pan-y; /* Only allow vertical scrolling, not horizontal */
-    }
-    
-    /* Ensure all sections stay contained */
-    section, main, footer, header {
-      max-width: 100vw;
-      overflow-x: hidden;
-    }
-    
-    /* Add additional mobile touch behavior fixes */
-    @media (max-width: 768px) {
-      .hero, 
-      .banner, 
-      .container,
-      .cta-section,
-      .glass-panel {
-        touch-action: pan-y; /* Restrict touch actions to vertical scrolling only */
-        overflow-x: hidden;
-        width: 100%;
-      }
-    }
-    
-    /* Improved glitch text handling */
-    .glitch {
-      position: relative;
-      z-index: 5;
-    }
-    
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-      opacity: 0;
-      z-index: -1;
-      transition: opacity 0.1s ease;
-    }
-    
-    /* Only show pseudo-elements during active glitch to prevent artifacts */
-    .glitch-effect.active ~ .glitch::before {
-      clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
-      transform: translate(-5px, 0);
-      opacity: 0.1;
-    }
-    
-    .glitch-effect.active ~ .glitch::after {
-      clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
-      transform: translate(5px, 0);
-      opacity: 0.1;
-    }
-    
-    /* Prevent text gradient layout shift during animation */
-    .text-gradient-hot.glitch {
-      transform-style: preserve-3d;
-      transform: translateZ(0);
-    }
-  </style>
-  <script>
-    // Mobile device detection and optimization
-    document.addEventListener('DOMContentLoaded', function() {
-      // Check if device is likely mobile
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
-                    || window.innerWidth < 768;
-      
-      // Apply mobile-specific optimizations
-      if (isMobile) {
-        // Reduce particle count for mobile
-        const particleField = document.querySelector('.particle-field');
-        if (particleField) {
-          // Remove existing particles and add fewer
-          particleField.innerHTML = '';
-          // Only create 10 particles instead of 100 for mobile
-          for (let i = 0; i < 10; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            
-            // Simpler particle styles for mobile
-            const x = Math.random() * 100;
-            const y = Math.random() * 100;
-            const size = Math.random() * 3 + 1;
-            
-            particle.style.cssText = `
-              left: ${x}%;
-              top: ${y}%;
-              width: ${size}px;
-              height: ${size}px;
-              opacity: 0.3;
-            `;
-            
-            particleField.appendChild(particle);
-          }
-        }
-        
-        // Disable intensive animations
-        document.body.classList.add('mobile-optimized');
-      }
-      
-      // Check for low-end devices via fps detection
-      let fps = 0;
-      let lastLoop = performance.now();
-      let lowPerformance = false;
-      
-      function checkPerformance() {
-        const thisLoop = performance.now();
-        fps = 1000 / (thisLoop - lastLoop);
-        lastLoop = thisLoop;
-        
-        // If fps consistently low, optimize for performance
-        if (fps < 30) {
-          lowPerformanceCount++;
-          if (lowPerformanceCount > 10 && !lowPerformance) {
-            lowPerformance = true;
-            document.body.classList.add('low-performance');
-            
-            // Disable heavy effects
-            const heavyElements = document.querySelectorAll('.particle-field, .reality-cube, .liquid-bg');
-            heavyElements.forEach(el => {
-              el.style.display = 'none';
-            });
-          }
-        }
-        
-        if (!lowPerformance) {
-          requestAnimationFrame(checkPerformance);
-        }
-      }
-      
-      let lowPerformanceCount = 0;
-      requestAnimationFrame(checkPerformance);
-    });
-    
-    // Prevent horizontal swipe navigation on mobile
-    document.addEventListener('DOMContentLoaded', function() {
-      // Detect touch capability
-      if ('ontouchstart' in window || navigator.maxTouchPoints) {
-        let startX, startY;
-        
-        // Track touch start position
-        document.addEventListener('touchstart', function(e) {
-          startX = e.touches[0].clientX;
-          startY = e.touches[0].clientY;
-        }, { passive: false });
-        
-        // Prevent horizontal swiping that could trigger browser back/forward
-        document.addEventListener('touchmove', function(e) {
-          if (!startX || !startY) return;
-          
-          const diffX = startX - e.touches[0].clientX;
-          const diffY = startY - e.touches[0].clientY;
-          
-          // If horizontal swipe is more significant than vertical (likely a browser navigation attempt)
-          if (Math.abs(diffX) > Math.abs(diffY) * 1.5) {
-            e.preventDefault(); // Prevent default browser behavior
-          }
-        }, { passive: false });
-        
-        // Reset tracking
-        document.addEventListener('touchend', function() {
-          startX = null;
-          startY = null;
-        });
-      }
-    });
   </script>
 </body>
 </html>
