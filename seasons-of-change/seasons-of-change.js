@@ -287,7 +287,7 @@ function updateSeasonalHeroBackground(season) {
   }
 }
 
-// 6. Update Seasonal Content
+// 6. Update Seasonal Content with section highlighting
 function updateSeasonalContent(season) {
   // Update page title with current season
   const seasonTitles = {
@@ -330,6 +330,53 @@ function updateSeasonalContent(season) {
       void heroDesc.offsetWidth; // Trigger reflow
       heroDesc.classList.add('animated');
     }, 10);
+  }
+  
+  // Update active seasonal section
+  updateActiveSeasonalSection(season);
+}
+
+// New helper function to update active seasonal section
+function updateActiveSeasonalSection(season) {
+  // Remove active class from all sections
+  document.querySelectorAll('.seasonal-section').forEach(section => {
+    section.classList.remove('active-season');
+  });
+  
+  // Add active class to current season section
+  const sectionClass = `${season}-section`;
+  const activeSection = document.querySelector(`.${sectionClass}`);
+  if (activeSection) {
+    activeSection.classList.add('active-season');
+    
+    // Update the "Currently Available" text to match the season
+    const availableLabel = activeSection.querySelector('.active-season::after');
+    if (availableLabel) {
+      activeSection.style.setProperty('--active-season-color', `var(--${season}-dark)`);
+    }
+    
+    // Scroll the section into view if not visible and user has explicitly changed seasons
+    if (!isElementInViewport(activeSection) && currentSeason !== season) {
+      // Add a slight delay to let other animations complete
+      setTimeout(() => {
+        activeSection.scrollIntoView({ 
+          behavior: 'smooth', 
+          block: 'center' 
+        });
+      }, 300);
+    }
+  }
+  
+  // Update CTA button color based on season
+  const ctaButtons = document.querySelectorAll('.seasonal-section .btn');
+  if (ctaButtons.length) {
+    ctaButtons.forEach(btn => {
+      // Reset all seasonal classes
+      btn.classList.remove('spring-btn', 'summer-btn', 'autumn-btn', 'winter-btn');
+      
+      // Add current season class
+      btn.classList.add(`${season}-btn`);
+    });
   }
 }
 
