@@ -35,6 +35,9 @@ class PlayerState {
     // Achievement tracking
     this.achievements = [];
     
+    // Last action timestamp for tracking new items, rewards, etc.
+    this.lastActionTime = Date.now();
+    
     // Initialize from saved data if available
     this.load();
   }
@@ -53,6 +56,9 @@ class PlayerState {
       const overflow = this.xp - this.xpToNextLevel;
       this.xp = overflow;
       this.xpToNextLevel = Math.floor(this.xpToNextLevel * 1.5);
+      
+      // Update last action time
+      this.lastActionTime = Date.now();
       
       // Return level up information
       return {
@@ -117,9 +123,13 @@ class PlayerState {
         quantity: quantity,
         // These would come from an item database in reality
         name: itemId.replace(/_/g, ' '),
-        type: 'unknown'
+        type: 'unknown',
+        acquiredAt: Date.now() // Track when the item was acquired
       });
     }
+    
+    // Update last action time
+    this.lastActionTime = Date.now();
   }
   
   /**
@@ -128,6 +138,9 @@ class PlayerState {
    */
   addCurrency(amount) {
     this.currency += amount;
+    
+    // Update last action time
+    this.lastActionTime = Date.now();
   }
   
   /**
@@ -137,6 +150,9 @@ class PlayerState {
   completeScene(sceneId) {
     if (!this.adventureProgress.completedScenes.includes(sceneId)) {
       this.adventureProgress.completedScenes.push(sceneId);
+      
+      // Update last action time
+      this.lastActionTime = Date.now();
     }
   }
   
@@ -150,6 +166,9 @@ class PlayerState {
       this.relationships[character] += amount;
       // Clamp to 1-10 range
       this.relationships[character] = Math.max(1, Math.min(10, this.relationships[character]));
+      
+      // Update last action time
+      this.lastActionTime = Date.now();
     }
   }
   
@@ -169,7 +188,8 @@ class PlayerState {
       completedMissions: this.completedMissions,
       adventureProgress: this.adventureProgress,
       relationships: this.relationships,
-      achievements: this.achievements
+      achievements: this.achievements,
+      lastActionTime: this.lastActionTime
     }));
     
     console.log('Player state saved');
@@ -198,6 +218,7 @@ class PlayerState {
         this.adventureProgress = parsedState.adventureProgress || this.adventureProgress;
         this.relationships = parsedState.relationships || this.relationships;
         this.achievements = parsedState.achievements || this.achievements;
+        this.lastActionTime = parsedState.lastActionTime || Date.now();
         
         console.log('Player state loaded');
       }
@@ -230,10 +251,86 @@ class PlayerState {
       tbd: 1
     };
     this.achievements = [];
+    this.lastActionTime = Date.now();
     
     // Clear from localStorage
     localStorage.removeItem('surronSquadPlayerState');
     console.log('Player state reset to defaults');
+  }
+  
+  /**
+   * Export player state as a JSON string
+   * @returns {string} - JSON representation of player state
+   */
+  exportState() {
+    const exportedState = {
+      level: this.level,
+      xp: this.xp,
+      xpToNextLevel: this.xpToNextLevel,
+      currency: this.currency,
+      reputation: this.reputation,
+      inventory: this.inventory,
+      builds: this.builds,
+      unlockedParts: this.unlockedParts,
+      completedMissions: this.completedMissions,
+      adventureProgress: this.adventureProgress,
+      relationships: this.relationships,
+      achievements: this.achievements,
+      exportedAt: Date.now(),
+      versionInfo: {
+        gameVersion: "1.0.0", // Would be dynamic in a real implementation
+        exportVersion: "1"
+      }
+    };
+    
+    return JSON.stringify(exportedState);
+  }
+  
+  /**
+   * Import player state from a JSON string
+   * @param {string} jsonState - JSON representation of player state
+   * @returns {boolean} - Success or failure
+   */
+  importState(jsonState) {
+    try {
+      const importedState = JSON.parse(jsonState);
+      
+      // Validate imported state (basic checks)
+      if (!importedState.level || !importedState.versionInfo) {
+        console.error('Invalid player state data');
+        return false;
+      }
+      
+      // Check if version is compatible (simple check for now)
+      if (importedState.versionInfo.exportVersion !== "1") {
+        console.error('Incompatible player state version');
+        return false;
+      }
+      
+      // Update all properties from imported state
+      this.level = importedState.level;
+      this.xp = importedState.xp;
+      this.xpToNextLevel = importedState.xpToNextLevel;
+      this.currency = importedState.currency;
+      this.reputation = importedState.reputation;
+      this.inventory = importedState.inventory;
+      this.builds = importedState.builds;
+      this.unlockedParts = importedState.unlockedParts;
+      this.completedMissions = importedState.completedMissions;
+      this.adventureProgress = importedState.adventureProgress;
+      this.relationships = importedState.relationships;
+      this.achievements = importedState.achievements;
+      this.lastActionTime = Date.now(); // Use current time as import time
+      
+      // Save to localStorage
+      this.save();
+      
+      console.log('Player state imported successfully');
+      return true;
+    } catch (error) {
+      console.error('Error importing player state:', error);
+      return false;
+    }
   }
 }
 

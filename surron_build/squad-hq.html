@@ -442,6 +442,16 @@
       </div>
       
       <div class="module-card">
+        <div class="module-status new">NEW</div>
+        <div class="module-image" style="background-image: url('images/surron-charlie-alert-pose.png');"></div>
+        <div class="module-content">
+          <h3 class="module-title">SurCoin Shop</h3>
+          <p class="module-description">Spend your hard-earned SurCoins on upgrades, parts, and cosmetic items.</p>
+          <a href="surron-shop.html" class="btn-module">Shop Now</a>
+        </div>
+      </div>
+      
+      <div class="module-card">
         <div class="module-image" style="background-image: url('images/surron-billy-fishing_ready-pose.png');"></div>
         <div class="module-content">
           <h3 class="module-title">Fishing with Billy</h3>
@@ -553,6 +563,9 @@
       
       // Check for unlocked features
       checkUnlockedFeatures();
+      
+      // Check for new purchases or rewards
+      checkNewRewards();
     });
     
     function updatePlayerProfile() {
@@ -609,7 +622,7 @@
       // This would check player level and unlocked features
       // For now, we'll just simulate some locked features
       
-      const testTrackModule = document.querySelector('.module-card:nth-child(4)');
+      const testTrackModule = document.querySelector('.module-card:nth-child(5)');
       const testTrackButton = testTrackModule.querySelector('.btn-module');
       
       if (window.playerState && playerState.level >= 5) {
@@ -624,11 +637,139 @@
       }
     }
     
+    // Check for new rewards or changes since last visit
+    function checkNewRewards() {
+      if (!window.playerState) return;
+      
+      // Get last visited timestamp from localStorage
+      const lastVisited = localStorage.getItem('squadHqLastVisit') || 0;
+      const now = Date.now();
+      
+      // Check inventory for new items since last visit
+      const newItems = checkNewInventoryItems(lastVisited);
+      
+      // Check for new builds since last visit
+      const newBuilds = checkNewBuilds(lastVisited);
+      
+      // Check for completed scenes since last visit
+      const newScenes = checkNewCompletedScenes(lastVisited);
+      
+      // Check for relationship changes
+      const relationshipChanges = checkRelationshipChanges(lastVisited);
+      
+      // Create notifications for all new items
+      newItems.forEach(item => {
+        addNotification('📦', 'New Item Acquired', `You've acquired ${item.name || item.id}`);
+      });
+      
+      // Create notifications for new builds
+      newBuilds.forEach(build => {
+        addNotification('🔧', 'New Bike Build', `You've created "${build.name}"`);
+      });
+      
+      // Create notifications for completed scenes
+      if (newScenes.length > 0) {
+        addNotification('🚀', 'Adventure Progress', `You've completed ${newScenes.length} new adventure scenes`);
+      }
+      
+      // Create notifications for relationship changes
+      relationshipChanges.forEach(change => {
+        const icon = getCharacterIcon(change.character);
+        addNotification(icon, 'Relationship Updated', 
+          `Your relationship with ${getCharacterName(change.character)} is now ${getRelationshipLabel(change.level)}`);
+      });
+      
+      // Add a special welcome back notification if it's been a while
+      if (lastVisited > 0 && now - lastVisited > 24 * 60 * 60 * 1000) {
+        addNotification('👋', 'Welcome Back!', 'The Squad missed you! See what\'s new in the workshop.');
+      }
+      
+      // Update last visited time
+      localStorage.setItem('squadHqLastVisit', now.toString());
+    }
+    
+    // Check for new inventory items since last visit
+    function checkNewInventoryItems(lastVisited) {
+      if (!window.playerState || !window.playerState.inventory) return [];
+      
+      // In a real implementation, we'd track timestamps for each item
+      // For now, we'll just return the most recent items (max 3)
+      return window.playerState.inventory.slice(-3);
+    }
+    
+    // Check for new builds since last visit
+    function checkNewBuilds(lastVisited) {
+      if (!window.playerState || !window.playerState.builds) return [];
+      
+      // In a real implementation, we'd track timestamps for each build
+      // For now, we'll just return the most recent builds (max 2)
+      return window.playerState.builds.slice(-2);
+    }
+    
+    // Check for newly completed scenes since last visit
+    function checkNewCompletedScenes(lastVisited) {
+      if (!window.playerState || !window.playerState.adventureProgress) return [];
+      
+      // In a real implementation, we'd track timestamps for scene completion
+      // For now, we'll just return the most recent scenes (max 5)
+      const completedScenes = window.playerState.adventureProgress.completedScenes || [];
+      return completedScenes.slice(-5);
+    }
+    
+    // Check for relationship changes since last visit
+    function checkRelationshipChanges(lastVisited) {
+      if (!window.playerState || !window.playerState.relationships) return [];
+      
+      // In a real implementation, we'd track timestamps for relationship changes
+      // For now, we'll just check if any relationship is above level 1
+      const changes = [];
+      
+      for (const character in window.playerState.relationships) {
+        const level = window.playerState.relationships[character];
+        if (level > 1) {
+          changes.push({
+            character: character,
+            level: level
+          });
+        }
+      }
+      
+      // Just return the most recent one for now
+      return changes.slice(-1);
+    }
+    
+    // Get character icon for notifications
+    function getCharacterIcon(character) {
+      switch(character) {
+        case 'charlie': return '🔥';
+        case 'billy': return '🎣';
+        case 'tbd': return '🧠';
+        default: return '👤';
+      }
+    }
+    
+    // Get character name for notifications
+    function getCharacterName(character) {
+      switch(character) {
+        case 'charlie': return 'Charlie';
+        case 'billy': return 'Billy';
+        case 'tbd': return 'TBD';
+        default: return character;
+      }
+    }
+    
     // Function to add a notification
-    function addNotification(icon, title, message) {
+    function addNotification(icon, title, message, animate = true) {
       const container = document.getElementById('notifications-container');
       const notification = document.createElement('div');
       notification.className = 'notification-item';
+      
+      if (animate) {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(20px)';
+        notification.style.transition = 'opacity 0.5s, transform 0.5s';
+      }
+      
       notification.innerHTML = `
         <div class="notification-icon">${icon}</div>
         <div class="notification-content">
@@ -643,6 +784,14 @@
         container.insertBefore(notification, container.firstChild);
       } else {
         container.appendChild(notification);
+      }
+      
+      // Trigger animation if requested
+      if (animate) {
+        setTimeout(() => {
+          notification.style.opacity = '1';
+          notification.style.transform = 'translateY(0)';
+        }, 10);
       }
     }
   </script>

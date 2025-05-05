@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SurCoin Shop - Surron Squad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=Permanent+Marker&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="surron_squad.css">
+  <script src="player-state.js"></script>
+  <style>
+    .shop-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .player-currency {
+      background-color: rgba(23, 23, 25, 0.7);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--squad-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .currency-amount {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--squad-neon);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .currency-amount::before {
+      content: "🪙";
+    }
+    
+    .shop-tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .shop-tab {
+      background-color: rgba(23, 23, 25, 0.7);
+      color: var(--squad-text);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .shop-tab.active {
+      background-color: var(--squad-primary);
+      color: white;
+    }
+    
+    .shop-items {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .shop-item {
+      background-color: rgba(23, 23, 25, 0.7);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--squad-shadow);
+      transition: transform 0.3s;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .shop-item:hover {
+      transform: translateY(-5px);
+      border-color: var(--squad-primary);
+    }
+    
+    .item-image {
+      width: 100%;
+      height: 160px;
+      background-color: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    
+    .item-details {
+      padding: 1rem;
+    }
+    
+    .item-title {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin: 0 0 0.5rem 0;
+      color: var(--squad-text);
+    }
+    
+    .item-description {
+      font-size: 0.9rem;
+      color: var(--squad-text);
+      opacity: 0.8;
+      margin: 0 0 1rem 0;
+    }
+    
+    .item-price {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: bold;
+      color: var(--squad-neon);
+    }
+    
+    .item-price::before {
+      content: "🪙";
+    }
+    
+    .item-stats {
+      margin: 1rem 0;
+      padding: 0.5rem;
+      background-color: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
+      font-size: 0.9rem;
+    }
+    
+    .item-stats ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .item-stats li {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.25rem 0;
+    }
+    
+    .buy-button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: var(--squad-primary);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .buy-button:hover {
+      background-color: var(--squad-secondary);
+    }
+    
+    .buy-button:disabled {
+      background-color: #555;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+    
+    .item-owned {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background-color: var(--squad-neon);
+      color: black;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .item-limited {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background-color: #e63946;
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    
+    .purchase-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal-content {
+      background-color: var(--squad-dark);
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      box-shadow: var(--squad-shadow);
+      border: 2px solid var(--squad-primary);
+    }
+    
+    .modal-title {
+      font-size: 1.5rem;
+      margin: 0 0 1rem 0;
+      color: var(--squad-primary);
+    }
+    
+    .modal-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      justify-content: center;
+    }
+    
+    .modal-button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    
+    .modal-confirm {
+      background-color: var(--squad-primary);
+      color: white;
+    }
+    
+    .modal-cancel {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: var(--squad-text);
+    }
+    
+    /* Character commentary styles */
+    .character-comment {
+      position: relative;
+      padding: 1rem 1rem 1rem 50px;
+      margin: 1rem 0;
+      border-radius: 8px;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 0.9rem;
+    }
+    
+    .character-comment:before {
+      content: "";
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      left: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-radius: 50%;
+    }
+    
+    .character-comment.charlie {
+      background-color: rgba(230, 57, 70, 0.1);
+      border-left: 3px solid #e63946;
+      color: #e63946;
+    }
+    
+    .character-comment.billy {
+      background-color: rgba(125, 130, 96, 0.1);
+      border-left: 3px solid #7d8260;
+      color: #7d8260;
+    }
+    
+    .character-comment.tbd {
+      background-color: rgba(38, 70, 83, 0.1);
+      border-left: 3px solid #264653;
+      color: #264653;
+    }
+    
+    .character-comment.charlie:before {
+      background-image: url('images/surron-charlie-alert-pose.png');
+    }
+    
+    .character-comment.billy:before {
+      background-image: url('images/surron-billy-fishing_ready-pose.png');
+    }
+    
+    .character-comment.tbd:before {
+      background-image: url('images/surron-tbd-terminal-ready.png');
+    }
+    
+    .no-coins {
+      color: #e63946;
+      font-weight: bold;
+      margin-top: 1rem;
+      display: none;
+    }
+    
+    /* Sale badge */
+    .sale-badge {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      background-color: #e63946;
+      color: white;
+      font-weight: bold;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      transform: rotate(-15deg);
+      z-index: 1;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    
+    .original-price {
+      text-decoration: line-through;
+      color: #999;
+      font-size: 0.9rem;
+      margin-right: 0.5rem;
+    }
+  </style>
+</head>
+<body class="surron-squad-theme">
+  <div class="shop-container">
+    <header>
+      <h1>SurCoin Shop</h1>
+      <p class="subtitle">Spend your hard-earned SurCoins on upgrades and parts</p>
+      
+      <div style="margin-bottom: 15px;">
+        <a href="squad-hq.html" class="btn">← Back to Squad HQ</a>
+      </div>
+    </header>
+    
+    <div class="player-currency">
+      <div>
+        <h2>Your Balance</h2>
+        <div class="currency-amount" id="player-coins">0</div>
+      </div>
+      <div id="no-coins-warning" class="no-coins">
+        Need more SurCoins? Complete adventures and bike builds to earn more!
+      </div>
+    </div>
+    
+    <div class="shop-tabs">
+      <button class="shop-tab active" data-tab="upgrades">Bike Upgrades</button>
+      <button class="shop-tab" data-tab="parts">Special Parts</button>
+      <button class="shop-tab" data-tab="cosmetics">Cosmetic Items</button>
+      <button class="shop-tab" data-tab="boosts">Boosts & Perks</button>
+    </div>
+    
+    <div class="shop-items" id="shop-items-container">
+      <!-- Items will be loaded dynamically -->
+    </div>
+  </div>
+  
+  <!-- Purchase confirmation modal -->
+  <div class="purchase-modal" id="purchase-modal">
+    <div class="modal-content">
+      <h2 class="modal-title">Confirm Purchase</h2>
+      <p id="modal-description">Are you sure you want to purchase this item?</p>
+      <div class="character-comment" id="modal-comment">
+        Character comment goes here
+      </div>
+      <div class="modal-buttons">
+        <button class="modal-button modal-cancel" id="modal-cancel">Cancel</button>
+        <button class="modal-button modal-confirm" id="modal-confirm">Buy Now</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Shop item categories
+    const shopItems = {
+      upgrades: [
+        {
+          id: "high_power_controller",
+          name: "High Power Controller",
+          description: "Upgraded controller with higher amperage for more power and torque",
+          price: 1200,
+          image: "🔋",
+          stats: {
+            power: "+20%",
+            durability: "+10%",
+            cooling: "+15%"
+          },
+          characterComment: {
+            character: "charlie",
+            text: "This thing is INSANE! You'll pull wheelies by accident. It's beautiful!"
+          }
+        },
+        {
+          id: "premium_suspension",
+          name: "Premium Suspension Kit",
+          description: "Full DNM suspension upgrade for improved handling and comfort",
+          price: 1500,
+          image: "🔧",
+          stats: {
+            comfort: "+40%",
+            handling: "+35%",
+            durability: "+25%"
+          },
+          characterComment: {
+            character: "tbd",
+            text: "My analysis indicates a 37.2% improvement in terrain absorption efficiency."
+          }
+        },
+        {
+          id: "racing_brakes",
+          name: "Racing Brake System",
+          description: "High-performance 4-piston brake calipers with larger rotors",
+          price: 850,
+          image: "🛑",
+          stats: {
+            braking: "+50%",
+            control: "+30%",
+            weight: "+5%"
+          },
+          characterComment: {
+            character: "billy",
+            text: "Trust me, you'll need these when Charlie convinces you to try 'the shortcut'."
+          }
+        },
+        {
+          id: "battery_upgrade",
+          name: "72V Battery Upgrade",
+          price: 2200,
+          description: "The ultimate power upgrade. Convert your Sur-Ron to full 72V power",
+          onSale: true,
+          originalPrice: 2800,
+          image: "⚡",
+          limited: true,
+          stats: {
+            power: "+40%",
+            range: "+20%",
+            speed: "+30%"
+          },
+          characterComment: {
+            character: "charlie",
+            text: "THIS. IS. EVERYTHING. Your bike will become an absolute MONSTER!"
+          }
+        }
+      ],
+      parts: [
+        {
+          id: "carbon_fiber_parts",
+          name: "Carbon Fiber Parts Kit",
+          description: "Lightweight carbon fiber fenders, chain guard and number plate",
+          price: 600,
+          image: "🏁",
+          stats: {
+            weight: "-15%",
+            style: "+25%",
+            durability: "-5%"
+          },
+          characterComment: {
+            character: "tbd",
+            text: "12.3% weight reduction achieved. Aerodynamic efficiency increased by 4.7%."
+          }
+        },
+        {
+          id: "billet_pegs",
+          name: "Billet Aluminum Foot Pegs",
+          description: "CNC machined foot pegs with adjustable height and grip",
+          price: 350,
+          image: "👣",
+          stats: {
+            grip: "+30%",
+            comfort: "+20%",
+            style: "+15%"
+          },
+          characterComment: {
+            character: "billy",
+            text: "These are perfect for when the trail gets wet and muddy. No more slipping!"
+          }
+        },
+        {
+          id: "handlebar_risers",
+          name: "Pro Taper Handlebar Kit",
+          description: "Complete handlebar upgrade with risers for improved control",
+          price: 400,
+          image: "🎮",
+          stats: {
+            control: "+25%",
+            comfort: "+20%",
+            style: "+10%"
+          },
+          characterComment: {
+            character: "charlie",
+            text: "Better leverage for WHEELIES! Also helps with control and stuff, I guess."
+          }
+        }
+      ],
+      cosmetics: [
+        {
+          id: "custom_graphics_kit",
+          name: "Custom Graphics Kit",
+          description: "Personalized graphics kit with your choice of design",
+          price: 250,
+          image: "🎨",
+          stats: {
+            style: "+50%",
+            uniqueness: "+100%"
+          },
+          characterComment: {
+            character: "charlie",
+            text: "Your bike should be as loud as your riding style! Make it STAND OUT!"
+          }
+        },
+        {
+          id: "led_lighting_kit",
+          name: "LED Lighting Kit",
+          description: "RGB lighting system with app control and patterns",
+          price: 300,
+          image: "💡",
+          stats: {
+            visibility: "+40%",
+            style: "+60%",
+            safety: "+20%"
+          },
+          characterComment: {
+            character: "tbd",
+            text: "Night riding visibility increased by 42.7%. Power draw is negligible."
+          }
+        },
+        {
+          id: "squad_jersey",
+          name: "Official Squad Jersey",
+          description: "Custom Surron Squad jersey with your name on the back",
+          price: 180,
+          image: "👕",
+          stats: {
+            style: "+70%",
+            protection: "+10%",
+            squadCred: "+100%"
+          },
+          characterComment: {
+            character: "billy",
+            text: "Honestly, it's pretty comfortable. And Charlie stops making fun of your clothes."
+          }
+        }
+      ],
+      boosts: [
+        {
+          id: "double_xp_boost",
+          name: "Double XP Boost (48 hrs)",
+          description: "Earn twice as much XP from all activities for 48 hours",
+          price: 500,
+          image: "⏱️",
+          stats: {
+            xpGain: "+100%",
+            duration: "48 hours"
+          },
+          characterComment: {
+            character: "tbd",
+            text: "Optimal utilization requires 4.8 hours of gameplay within the boost window."
+          }
+        },
+        {
+          id: "rare_parts_finder",
+          name: "Rare Parts Finder",
+          description: "Increases chance of finding rare parts in adventures by 25%",
+          price: 750,
+          image: "🔍",
+          stats: {
+            rareFind: "+25%",
+            duration: "7 days"
+          },
+          characterComment: {
+            character: "charlie",
+            text: "More shiny parts! MORE POWER! Let's find the good stuff!"
+          }
+        },
+        {
+          id: "relationship_boost",
+          name: "Squad Bonding Experience",
+          description: "Improves all character relationships by +2 points",
+          price: 1000,
+          image: "👥",
+          stats: {
+            relationships: "+2 all characters"
+          },
+          characterComment: {
+            character: "billy",
+            text: "Fine, we'll go fishing together. Just don't scare away all the fish this time."
+          }
+        }
+      ]
+    };
+    
+    // Current tab
+    let currentTab = 'upgrades';
+    let playerCurrency = 0;
+    
+    // Initialize shop
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set up tab switching
+      const tabs = document.querySelectorAll('.shop-tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs
+          tabs.forEach(t => t.classList.remove('active'));
+          // Add active class to clicked tab
+          this.classList.add('active');
+          // Update current tab
+          currentTab = this.dataset.tab;
+          // Load items for this tab
+          loadShopItems(currentTab);
+        });
+      });
+      
+      // Set up modal close button
+      document.getElementById('modal-cancel').addEventListener('click', closeModal);
+      
+      // Wait for player state to be ready
+      document.addEventListener('playerStateReady', function() {
+        updatePlayerCurrency();
+        loadShopItems(currentTab);
+        
+        // Check if player has owned items
+        checkOwnedItems();
+      });
+      
+      // If player state already exists, update currency
+      if (window.playerState) {
+        updatePlayerCurrency();
+        loadShopItems(currentTab);
+        checkOwnedItems();
+      }
+    });
+    
+    // Update player currency display
+    function updatePlayerCurrency() {
+      if (!window.playerState) return;
+      
+      playerCurrency = window.playerState.currency;
+      document.getElementById('player-coins').textContent = playerCurrency;
+      
+      // Show warning if player has less than 200 coins
+      if (playerCurrency < 200) {
+        document.getElementById('no-coins-warning').style.display = 'block';
+      } else {
+        document.getElementById('no-coins-warning').style.display = 'none';
+      }
+    }
+    
+    // Check if player owns any items
+    function checkOwnedItems() {
+      if (!window.playerState || !window.playerState.inventory) return;
+      
+      // This would be more comprehensive in a real implementation
+      // For now, just check if the item ID exists in inventory
+      const ownedItemIds = window.playerState.inventory.map(item => item.id);
+      
+      // Update any matching items in the DOM
+      document.querySelectorAll('.shop-item').forEach(itemElement => {
+        const itemId = itemElement.dataset.itemId;
+        if (ownedItemIds.includes(itemId)) {
+          markItemAsOwned(itemElement);
+        }
+      });
+    }
+    
+    // Mark an item as owned
+    function markItemAsOwned(itemElement) {
+      const buyButton = itemElement.querySelector('.buy-button');
+      buyButton.disabled = true;
+      buyButton.textContent = 'Owned';
+      
+      const ownedBadge = document.createElement('div');
+      ownedBadge.className = 'item-owned';
+      ownedBadge.textContent = 'OWNED';
+      itemElement.appendChild(ownedBadge);
+    }
+    
+    // Load shop items for a specific tab
+    function loadShopItems(tabName) {
+      const container = document.getElementById('shop-items-container');
+      container.innerHTML = '';
+      
+      const items = shopItems[tabName];
+      if (!items || items.length === 0) {
+        container.innerHTML = '<p class="no-items">No items available in this category yet.</p>';
+        return;
+      }
+      
+      items.forEach(item => {
+        const itemElement = createItemElement(item);
+        container.appendChild(itemElement);
+      });
+      
+      // After loading items, check if any are owned
+      if (window.playerState) {
+        checkOwnedItems();
+      }
+    }
+    
+    // Create an item element
+    function createItemElement(item) {
+      const itemElement = document.createElement('div');
+      itemElement.className = 'shop-item';
+      itemElement.dataset.itemId = item.id;
+      
+      // If item is on sale, add sale badge
+      if (item.onSale) {
+        const saleBadge = document.createElement('div');
+        saleBadge.className = 'sale-badge';
+        saleBadge.textContent = 'SALE';
+        itemElement.appendChild(saleBadge);
+      }
+      
+      // If item is limited, add limited badge
+      if (item.limited) {
+        const limitedBadge = document.createElement('div');
+        limitedBadge.className = 'item-limited';
+        limitedBadge.textContent = 'LIMITED';
+        itemElement.appendChild(limitedBadge);
+      }
+      
+      // Item image
+      const itemImage = document.createElement('div');
+      itemImage.className = 'item-image';
+      itemImage.textContent = item.image;
+      itemElement.appendChild(itemImage);
+      
+      // Item details
+      const itemDetails = document.createElement('div');
+      itemDetails.className = 'item-details';
+      
+      // Item title
+      const itemTitle = document.createElement('h3');
+      itemTitle.className = 'item-title';
+      itemTitle.textContent = item.name;
+      itemDetails.appendChild(itemTitle);
+      
+      // Item description
+      const itemDescription = document.createElement('p');
+      itemDescription.className = 'item-description';
+      itemDescription.textContent = item.description;
+      itemDetails.appendChild(itemDescription);
+      
+      // Item stats
+      if (item.stats) {
+        const itemStats = document.createElement('div');
+        itemStats.className = 'item-stats';
+        
+        const statsList = document.createElement('ul');
+        
+        for (const [stat, value] of Object.entries(item.stats)) {
+          const statItem = document.createElement('li');
+          
+          const statName = document.createElement('span');
+          statName.textContent = stat.charAt(0).toUpperCase() + stat.slice(1);
+          
+          const statValue = document.createElement('span');
+          statValue.textContent = value;
+          statValue.style.color = value.startsWith('+') ? 'var(--squad-neon)' : '#e63946';
+          
+          statItem.appendChild(statName);
+          statItem.appendChild(statValue);
+          
+          statsList.appendChild(statItem);
+        }
+        
+        itemStats.appendChild(statsList);
+        itemDetails.appendChild(itemStats);
+      }
+      
+      // Item price
+      const itemPrice = document.createElement('div');
+      itemPrice.className = 'item-price';
+      
+      if (item.onSale && item.originalPrice) {
+        const originalPrice = document.createElement('span');
+        originalPrice.className = 'original-price';
+        originalPrice.textContent = item.originalPrice;
+        itemPrice.appendChild(originalPrice);
+      }
+      
+      itemPrice.appendChild(document.createTextNode(item.price));
+      itemDetails.appendChild(itemPrice);
+      
+      // Buy button
+      const buyButton = document.createElement('button');
+      buyButton.className = 'buy-button';
+      buyButton.textContent = 'Purchase';
+      buyButton.disabled = playerCurrency < item.price;
+      
+      buyButton.addEventListener('click', () => {
+        showPurchaseModal(item);
+      });
+      
+      itemDetails.appendChild(buyButton);
+      
+      // Character comment (hidden until purchase confirmation)
+      if (item.characterComment) {
+        const comment = document.createElement('div');
+        comment.className = `character-comment ${item.characterComment.character}`;
+        comment.textContent = item.characterComment.text;
+        comment.style.display = 'none'; // Hidden until purchase modal
+        itemDetails.appendChild(comment);
+      }
+      
+      itemElement.appendChild(itemDetails);
+      
+      return itemElement;
+    }
+    
+    // Show purchase confirmation modal
+    function showPurchaseModal(item) {
+      const modal = document.getElementById('purchase-modal');
+      const description = document.getElementById('modal-description');
+      const comment = document.getElementById('modal-comment');
+      const confirmButton = document.getElementById('modal-confirm');
+      
+      // Set modal content
+      description.textContent = `Are you sure you want to purchase ${item.name} for ${item.price} SurCoins?`;
+      
+      // Set character comment
+      if (item.characterComment) {
+        comment.className = `character-comment ${item.characterComment.character}`;
+        comment.textContent = item.characterComment.text;
+        comment.style.display = 'block';
+      } else {
+        comment.style.display = 'none';
+      }
+      
+      // Set up confirm button
+      confirmButton.onclick = () => {
+        purchaseItem(item);
+        closeModal();
+      };
+      
+      // Show modal
+      modal.style.display = 'flex';
+    }
+    
+    // Close purchase modal
+    function closeModal() {
+      const modal = document.getElementById('purchase-modal');
+      modal.style.display = 'none';
+    }
+    
+    // Purchase an item
+    function purchaseItem(item) {
+      if (!window.playerState) return;
+      
+      // Check if player has enough currency
+      if (window.playerState.currency < item.price) {
+        alert("You don't have enough SurCoins for this purchase!");
+        return;
+      }
+      
+      // Subtract cost from player currency
+      window.playerState.currency -= item.price;
+      
+      // Add item to player inventory
+      window.playerState.addItem(item.id, 1);
+      
+      // Save player state
+      window.playerState.save();
+      
+      // Update UI
+      updatePlayerCurrency();
+      
+      // Mark item as owned
+      const itemElement = document.querySelector(`.shop-item[data-item-id="${item.id}"]`);
+      if (itemElement) {
+        markItemAsOwned(itemElement);
+      }
+      
+      // Show success notification
+      addNotification(item);
+    }
+    
+    // Add a purchase notification
+    function addNotification(item) {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = 'purchase-notification';
+      notification.style.position = 'fixed';
+      notification.style.bottom = '20px';
+      notification.style.right = '20px';
+      notification.style.backgroundColor = 'var(--squad-primary)';
+      notification.style.color = 'white';
+      notification.style.padding = '1rem';
+      notification.style.borderRadius = '8px';
+      notification.style.boxShadow = 'var(--squad-shadow)';
+      notification.style.zIndex = '1000';
+      notification.style.transition = 'opacity 0.3s, transform 0.3s';
+      notification.style.opacity = '0';
+      notification.style.transform = 'translateY(20px)';
+      
+      notification.innerHTML = `
+        <h3 style="margin: 0 0 0.5rem 0;">Purchase Successful!</h3>
+        <p style="margin: 0;">${item.name} has been added to your inventory.</p>
+      `;
+      
+      // Add to document
+      document.body.appendChild(notification);
+      
+      // Trigger animation
+      setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateY(0)';
+      }, 10);
+      
+      // Remove after 5 seconds
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 5000);
+    }
+  </script>
+</body>
+</html> 
