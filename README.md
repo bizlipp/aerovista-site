@@ -34,6 +34,40 @@ The site uses a shared navigation component that adds:
 
 This is automatically initialized when pages load.
 
+## Navigation Standards
+
+### Link Naming Conventions
+- **Navigation Items**: All main navigation items should be labeled consistently across pages:
+  - Home
+  - Divisions
+  - Apps
+  - Tools & Resources (links to Store.html)
+  - Contact (anchor link to #contact)
+
+### URL Conventions
+- **Capitalization**: All page URLs should follow consistent capitalization (e.g., `Store.html` not `store.html`).
+- **Relative Paths**: Use relative paths for all internal links:
+  - Root-level pages: `example.html`
+  - Subdirectory pages: `../example.html` (when linking from a subdirectory)
+  - Sub-subdirectory pages: `../../example.html` (when linking from a sub-subdirectory)
+
+### Footer Structure
+All pages should maintain a consistent footer structure with these sections:
+1. Brand information (logo + tagline)
+2. Quick Links (Home, Divisions, Apps, Tools & Resources)
+3. Legal links (Privacy Policy, Terms of Service)
+4. Copyright notice
+
+### Error Handling
+- A standard 404 page is available for missing/broken links
+- All placeholder links should point to an appropriate page or use the correct anchor
+
+## Sitemap Update Procedure
+When adding or removing pages:
+1. Update sitemap.xml with the new URLs
+2. Validate the sitemap structure
+3. Ensure all navigation menus across the site reflect the changes
+
 ## Implementation
 
 ### Server-Side
@@ -170,4 +204,30 @@ To set up the contact form:
    npm start
    ```
 
-The contact form will automatically send submissions to the configured email address. 
+The contact form will automatically send submissions to the configured email address.
+
+## Link Checker Tool
+
+A link checker tool is available to validate all internal links on the website. This helps identify broken links, case sensitivity issues, and missing files.
+
+### Running the Link Checker
+
+```bash
+# Install dependencies first if you haven't already
+npm install
+
+# Run the link checker
+npm run check-links
+```
+
+The tool will generate a report file (`link-report.txt`) with details of any issues found. Issues can include:
+- Broken links to non-existent files
+- Case sensitivity issues in file references
+- Missing anchor references
+- Directory path issues
+
+### Fixing Issues
+
+1. **Case Sensitivity**: Ensure all links use the correct capitalization (e.g., `Store.html` not `store.html`)
+2. **Missing Files**: Create the missing files or update the links to point to existing files
+3. **Anchor References**: Ensure that all anchor references (e.g., `#contact`) have corresponding ID attributes in the HTML 

@@ -7,6 +7,8 @@
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="../responsive-fixes.css" />
+  <link rel="stylesheet" href="../theme-classes.css" />
   <style>
     .showcase-gallery {
       display: grid;
@@ -103,13 +105,17 @@
   </style>
 </head>
 <body>
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+  
   <!-- Navbar -->
-  <header>
+  <header role="banner">
     <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
+    <nav role="navigation" aria-label="Main Navigation">
       <a href="../index.html">Home</a>
       <a href="../divisions.html">Divisions</a>
       <a href="../apps.html">Apps</a>
+      <a href="../Store.html">Tools & Resources</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -122,124 +128,126 @@
   </section>
 
   <!-- Overview -->
-  <section class="container">
-    <h2>Our Mission</h2>
-    <div class="text-center" data-animate="fade-up">
-      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">SkyForge Creative explores the edge of virtual storytelling and interactive design—crafting worlds that resonate across platforms, genres, and imaginations.</p>
-    </div>
+  <main id="main-content">
+    <section class="container">
+      <h2>Our Mission</h2>
+      <div class="text-center" data-animate="fade-up">
+        <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">SkyForge Creative explores the edge of virtual storytelling and interactive design—crafting worlds that resonate across platforms, genres, and imaginations.</p>
+      </div>
+      
+      <div class="showcase-gallery" data-animate="fade-up">
+        <div class="showcase-item" data-animate="fade-in">
+          <img 
+            src="../public/images/portfolio/portfolio-1.png" 
+            alt="Game Development" 
+            loading="lazy"
+            width="600"
+            height="400">
+        </div>
+        <div class="showcase-item" data-animate="fade-in">
+          <img 
+            src="../public/images/skyforge2.png" 
+            alt="AR Experiences" 
+            loading="lazy"
+            width="400"
+            height="300">
+        </div>
+        <div class="showcase-item" data-animate="fade-in">
+          <img 
+            src="../public/images/portfolio/portfolio-1.png" 
+            alt="VR Solutions" 
+            loading="lazy"
+            width="400"
+            height="400">
+        </div>
+        <div class="showcase-item" data-animate="fade-in">
+          <img 
+            src="../public/images/portfolio/portfolio-1.png" 
+            alt="Interactive Storytelling" 
+            loading="lazy"
+            width="700"
+            height="400">
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section class="container">
+      <h2>Featured Projects</h2>
+      <div class="grid grid-cols-3 stagger">
+        <div class="project">
+          <h3>Nebula Drift: Immersive Game World</h3>
+          <p>Development of a neon-infused cyberpunk open world with modular environment systems and complex NPC behavior trees.</p>
+          <a href="skyforge-creative/nebula-drift-case-study.html" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
+        </div>
+        <div class="project">
+          <h3>Echo Chamber: Spatial Audio Experience</h3>
+          <p>VR audio visualization that translates sound into interactive environments that respond to both music and player interaction.</p>
+          <a href="skyforge-creative/echo-chamber-case-study.html" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
+        </div>
+        <div class="project">
+          <h3>Chronos: Time-manipulation Mechanics</h3>
+          <p>Experimental game mechanics focused on time manipulation, complete with shaders, particle systems and physics integration.</p>
+          <a href="skyforge-creative/chronos-case-study.html" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
+        </div>
+      </div>
+    </section>
     
-    <div class="showcase-gallery" data-animate="fade-up">
-      <div class="showcase-item" data-animate="fade-in">
-        <img 
-          src="../public/images/portfolio/portfolio-1.png" 
-          alt="Game Development" 
-          loading="lazy"
-          width="600"
-          height="400">
+    <!-- Services Section -->
+    <section class="container">
+      <h2>Our Services</h2>
+      <div class="services-list">
+        <div class="service-item" data-animate="fade-left">
+          <div class="service-icon">🎮</div>
+          <div class="service-content">
+            <h3>Game Development</h3>
+            <p>From concept to launch, we create engaging gameplay experiences using Unity, Unreal Engine, and custom frameworks. Specializing in procedural content, adaptive systems, and player-driven narratives.</p>
+          </div>
+        </div>
+        <div class="service-item" data-animate="fade-right">
+          <div class="service-icon">📱</div>
+          <div class="service-content">
+            <h3>AR/VR Experiences</h3>
+            <p>Crafting immersive extended reality solutions that bridge digital and physical worlds. Projects span enterprise training, cultural exhibitions, and interactive entertainment.</p>
+          </div>
+        </div>
+        <div class="service-item" data-animate="fade-left">
+          <div class="service-icon">📖</div>
+          <div class="service-content">
+            <h3>Interactive Storytelling</h3>
+            <p>Narrative design and branching storylines that respond to user choices. We combine traditional writing talent with technical implementation for truly dynamic stories.</p>
+          </div>
+        </div>
+        <div class="service-item" data-animate="fade-right">
+          <div class="service-icon">📊</div>
+          <div class="service-content">
+            <h3>Consulting & Prototyping</h3>
+            <p>Strategic guidance and rapid prototyping services for businesses looking to explore game mechanics, virtual worlds, or interactive media. We help validate ideas quickly.</p>
+          </div>
+        </div>
       </div>
-      <div class="showcase-item" data-animate="fade-in">
-        <img 
-          src="../public/images/skyforge2.png" 
-          alt="AR Experiences" 
-          loading="lazy"
-          width="400"
-          height="300">
-      </div>
-      <div class="showcase-item" data-animate="fade-in">
-        <img 
-          src="../public/images/portfolio/portfolio-1.png" 
-          alt="VR Solutions" 
-          loading="lazy"
-          width="400"
-          height="400">
-      </div>
-      <div class="showcase-item" data-animate="fade-in">
-        <img 
-          src="../public/images/portfolio/portfolio-1.png" 
-          alt="Interactive Storytelling" 
-          loading="lazy"
-          width="700"
-          height="400">
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Featured Projects -->
-  <section class="container">
-    <h2>Featured Projects</h2>
-    <div class="grid grid-cols-3 stagger">
-      <div class="project">
-        <h3>Nebula Drift: Immersive Game World</h3>
-        <p>Development of a neon-infused cyberpunk open world with modular environment systems and complex NPC behavior trees.</p>
-        <a href="skyforge-creative/nebula-drift-case-study.html" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
-      </div>
-      <div class="project">
-        <h3>Echo Chamber: Spatial Audio Experience</h3>
-        <p>VR audio visualization that translates sound into interactive environments that respond to both music and player interaction.</p>
-        <a href="skyforge-creative/echo-chamber-case-study.html" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
-      </div>
-      <div class="project">
-        <h3>Chronos: Time-manipulation Mechanics</h3>
-        <p>Experimental game mechanics focused on time manipulation, complete with shaders, particle systems and physics integration.</p>
-        <a href="skyforge-creative/chronos-case-study.html" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
-      </div>
-    </div>
-  </section>
-  
-  <!-- Services Section -->
-  <section class="container">
-    <h2>Our Services</h2>
-    <div class="services-list">
-      <div class="service-item" data-animate="fade-left">
-        <div class="service-icon">🎮</div>
-        <div class="service-content">
-          <h3>Game Development</h3>
-          <p>From concept to launch, we create engaging gameplay experiences using Unity, Unreal Engine, and custom frameworks. Specializing in procedural content, adaptive systems, and player-driven narratives.</p>
-        </div>
-      </div>
-      <div class="service-item" data-animate="fade-right">
-        <div class="service-icon">📱</div>
-        <div class="service-content">
-          <h3>AR/VR Experiences</h3>
-          <p>Crafting immersive extended reality solutions that bridge digital and physical worlds. Projects span enterprise training, cultural exhibitions, and interactive entertainment.</p>
-        </div>
-      </div>
-      <div class="service-item" data-animate="fade-left">
-        <div class="service-icon">📖</div>
-        <div class="service-content">
-          <h3>Interactive Storytelling</h3>
-          <p>Narrative design and branching storylines that respond to user choices. We combine traditional writing talent with technical implementation for truly dynamic stories.</p>
-        </div>
-      </div>
-      <div class="service-item" data-animate="fade-right">
-        <div class="service-icon">📊</div>
-        <div class="service-content">
-          <h3>Consulting & Prototyping</h3>
-          <p>Strategic guidance and rapid prototyping services for businesses looking to explore game mechanics, virtual worlds, or interactive media. We help validate ideas quickly.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <!-- Collaboration Callout -->
+    <section class="hero" style="min-height:auto;padding:4rem 1rem;background:#1a1d24;">
+      <h2 style="margin-bottom:1.5rem;">Looking to Level Up Your Story?</h2>
+      <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">Whether you need full‑scale game development, narrative design, or XR consulting, our team is ready to bring your vision to life. Let's build the next world together.</p>
+      <a href="#contact" class="btn alt" data-animate="fade-up">Start the Conversation</a>
+    </section>
 
-  <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:4rem 1rem;background:#1a1d24;">
-    <h2 style="margin-bottom:1.5rem;">Looking to Level Up Your Story?</h2>
-    <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">Whether you need full‑scale game development, narrative design, or XR consulting, our team is ready to bring your vision to life. Let's build the next world together.</p>
-    <a href="#contact" class="btn alt" data-animate="fade-up">Start the Conversation</a>
-  </section>
-
-  <!-- Contact CTA -->
-  <section id="contact">
-    <div class="container">
-      <h2>Contact SkyForge Creative</h2>
-      <form id="contactForm">
-        <input required type="text" placeholder="Your Name" data-animate="fade-up" />
-        <input required type="email" placeholder="Email" data-animate="fade-up" />
-        <textarea required rows="5" placeholder="How can we collaborate?" data-animate="fade-up"></textarea>
-        <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
-      </form>
-    </div>
-  </section>
+    <!-- Contact CTA -->
+    <section id="contact">
+      <div class="container">
+        <h2>Contact SkyForge Creative</h2>
+        <form id="contactForm">
+          <input required type="text" placeholder="Your Name" data-animate="fade-up" />
+          <input required type="email" placeholder="Email" data-animate="fade-up" />
+          <textarea required rows="5" placeholder="How can we collaborate?" data-animate="fade-up"></textarea>
+          <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
+        </form>
+      </div>
+    </section>
+  </main>
 
   <footer>
     <div class="container">
@@ -253,11 +261,12 @@
           <a href="../index.html">Home</a>
           <a href="../divisions.html">Divisions</a>
           <a href="../apps.html">Apps</a>
+          <a href="../Store.html">Tools & Resources</a>
         </div>
         <div class="footer-links">
           <h4>Legal</h4>
-          <a href="privacy-policy.html">Privacy Policy</a>
-          <a href="terms-of-service.html">Terms of Service</a>
+          <a href="../privacy-policy.html">Privacy Policy</a>
+          <a href="../terms-of-service.html">Terms of Service</a>
         </div>
       </div>
       <div class="footer-bottom">
