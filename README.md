@@ -21,7 +21,7 @@ The site has been updated with standardized navigation and improved accessibilit
 - **Active Link Highlighting**: Current page links are highlighted and include `aria-current` attributes.
 - **Skip Links**: All pages now include a skip-to-content link for keyboard users.
 - **Breadcrumbs**: Subpages now include breadcrumb navigation for improved orientation.
-- **URL Casing**: All URLs now use lowercase for consistency (e.g., `store.html` not `Store.html`).
+- **URL Casing**: All URLs now use uppercase for consistency (e.g., `Store.html` not `store.html`).
 
 ### Usage Information
 

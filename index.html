@@ -28,7 +28,7 @@
       <a href="index.html">Home</a>
       <a href="divisions.html">Divisions</a>
       <a href="apps.html">Apps</a>
-      <a href="store.html">Tools & Resources</a>
+      <a href="Store.html">Tools & Resources</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -312,10 +312,13 @@
       const glitchEffect = document.querySelector('.glitch-effect');
       if (!glitchText || !glitchEffect) return;
       
+      let isGlitching = false;
+      
       // Create random glitch intervals
       setInterval(() => {
-        // Random glitch chance
-        if (Math.random() > 0.9) {
+        // Only apply if not currently glitching and random chance
+        if (!isGlitching && Math.random() > 0.9) {
+          isGlitching = true;
           glitchEffect.classList.add('active');
           
           // Random distortion values
@@ -323,16 +326,22 @@
           const skewY = (Math.random() - 0.5) * 10;
           const translateX = (Math.random() - 0.5) * 10;
           
-          // Apply distortion
-          glitchText.style.transform = `skew(${skewX}deg, ${skewY}deg) translateX(${translateX}px)`;
+          // Apply distortion - but don't manipulate the DOM element directly
+          // This avoids the conflict that creates the double flash
+          requestAnimationFrame(() => {
+            glitchText.style.transform = `skew(${skewX}deg, ${skewY}deg) translateX(${translateX}px)`;
+          });
           
           // Reset after short time
           setTimeout(() => {
-            glitchEffect.classList.remove('active');
-            glitchText.style.transform = '';
-          }, 100 + Math.random() * 200);
+            requestAnimationFrame(() => {
+              glitchText.style.transform = '';
+              glitchEffect.classList.remove('active');
+            });
+            isGlitching = false;
+          }, 100 + Math.random() * 100); // Shorter duration to prevent overlap
         }
-      }, 2000);
+      }, 3000); // Longer interval between effects to prevent stacking
     }
     
     function initCubeAnimation() {
@@ -583,6 +592,7 @@
         rgba(76, 0, 255, 0.1) 25%,
         transparent 30%
       );
+      pointer-events: none;
     }
     
     .glitch-effect.active {
@@ -655,7 +665,11 @@
       text-shadow: 
         0 0 15px rgba(0, 212, 255, 0.5),
         0 0 30px rgba(0, 212, 255, 0.2);
-      transition: transform 0.2s ease;
+      transition: transform 0.1s ease-out;
+      will-change: transform;
+      backface-visibility: hidden;
+      position: relative;
+      z-index: 5;
     }
     
     .hero p {
@@ -1098,6 +1112,45 @@
         overflow-x: hidden;
         width: 100%;
       }
+    }
+    
+    /* Improved glitch text handling */
+    .glitch {
+      position: relative;
+      z-index: 5;
+    }
+    
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity 0.1s ease;
+    }
+    
+    /* Only show pseudo-elements during active glitch to prevent artifacts */
+    .glitch-effect.active ~ .glitch::before {
+      clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+      transform: translate(-5px, 0);
+      opacity: 0.1;
+    }
+    
+    .glitch-effect.active ~ .glitch::after {
+      clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+      transform: translate(5px, 0);
+      opacity: 0.1;
+    }
+    
+    /* Prevent text gradient layout shift during animation */
+    .text-gradient-hot.glitch {
+      transform-style: preserve-3d;
+      transform: translateZ(0);
     }
   </style>
   <script>
