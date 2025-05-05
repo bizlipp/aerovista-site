@@ -1,0 +1,37 @@
+/* animations.css */
+/* Centralized animation keyframes and utility classes */
+
+@keyframes float {
+  0% { transform: translateY(0) rotateX(0deg); }
+  50% { transform: translateY(-20px) rotateX(5deg); }
+  100% { transform: translateY(0) rotateX(0deg); }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+/* Animation utilities */
+[data-animate="fade-up"] {
+  animation: fade-up 0.8s ease-out both;
+}
+
+.glitch {
+  animation: glitch 1s infinite linear;
+}

@@ -159,6 +159,43 @@
         direction: ltr;
       }
     }
+    
+    /* Style for permanent division cards */
+    .permanent-card {
+      opacity: 1 !important; /* Force visibility */
+      animation: fadeIn 0.5s ease-in-out !important;
+      transform: none !important; /* Prevent transform changes */
+      visibility: visible !important;
+      display: block !important;
+      position: relative !important;
+    }
+    
+    /* Apply separate animations to each card for a staggered effect */
+    .permanent-card:nth-child(1) { animation-delay: 0.1s !important; }
+    .permanent-card:nth-child(2) { animation-delay: 0.2s !important; }
+    .permanent-card:nth-child(3) { animation-delay: 0.3s !important; }
+    .permanent-card:nth-child(4) { animation-delay: 0.4s !important; }
+    .permanent-card:nth-child(5) { animation-delay: 0.5s !important; }
+    .permanent-card:nth-child(6) { animation-delay: 0.6s !important; }
+    .permanent-card:nth-child(7) { animation-delay: 0.7s !important; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Make sure stagger animation doesn't affect visibility */
+    .stagger .permanent-card {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    
+    /* Add hover effect styles directly in CSS */
+    .permanent-card:hover {
+      transform: translateY(-10px) !important;
+      transition: transform 0.3s ease-out;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
   </style>
 </head>
 <body data-page="divisions-hub">
@@ -298,7 +335,77 @@
   <!-- All Divisions Grid -->
   <section id="divisions" class="container">
     <h2>Explore All Divisions</h2>
-    <div id="divisionsHub" class="grid grid-cols-3 stagger"></div>
+    <div id="divisionsHub" class="grid grid-cols-3 stagger">
+      <!-- Permanent Static Cards with animations -->
+      <a href="Divisions/skyforge-creative.html" class="card permanent-card" data-animate="fade-up">
+        <h3 class="glitch" data-text="SkyForge Creative">SkyForge Creative</h3>
+        <p>Immersive game development & virtual storytelling studio.</p>
+      </a>
+      <a href="Divisions/horizon-aerial-visual.html" class="card permanent-card" data-animate="fade-up">
+        <h3 class="glitch" data-text="Horizon Aerial & Visual">Horizon Aerial & Visual</h3>
+        <p>Professional drone cinematography & mapping.</p>
+      </a>
+      <a href="Divisions/lumina-creative.html" class="card permanent-card" data-animate="fade-up">
+        <h3 class="glitch" data-text="Lumina Creative">Lumina Creative</h3>
+        <p>Branding, marketing & digital media.</p>
+      </a>
+      <a href="Divisions/vespera-publishing.html" class="card permanent-card" data-animate="fade-up">
+        <h3 class="glitch" data-text="Vespera Publishing">Vespera Publishing</h3>
+        <p>Books & educational media for holistic growth.</p>
+      </a>
+      <a href="Divisions/summit-learning.html" class="card permanent-card" data-animate="fade-up">
+        <h3 class="glitch" data-text="Summit Learning">Summit Learning</h3>
+        <p>Personal development & training programs.</p>
+      </a>
+      <a href="Divisions/nexus-techworks.html" class="card permanent-card" data-animate="fade-up">
+        <h3 class="glitch" data-text="Nexus TechWorks">Nexus TechWorks</h3>
+        <p>Web, AI & product engineering services.</p>
+      </a>
+      <a href="Divisions/echoverse-audio.html" class="card permanent-card" data-animate="fade-up">
+        <h3 class="glitch" data-text="EchoVerse Audio">EchoVerse Audio</h3>
+        <p>AI‑driven music production & sound design.</p>
+      </a>
+    </div>
+  </section>
+  
+  <!-- Other Division Work -->
+  <section class="container">
+    <h2 class="mb-lg">Recent Division Projects</h2>
+    <p style="max-width:700px;margin:0 auto 2rem;text-align:center;">
+      From immersive games to original books, branding projects, and AI music, our divisions produce work that merges storytelling, technology, and design.
+    </p>
+    <div class="grid grid-cols-3 stagger">
+      <div class="card glass" data-animate="fade-up">
+        <img 
+          src="public/images/echoverse.png" 
+          alt="EchoVerse Audio - AI-driven music production studio with holographic band members and neon visualization" 
+          loading="lazy"
+          width="600"
+          height="400">
+        <h3>EchoVerse Audio</h3>
+        <p>AI-generated music from the EchoVerse collective.</p>
+      </div>
+      <div class="card glass" data-animate="fade-up">
+        <img 
+          src="public/images/vespera.png" 
+          alt="Vespera Publishing - Digital library in a futuristic cityscape with floating digital books" 
+          loading="lazy"
+          width="600"
+          height="400">
+        <h3>Vespera Publishing</h3>
+        <p>Digital publishing and educational media for holistic growth.</p>
+      </div>
+      <div class="card glass" data-animate="fade-up">
+        <img 
+          src="public/images/autumns_harvest.png" 
+          alt="Summit Learning - Autumn's Harvest publication featuring seasonal themes for personal growth" 
+          loading="lazy"
+          width="600"
+          height="400">
+        <h3>Summit Learning</h3>
+        <p>Guided self-reflection in holistic learning spaces.</p>
+      </div>
+    </div>
   </section>
 
   <!-- Collaboration Callout -->
@@ -355,6 +462,8 @@
   <script type="module" src="main.js"></script>
   <script type="module">
     import { initLazyLoading } from './src/imageUtil.js'; 
+    import { divisions, renderGrid } from './main.js';
+    
     document.addEventListener('DOMContentLoaded', () => {
       initLazyLoading();
       
@@ -362,6 +471,18 @@
       setTimeout(() => {
         document.body.classList.add('body-loaded');
       }, 100);
+      
+      // Manual check to ensure divisions are loaded, but don't remove permanent cards
+      console.log('Manual check for divisions grid');
+      const divisionsHub = document.getElementById('divisionsHub');
+      
+      // Only attempt to render divisions if the permanent cards aren't present
+      if (divisionsHub && divisionsHub.querySelectorAll('.permanent-card').length === 0) {
+        console.log('No permanent cards found, attempting to render dynamic cards');
+        renderGrid(divisions, 'divisionsHub', 'division');
+      } else {
+        console.log('Permanent cards are present, skipping dynamic rendering');
+      }
     });
   </script>
 </body>

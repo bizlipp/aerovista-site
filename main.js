@@ -144,10 +144,24 @@ function createCard({ name, title, desc, status, slug, color }, type = 'division
 
 function renderGrid(items, targetId, type) {
   const wrap = document.getElementById(targetId);
-  if (!wrap) return;
+  console.log('renderGrid called for', targetId, 'with', items.length, 'items');
+  if (!wrap) {
+    console.error('Target element not found:', targetId);
+    return;
+  }
   
-  // Clear any existing content to prevent duplication
-  wrap.innerHTML = '';
+  // Check for permanent cards - if they exist, don't clear the grid
+  const permanentCards = wrap.querySelectorAll('.permanent-card');
+  if (permanentCards.length > 0) {
+    console.log('Permanent cards found, preserving them instead of adding dynamic content');
+    return; // Exit early - don't try to replace the permanent cards
+  }
+  
+  // Only clear non-permanent content
+  const nonPermanentCards = Array.from(wrap.children).filter(
+    child => !child.classList.contains('permanent-card')
+  );
+  nonPermanentCards.forEach(card => card.remove());
   
   // Add staggered animation class
   wrap.classList.add('stagger');
@@ -157,6 +171,7 @@ function renderGrid(items, targetId, type) {
     card.style.animationDelay = `${index * 0.1}s`;
     wrap.appendChild(card);
   });
+  console.log('Rendered', items.length, 'items to', targetId);
 }
 
 // 3. ANIMATIONS & EFFECTS ------------------------------------------------------
@@ -307,8 +322,8 @@ function initDynamicBackgrounds() {
 
 // 4. PAGE ROUTER --------------------------------------------------------------
 function initHome() {
-  renderGrid(divisions, 'divisionGrid', 'division');
-  renderGrid(apps, 'appGrid', 'app');
+  console.log('initHome called, body data-page =', document.body.dataset.page);
+  // No longer rendering divisions or apps grid on home page
   
   // Add particles background to home hero if not already present
   const hero = document.querySelector('.hero');
@@ -520,6 +535,7 @@ function initImageProcessing() {
 function init() {
   // Get page type from body attribute
   const pageType = document.body.dataset.page;
+  console.log('Init called, page type =', pageType);
   
   // Common initializations for all pages
   initScrollAnimations();
@@ -530,6 +546,7 @@ function init() {
   
   // Page-specific initializations
   if (pageType === 'home') {
+    console.log('Calling initHome() for home page');
     initHome();
   } else if (pageType === 'divisions-hub') {
     initDivisionsHub();

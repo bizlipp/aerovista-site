@@ -12,7 +12,7 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="description" content="AeroVista is a visionary creative and technology studio uniting talent across immersive media, learning innovation, and future-forward development.">
   <meta property="og:title" content="AeroVista | Where Vision Takes Flight">
-  <meta property="og:description" content="A visionary creative and technology studio crafting exceptional, mission-driven work across seven specialized divisions.">
+  <meta property="og:description" content="AeroVista is a future-forward studio blending creativity and technology to shape immersive media, learning innovation, and digital experiences across seven divisions.">
   <meta property="og:image" content="https://aerovista.us/preview-image.png">
   <meta property="og:url" content="https://aerovista.us">
   <meta property="og:type" content="website">
@@ -35,136 +35,101 @@
 
   <!-- Hero -->
   <main id="main-content">
-    <section class="hero" style="background-image: url('public/images/HeroBackgrounds.png'); background-size: cover; background-position: center;">
-      <div class="hero-overlay"></div>
-      <h1 class="text-gradient-hot glitch" data-text="AeroVista">AeroVista</h1>
-      <p><strong>AeroVista LLC</strong> is a visionary creative and technology studio uniting talent across immersive media, learning innovation, and future-forward development.</p>
-      <p><strong>Where vision takes flight.</strong></p>
-      <div class="flex gap-md" style="margin-top:1.5rem;">
-        <a href="divisions.html" class="btn" data-animate="fade-up">Explore Divisions</a>
-        <a href="apps.html" class="btn alt" data-animate="fade-up">Our Apps</a>
+    <section class="hero">
+      <div class="video-background">
+        <!-- TODO: Replace with actual video file once created -->
+        <img src="public/images/backgrounds/hero-background.png" alt="AeroVista hero background">
+        <div class="video-overlay"></div>
       </div>
+      <div class="hero-overlay"></div>
+      
+      <!-- Reality-bending elements -->
+      <div class="reality-grid">
+        <div class="reality-cube">
+          <div class="cube-face front"></div>
+          <div class="cube-face back"></div>
+          <div class="cube-face left"></div>
+          <div class="cube-face right"></div>
+          <div class="cube-face top"></div>
+          <div class="cube-face bottom"></div>
+        </div>
+      </div>
+      
+      <div class="particle-field"></div>
+      
+      <div class="glitch-container">
+        <h1 class="text-gradient-hot glitch" data-text="AeroVista">AeroVista</h1>
+        <div class="glitch-effect"></div>
+      </div>
+      
+      <div class="content-wrapper">
+        <p><strong>AeroVista LLC</strong> Bold ideas. Smart tech. Real impact. AeroVista merges creativity and code to shape the future of media, learning, and innovation.</p>
+        <p><strong>Where vision takes flight.</strong></p>
+        <div class="flex gap-md" style="margin-top:1.5rem;">
+          <a href="divisions.html" class="btn" data-animate="fade-up">Explore Divisions</a>
+          <a href="apps.html" class="btn alt" data-animate="fade-up">Our Apps</a>
+        </div>
+      </div>
+      
+      <div class="mouse-follower"></div>
     </section>
 
     <!-- Vision Callout Section -->
     <section class="container banner">
+      <div class="liquid-bg"></div>
       <h2 class="text-gradient glitch" data-text="Where Vision Takes Flight">Where Vision Takes Flight</h2>
-      <p style="max-width:700px;margin:auto;">
-        AeroVista is more than a studio—we're a launchpad for bold ideas across storytelling, technology, and immersive design. Our divisions collaborate across boundaries to craft exceptional, mission-driven work.
-      </p>
+      <p style="max-width:700px;margin:auto;">More than a studio—AeroVista is a launchpad for bold ideas in storytelling, immersive design, and tech innovation. Our divisions work across boundaries to create meaningful, mission-driven experiences.</p>
+    </section>
+
+    <!-- Vision & Values CTA -->
+    <section class="cta-section glass-panel">
+      <div class="container">
+        <div class="cta-grid">
+          <div class="cta-content">
+            <h2 class="text-gradient">Innovation Across Disciplines</h2>
+            <p>At AeroVista, we bring together specialists across seven divisions to create cutting-edge digital experiences, immersive worlds, and technological solutions that push boundaries.</p>
+            <div class="feature-list">
+              <div class="feature-item" data-animate="fade-up">
+                <div class="feature-icon">✦</div>
+                <div class="feature-text">
+                  <h3>Creative Vision</h3>
+                  <p>Bold ideas that challenge conventions and reimagine possibilities.</p>
+                </div>
+              </div>
+              <div class="feature-item" data-animate="fade-up">
+                <div class="feature-icon">✦</div>
+                <div class="feature-text">
+                  <h3>Technical Excellence</h3>
+                  <p>Leveraging cutting-edge tools and emerging technologies.</p>
+                </div>
+              </div>
+              <div class="feature-item" data-animate="fade-up">
+                <div class="feature-icon">✦</div>
+                <div class="feature-text">
+                  <h3>Collaborative Approach</h3>
+                  <p>Cross-discipline experts working together to solve complex challenges.</p>
+                </div>
+              </div>
+            </div>
+            <div class="cta-buttons">
+              <a href="divisions.html" class="btn" data-animate="fade-up">Explore Our Divisions</a>
+              <a href="#contact" class="btn alt" data-animate="fade-up">Start a Conversation</a>
+            </div>
+          </div>
+          <div class="cta-visual">
+            <div class="glass-sphere"></div>
+            <div class="floating-elements">
+              <div class="floating-element" style="--delay:0s; --size:40px; --top:10%; --left:20%;"></div>
+              <div class="floating-element" style="--delay:2s; --size:60px; --top:60%; --left:70%;"></div>
+              <div class="floating-element" style="--delay:4s; --size:30px; --top:40%; --left:85%;"></div>
+              <div class="floating-element" style="--delay:1s; --size:50px; --top:80%; --left:30%;"></div>
+              <div class="floating-element" style="--delay:3s; --size:25px; --top:30%; --left:50%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
-
-  <!-- Divisions Grid -->
-  <section class="container">
-    <h2 class="mb-lg">Our Divisions</h2>
-    <div id="divisionGrid" class="grid grid-cols-3 stagger"></div>
-  </section>
-
-  <!-- Featured Division Showcase -->
-  <section class="container">
-    <h2 class="mb-lg">Featured Divisions</h2>
-    
-    <!-- SkyForge Creative Feature -->
-    <div class="division-feature">
-      <div class="division-feature-content">
-        <h3 class="text-gradient">SkyForge Creative</h3>
-        <p>Immersive game development and virtual storytelling studio creating captivating digital worlds and innovative interactive experiences.</p>
-        <a href="Divisions/skyforge-creative.html" class="btn">Explore SkyForge</a>
-      </div>
-      <div class="division-feature-image">
-        <img 
-          src="public/images/skyforge.png" 
-          alt="SkyForge Creative - Game development studio creating a futuristic cityscape with neon elements and geometric structures" 
-          loading="lazy"
-          width="600"
-          height="600">
-      </div>
-    </div>
-    
-    <!-- Horizon Aerial Feature -->
-    <div class="division-feature reversed">
-      <div class="division-feature-content">
-        <h3 class="text-gradient">Horizon Aerial & Visual</h3>
-        <p>Professional drone cinematography, aerial mapping, and visual production services capturing breathtaking perspectives from above.</p>
-        <a href="Divisions/horizon-aerial-visual.html" class="btn">Explore Horizon</a>
-      </div>
-      <div class="division-feature-image">
-        <img 
-          src="public/images/horizon.png" 
-          alt="Horizon Aerial & Visual - Advanced drone capturing nighttime city skyline with vibrant blue and purple lighting" 
-          loading="lazy"
-          width="600"
-          height="600">
-      </div>
-    </div>
-    
-    <!-- Nexus TechWorks Feature -->
-    <div class="division-feature">
-      <div class="division-feature-content">
-        <h3 class="text-gradient">Nexus TechWorks</h3>
-        <p>Cutting-edge web development, AI solutions, and product engineering bringing advanced technical expertise to digital innovation.</p>
-        <a href="Divisions/nexus-techworks.html" class="btn">Explore Nexus</a>
-      </div>
-      <div class="division-feature-image">
-        <img 
-          src="public/images/nexus.png" 
-          alt="Nexus TechWorks - Advanced development workspace with multiple code windows and a glowing green data visualization" 
-          loading="lazy"
-          width="600"
-          height="600">
-      </div>
-    </div>
-  </section>
-
-  <!-- Other Work by Division -->
-  <section class="container">
-    <h2 class="mb-lg">Other Division Work</h2>
-    <p style="max-width:700px;margin:0 auto 2rem;text-align:center;">
-      From immersive games to original books, branding projects, and AI music, our divisions produce work that merges storytelling, technology, and design.
-    </p>
-    <div class="grid grid-cols-3 stagger">
-      <div class="card glass" data-animate="fade-up">
-        <img 
-          src="public/images/echoverse.png" 
-          alt="EchoVerse Audio - AI-driven music production studio with holographic band members and neon visualization" 
-          loading="lazy"
-          width="600"
-          height="400">
-        <h3>EchoVerse Audio</h3>
-        <p>AI-generated music from the EchoVerse collective.</p>
-      </div>
-      <div class="card glass" data-animate="fade-up">
-        <img 
-          src="public/images/vespera.png" 
-          alt="Vespera Publishing - Digital library in a futuristic cityscape with floating digital books" 
-          loading="lazy"
-          width="600"
-          height="400">
-        <h3>Vespera Publishing</h3>
-        <p>Digital publishing and educational media for holistic growth.</p>
-      </div>
-      <div class="card glass" data-animate="fade-up">
-        <img 
-          src="public/images/autumns_harvest.png" 
-          alt="Summit Learning - Autumn's Harvest publication featuring seasonal themes for personal growth" 
-          loading="lazy"
-          width="600"
-          height="400">
-        <h3>Summit Learning</h3>
-        <p>Guided self-reflection in holistic learning spaces.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Apps Teaser -->
-  <section class="hero cta-section">
-    <h2 style="margin-bottom:1.5rem;" class="text-gradient">Apps & Products</h2>
-    <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">
-      From productivity tools to immersive games, our apps showcase cross‑division talent with AeroVista style.
-    </p>
-    <div id="appGrid" class="grid grid-cols-3 stagger"></div>
-  </section>
 
   <!-- Contact Section -->
   <section id="contact" class="container">
@@ -206,6 +171,7 @@
   <script type="module" src="main.js"></script>
   <script type="module">
     import { initLazyLoading } from './src/imageUtil.js'; 
+    
     document.addEventListener('DOMContentLoaded', () => {
       // Call initLazyLoading for compatibility, but it now uses native lazy loading
       initLazyLoading();
@@ -214,7 +180,686 @@
       setTimeout(() => {
         document.body.classList.add('body-loaded');
       }, 100);
+      
+      // Reality-bending particle field
+      createParticleField();
+      
+      // Create glitching text effect
+      initGlitchEffect();
+      
+      // Initialize 3D cube rotation
+      initCubeAnimation();
+      
+      // Interactive mouse follower
+      initMouseFollower();
+      
+      // Interactive hero background effect
+      const hero = document.querySelector('.hero');
+      if (hero) {
+        const maxMovement = 10; // max pixels to move
+        
+        hero.addEventListener('mousemove', (e) => {
+          // Calculate mouse position as percentage of screen width/height
+          const mouseX = e.clientX / window.innerWidth;
+          const mouseY = e.clientY / window.innerHeight;
+          
+          // Calculate offset from center (range: -0.5 to 0.5)
+          const offsetX = mouseX - 0.5;
+          const offsetY = mouseY - 0.5;
+          
+          // Apply parallax effect to background image
+          const bgImg = document.querySelector('.video-background img');
+          if (bgImg) {
+            bgImg.style.transform = `translate(calc(-50% + ${offsetX * maxMovement}px), calc(-50% + ${offsetY * maxMovement}px)) scale(1.05)`;
+          }
+          
+          // Rotate the 3D cube based on mouse position
+          const cube = document.querySelector('.reality-cube');
+          if (cube) {
+            cube.style.transform = `rotateX(${-offsetY * 30}deg) rotateY(${offsetX * 30}deg) translateZ(0)`;
+          }
+          
+          // Apply distortion to content
+          const contentWrapper = document.querySelector('.content-wrapper');
+          if (contentWrapper) {
+            contentWrapper.style.transform = `translate(${offsetX * maxMovement * -0.5}px, ${offsetY * maxMovement * -0.5}px) skew(${offsetX * 3}deg, ${offsetY * 3}deg)`;
+          }
+          
+          // Apply subtle movement to text elements
+          const heroContent = document.querySelectorAll('.hero p');
+          heroContent.forEach((el, i) => {
+            // Different elements move at different speeds for depth effect
+            const depth = 0.8 - (i * 0.15); // first element moves most
+            el.style.transform = `translate(${offsetX * maxMovement * depth * -1}px, ${offsetY * maxMovement * depth * -1}px)`;
+          });
+          
+          // Move the overlay gradients slightly
+          hero.style.setProperty('--light-pos-x', `${20 + offsetX * 15}%`);
+          hero.style.setProperty('--light-pos-y', `${30 + offsetY * 15}%`);
+          
+          // Update mouse follower position
+          updateMouseFollower(e.clientX, e.clientY);
+        });
+        
+        // Reset transforms when mouse leaves
+        hero.addEventListener('mouseleave', () => {
+          const bgImg = document.querySelector('.video-background img');
+          if (bgImg) {
+            bgImg.style.transform = 'translate(-50%, -50%) scale(1.05)';
+          }
+          
+          const cube = document.querySelector('.reality-cube');
+          if (cube) {
+            cube.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+          }
+          
+          const contentWrapper = document.querySelector('.content-wrapper');
+          if (contentWrapper) {
+            contentWrapper.style.transform = 'translate(0, 0) skew(0deg, 0deg)';
+          }
+          
+          const heroContent = document.querySelectorAll('.hero p');
+          heroContent.forEach(el => {
+            el.style.transform = 'translate(0, 0)';
+          });
+        });
+      }
+      
+      // Animate liquid background
+      animateLiquidBackground();
     });
+    
+    function createParticleField() {
+      const particleField = document.querySelector('.particle-field');
+      if (!particleField) return;
+      
+      // Create particles
+      for (let i = 0; i < 100; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        
+        // Random position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const z = Math.random() * 200 - 100; // z between -100 and 100
+        
+        // Random size and opacity
+        const size = Math.random() * 5 + 1;
+        const opacity = Math.random() * 0.5 + 0.2;
+        
+        // Random animation duration and delay
+        const duration = Math.random() * 10 + 5;
+        const delay = Math.random() * 5;
+        
+        // Set styles
+        particle.style.cssText = `
+          left: ${x}%;
+          top: ${y}%;
+          width: ${size}px;
+          height: ${size}px;
+          opacity: ${opacity};
+          transform: translateZ(${z}px);
+          animation-duration: ${duration}s;
+          animation-delay: ${delay}s;
+        `;
+        
+        particleField.appendChild(particle);
+      }
+    }
+    
+    function initGlitchEffect() {
+      const glitchText = document.querySelector('.glitch');
+      const glitchEffect = document.querySelector('.glitch-effect');
+      if (!glitchText || !glitchEffect) return;
+      
+      // Create random glitch intervals
+      setInterval(() => {
+        // Random glitch chance
+        if (Math.random() > 0.9) {
+          glitchEffect.classList.add('active');
+          
+          // Random distortion values
+          const skewX = (Math.random() - 0.5) * 10;
+          const skewY = (Math.random() - 0.5) * 10;
+          const translateX = (Math.random() - 0.5) * 10;
+          
+          // Apply distortion
+          glitchText.style.transform = `skew(${skewX}deg, ${skewY}deg) translateX(${translateX}px)`;
+          
+          // Reset after short time
+          setTimeout(() => {
+            glitchEffect.classList.remove('active');
+            glitchText.style.transform = '';
+          }, 100 + Math.random() * 200);
+        }
+      }, 2000);
+    }
+    
+    function initCubeAnimation() {
+      const cube = document.querySelector('.reality-cube');
+      if (!cube) return;
+      
+      // Set initial rotation
+      cube.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+      
+      // Subtle automatic rotation when not affected by mouse
+      let rotationX = 0;
+      let rotationY = 0;
+      
+      function animateCube() {
+        rotationX += 0.1;
+        rotationY += 0.2;
+        
+        // Only apply auto-rotation if not being controlled by mouse
+        if (!cube.style.transform.includes('rotateX')) {
+          cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg) translateZ(0)`;
+        }
+        
+        requestAnimationFrame(animateCube);
+      }
+      
+      animateCube();
+    }
+    
+    function initMouseFollower() {
+      const follower = document.querySelector('.mouse-follower');
+      if (!follower) return;
+      
+      // Set initial position off screen
+      follower.style.transform = 'translate(-100px, -100px)';
+    }
+    
+    function updateMouseFollower(x, y) {
+      const follower = document.querySelector('.mouse-follower');
+      if (!follower) return;
+      
+      // Add 30ms delay for slight trailing effect
+      setTimeout(() => {
+        follower.style.transform = `translate(${x}px, ${y}px)`;
+        
+        // Random distortion every few movements
+        if (Math.random() > 0.95) {
+          follower.classList.add('pulse');
+          setTimeout(() => {
+            follower.classList.remove('pulse');
+          }, 200);
+        }
+      }, 30);
+    }
+    
+    function animateLiquidBackground() {
+      const liquidBg = document.querySelector('.liquid-bg');
+      if (!liquidBg) return;
+      
+      // Create dynamic liquid animation
+      let time = 0;
+      
+      function updateLiquid() {
+        time += 0.01;
+        
+        // Create a wavy pattern that changes over time
+        const wave1 = Math.sin(time) * 10;
+        const wave2 = Math.cos(time * 0.8) * 15;
+        
+        liquidBg.style.borderRadius = `${60 + wave1}% ${40 + wave2}% ${35 + wave2}% ${65 + wave1}% / ${40 + wave2}% ${60 + wave1}% ${40 + wave1}% ${60 + wave2}%`;
+        
+        requestAnimationFrame(updateLiquid);
+      }
+      
+      updateLiquid();
+    }
   </script>
+  <style>
+    /* Video background styles */
+    .video-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+    
+    .video-background img {
+      position: absolute;
+      min-width: 105%;
+      min-height: 105%;
+      width: auto;
+      height: auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(1.05);
+      object-fit: cover;
+      z-index: 0;
+      transition: transform 0.1s ease-out;
+      filter: saturate(1.2) contrast(1.1);
+    }
+    
+    /* Reality-bending elements */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      --light-pos-x: 20%;
+      --light-pos-y: 30%;
+      perspective: 1000px;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        radial-gradient(circle at var(--light-pos-x) var(--light-pos-y), rgba(0, 212, 255, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 70% 60%, rgba(76, 0, 255, 0.1) 0%, transparent 30%),
+        radial-gradient(circle at 50% 50%, rgba(255, 60, 175, 0.08) 0%, transparent 40%);
+      opacity: 0.8;
+      z-index: 1;
+      transition: background-position 0.1s ease-out;
+      mix-blend-mode: screen;
+    }
+    
+    .video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(10, 12, 20, 0.85) 0%, rgba(0, 5, 15, 0.95) 100%);
+      mix-blend-mode: multiply;
+      z-index: 1;
+    }
+    
+    .hero-overlay {
+      background: linear-gradient(135deg, rgba(20, 25, 40, 0.4) 0%, rgba(0, 10, 30, 0.5) 100%);
+      mix-blend-mode: color-dodge;
+    }
+    
+    /* 3D Cube */
+    .reality-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      perspective: 1000px;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    
+    .reality-cube {
+      position: absolute;
+      top: 50%;
+      left: 30%;
+      width: 200px;
+      height: 200px;
+      transform-style: preserve-3d;
+      transform: rotateX(0deg) rotateY(0deg) translateZ(0);
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    
+    .cube-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    }
+    
+    .cube-face.front { transform: translateZ(100px); }
+    .cube-face.back { transform: rotateY(180deg) translateZ(100px); }
+    .cube-face.left { transform: rotateY(-90deg) translateZ(100px); }
+    .cube-face.right { transform: rotateY(90deg) translateZ(100px); }
+    .cube-face.top { transform: rotateX(90deg) translateZ(100px); }
+    .cube-face.bottom { transform: rotateX(-90deg) translateZ(100px); }
+    
+    /* Particles field */
+    .particle-field {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      perspective: 1000px;
+      pointer-events: none;
+    }
+    
+    .particle {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+      animation: float-particle 10s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    
+    @keyframes float-particle {
+      0% {
+        transform: translateZ(var(--z)) translateX(0) translateY(0);
+      }
+      33% {
+        transform: translateZ(calc(var(--z) + 50px)) translateX(30px) translateY(-20px);
+      }
+      66% {
+        transform: translateZ(calc(var(--z) - 50px)) translateX(-20px) translateY(40px);
+      }
+      100% {
+        transform: translateZ(var(--z)) translateX(10px) translateY(-30px);
+      }
+    }
+    
+    /* Glitch effect */
+    .glitch-container {
+      position: relative;
+      z-index: 3;
+      display: inline-block;
+    }
+    
+    .glitch-effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      mix-blend-mode: overlay;
+      opacity: 0;
+      transition: opacity 0.1s ease;
+      background: linear-gradient(
+        90deg, 
+        transparent 0%, 
+        rgba(255, 60, 175, 0.2) 5%, 
+        transparent 10%, 
+        rgba(0, 212, 255, 0.2) 15%,
+        transparent 20%,
+        rgba(76, 0, 255, 0.1) 25%,
+        transparent 30%
+      );
+    }
+    
+    .glitch-effect.active {
+      opacity: 1;
+      animation: glitch-slide 0.2s linear;
+    }
+    
+    @keyframes glitch-slide {
+      0% {
+        transform: translateX(-20%);
+        background-position: 0% 0%;
+      }
+      100% {
+        transform: translateX(100%);
+        background-position: 100% 0%;
+      }
+    }
+    
+    .content-wrapper {
+      position: relative;
+      z-index: 3;
+      transition: transform 0.2s ease-out;
+      transform-origin: center center;
+    }
+    
+    /* Mouse follower */
+    .mouse-follower {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.3) 0%, rgba(76, 0, 255, 0.1) 70%, transparent 100%);
+      backdrop-filter: blur(2px);
+      z-index: 9999;
+      pointer-events: none;
+      transform: translate(-100px, -100px);
+      transition: transform 0.1s ease-out, width 0.2s ease, height 0.2s ease;
+      will-change: transform;
+      mix-blend-mode: screen;
+    }
+    
+    .mouse-follower.pulse {
+      width: 60px;
+      height: 60px;
+      transition: width 0.1s ease, height 0.1s ease;
+    }
+    
+    /* Liquid background */
+    .banner {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .liquid-bg {
+      position: absolute;
+      top: -50%;
+      left: -25%;
+      width: 150%;
+      height: 200%;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.05) 0%, rgba(76, 0, 255, 0.05) 50%, rgba(255, 60, 175, 0.05) 100%);
+      border-radius: 60% 40% 35% 65% / 40% 60% 40% 60%;
+      z-index: -1;
+      opacity: 0.7;
+      filter: blur(40px);
+      transition: border-radius 1s ease-in-out;
+    }
+    
+    /* Add a subtle glow to text elements */
+    .hero h1 {
+      text-shadow: 
+        0 0 15px rgba(0, 212, 255, 0.5),
+        0 0 30px rgba(0, 212, 255, 0.2);
+      transition: transform 0.2s ease;
+    }
+    
+    .hero p {
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+      transition: transform 0.2s ease;
+    }
+    
+    /* Slightly distort page on scroll */
+    @media (min-width: 768px) {
+      body {
+        animation: subtle-page-distort 20s ease-in-out infinite alternate;
+      }
+      
+      @keyframes subtle-page-distort {
+        0% {
+          transform: perspective(1000px) rotateX(0deg);
+        }
+        100% {
+          transform: perspective(1000px) rotateX(2deg);
+        }
+      }
+    }
+    
+    /* Media queries for responsiveness */
+    @media (max-width: 768px) {
+      .reality-cube {
+        width: 100px;
+        height: 100px;
+        top: 30%;
+        left: 20%;
+      }
+      
+      .cube-face.front { transform: translateZ(50px); }
+      .cube-face.back { transform: rotateY(180deg) translateZ(50px); }
+      .cube-face.left { transform: rotateY(-90deg) translateZ(50px); }
+      .cube-face.right { transform: rotateY(90deg) translateZ(50px); }
+      .cube-face.top { transform: rotateX(90deg) translateZ(50px); }
+      .cube-face.bottom { transform: rotateX(-90deg) translateZ(50px); }
+    }
+    
+    /* Glass panel CTA section */
+    .glass-panel {
+      background: rgba(15, 20, 30, 0.5);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 5rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .glass-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        linear-gradient(135deg, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+        linear-gradient(45deg, rgba(76, 0, 255, 0.02) 0%, transparent 50%),
+        linear-gradient(to bottom, rgba(255, 60, 175, 0.03) 0%, transparent 100%);
+      z-index: 0;
+    }
+    
+    .cta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .cta-content {
+      color: var(--color-text);
+    }
+    
+    .cta-content h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .cta-content > p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+      color: var(--color-text-soft);
+    }
+    
+    .feature-list {
+      display: grid;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .feature-icon {
+      font-size: 1.5rem;
+      color: var(--color-primary);
+      line-height: 1;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #00d2ff 0%, #3a47d5 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .feature-text h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .feature-text p {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--color-text-muted);
+    }
+    
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .cta-visual {
+      position: relative;
+      height: 100%;
+      min-height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .glass-sphere {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 60%, rgba(255, 255, 255, 0.01) 100%);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 
+        0 0 30px rgba(0, 212, 255, 0.2),
+        0 0 60px rgba(0, 212, 255, 0.1),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
+    }
+    
+    .floating-element {
+      position: absolute;
+      width: var(--size, 40px);
+      height: var(--size, 40px);
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.4) 0%, rgba(76, 0, 255, 0.4) 100%);
+      filter: blur(5px);
+      top: var(--top, 0);
+      left: var(--left, 0);
+      animation: float 6s ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+      opacity: 0.7;
+    }
+    
+    @keyframes float {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      50% {
+        transform: translate(20px, -20px) scale(1.1);
+      }
+    }
+    
+    @media (max-width: 900px) {
+      .cta-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      
+      .cta-visual {
+        order: -1;
+        min-height: 300px;
+      }
+      
+      .glass-sphere {
+        width: 200px;
+        height: 200px;
+      }
+    }
+  </style>
 </body>
 </html>

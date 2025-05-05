@@ -1,0 +1,20 @@
+/* themes.css */
+/* Colors, gradients, shadows, reusable classes */
+:root {
+  --color-bg: #f9f9f9;
+  --color-text: #333;
+  --color-accent: #00d2ff;
+  --color-secondary: #474dff;
+  --color-hot: #ff3caf;
+  --radius-base: 12px;
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-blur: 10px;
+  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.text-gradient {
+  background: linear-gradient(45deg, var(--color-accent), var(--color-secondary));
+  -webkit-background-clip: text;
+  color: transparent;
+}

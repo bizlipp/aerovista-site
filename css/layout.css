@@ -1,0 +1,17 @@
+/* layout.css */
+/* Containers, grid/flex layouts, spacing rules */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.flex {
+  display: flex;
+  gap: 1rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}

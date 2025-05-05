@@ -464,6 +464,20 @@
         const container = document.getElementById("parts-select");
         container.innerHTML = '';  // Clear container
 
+        // Map part categories to squadComment categories
+        function mapCategoryToCommentCategory(category) {
+          const categoryMap = {
+            "Front Suspension": "Suspension – Front",
+            "Rear Suspension": "Suspension – Rear",
+            "Wheels & Tires": "Wheels",
+            "Handlebars & Controls": "Electronics – Throttle & Controls",
+            "Throttle": "Electronics – Throttle & Controls",
+            "Wiring & Display": "Electronics – Wiring"
+          };
+          
+          return categoryMap[category] || category;
+        }
+
         partsData.forEach(part => {
           const section = document.createElement("div");
           section.classList.add("part-selector");
@@ -498,14 +512,38 @@
 
           section.appendChild(select);
 
-          // Add random squad comment
-          const commentKeys = Object.keys(squadComments[part.Category]);
-          const randomMember = commentKeys[Math.floor(Math.random() * commentKeys.length)];
+          // Add random squad comment - Map category correctly and handle missing categories
+          const commentCategory = mapCategoryToCommentCategory(part.Category);
           
-          const comment = document.createElement("div");
-          comment.classList.add("squad-comment", randomMember);
-          comment.textContent = squadComments[part.Category][randomMember];
-          section.appendChild(comment);
+          // Check if we have comments for this category
+          if (squadComments[commentCategory]) {
+            const commentKeys = Object.keys(squadComments[commentCategory]);
+            const randomMember = commentKeys[Math.floor(Math.random() * commentKeys.length)];
+            
+            const comment = document.createElement("div");
+            comment.classList.add("squad-comment", randomMember);
+            comment.textContent = squadComments[commentCategory][randomMember];
+            section.appendChild(comment);
+          } else {
+            // Fallback for missing categories - use a generic comment
+            const fallbackMembers = ["charlie", "billy", "tbd"];
+            const randomMember = fallbackMembers[Math.floor(Math.random() * fallbackMembers.length)];
+            
+            const comment = document.createElement("div");
+            comment.classList.add("squad-comment", randomMember);
+            
+            let genericComment;
+            if (randomMember === "charlie") {
+              genericComment = `This ${part.Category} looks awesome! Let's put it to the test!`;
+            } else if (randomMember === "billy") {
+              genericComment = `A good ${part.Category} is worth every penny.`;
+            } else {
+              genericComment = `${part.Category} specifications are within acceptable parameters.`;
+            }
+            
+            comment.textContent = genericComment;
+            section.appendChild(comment);
+          }
 
           container.appendChild(section);
         });

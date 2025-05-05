@@ -1,0 +1,14 @@
+/* divisions.css */
+/* Styles unique to each division's page */
+.division-hero {
+  background: linear-gradient(135deg, #008abf44 0%, #00d2ff33 100%);
+  padding: 6rem 1rem;
+  text-align: center;
+}
+
+.division-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
