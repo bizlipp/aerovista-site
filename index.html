@@ -1070,6 +1070,35 @@
     a, button, input, select, textarea {
       touch-action: manipulation;
     }
+    
+    /* Prevent page swiping behavior on mobile */
+    html, body {
+      overscroll-behavior: none; /* Prevent pull-to-refresh and browser back/forward navigation gestures */
+      overflow-x: hidden; /* Prevent horizontal scrolling */
+      position: relative; /* Establish a positioning context */
+      width: 100%;
+      height: 100%;
+      touch-action: pan-y; /* Only allow vertical scrolling, not horizontal */
+    }
+    
+    /* Ensure all sections stay contained */
+    section, main, footer, header {
+      max-width: 100vw;
+      overflow-x: hidden;
+    }
+    
+    /* Add additional mobile touch behavior fixes */
+    @media (max-width: 768px) {
+      .hero, 
+      .banner, 
+      .container,
+      .cta-section,
+      .glass-panel {
+        touch-action: pan-y; /* Restrict touch actions to vertical scrolling only */
+        overflow-x: hidden;
+        width: 100%;
+      }
+    }
   </style>
   <script>
     // Mobile device detection and optimization
@@ -1143,6 +1172,39 @@
       
       let lowPerformanceCount = 0;
       requestAnimationFrame(checkPerformance);
+    });
+    
+    // Prevent horizontal swipe navigation on mobile
+    document.addEventListener('DOMContentLoaded', function() {
+      // Detect touch capability
+      if ('ontouchstart' in window || navigator.maxTouchPoints) {
+        let startX, startY;
+        
+        // Track touch start position
+        document.addEventListener('touchstart', function(e) {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+        }, { passive: false });
+        
+        // Prevent horizontal swiping that could trigger browser back/forward
+        document.addEventListener('touchmove', function(e) {
+          if (!startX || !startY) return;
+          
+          const diffX = startX - e.touches[0].clientX;
+          const diffY = startY - e.touches[0].clientY;
+          
+          // If horizontal swipe is more significant than vertical (likely a browser navigation attempt)
+          if (Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+            e.preventDefault(); // Prevent default browser behavior
+          }
+        }, { passive: false });
+        
+        // Reset tracking
+        document.addEventListener('touchend', function() {
+          startX = null;
+          startY = null;
+        });
+      }
     });
   </script>
 </body>
