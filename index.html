@@ -28,7 +28,7 @@
 
   <!-- Navbar -->
   <header role="banner">
-    <div class="logo"><strong>AeroVista</strong></div>
+    <div class="logo"><a href="index.html"><strong>AeroVista</strong></a></div>
     <nav role="navigation" aria-label="Main Navigation">
       <a href="index.html">Home</a>
       <a href="divisions.html">Divisions</a>
@@ -45,40 +45,18 @@
 
   <!-- Main content -->
   <main id="main-content">
-    <section class="hero" aria-label="Hero section">
-      <div class="video-background">
-        <!-- TODO: Replace with actual video file once created -->
-        <img src="public/images/backgrounds/hero-background.png" alt="Abstract digital landscape with glowing grid lines and particles" loading="lazy">
-        <div class="video-overlay"></div>
-      </div>
-      <div class="hero-overlay"></div>
+    <section class="hero" aria-label="Hero section" style="background:linear-gradient(135deg, rgba(0, 40, 80, 0.5) 0%, rgba(10, 13, 20, 0.7) 100%);">
+      <!-- Floating letters background -->
+      <div class="floating-bg" id="floatingBg"></div>
       
-      <!-- Reality-bending elements -->
-      <div class="reality-grid" aria-hidden="true">
-        <div class="reality-cube">
-          <div class="cube-face front"></div>
-          <div class="cube-face back"></div>
-          <div class="cube-face left"></div>
-          <div class="cube-face right"></div>
-          <div class="cube-face top"></div>
-          <div class="cube-face bottom"></div>
-        </div>
-      </div>
+      <h1 class="text-gradient-hot glitch heading-xl" data-text="AeroVista">AeroVista</h1>
       
-      <div class="particle-field" aria-hidden="true"></div>
+      <p><strong>AeroVista LLC</strong> Bold ideas. Smart tech. Real impact. AeroVista merges creativity and code to shape the future of media, learning, and innovation.</p>
+      <p><strong>Where vision takes flight.</strong></p>
       
-      <div class="glitch-container">
-        <h1 class="text-gradient-hot glitch" data-text="AeroVista">AeroVista</h1>
-        <div class="glitch-effect"></div>
-      </div>
-      
-      <div class="content-wrapper">
-        <p><strong>AeroVista LLC</strong> Bold ideas. Smart tech. Real impact. AeroVista merges creativity and code to shape the future of media, learning, and innovation.</p>
-        <p><strong>Where vision takes flight.</strong></p>
-        <div class="flex gap-md" style="margin-top:1.5rem;">
-          <a href="divisions.html" class="btn" data-animate="fade-up">Explore Divisions</a>
-          <a href="apps.html" class="btn alt" data-animate="fade-up">Our Apps</a>
-        </div>
+      <div class="flex gap-md" style="margin-top:1.5rem;">
+        <a href="divisions.html" class="btn" data-animate="fade-up">Explore Divisions</a>
+        <a href="apps.html" class="btn alt" data-animate="fade-up">Our Apps</a>
       </div>
       
       <div class="mouse-follower" aria-hidden="true"></div>
@@ -156,7 +134,7 @@
   <footer role="contentinfo">
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="logo"><strong>AeroVista</strong></div>
+        <div class="logo"><a href="index.html"><strong>AeroVista</strong></a></div>
         <p>Our work is fueled by a dynamic network of contributors, guided by clear creative leadership and a shared commitment to excellence.</p>
       </div>
       <div class="footer-links">
@@ -165,12 +143,12 @@
         <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
         <a href="apps.html" aria-label="View our apps">Apps</a>
         <a href="Store.html" aria-label="Tools and resources">Tools & Resources</a>
-        <a href="surron_build/surron_squad.html" aria-label="The Surron Squad project" style="opacity: 0.7; font-size: 0.9em;">Surron Squad</a>
       </div>
       <div class="footer-links">
         <h4>Connect</h4>
         <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
         <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
+        <a href="surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
       </div>
       <div class="footer-links">
         <h4>Legal</h4>
@@ -193,11 +171,41 @@
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.828L7.05 15.778L5.636 14.364L12 8L18.364 14.364L16.95 15.778L12 10.828Z"></path></svg>
   </button>
 
-  <script type="module" src="main.js"></script>
-  <script type="module">
-    import { initLazyLoading } from './src/imageUtil.js'; 
+  <script src="main.js"></script>
+  <script>
+    // Inline the formerly imported functions to avoid CORS issues when viewing locally
+    function initLazyLoading() {
+      // Native lazy loading is handled by loading="lazy" attribute
+      console.log("Lazy loading initialized");
+    }
     
     document.addEventListener('DOMContentLoaded', () => {
+      // Add floating elements to the background
+      const floatingBg = document.getElementById('floatingBg');
+      const elementCount = 25;
+      const elements = ['⬡', '⬢', '◆', '■', '●', '▲', '◇', '△', '○', '□'];
+      
+      for (let i = 0; i < elementCount; i++) {
+        const element = document.createElement('div');
+        element.className = 'floating-element';
+        element.textContent = elements[Math.floor(Math.random() * elements.length)];
+        
+        // Random position and size
+        const posX = Math.random() * 100;
+        const size = Math.random() * 30 + 20;
+        const delay = Math.random() * 10;
+        const duration = Math.random() * 10 + 10;
+        const rotation = Math.random() * 360;
+        
+        element.style.left = `${posX}%`;
+        element.style.fontSize = `${size}px`;
+        element.style.animationDelay = `${delay}s`;
+        element.style.animationDuration = `${duration}s`;
+        element.style.transform = `rotate(${rotation}deg)`;
+        
+        floatingBg.appendChild(element);
+      }
+      
       // Call initLazyLoading for compatibility, but it now uses native lazy loading
       initLazyLoading();
       

@@ -6,13 +6,12 @@
    <body data-page="..."> for targeted functionality.
    ====================================================== */
 
-// Import image utilities, theme and schema helper
-import { initLazyLoading } from './src/imageUtil.js';
-import { colors, gradients, shadows } from './src/theme.js';
-import { createOrganizationSchema, createDivisionSchema, createAppSchema, injectSchema } from './src/schemaHelper.js';
+// Remove module imports since we're using regular script tags
+// import { initLazyLoading } from './src/imageUtil.js';
+// import { colors, gradients, shadows } from './src/theme.js';
+// import { createOrganizationSchema, createDivisionSchema, createAppSchema, injectSchema } from './src/schemaHelper.js';
 
-// Import the navigation components
-import { initNavigation } from './src/navigation.js';
+// import { initNavigation } from './src/navigation.js';
 
 // Wrap in IIFE to avoid polluting global scope
 (function() {
@@ -339,8 +338,12 @@ import { initNavigation } from './src/navigation.js';
     // Mouse follower
     initMouseFollower();
     
-    // Render division cards
-    renderGrid(divisions, 'division-grid', 'division');
+    // Check if division-grid exists before trying to render it
+    const divisionGrid = document.getElementById('division-grid');
+    if (divisionGrid) {
+      // Render division cards
+      renderGrid(divisions, 'division-grid', 'division');
+    }
     
     // Initialize division slider
     const sliderWrap = document.querySelector('.division-slider');
@@ -402,7 +405,7 @@ import { initNavigation } from './src/navigation.js';
       document.documentElement.style.setProperty('--division-color', currentDivision.color);
       
       // Set schema metadata for the division
-      injectSchema(createDivisionSchema(currentDivision));
+      // injectSchema(createDivisionSchema(currentDivision));
     }
   }
 
@@ -420,7 +423,7 @@ import { initNavigation } from './src/navigation.js';
       document.documentElement.style.setProperty('--app-color', currentApp.color);
       
       // Set schema metadata for the app
-      injectSchema(createAppSchema(currentApp));
+      // injectSchema(createAppSchema(currentApp));
     }
   }
 
@@ -529,7 +532,7 @@ import { initNavigation } from './src/navigation.js';
 
   function initImageProcessing() {
     // Initialize image processing features
-    initLazyLoading();
+    // initLazyLoading();
     
     // Enhance image accessibility
     enhanceImageAccessibility();
@@ -538,7 +541,7 @@ import { initNavigation } from './src/navigation.js';
   // 5. INITIALIZATION ----------------------------------------------------
   function init() {
     // Initialize navigation
-    initNavigation();
+    // initNavigation();
     
     document.addEventListener('DOMContentLoaded', () => {
       // Add body-loaded class for initial animations
@@ -562,7 +565,7 @@ import { initNavigation } from './src/navigation.js';
       initAppPage();
       
       // Set organization schema
-      injectSchema(createOrganizationSchema());
+      // injectSchema(createOrganizationSchema());
     });
   }
 
