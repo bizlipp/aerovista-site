@@ -860,6 +860,290 @@
         height: 200px;
       }
     }
+    
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+      /* Simplify or disable CPU-intensive effects */
+      .particle-field {
+        display: none; /* Hide particles on mobile for better performance */
+      }
+      
+      .reality-cube {
+        width: 100px;
+        height: 100px;
+        opacity: 0.5; /* Make cube more subtle */
+      }
+      
+      /* Adjust hero height for mobile */
+      .hero {
+        min-height: 85vh;
+      }
+      
+      /* Stack content vertically */
+      .content-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0 15px;
+      }
+      
+      /* Disable hover-specific effects that don't translate to touch */
+      .hero::before {
+        opacity: 0.5; /* Reduce intensity of overlay effects */
+      }
+      
+      /* Adjust glitch effect for better mobile performance */
+      .glitch-effect {
+        display: none;
+      }
+      
+      /* Simplify text animation for better performance */
+      .hero h1, .hero p {
+        transform: none !important;
+        transition: none !important;
+      }
+      
+      /* Disable mouse follower on touch devices */
+      .mouse-follower {
+        display: none;
+      }
+      
+      /* Simpler background effect for mobile */
+      .video-background img {
+        transform: translate(-50%, -50%) !important;
+        transition: none !important;
+        filter: saturate(1.1);
+      }
+      
+      /* Optimize glass panel for mobile */
+      .glass-panel {
+        padding: 3rem 0;
+      }
+      
+      /* Adjust CTA section for mobile */
+      .cta-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0 15px;
+      }
+      
+      .glass-sphere {
+        width: 150px;
+        height: 150px;
+      }
+      
+      /* Reduce floating elements for better performance */
+      .floating-elements {
+        opacity: 0.5;
+      }
+      
+      /* Contact form adjustments */
+      #contactForm {
+        padding: 1rem;
+      }
+      
+      #contactForm input, 
+      #contactForm textarea {
+        padding: 12px;
+        font-size: 16px; /* Minimum 16px to prevent zoom on iOS */
+      }
+      
+      /* Footer adjustments */
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+      }
+      
+      .footer-brand, 
+      .footer-links {
+        margin: 0 auto;
+      }
+      
+      /* Vision callout adjustments */
+      .banner {
+        padding: 2rem 1rem;
+      }
+      
+      .banner h2 {
+        font-size: 1.8rem;
+      }
+      
+      .banner p {
+        font-size: 1rem;
+      }
+      
+      /* Feature item layout */
+      .feature-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      
+      .feature-icon {
+        margin-bottom: 0.5rem;
+      }
+      
+      /* Button sizing for touch targets */
+      .btn, .btn.alt {
+        padding: 12px 20px;
+        font-size: 16px;
+        min-width: 120px;
+        margin: 5px;
+      }
+      
+      /* Hero text sizing */
+      .hero h1 {
+        font-size: 3rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+        max-width: 100%;
+      }
+    }
+    
+    /* Medium-sized devices optimizations */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      /* Reduce particle count for medium devices */
+      .particle-field {
+        opacity: 0.5;
+      }
+      
+      /* Adjust hero responsiveness */
+      .hero {
+        min-height: 90vh;
+      }
+      
+      /* Simplified animations for better performance */
+      .reality-grid {
+        opacity: 0.7;
+      }
+      
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .footer-brand {
+        grid-column: span 2;
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      
+      /* CTA section adjustments */
+      .cta-content h2 {
+        font-size: 2rem;
+      }
+      
+      .feature-list {
+        gap: 1rem;
+      }
+    }
+    
+    /* Load detection to disable heavy effects on low-performance devices */
+    @media (prefers-reduced-motion: reduce) {
+      /* Respect user preference for reduced motion */
+      .reality-cube,
+      .particle-field,
+      .glitch-effect,
+      .floating-elements,
+      .liquid-bg {
+        display: none !important;
+      }
+      
+      .hero h1, .hero p, .content-wrapper {
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+    
+    /* Add general mobile-friendly base styles */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    /* Improve touch targets for all interactive elements */
+    a, button, input, select, textarea {
+      touch-action: manipulation;
+    }
   </style>
+  <script>
+    // Mobile device detection and optimization
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if device is likely mobile
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+                    || window.innerWidth < 768;
+      
+      // Apply mobile-specific optimizations
+      if (isMobile) {
+        // Reduce particle count for mobile
+        const particleField = document.querySelector('.particle-field');
+        if (particleField) {
+          // Remove existing particles and add fewer
+          particleField.innerHTML = '';
+          // Only create 10 particles instead of 100 for mobile
+          for (let i = 0; i < 10; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Simpler particle styles for mobile
+            const x = Math.random() * 100;
+            const y = Math.random() * 100;
+            const size = Math.random() * 3 + 1;
+            
+            particle.style.cssText = `
+              left: ${x}%;
+              top: ${y}%;
+              width: ${size}px;
+              height: ${size}px;
+              opacity: 0.3;
+            `;
+            
+            particleField.appendChild(particle);
+          }
+        }
+        
+        // Disable intensive animations
+        document.body.classList.add('mobile-optimized');
+      }
+      
+      // Check for low-end devices via fps detection
+      let fps = 0;
+      let lastLoop = performance.now();
+      let lowPerformance = false;
+      
+      function checkPerformance() {
+        const thisLoop = performance.now();
+        fps = 1000 / (thisLoop - lastLoop);
+        lastLoop = thisLoop;
+        
+        // If fps consistently low, optimize for performance
+        if (fps < 30) {
+          lowPerformanceCount++;
+          if (lowPerformanceCount > 10 && !lowPerformance) {
+            lowPerformance = true;
+            document.body.classList.add('low-performance');
+            
+            // Disable heavy effects
+            const heavyElements = document.querySelectorAll('.particle-field, .reality-cube, .liquid-bg');
+            heavyElements.forEach(el => {
+              el.style.display = 'none';
+            });
+          }
+        }
+        
+        if (!lowPerformance) {
+          requestAnimationFrame(checkPerformance);
+        }
+      }
+      
+      let lowPerformanceCount = 0;
+      requestAnimationFrame(checkPerformance);
+    });
+  </script>
 </body>
 </html>
