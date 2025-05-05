@@ -1093,7 +1093,7 @@ footer::before {
 .feature-icon {
   font-size: 1.5rem;
   line-height: 1;
-  color: var(--accent-color);
+  color: var(--color-accent);
   margin-top: 0.25rem;
   flex-shrink: 0;
 }
@@ -1103,26 +1103,60 @@ footer::before {
 }
 
 .feature-text h3 {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   margin: 0 0 0.5rem 0;
   line-height: 1.3;
-  font-family: var(--heading-font);
+  font-family: var(--font-heading);
   font-weight: 600;
 }
 
 .feature-text p {
-  font-size: 1rem;
+  font-size: 0.95rem;
   margin: 0;
   line-height: 1.5;
-  color: var(--text-color-secondary);
+  color: var(--color-text-soft);
 }
 
 @media (min-width: 768px) {
   .feature-text h3 {
-    font-size: 1.35rem;
+    font-size: 1.3rem;
   }
   
   .feature-icon {
+    font-size: 1.6rem;
+  }
+}
+
+/* CTA section */
+.cta-section .cta-content {
+  max-width: 640px;
+}
+
+.cta-section .cta-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: left;
+  left: 0;
+  transform: none;
+}
+
+.cta-section .cta-content h2::after {
+  left: 0;
+  transform: none;
+  width: 80px;
+}
+
+.cta-section .cta-content > p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.cta-section .feature-list {
+  margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+  .cta-section .cta-content h2 {
     font-size: 1.75rem;
   }
 }
