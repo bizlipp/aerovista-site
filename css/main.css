@@ -24,6 +24,8 @@
 
 /* 5. Division-specific styles */
 @import 'divisions/base.css';
+@import 'divisions/lumina-creative.css';
+@import 'divisions/skyforge-creative.css';
 
 /* 6. App-specific styles */
 @import 'apps/base.css';

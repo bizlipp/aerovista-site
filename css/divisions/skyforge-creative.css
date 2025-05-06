@@ -1,0 +1,264 @@
+/* divisions/skyforge-creative.css */
+/* Specific styles for the Skyforge Creative division */
+
+/* Customized gradient and colors for Skyforge */
+:root {
+  --skyforge-primary: hsl(200, 90%, 50%);
+  --skyforge-secondary: hsl(240, 90%, 55%);
+  --skyforge-accent: hsl(160, 90%, 45%);
+}
+
+/* Skyforge-specific hero overlay */
+.skyforge-hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.7) 100%);
+  z-index: 1;
+}
+
+/* Particle background effect */
+.skyforge-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.skyforge-particle {
+  position: absolute;
+  border-radius: 50%;
+  width: 6px;
+  height: 6px;
+  background: var(--skyforge-primary);
+  opacity: 0.6;
+  animation: float-particle 15s infinite linear;
+}
+
+@keyframes float-particle {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-1000px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Skyforge game cards */
+.skyforge-game-card {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-medium) var(--easing-standard);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.skyforge-game-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.skyforge-game-card__image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.skyforge-game-card__content {
+  padding: 1.5rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.skyforge-game-card__title {
+  font-size: var(--font-size-lg);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-heading);
+  background: linear-gradient(to right, var(--skyforge-primary), var(--skyforge-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+.skyforge-game-card__description {
+  margin-bottom: 1rem;
+  color: var(--color-text-soft);
+  flex-grow: 1;
+}
+
+.skyforge-game-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--color-border);
+  padding-top: 1rem;
+  margin-top: auto;
+}
+
+.skyforge-game-card__platform {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.skyforge-game-card__platform-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--color-text-soft);
+}
+
+.skyforge-game-card__link {
+  color: var(--skyforge-primary);
+  font-weight: var(--font-weight-bold);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  transition: transform var(--transition-fast) var(--easing-standard);
+}
+
+.skyforge-game-card__link:hover {
+  transform: translateX(5px);
+}
+
+/* Skyforge team member cards */
+.skyforge-team-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.skyforge-team-card__image {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  filter: grayscale(100%);
+  transition: filter var(--transition-medium) var(--easing-standard);
+}
+
+.skyforge-team-card:hover .skyforge-team-card__image {
+  filter: grayscale(0%);
+}
+
+.skyforge-team-card__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  padding: 1rem;
+  transform: translateY(70%);
+  transition: transform var(--transition-medium) var(--easing-standard);
+}
+
+.skyforge-team-card:hover .skyforge-team-card__content {
+  transform: translateY(0);
+}
+
+.skyforge-team-card__name {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 0.25rem;
+  font-family: var(--font-heading);
+}
+
+.skyforge-team-card__role {
+  font-size: var(--font-size-sm);
+  color: var(--skyforge-primary);
+  margin-bottom: 0.5rem;
+}
+
+.skyforge-team-card__bio {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-soft);
+  margin-top: 0.5rem;
+  display: none;
+}
+
+.skyforge-team-card:hover .skyforge-team-card__bio {
+  display: block;
+}
+
+/* Skyforge tech stack */
+.skyforge-tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem 0;
+  justify-content: center;
+}
+
+.skyforge-tech-item {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-full);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all var(--transition-fast) var(--easing-standard);
+}
+
+.skyforge-tech-item:hover {
+  background: var(--skyforge-primary);
+  color: white;
+  border-color: var(--skyforge-primary);
+}
+
+.skyforge-tech-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .skyforge-game-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+  
+  .skyforge-team-card__content {
+    transform: translateY(0);
+  }
+  
+  .skyforge-team-card__bio {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .skyforge-game-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .skyforge-tech-stack {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+  
+  .skyforge-tech-item {
+    flex-shrink: 0;
+  }
+} 

@@ -1,0 +1,228 @@
+/* divisions/lumina-creative.css */
+/* Specific styles for the Lumina Creative division */
+
+/* Customized gradient and colors for Lumina */
+:root {
+  --lumina-primary: hsl(280, 100%, 60%);
+  --lumina-secondary: hsl(220, 100%, 65%);
+  --lumina-accent: hsl(320, 100%, 60%);
+}
+
+/* Custom background elements */
+.gradient-orbs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.4;
+  animation: float-orb 20s ease-in-out infinite;
+}
+
+.orb:nth-child(1) {
+  background: var(--lumina-primary);
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  left: -100px;
+  animation-delay: 0s;
+}
+
+.orb:nth-child(2) {
+  background: var(--lumina-secondary);
+  width: 350px;
+  height: 350px;
+  top: 60%;
+  right: -100px;
+  animation-delay: -5s;
+}
+
+.orb:nth-child(3) {
+  background: var(--lumina-accent);
+  width: 250px;
+  height: 250px;
+  bottom: -100px;
+  left: 40%;
+  animation-delay: -10s;
+}
+
+@keyframes float-orb {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(50px, 50px) scale(1.1);
+  }
+  50% {
+    transform: translate(0, 100px) scale(0.9);
+  }
+  75% {
+    transform: translate(-50px, 50px) scale(1.05);
+  }
+}
+
+/* Lumina-specific service cards */
+.lumina-service-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-base);
+  padding: 2rem;
+  transition: all var(--transition-medium) var(--easing-standard);
+  position: relative;
+  overflow: hidden;
+}
+
+.lumina-service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, var(--lumina-primary), var(--lumina-accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--transition-medium) var(--easing-standard);
+}
+
+.lumina-service-card:hover::before {
+  transform: scaleX(1);
+}
+
+.lumina-service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(var(--lumina-primary-rgb), 0.2);
+}
+
+.service-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(to right, var(--lumina-primary), var(--lumina-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Lumina portfolio grid */
+.lumina-portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.lumina-portfolio-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-base);
+  aspect-ratio: 1/1;
+  cursor: pointer;
+}
+
+.lumina-portfolio-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-medium) var(--easing-standard);
+}
+
+.lumina-portfolio-item:hover img {
+  transform: scale(1.1);
+}
+
+.lumina-portfolio-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  padding: 1rem;
+  transform: translateY(100%);
+  transition: transform var(--transition-medium) var(--easing-standard);
+}
+
+.lumina-portfolio-item:hover .lumina-portfolio-overlay {
+  transform: translateY(0);
+}
+
+.lumina-portfolio-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-heading);
+}
+
+/* Process steps specific to Lumina */
+.lumina-process-steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin: 3rem 0;
+}
+
+.lumina-process-step {
+  flex: 1;
+  min-width: 200px;
+  max-width: 300px;
+  text-align: center;
+  padding: 2rem 1rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-base);
+  transition: transform var(--transition-medium) var(--easing-standard);
+}
+
+.lumina-process-step:hover {
+  transform: translateY(-10px);
+}
+
+.lumina-step-number {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(to right, var(--lumina-primary), var(--lumina-accent));
+  border-radius: 50%;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  color: white;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .lumina-process-steps {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .lumina-process-step {
+    min-width: 100%;
+  }
+  
+  .lumina-portfolio-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .lumina-portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+} 
