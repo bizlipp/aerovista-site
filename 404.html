@@ -1,126 +1,323 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Page Not Found | AeroVista</title>
+  <title>System Error | AeroVista</title>
   <!-- Fonts & Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Montserrat:wght@300;400;500;700&family=Saira+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <style>
-    .error-container {
-      min-height: 70vh;
+    body {
+      background-color: #080a12;
+      color: #e0e0e0;
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      text-align: center;
-      margin: 2rem auto;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .matrix-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+      z-index: -1;
+    }
+    
+    .error-container {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(0, 174, 239, 0.5);
+      box-shadow: 0 0 30px rgba(0, 174, 239, 0.3);
+      border-radius: 8px;
+      width: 90%;
       max-width: 800px;
       padding: 2rem;
+      text-align: left;
+      font-family: monospace;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .terminal-title {
+      font-family: 'Orbitron', sans-serif;
+      color: rgba(0, 174, 239, 1);
     }
     
     .error-code {
-      font-size: 8rem;
+      font-size: 7rem;
       font-weight: 700;
       margin: 0;
-      background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-family: var(--font-heading);
+      font-family: 'Orbitron', sans-serif;
+      position: relative;
+      display: inline-block;
     }
     
-    .error-message {
-      font-size: 1.5rem;
-      margin: 1rem 0 2rem;
+    .glitch {
+      position: relative;
+      color: #00AEEF;
+      mix-blend-mode: screen;
     }
     
-    .suggested-links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .glitch::before {
+      left: 2px;
+      text-shadow: -2px 0 #ff00ff;
+      animation: glitch-1 2s linear infinite reverse;
+      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+    }
+    
+    .glitch::after {
+      left: -2px;
+      text-shadow: 2px 0 #00ff00;
+      animation: glitch-2 2s linear infinite reverse;
+      clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+    }
+    
+    @keyframes glitch-1 {
+      0% { transform: translateX(0); }
+      30% { transform: translateX(0); }
+      31% { transform: translateX(5px); }
+      33% { transform: translateX(-5px); }
+      34% { transform: translateX(0); }
+      100% { transform: translateX(0); }
+    }
+    
+    @keyframes glitch-2 {
+      0% { transform: translateX(0); }
+      30% { transform: translateX(0); }
+      31% { transform: translateX(-5px); }
+      33% { transform: translateX(5px); }
+      34% { transform: translateX(0); }
+      100% { transform: translateX(0); }
+    }
+    
+    .error-text {
+      color: #00ff00;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 1.2em;
+      background: #00ff00;
+      margin-left: 5px;
+      animation: blink 1s infinite;
+      vertical-align: middle;
+    }
+    
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    
+    .hidden-message {
+      color: rgba(0, 0, 0, 0.05);
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      font-size: 0.7rem;
+      user-select: none;
+      transition: color 0.3s;
+    }
+    
+    .hidden-message:hover {
+      color: #00ff00;
+    }
+    
+    .button-container {
       margin-top: 2rem;
     }
     
-    .suggested-links a {
+    .nav-button {
       display: inline-block;
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--color-border);
-      border-radius: 4px;
+      padding: 0.5rem 1.5rem;
+      margin-right: 1rem;
+      background: none;
+      border: 1px solid #00AEEF;
+      color: #00AEEF;
+      font-family: 'Orbitron', sans-serif;
       text-decoration: none;
-      color: var(--color-text);
-      transition: all 0.2s ease;
+      transition: all 0.3s;
+      cursor: pointer;
     }
     
-    .suggested-links a:hover {
-      background: var(--color-bg-alt);
-      border-color: var(--color-primary);
+    .nav-button:hover {
+      background: rgba(0, 174, 239, 0.1);
+      box-shadow: 0 0 15px rgba(0, 174, 239, 0.5);
+    }
+    
+    .secret-trigger {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      z-index: 100;
+      opacity: 0;
+    }
+    
+    #secret-panel {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      max-width: 600px;
+      background: rgba(0, 0, 0, 0.9);
+      border: 2px solid #00ff00;
+      padding: 2rem;
+      z-index: 1000;
+      box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+    }
+    
+    .close-secret {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: #00ff00;
+      font-size: 1.5rem;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <!-- Accessibility skip link -->
-  <a href="#main-content" class="skip-to-content">Skip to content</a>
+  <canvas id="matrix" class="matrix-bg"></canvas>
   
-  <!-- Navbar -->
-  <header role="banner">
-    <div class="logo"><strong>AeroVista</strong></div>
-    <nav role="navigation" aria-label="Main Navigation">
-      <a href="index.html">Home</a>
-      <a href="divisions.html">Divisions</a>
-      <a href="apps.html">Apps</a>
-      <a href="Store.html">Tools & Resources</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+  <div class="error-container">
+    <div class="terminal-header">
+      <div class="terminal-title">AeroVista System Error</div>
+      <div class="terminal-controls">▢ □ ×</div>
+    </div>
+    
+    <h1 class="error-code glitch" data-text="404">404</h1>
+    
+    <div class="error-text">
+      <p>> ERROR: File_not_found.exe</p>
+      <p>> Attempting to locate requested resource...</p>
+      <p>> FAILED: The digital artifact you're seeking has been lost in the data stream.</p>
+      <p>> Initiating recovery protocols...</p>
+      <p>> Suggested navigation vectors:<span class="cursor"></span></p>
+    </div>
+    
+    <div class="button-container">
+      <a href="index.html" class="nav-button">MAIN INTERFACE</a>
+      <a href="divisions.html" class="nav-button">DIVISION NODE</a>
+      <a href="apps.html" class="nav-button">APP CLUSTER</a>
+      <a href="Store.html" class="nav-button">RESOURCE BANK</a>
+    </div>
+    
+    <div class="hidden-message">VAULT CODE: SKYFORGE-ECHO-2077</div>
+  </div>
+  
+  <div class="secret-trigger" id="secret-trigger"></div>
+  
+  <div id="secret-panel">
+    <button class="close-secret" id="close-secret">×</button>
+    <h3 style="color: #00ff00; font-family: 'Orbitron', sans-serif;">Secret Terminal Access Granted</h3>
+    <p style="color: #e0e0e0;">You've discovered a hidden pathway in the system.</p>
+    <p style="color: #00AEEF;">Try the Konami code on any page: ↑ ↑ ↓ ↓ ← → ← → B A</p>
+    <p style="color: #ff00ff;">Enter "theVault" in the browser console for more secrets.</p>
+  </div>
 
-  <main id="main-content">
-    <div class="error-container">
-      <h1 class="error-code">404</h1>
-      <h2 class="error-message">Page Not Found</h2>
-      <p>The page you're looking for doesn't exist or has been moved.</p>
+  <script>
+    // Matrix rain effect
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+    const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const nums = '0123456789';
+    const alphabet = katakana + latin + nums;
+    
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    
+    const rainDrops = [];
+    
+    for (let x = 0; x < columns; x++) {
+      rainDrops[x] = 1;
+    }
+    
+    const draw = () => {
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      <div class="suggested-links">
-        <h3>You might want to try:</h3>
-        <div>
-          <a href="index.html">Home Page</a>
-          <a href="divisions.html">Our Divisions</a>
-          <a href="apps.html">Apps & Tools</a>
-          <a href="Store.html">Store</a>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="footer-grid">
-        <div class="footer-brand">
-          <div class="logo"><strong>AeroVista</strong></div>
-          <p>Transforming ideas into exceptional digital experiences.</p>
-        </div>
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <a href="index.html">Home</a>
-          <a href="divisions.html">Divisions</a>
-          <a href="apps.html">Apps</a>
-          <a href="Store.html">Tools & Resources</a>
-        </div>
-        <div class="footer-links">
-          <h4>Legal</h4>
-          <a href="privacy-policy.html">Privacy Policy</a>
-          <a href="terms-of-service.html">Terms of Service</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>© 2025 AeroVista LLC — All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-
-  <script src="main.js"></script>
+      ctx.fillStyle = '#0F0';
+      ctx.font = fontSize + 'px monospace';
+      
+      for(let i = 0; i < rainDrops.length; i++) {
+        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+        
+        if(rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          rainDrops[i] = 0;
+        }
+        rainDrops[i]++;
+      }
+    };
+    
+    setInterval(draw, 30);
+    
+    // Easter egg functionality
+    document.getElementById('secret-trigger').addEventListener('click', function() {
+      document.getElementById('secret-panel').style.display = 'block';
+    });
+    
+    document.getElementById('close-secret').addEventListener('click', function() {
+      document.getElementById('secret-panel').style.display = 'none';
+    });
+    
+    // Konami code
+    let keys = [];
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    
+    window.addEventListener('keydown', (e) => {
+      keys.push(e.key);
+      if (keys.length > konamiCode.length) {
+        keys.shift();
+      }
+      if (JSON.stringify(keys) === JSON.stringify(konamiCode)) {
+        document.getElementById('secret-panel').style.display = 'block';
+      }
+    });
+    
+    // Console Easter Egg
+    console.log('%c🔎 Hidden messages detected in this page... 🔍', 'font-size:14px; color:#00AEEF;');
+  </script>
 </body>
 </html> 
