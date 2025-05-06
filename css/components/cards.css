@@ -36,13 +36,32 @@
 }
 
 .division-card {
-  composes: card;
+  /* Inherit card properties */
+  border-radius: 12px;
+  background-color: rgba(18, 20, 30, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  height: 100%;
+  /* Additional properties */
   position: relative;
   text-align: center;
 }
 
+.division-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
 .division-card-inner {
-  composes: card-inner;
+  /* Inherit card-inner properties */
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* Additional properties */
   position: relative;
   z-index: 2;
 }
@@ -94,13 +113,32 @@
 }
 
 .app-card {
-  composes: card;
+  /* Inherit card properties */
+  border-radius: 12px;
+  background-color: rgba(18, 20, 30, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  height: 100%;
+  /* Additional properties */
   position: relative;
   text-align: center;
 }
 
+.app-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
 .app-card-inner {
-  composes: card-inner;
+  /* Inherit card-inner properties */
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* Additional properties */
   position: relative;
   z-index: 2;
 }
