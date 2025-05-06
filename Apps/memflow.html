@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MemFlow | AeroVista</title>
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Main CSS - Imports all modular files -->
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Ultra-minimal sticky note system with keyboard-driven workflow and local-first data storage. Perfect for quick thoughts, code snippets, and daily tasks.">
+  <meta property="og:title" content="MemFlow | AeroVista">
+  <meta property="og:description" content="Keyboard-driven sticky notes that sync everywhere, without the clutter">
+  <meta property="og:image" content="https://aerovista.us/public/images/apps/memflow.jpg">
+  <meta property="og:url" content="https://aerovista.us/Apps/memflow.html">
+  <meta property="og:type" content="website">
+</head>
+<body data-page="app-single" data-app="memflow">
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <!-- Navbar -->
+  <header class="navbar" role="banner">
+    <div class="navbar-brand"><a href="../index.html"><strong>AeroVista</strong></a></div>
+    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
+      <a href="../index.html">Home</a>
+      <a href="../divisions.html">Divisions</a>
+      <a href="../apps.html" class="active">Apps</a>
+      <a href="../Store.html">Tools & Resources</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Main content -->
+  <main id="main-content">
+    <!-- Custom MemFlow background elements -->
+    <div class="floating-notes" aria-hidden="true">
+      <div class="floating-note"></div>
+      <div class="floating-note"></div>
+      <div class="floating-note"></div>
+      <div class="floating-note"></div>
+    </div>
+  
+    <!-- App Hero Section -->
+    <section class="app-hero memflow-hero">
+      <div class="container">
+        <div class="app-hero__split">
+          <div class="app-hero__text">
+            <div class="app-hero__badge badge">Productivity</div>
+            <h1 class="app-hero__title">MemFlow</h1>
+            <div class="app-hero__subtitle">Sticky‑notes that sync everywhere</div>
+            <p class="app-hero__description">Ultra-minimal sticky note system with a focus on keyboard-driven workflow and local-first data storage. Perfect for quick thoughts, code snippets, and daily tasks.</p>
+            <div class="app-hero__cta">
+              <a href="#pricing" class="btn">Download Now</a>
+              <a href="#features" class="btn alt">Learn More</a>
+            </div>
+          </div>
+          <div class="app-hero__media">
+            <img src="../public/images/apps/memflow-device.png" alt="MemFlow interface" class="memflow-hero__device">
+            <div class="app-hero__device-frame"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- App Features Section -->
+    <section id="features" class="app-features">
+      <div class="container">
+        <h2 class="app-features__heading">Key Features</h2>
+        <div class="feature-grid">
+          <div class="memflow-feature-card">
+            <div class="memflow-feature-card__icon">⌨️</div>
+            <h3 class="memflow-feature-card__title">Keyboard-Driven</h3>
+            <p class="memflow-feature-card__description">Fast, intuitive keyboard shortcuts for note creation, editing, and organization. No mouse required.</p>
+          </div>
+          <div class="memflow-feature-card">
+            <div class="memflow-feature-card__icon">🔐</div>
+            <h3 class="memflow-feature-card__title">Local-First</h3>
+            <p class="memflow-feature-card__description">Your data stays on your device by default, with optional encrypted sync across multiple devices.</p>
+          </div>
+          <div class="memflow-feature-card">
+            <div class="memflow-feature-card__icon">📋</div>
+            <h3 class="memflow-feature-card__title">Rich Formatting</h3>
+            <p class="memflow-feature-card__description">Full Markdown support with code syntax highlighting, LaTeX equations, and checklists.</p>
+          </div>
+          <div class="memflow-feature-card">
+            <div class="memflow-feature-card__icon">🔎</div>
+            <h3 class="memflow-feature-card__title">Powerful Search</h3>
+            <p class="memflow-feature-card__description">Instant full-text search with advanced filtering by tags, date, and note content.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- App Screenshots Section -->
+    <section class="memflow-screenshots">
+      <div class="container">
+        <h2 class="app-screenshots__heading">Screenshots</h2>
+        <div class="memflow-screenshots__carousel">
+          <div class="memflow-screenshot">
+            <img src="../public/images/apps/memflow-screen-1.jpg" alt="MemFlow main interface" loading="lazy">
+          </div>
+          <div class="memflow-screenshot">
+            <img src="../public/images/apps/memflow-screen-2.jpg" alt="MemFlow board view" loading="lazy">
+          </div>
+          <div class="memflow-screenshot">
+            <img src="../public/images/apps/memflow-screen-3.jpg" alt="MemFlow mobile view" loading="lazy">
+          </div>
+          <div class="memflow-screenshot">
+            <img src="../public/images/apps/memflow-screen-4.jpg" alt="MemFlow dark mode" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="container section-lg">
+      <h2 class="text-center mb-xl">How It Works</h2>
+      <div class="grid-system split-50-50 gap-xl">
+        <div>
+          <div class="flow">
+            <h3>Create Notes Instantly</h3>
+            <p>Press <kbd>Ctrl+Space</kbd> anywhere in the app to create a new note. Start typing immediately—format with Markdown on the fly.</p>
+          </div>
+          <div class="flow mt-lg">
+            <h3>Organize Automatically</h3>
+            <p>Notes are automatically organized by recency, with smart categorization based on content. Use #tags for custom organization.</p>
+          </div>
+        </div>
+        <div>
+          <div class="flow">
+            <h3>Access Everywhere</h3>
+            <p>Your notes are accessible on all your devices—desktop, web, mobile—with fast cross-platform sync that requires minimal bandwidth.</p>
+          </div>
+          <div class="flow mt-lg">
+            <h3>Find Anything Instantly</h3>
+            <p>Press <kbd>Ctrl+F</kbd> to search across all your notes with results appearing instantly as you type, with context highlighting.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- App Testimonials -->
+    <section class="app-testimonials">
+      <div class="container">
+        <h2 class="app-testimonials__heading">What Users Say</h2>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="testimonial-card__quote">"MemFlow has completely replaced my physical sticky notes. The keyboard shortcuts make capturing ideas effortless, and the search functionality is lightning fast."</div>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">
+                <img src="../public/images/apps/avatar-1.jpg" alt="User avatar">
+              </div>
+              <div class="testimonial-card__info">
+                <div class="testimonial-card__name">Sarah Chen</div>
+                <div class="testimonial-card__position">Software Engineer</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-card__quote">"As a professor juggling multiple research projects, MemFlow has become essential to my workflow. The way it handles code snippets and equations is particularly impressive."</div>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">
+                <img src="../public/images/apps/avatar-2.jpg" alt="User avatar">
+              </div>
+              <div class="testimonial-card__info">
+                <div class="testimonial-card__name">Dr. Marcus Rodriguez</div>
+                <div class="testimonial-card__position">Computer Science Professor</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-card__quote">"I love that my data stays on my device by default. In a world where privacy feels increasingly rare, MemFlow respects that my notes are personal and should remain that way."</div>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">
+                <img src="../public/images/apps/avatar-3.jpg" alt="User avatar">
+              </div>
+              <div class="testimonial-card__info">
+                <div class="testimonial-card__name">Aisha Johnson</div>
+                <div class="testimonial-card__position">Privacy Advocate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- App Pricing -->
+    <section id="pricing" class="app-pricing">
+      <div class="container">
+        <h2 class="app-pricing__heading">Pricing</h2>
+        <div class="memflow-pricing-table">
+          <div class="memflow-pricing-plan">
+            <div class="memflow-pricing-plan__name">Free</div>
+            <div class="memflow-pricing-plan__price">$0 <span>/ forever</span></div>
+            <ul class="memflow-pricing-plan__features">
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Unlimited notes</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Local storage</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Basic Markdown support</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Simple search</div>
+              </li>
+            </ul>
+            <a href="#" class="btn alt">Download Free</a>
+          </div>
+          <div class="memflow-pricing-plan featured">
+            <div class="memflow-pricing-plan__name">Pro</div>
+            <div class="memflow-pricing-plan__price">$5.99 <span>/ month</span></div>
+            <ul class="memflow-pricing-plan__features">
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Everything in Free</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Cross-device sync</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Advanced Markdown with code syntax</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>End-to-end encryption</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Advanced search & filters</div>
+              </li>
+            </ul>
+            <a href="#" class="btn">Get Pro</a>
+          </div>
+          <div class="memflow-pricing-plan">
+            <div class="memflow-pricing-plan__name">Team</div>
+            <div class="memflow-pricing-plan__price">$12.99 <span>/ month</span></div>
+            <ul class="memflow-pricing-plan__features">
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Everything in Pro</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Collaborative notes</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Shared boards</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Team permissions</div>
+              </li>
+              <li class="memflow-pricing-plan__feature">
+                <div class="memflow-pricing-plan__check">✓</div>
+                <div>Priority support</div>
+              </li>
+            </ul>
+            <a href="#" class="btn alt">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- App FAQ -->
+    <section class="app-faq">
+      <div class="container">
+        <h2 class="app-faq__heading">Frequently Asked Questions</h2>
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-question">What platforms does MemFlow support?</div>
+            <div class="faq-answer">MemFlow is available on Windows, macOS, Linux, iOS, and Android. We also have a web version that works in any modern browser.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">How does the local-first approach work with sync?</div>
+            <div class="faq-answer">MemFlow stores your notes locally on your device and only syncs when connected. The Pro plan enables optional sync where your data is encrypted before leaving your device. You can disable sync at any time.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Can I export my notes?</div>
+            <div class="faq-answer">Yes, you can export your notes in Markdown, HTML, PDF, or as a JSON backup. You're never locked in, and all your data remains portable.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">Is there a limit to how many notes I can create?</div>
+            <div class="faq-answer">No, there are no artificial limits on the number of notes you can create in any plan. The Free plan stores everything locally, while Pro and Team plans sync all your notes to the cloud.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="app-cta">
+      <div class="container">
+        <div class="app-cta__content">
+          <h2 class="app-cta__heading">Ready to get started?</h2>
+          <p class="app-cta__description">Download MemFlow today and experience the difference. Available for Windows, macOS, and mobile devices.</p>
+          <div class="app-cta__buttons">
+            <a href="#" class="app-cta__button">Download Now</a>
+            <a href="#" class="app-cta__button outline">View Documentation</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Contact Section -->
+  <section id="contact" class="container section-md" aria-labelledby="contact-heading">
+    <h2 id="contact-heading" class="text-center mb-lg">Get in Touch</h2>
+    <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
+      <input class="form-control mb-sm" required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
+      <input class="form-control mb-sm" required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
+      <textarea class="form-control mb-md" required rows="5" placeholder="Tell us about your project..." data-animate="fade-up" aria-label="Your message"></textarea>
+      <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
+    </form>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"><a href="../index.html"><strong>AeroVista</strong></a></div>
+          <p>Our work is fueled by a dynamic network of contributors, guided by clear creative leadership and a shared commitment to excellence.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <div class="footer-links">
+            <a href="../about.html" aria-label="About AeroVista">About</a>
+            <a href="../divisions.html" aria-label="Explore our divisions">Divisions</a>
+            <a href="../apps.html" aria-label="View our apps">Apps</a>
+            <a href="../Store.html" aria-label="Tools and resources">Tools & Resources</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Connect</h4>
+          <div class="footer-links">
+            <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
+            <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
+            <a href="../surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Legal</h4>
+          <div class="footer-links">
+            <a href="../privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
+            <a href="../terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
+            <a href="privacy-policy.html" aria-label="App Privacy Policy">App Privacy Policy</a>
+            <a href="terms-of-service.html" aria-label="App Terms of Service">App Terms of Service</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter"><i class="icon">Twitter</i></a>
+          <a href="#" aria-label="Instagram"><i class="icon">Instagram</i></a>
+          <a href="#" aria-label="GitHub"><i class="icon">GitHub</i></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Dark mode toggle -->
+  <button class="dark-mode-toggle" aria-label="Toggle dark mode">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
+  </button>
+
+  <!-- Scroll to top button -->
+  <button class="scroll-top" aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.828L7.05 15.778L5.636 14.364L12 8L18.364 14.364L16.95 15.778L12 10.828Z"></path></svg>
+  </button>
+
+  <script src="../main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize FAQ toggles
+      const faqItems = document.querySelectorAll('.faq-item');
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        question.addEventListener('click', () => {
+          // Close all other items
+          faqItems.forEach(otherItem => {
+            if (otherItem !== item && otherItem.classList.contains('active')) {
+              otherItem.classList.remove('active');
+            }
+          });
+          // Toggle current item
+          item.classList.toggle('active');
+        });
+      });
+      
+      // Initialize dark mode toggle
+      initDarkModeToggle();
+      
+      // Initialize scroll to top button
+      initScrollToTop();
+    });
+    
+    function initDarkModeToggle() {
+      const darkModeToggle = document.querySelector('.dark-mode-toggle');
+      if (!darkModeToggle) return;
+      
+      // Check for saved preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+        document.body.classList.toggle('light-theme', savedTheme === 'light');
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('light-theme')) {
+          document.body.classList.remove('light-theme');
+          document.body.classList.add('dark-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.body.classList.remove('dark-theme');
+          document.body.classList.add('light-theme');
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    }
+    
+    function initScrollToTop() {
+      const scrollTopBtn = document.querySelector('.scroll-top');
+      if (!scrollTopBtn) return;
+      
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          scrollTopBtn.classList.add('visible');
+        } else {
+          scrollTopBtn.classList.remove('visible');
+        }
+      });
+      
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+  </script>
+</body>
+</html> 

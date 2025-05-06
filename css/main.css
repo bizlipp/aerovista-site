@@ -29,6 +29,8 @@
 
 /* 6. App-specific styles */
 @import 'apps/base.css';
+@import 'apps/memflow.css';
+@import 'apps/warpsync.css';
 
 /*
  * How to use this system:

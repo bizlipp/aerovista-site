@@ -1,0 +1,357 @@
+/* apps/memflow.css */
+/* Specific styles for the MemFlow app */
+
+/* Customized gradient and colors for MemFlow */
+:root {
+  --memflow-primary: hsl(210, 100%, 50%);
+  --memflow-secondary: hsl(240, 100%, 65%);
+  --memflow-accent: hsl(180, 100%, 45%);
+  --memflow-text: hsl(210, 20%, 25%);
+  --memflow-bg-light: hsl(210, 50%, 98%);
+  --memflow-bg-dark: hsl(210, 30%, 10%);
+}
+
+/* MemFlow-specific hero section */
+.memflow-hero {
+  position: relative;
+  background: linear-gradient(135deg, 
+    rgba(var(--memflow-primary-rgb), 0.1) 0%, 
+    rgba(var(--memflow-secondary-rgb), 0.2) 100%);
+  overflow: hidden;
+}
+
+.memflow-hero::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--memflow-accent-rgb), 0.2) 0%,
+    rgba(var(--memflow-accent-rgb), 0) 70%
+  );
+  z-index: 0;
+}
+
+.memflow-hero__device {
+  position: relative;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  transform: perspective(1000px) rotateY(-15deg) rotateX(5deg);
+  transition: all var(--transition-medium) var(--easing-standard);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.memflow-hero__device::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  z-index: 1;
+}
+
+.memflow-hero__device:hover {
+  transform: perspective(1000px) rotateY(-10deg) rotateX(2deg) scale(1.05);
+  box-shadow: 0 25px 50px -12px rgba(var(--memflow-primary-rgb), 0.25);
+}
+
+/* MemFlow floating notes animation */
+.floating-notes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.floating-note {
+  position: absolute;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+  opacity: 0.7;
+  transform-origin: center;
+  animation: float-note 20s infinite linear;
+  min-width: 80px;
+  min-height: 80px;
+  max-width: 180px;
+  max-height: 180px;
+}
+
+.floating-note:nth-child(1) {
+  top: 15%;
+  left: 10%;
+  animation-delay: 0s;
+  animation-duration: 22s;
+  background: rgba(var(--memflow-primary-rgb), 0.1);
+}
+
+.floating-note:nth-child(2) {
+  top: 60%;
+  left: 5%;
+  animation-delay: -5s;
+  animation-duration: 18s;
+  background: rgba(var(--memflow-secondary-rgb), 0.1);
+}
+
+.floating-note:nth-child(3) {
+  top: 25%;
+  right: 15%;
+  animation-delay: -10s;
+  animation-duration: 25s;
+  background: rgba(var(--memflow-accent-rgb), 0.1);
+}
+
+.floating-note:nth-child(4) {
+  bottom: 20%;
+  right: 10%;
+  animation-delay: -15s;
+  animation-duration: 20s;
+  background: rgba(var(--memflow-primary-rgb), 0.1);
+}
+
+@keyframes float-note {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(30px, -30px) rotate(5deg);
+  }
+  66% {
+    transform: translate(-20px, 20px) rotate(-3deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* MemFlow feature cards */
+.memflow-feature-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  border: 1px solid var(--glass-border);
+  transition: all var(--transition-medium) var(--easing-standard);
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.memflow-feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--memflow-primary);
+  opacity: 0.7;
+}
+
+.memflow-feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(var(--memflow-primary-rgb), 0.15);
+  border-color: rgba(var(--memflow-primary-rgb), 0.3);
+}
+
+.memflow-feature-card__icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--memflow-primary), var(--memflow-secondary));
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.memflow-feature-card__title {
+  font-size: var(--font-size-lg);
+  margin-bottom: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--memflow-text);
+  font-family: var(--font-heading);
+}
+
+.memflow-feature-card__description {
+  font-size: var(--font-size-base);
+  color: var(--color-text-soft);
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+/* MemFlow screenshots carousel */
+.memflow-screenshots {
+  position: relative;
+  padding: var(--space-xl) 0;
+}
+
+.memflow-screenshots__carousel {
+  display: flex;
+  gap: var(--space-md);
+  overflow-x: auto;
+  padding: var(--space-md) 0;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.memflow-screenshots__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.memflow-screenshot {
+  flex: 0 0 auto;
+  width: 320px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  scroll-snap-align: center;
+  box-shadow: var(--shadow-card);
+  transition: all var(--transition-medium) var(--easing-standard);
+  transform: scale(0.95);
+}
+
+.memflow-screenshot:hover {
+  transform: scale(1);
+  box-shadow: var(--shadow-hover);
+}
+
+.memflow-screenshot img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* MemFlow pricing table */
+.memflow-pricing-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  margin: var(--space-xl) 0;
+}
+
+.memflow-pricing-plan {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  border: 1px solid var(--glass-border);
+  transition: all var(--transition-medium) var(--easing-standard);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.memflow-pricing-plan.featured {
+  border-color: rgba(var(--memflow-primary-rgb), 0.3);
+  transform: scale(1.05);
+}
+
+.memflow-pricing-plan.featured::before {
+  content: 'Most Popular';
+  position: absolute;
+  top: 12px;
+  right: -28px;
+  background: var(--memflow-primary);
+  color: white;
+  padding: 0.25rem 2rem;
+  font-size: 0.75rem;
+  transform: rotate(45deg);
+  font-weight: var(--font-weight-bold);
+}
+
+.memflow-pricing-plan:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(var(--memflow-primary-rgb), 0.15);
+}
+
+.memflow-pricing-plan.featured:hover {
+  transform: translateY(-10px) scale(1.05);
+}
+
+.memflow-pricing-plan__name {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-heading);
+}
+
+.memflow-pricing-plan__price {
+  font-size: 2.5rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--memflow-primary);
+  margin: 1.5rem 0;
+  font-family: var(--font-heading);
+}
+
+.memflow-pricing-plan__price span {
+  font-size: 1rem;
+  color: var(--color-text-soft);
+  font-weight: var(--font-weight-normal);
+}
+
+.memflow-pricing-plan__features {
+  text-align: left;
+  margin: 2rem 0;
+  min-height: 180px;
+}
+
+.memflow-pricing-plan__feature {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.memflow-pricing-plan__check {
+  color: var(--memflow-primary);
+  margin-right: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  flex-shrink: 0;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .memflow-pricing-table {
+    grid-template-columns: 1fr;
+  }
+  
+  .memflow-pricing-plan.featured {
+    grid-row: 1;
+    transform: scale(1);
+  }
+  
+  .memflow-pricing-plan.featured:hover {
+    transform: translateY(-10px);
+  }
+}
+
+@media (max-width: 480px) {
+  .memflow-screenshots__carousel {
+    gap: var(--space-sm);
+  }
+  
+  .memflow-screenshot {
+    width: 280px;
+  }
+} 
