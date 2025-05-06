@@ -1,0 +1,414 @@
+/* divisions/base.css */
+/* Base styles for all division pages */
+
+/* Division Page Hero */
+.division-page-hero {
+  min-height: 70vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.division-page-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-surface);
+  opacity: 0.6;
+  z-index: 1;
+}
+
+.division-page-hero__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+.division-page-hero__content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: var(--space-xl);
+}
+
+.division-page-hero__logo {
+  max-width: 180px;
+  height: auto;
+  margin-bottom: var(--space-lg);
+}
+
+.division-page-hero__title {
+  font-size: var(--font-size-4xl);
+  margin-bottom: var(--space-md);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  color: transparent;
+  line-height: var(--line-height-tight);
+}
+
+.division-page-hero__subtitle {
+  font-size: var(--font-size-xl);
+  color: var(--color-text);
+  margin-bottom: var(--space-lg);
+  font-weight: var(--font-weight-medium);
+}
+
+.division-page-hero__description {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-soft);
+  margin-bottom: var(--space-xl);
+  line-height: var(--line-height-relaxed);
+  max-width: 600px;
+}
+
+.division-page-hero__cta {
+  display: flex;
+  gap: var(--space-md);
+}
+
+/* Division Page Overview */
+.division-overview {
+  padding: var(--space-2xl) 0;
+  position: relative;
+}
+
+.division-overview__content {
+  display: flex;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+.division-overview__media {
+  flex: 1;
+  position: relative;
+}
+
+.division-overview__image {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.division-overview__image-bg {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-lg);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.division-overview__text {
+  flex: 1;
+}
+
+.division-overview__heading {
+  font-size: var(--font-size-2xl);
+  margin-bottom: var(--space-md);
+}
+
+.division-overview__description {
+  color: var(--color-text-soft);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-lg);
+}
+
+/* Division Services/Products */
+.division-services {
+  padding: var(--space-2xl) 0;
+  background: var(--color-surface);
+  position: relative;
+}
+
+.division-services__heading {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+}
+
+.service-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--transition-medium) var(--easing-standard);
+  overflow: hidden;
+  position: relative;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-card);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--gradient-primary);
+}
+
+.service-card__icon {
+  width: 60px;
+  height: 60px;
+  background: var(--color-surface);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: var(--space-md);
+  color: var(--color-accent);
+  position: relative;
+}
+
+.service-card__title {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-heading);
+}
+
+.service-card__description {
+  color: var(--color-text-soft);
+  line-height: var(--line-height-relaxed);
+  margin-bottom: var(--space-md);
+}
+
+/* Division Portfolio/Gallery */
+.division-portfolio {
+  padding: var(--space-2xl) 0;
+  position: relative;
+}
+
+.division-portfolio__heading {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-md);
+}
+
+.portfolio-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-base);
+  aspect-ratio: 16/9;
+}
+
+.portfolio-item__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-medium) var(--easing-standard);
+}
+
+.portfolio-item:hover .portfolio-item__image {
+  transform: scale(1.05);
+}
+
+.portfolio-item__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity var(--transition-medium) var(--easing-standard);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.portfolio-item:hover .portfolio-item__overlay {
+  opacity: 1;
+}
+
+.portfolio-item__title {
+  color: white;
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-heading);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all var(--transition-medium) var(--easing-standard);
+  transition-delay: 0.1s;
+}
+
+.portfolio-item:hover .portfolio-item__title {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.portfolio-item__category {
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all var(--transition-medium) var(--easing-standard);
+  transition-delay: 0.2s;
+}
+
+.portfolio-item:hover .portfolio-item__category {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Division Team Section */
+.division-team {
+  padding: var(--space-2xl) 0;
+  background: var(--color-surface);
+  position: relative;
+}
+
+.division-team__heading {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-lg);
+}
+
+/* Division Contact Section */
+.division-contact {
+  padding: var(--space-2xl) 0;
+  position: relative;
+}
+
+.division-contact__heading {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.division-contact__content {
+  display: flex;
+  gap: var(--space-xl);
+}
+
+.division-contact__info {
+  flex: 1;
+}
+
+.division-contact__form {
+  flex: 1;
+}
+
+.division-contact__methods {
+  margin-bottom: var(--space-lg);
+}
+
+.contact-method {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+}
+
+.contact-method__icon {
+  width: 40px;
+  height: 40px;
+  background: var(--color-surface);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+}
+
+.contact-method__text {
+  color: var(--color-text-soft);
+}
+
+.division-form {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .division-page-hero__title {
+    font-size: var(--font-size-3xl);
+  }
+  
+  .division-page-hero__subtitle {
+    font-size: var(--font-size-lg);
+  }
+  
+  .division-page-hero__description {
+    font-size: var(--font-size-base);
+  }
+  
+  .division-overview__content {
+    flex-direction: column;
+  }
+  
+  .division-overview__media {
+    margin-bottom: var(--space-lg);
+  }
+  
+  .division-contact__content {
+    flex-direction: column;
+  }
+  
+  .division-contact__info {
+    margin-bottom: var(--space-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .division-page-hero__title {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .division-page-hero__logo {
+    max-width: 140px;
+  }
+  
+  .division-page-hero__cta {
+    flex-direction: column;
+  }
+  
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+} 

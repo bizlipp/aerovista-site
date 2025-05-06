@@ -1,17 +1,235 @@
 /* layout.css */
-/* Containers, grid/flex layouts, spacing rules */
+/* Containers, grid systems, and structural layout components */
+
+/* Container classes */
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1rem;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+  position: relative;
 }
 
-.flex {
+.container-sm {
+  max-width: var(--container-sm);
+}
+
+.container-md {
+  max-width: var(--container-md);
+}
+
+.container-lg {
+  max-width: var(--container-lg);
+}
+
+.container-xl {
+  max-width: var(--container-xl);
+}
+
+.container-full {
+  max-width: var(--container-max);
+}
+
+/* Section layout */
+section {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  position: relative;
+}
+
+.section-sm {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-lg);
+}
+
+.section-lg {
+  padding-top: var(--space-2xl);
+  padding-bottom: var(--space-2xl);
+}
+
+/* Hero section */
+.hero {
+  min-height: 60vh;
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-2xl) var(--space-md);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
-.grid {
+.hero-sm {
+  min-height: 40vh;
+}
+
+.hero-lg {
+  min-height: 80vh;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Grid systems */
+.grid-system {
   display: grid;
-  gap: 1.5rem;
+  gap: var(--grid-gap-md);
+}
+
+/* Auto-fit grid for responsive card layouts */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--grid-gap-md);
+}
+
+.card-grid-sm {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.card-grid-lg {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+/* Common layouts */
+.split {
+  display: flex;
+  gap: var(--grid-gap-md);
+}
+
+.split > * {
+  flex: 1;
+}
+
+.split-20-80 > :first-child {
+  flex: 2;
+}
+
+.split-20-80 > :last-child {
+  flex: 8;
+}
+
+.split-30-70 > :first-child {
+  flex: 3;
+}
+
+.split-30-70 > :last-child {
+  flex: 7;
+}
+
+.split-40-60 > :first-child {
+  flex: 4;
+}
+
+.split-40-60 > :last-child {
+  flex: 6;
+}
+
+/* Common page layout structure */
+.page-header {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  text-align: center;
+}
+
+.page-content {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-2xl);
+}
+
+.sidebar {
+  position: sticky;
+  top: var(--space-xl);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: var(--space-sm);
+    padding-right: var(--space-sm);
+  }
+  
+  section {
+    padding-top: var(--space-lg);
+    padding-bottom: var(--space-lg);
+  }
+  
+  .hero {
+    min-height: 50vh;
+    padding: var(--space-xl) var(--space-sm);
+  }
+  
+  .split {
+    flex-direction: column;
+  }
+  
+  .split.split-reverse-mobile {
+    flex-direction: column-reverse;
+  }
+}
+
+@media (max-width: 480px) {
+  section {
+    padding-top: var(--space-md);
+    padding-bottom: var(--space-md);
+  }
+  
+  .hero {
+    min-height: 40vh;
+  }
+}
+
+/* Aspect ratio containers */
+.aspect-ratio {
+  position: relative;
+  width: 100%;
+}
+
+.aspect-ratio::before {
+  content: "";
+  display: block;
+  padding-top: 56.25%; /* Default 16:9 */
+}
+
+.aspect-ratio > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.aspect-ratio-1x1::before {
+  padding-top: 100%;
+}
+
+.aspect-ratio-4x3::before {
+  padding-top: 75%;
+}
+
+.aspect-ratio-16x9::before {
+  padding-top: 56.25%;
+}
+
+.aspect-ratio-21x9::before {
+  padding-top: 42.85%;
+}
+
+/* Spacing helpers */
+.flow > * + * {
+  margin-top: var(--space-md);
+}
+
+.flow-sm > * + * {
+  margin-top: var(--space-sm);
+}
+
+.flow-lg > * + * {
+  margin-top: var(--space-lg);
 }

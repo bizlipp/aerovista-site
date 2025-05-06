@@ -1,0 +1,295 @@
+/* divisions.css */
+/* Page-specific styles for the divisions hub page */
+
+/* Division Hero Section */
+.division-hero {
+  min-height: 60vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.division-hero__content {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--space-lg);
+  position: relative;
+  z-index: 2;
+}
+
+.division-hero__headline {
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--space-md);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  color: transparent;
+  position: relative;
+  display: inline-block;
+}
+
+.division-hero__headline::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-hot);
+  -webkit-background-clip: text;
+  color: transparent;
+  z-index: -1;
+  opacity: 0.5;
+  filter: blur(8px);
+}
+
+.division-hero__description {
+  max-width: 650px;
+  margin: 0 auto var(--space-xl);
+  font-size: var(--font-size-lg);
+  color: var(--color-text-soft);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Division Grid */
+.division-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--space-lg);
+  padding: var(--space-xl) 0;
+}
+
+.division-card {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-xl) var(--space-lg);
+  border-radius: var(--radius-lg);
+  transition: all var(--transition-medium) var(--easing-standard);
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.division-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  z-index: -1;
+}
+
+.division-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-accent-transparent), transparent);
+  opacity: 0.3;
+  transition: opacity var(--transition-medium) var(--easing-standard);
+  z-index: -1;
+}
+
+.division-card:hover {
+  transform: translateY(-10px) rotateX(5deg);
+  box-shadow: var(--shadow-hover);
+}
+
+.division-card:hover::after {
+  opacity: 0.5;
+}
+
+.division-card__name {
+  font-family: var(--font-heading);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-xs);
+  position: relative;
+}
+
+.division-card__desc {
+  color: var(--color-text-soft);
+  margin-bottom: var(--space-md);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-relaxed);
+}
+
+.division-card__link {
+  position: relative;
+  color: var(--color-accent);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  padding-right: 1.5rem;
+  transition: all var(--transition-fast) var(--easing-standard);
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+.division-card__link::after {
+  content: '→';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all var(--transition-fast) var(--easing-standard);
+}
+
+.division-card__link:hover {
+  color: var(--color-accent-dark);
+  padding-right: 2rem;
+}
+
+.division-card__link:hover::after {
+  right: -0.5rem;
+}
+
+/* Alternating Direction */
+.division-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-xl) 0;
+  position: relative;
+}
+
+.division-item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.division-item__content {
+  flex: 1;
+}
+
+.division-item__media {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.division-item__media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform var(--transition-medium) var(--easing-standard);
+}
+
+.division-item:hover .division-item__media img {
+  transform: scale(1.05);
+}
+
+.division-item__name {
+  font-size: var(--font-size-2xl);
+  font-family: var(--font-heading);
+  margin-bottom: var(--space-sm);
+}
+
+.division-item__desc {
+  color: var(--color-text-soft);
+  margin-bottom: var(--space-md);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-relaxed);
+}
+
+.division-item__link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--color-accent);
+  gap: var(--space-xs);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-fast) var(--easing-standard);
+}
+
+.division-item__link:hover {
+  color: var(--color-accent-dark);
+  gap: var(--space-sm);
+}
+
+/* Division FAQ Section */
+.division-faq {
+  background: var(--color-surface);
+  padding: var(--space-2xl) 0;
+  position: relative;
+}
+
+.division-faq__heading {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.faq-item {
+  padding: var(--space-md);
+  background: var(--glass-bg);
+  border-radius: var(--radius-base);
+  margin-bottom: var(--space-md);
+  transition: all var(--transition-medium) var(--easing-standard);
+}
+
+.faq-item:hover {
+  box-shadow: var(--shadow-card);
+}
+
+.faq-question {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-md);
+  margin-bottom: var(--space-xs);
+  color: var(--color-accent);
+}
+
+.faq-answer {
+  color: var(--color-text-soft);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .division-hero__headline {
+    font-size: var(--font-size-2xl);
+  }
+  
+  .division-hero__description {
+    font-size: var(--font-size-base);
+  }
+  
+  .division-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .division-item {
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+  
+  .division-item:nth-child(even) {
+    flex-direction: column;
+  }
+  
+  .division-item__name {
+    font-size: var(--font-size-xl);
+  }
+  
+  .division-item__desc {
+    font-size: var(--font-size-base);
+  }
+}
+
+@media (max-width: 480px) {
+  .division-card {
+    min-height: 180px;
+    padding: var(--space-lg) var(--space-md);
+  }
+  
+  .division-card__name {
+    font-size: var(--font-size-lg);
+  }
+} 

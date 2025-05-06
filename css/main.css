@@ -1,0 +1,43 @@
+/*
+ * AeroVista - Main CSS
+ * This is the main entry point for all CSS styles
+ * Imports all modular CSS files in the correct cascade order
+ */
+
+/* 1. Variables and Foundations */
+@import 'variables.css';
+@import 'base.css';
+
+/* 2. Layout and Grid Systems */
+@import 'layout.css';
+@import 'utilities.css';
+
+/* 3. Components and UI Elements */
+@import 'components.css';
+@import 'animations.css';
+
+/* 4. Page-specific styles */
+@import 'pages/index.css';
+@import 'pages/divisions.css';
+@import 'pages/apps.css';
+@import 'pages/about.css';
+
+/* 5. Division-specific styles */
+@import 'divisions/base.css';
+
+/* 6. App-specific styles */
+@import 'apps/base.css';
+
+/*
+ * How to use this system:
+ * 
+ * 1. All global variables are in variables.css
+ * 2. Base elements (html, body, h1-h6, etc.) are in base.css
+ * 3. Layout components (container, grid, etc.) are in layout.css
+ * 4. Utility classes (.flex, .hidden, etc.) are in utilities.css
+ * 5. UI components (buttons, cards, etc.) are in components.css
+ * 6. Animations and transitions are in animations.css
+ * 7. Page-specific styles are in the pages/ directory
+ * 8. Division-specific styles are in the divisions/ directory
+ * 9. App-specific styles are in the apps/ directory
+ */ 
