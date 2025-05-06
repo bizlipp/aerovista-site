@@ -1,0 +1,111 @@
+{{> header}}
+
+    <!-- Hero Banner -->
+    <section class="division-hero" style="background-image: linear-gradient(to right, {{gradient_start}} 0%, {{gradient_end}} 100%);">
+        <div class="division-hero__content">
+            <h1 class="division-hero__title text-gradient glitch" data-text="{{division_name}}">{{division_name}}</h1>
+            <p class="division-hero__tagline">{{division_tagline}}</p>
+            <div class="division-hero__actions">
+                <a href="#services" class="btn" data-animate="fade-up">Our Services</a>
+                <a href="#contact" class="btn alt" data-animate="fade-up">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Division Overview -->
+    <section class="container section-md lazy-section">
+        <div class="split-layout">
+            <div class="split-layout__content">
+                <h2 class="text-gradient">About {{division_name}}</h2>
+                <p class="lead-text">{{division_description}}</p>
+                {{{division_about}}}
+            </div>
+            <div class="split-layout__media">
+                <img src="{{division_image}}" alt="{{division_name}} team at work" loading="lazy" width="500" height="350" class="rounded-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="container section-lg lazy-section">
+        <h2 class="text-center mb-lg">Our Services</h2>
+        <div class="services-grid">
+            {{#services}}
+            <div class="service-card" data-animate="fade-up">
+                <div class="service-card__icon">{{{icon}}}</div>
+                <h3 class="service-card__title">{{title}}</h3>
+                <p class="service-card__desc">{{description}}</p>
+            </div>
+            {{/services}}
+        </div>
+    </section>
+
+    <!-- Projects Showcase -->
+    {{#has_projects}}
+    <section class="container section-lg lazy-section">
+        <h2 class="text-center mb-lg">Featured Projects</h2>
+        <div class="projects-grid">
+            {{#projects}}
+            <div class="project-card" data-animate="fade-up">
+                <div class="project-card__media">
+                    <img src="{{image}}" alt="{{title}}" loading="lazy" width="400" height="250">
+                </div>
+                <div class="project-card__content">
+                    <h3 class="project-card__title">{{title}}</h3>
+                    <p class="project-card__desc">{{description}}</p>
+                    {{#link_url}}
+                    <a href="{{link_url}}" class="project-card__link">View Project →</a>
+                    {{/link_url}}
+                </div>
+            </div>
+            {{/projects}}
+        </div>
+    </section>
+    {{/has_projects}}
+
+    <!-- Team Members -->
+    {{#has_team}}
+    <section class="container section-lg lazy-section">
+        <h2 class="text-center mb-lg">Meet the Team</h2>
+        <div class="team-grid">
+            {{#team}}
+            <div class="team-card" data-animate="fade-up">
+                <img src="{{photo}}" alt="{{name}}" loading="lazy" width="120" height="120">
+                <h3>{{name}}</h3>
+                <p>{{role}}</p>
+            </div>
+            {{/team}}
+        </div>
+    </section>
+    {{/has_team}}
+
+    <!-- Testimonials -->
+    {{#has_testimonials}}
+    <section class="container section-lg lazy-section">
+        <h2 class="text-center mb-lg">What People Say</h2>
+        <div class="testimonials-grid">
+            {{#testimonials}}
+            <div class="testimonial-card" data-animate="fade-up">
+                <div class="testimonial-card__quote">"{{quote}}"</div>
+                <div class="testimonial-card__author">
+                    <strong>{{author}}</strong>
+                    <span>{{position}}</span>
+                </div>
+            </div>
+            {{/testimonials}}
+        </div>
+    </section>
+    {{/has_testimonials}}
+
+    <!-- CTA -->
+    <section class="cta-section glass lazy-section">
+        <div class="container">
+            <div class="cta-content text-center">
+                <h2 class="text-gradient">Ready to Collaborate?</h2>
+                <p>Let's discuss how {{division_name}} can help bring your vision to life.</p>
+                <a href="#contact" class="btn" data-animate="fade-up">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+{{> footer}} 

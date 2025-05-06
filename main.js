@@ -190,53 +190,50 @@
       hero.style.backgroundPosition = `calc(50% + ${x}px) calc(50% + ${y}px)`;
     });
     
-    // Text scramble effect for headlines
-    const headlines = document.querySelectorAll('.hero h1');
-    headlines.forEach(headline => {
-      if (!headline) return;
+    // Text scramble effect for headlines with data-scramble attribute
+    const scrambleElements = document.querySelectorAll('[data-scramble="true"]');
+    scrambleElements.forEach(element => {
+      if (!element) return;
       
-      const originalText = headline.textContent;
+      const originalText = element.textContent;
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,./<>?';
-      let iterations = 0;
       
-      function scramble() {
-        if (iterations >= 15) {
-          // Force reset to original text after max iterations
-          headline.textContent = originalText;
-          return;
-        }
-        
-        headline.textContent = originalText.split('')
-          .map((char, index) => {
-            if (index < iterations) return originalText[index];
-            return chars[Math.floor(Math.random() * chars.length)];
-          })
-          .join('');
-        
-        iterations++;
-        
-        // Use requestAnimationFrame for smoother animation
-        if (iterations < 15) {
-          setTimeout(() => requestAnimationFrame(scramble), 50);
-        }
-      }
+      // Add cursor style and hint class to show it's clickable
+      element.style.cursor = 'pointer';
+      element.classList.add('clickable-scramble');
       
-      // Wait for fonts to load before starting scramble effect
-      if ('fonts' in document) {
-        document.fonts.ready.then(() => {
-          // Use requestIdleCallback if available, otherwise setTimeout
-          if ('requestIdleCallback' in window) {
-            requestIdleCallback(() => {
-              setTimeout(scramble, 1000);
-            });
-          } else {
-            setTimeout(scramble, 1000);
+      // Add tooltip hint
+      element.setAttribute('title', 'Click me for scramble effect');
+      
+      // Only trigger scramble on click
+      element.addEventListener('click', () => {
+        let iterations = 0;
+        
+        function scramble() {
+          if (iterations >= 15) {
+            // Force reset to original text after max iterations
+            element.textContent = originalText;
+            return;
           }
-        });
-      } else {
-        // Fallback for browsers that don't support document.fonts
-        setTimeout(scramble, 1500); // Slightly longer delay as a precaution
-      }
+          
+          element.textContent = originalText.split('')
+            .map((char, index) => {
+              if (index < iterations) return originalText[index];
+              return chars[Math.floor(Math.random() * chars.length)];
+            })
+            .join('');
+          
+          iterations++;
+          
+          // Use requestAnimationFrame for smoother animation
+          if (iterations < 15) {
+            setTimeout(() => requestAnimationFrame(scramble), 50);
+          }
+        }
+        
+        // Start scramble immediately on click
+        scramble();
+      });
     });
   }
 
@@ -695,6 +692,166 @@
     });
   }
 
+  // Easter Egg Console Hint
+  console.log("%c✨ Psst... Looking for hidden lore? Try clicking the footer while holding Alt. ✨", "color:#FF3CAF;font-weight:bold");
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector(".site-footer").addEventListener("click", (e) => {
+      if (e.altKey) alert("AeroVista began with a single spark in a winter storm. More secrets await.");
+    });
+  });
+
   // Initialize the application
   init();
 })();
+
+// Main JavaScript for AeroVista website
+document.addEventListener('DOMContentLoaded', function() {
+  // Mobile menu toggle
+  const menuToggle = document.querySelector('.menu-toggle');
+  const navList = document.querySelector('.nav-list');
+  
+  if (menuToggle && navList) {
+    menuToggle.addEventListener('click', function() {
+      navList.classList.toggle('active');
+      menuToggle.classList.toggle('active');
+    });
+  }
+  
+  // Glitch effect for elements with data-scramble="true"
+  const glitchElements = document.querySelectorAll('[data-scramble="true"]');
+  
+  glitchElements.forEach(element => {
+    const originalText = element.textContent;
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]\\:;?><,./-=';
+    
+    element.addEventListener('mouseover', () => {
+      let iterations = 0;
+      const interval = setInterval(() => {
+        element.textContent = originalText
+          .split('')
+          .map((letter, index) => {
+            if (index < iterations) {
+              return originalText[index];
+            }
+            return chars[Math.floor(Math.random() * chars.length)];
+          })
+          .join('');
+        
+        if (iterations >= originalText.length) {
+          clearInterval(interval);
+          element.textContent = originalText;
+        }
+        
+        iterations += 1 / 3;
+      }, 30);
+    });
+  });
+  
+  // Easter egg: Konami code for synthwave mode
+  // Sequence: ↑ ↑ ↓ ↓ ← → ← → B A
+  const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+  let konamiIndex = 0;
+  
+  document.addEventListener('keydown', (e) => {
+    const key = e.key;
+    const requiredKey = konamiCode[konamiIndex].toLowerCase();
+    
+    if (key.toLowerCase() === requiredKey) {
+      konamiIndex++;
+      
+      if (konamiIndex === konamiCode.length) {
+        activateSynthwaveMode();
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+  
+  function activateSynthwaveMode() {
+    document.body.classList.toggle('synthwave-mode');
+    showSecretMessage('Synthwave Mode ' + (document.body.classList.contains('synthwave-mode') ? 'Activated' : 'Deactivated') + ' 🌈');
+  }
+  
+  // Easter egg: Logo click
+  const logo = document.querySelector('.logo');
+  let logoClickCount = 0;
+  
+  if (logo) {
+    logo.addEventListener('click', (e) => {
+      // Only count clicks that are on the actual logo element, not its children
+      if (e.target === logo || e.target.classList.contains('logo-icon') || e.target.classList.contains('logo-text')) {
+        logoClickCount++;
+        
+        if (logoClickCount === 3) {
+          e.preventDefault();
+          const logoIcon = document.querySelector('.logo-icon');
+          const logoText = document.querySelector('.logo-text');
+          
+          if (logoIcon) logoIcon.classList.add('logo-glitched');
+          if (logoText) logoText.classList.add('logo-glitched');
+          
+          showSecretMessage('AeroVista Signal Intercepted... 📡');
+          
+          setTimeout(() => {
+            if (logoIcon) logoIcon.classList.remove('logo-glitched');
+            if (logoText) logoText.classList.remove('logo-glitched');
+            logoClickCount = 0;
+          }, 3000);
+        }
+      }
+    });
+  }
+  
+  // Easter egg: Hidden trigger in footer
+  const easterEggTrigger = document.querySelector('.easter-egg-trigger');
+  
+  if (easterEggTrigger) {
+    easterEggTrigger.addEventListener('mouseenter', () => {
+      setTimeout(() => {
+        if (document.querySelector('.easter-egg-trigger:hover')) {
+          showSecretMessage('You found a hidden spot! 🔍');
+        }
+      }, 2000);
+    });
+  }
+  
+  // Function to show secret message notification
+  function showSecretMessage(message) {
+    // Create or get notification element
+    let notification = document.querySelector('.secret-found');
+    
+    if (!notification) {
+      notification = document.createElement('div');
+      notification.classList.add('secret-found');
+      document.body.appendChild(notification);
+    }
+    
+    notification.textContent = message;
+    notification.classList.add('show');
+    
+    // Hide after 3 seconds
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
+  }
+  
+  // Console Easter Egg
+  setTimeout(() => {
+    console.log('%cHello Curious Developer! 👀', 'font-size:20px; color:#00AEEF; font-weight:bold;');
+    console.log('%cYou found the first easter egg.', 'font-size:14px; color:#FF0090;');
+    console.log('%cType "%crevealSecrets()" %cto see what else is hidden...', 'font-size:14px; color:#FFD700;', 'font-size:14px; background:#111; padding:2px 5px; border-radius:4px; color:#00FF7F;', 'font-size:14px; color:#FFD700;');
+  }, 1000);
+  
+  // Define the reveal function
+  window.revealSecrets = function() {
+    console.log('%c🔓 Hidden Features Guide 🔓', 'font-size:18px; color:#00AEEF; font-weight:bold;');
+    console.log('1. Press ↑ ↑ ↓ ↓ ← → ← → B A for Synthwave Mode');
+    console.log('2. Click the AeroVista logo 3 times quickly');
+    console.log('3. Hover on the bottom right corner for 2+ seconds');
+    console.log('4. There is a hidden page at /the-vault.html');
+    console.log('5. Try clicking all division logos in order from top to bottom');
+  };
+});
+
+// Add any additional functionality below

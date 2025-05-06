@@ -1,193 +1,239 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About AeroVista</title>
-  <!-- Fonts & Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self'; connect-src 'self';">
+  <title>About | AeroVista</title>
+  
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="/css/theme-variables.css" as="style">
+  <link rel="preload" href="/css/variables.css" as="style">
+  <link rel="preload" href="/css/base.css" as="style">
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Montserrat:wght@300;400;500;700&family=Saira+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="/css/main.css?v=1.0.6" />
+  <link rel="preload" href="/css/performance.css" as="style" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <!-- Meta Tags for SEO and Open Graph -->
   <meta name="description" content="Learn about AeroVista's journey from garage-level prototypes to a multi-division powerhouse in tech and creative services.">
-  <meta property="og:title" content="About AeroVista">
+  <meta property="og:title" content="About | AeroVista">
   <meta property="og:description" content="Discover our story, milestones, and the team behind AeroVista's creative tech solutions.">
   <meta property="og:image" content="https://aerovista.us/preview-image.png">
   <meta property="og:url" content="https://aerovista.us/about.html">
   <meta property="og:type" content="website">
-  <style>
-    /* Simple vertical timeline */
-    .timeline { position: relative; margin: 2rem 0; padding-left: 2rem; }
-    .timeline::before { content:''; position: absolute; left:0; top:0; width:4px; height:100%; background:var(--color-accent); }
-    .timeline-entry { position: relative; margin-bottom:2rem; }
-    .timeline-entry h4 { margin-bottom:0.25rem; font-family:var(--font-heading); }
-    .timeline-entry::before { content:''; position:absolute; left:-12px; top:4px; width:14px; height:14px; border-radius:50%; background:var(--color-accent); }
-    .team-grid { display:grid; gap:2rem; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); margin-top:2rem; }
-    .team-card { text-align:center; }
-    .team-card img { width:120px; height:120px; object-fit:cover; border-radius:50%; margin-inline:auto 1rem; margin-bottom:1rem; }
-  </style>
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://aerovista.us/about.html">
+
+  <!-- Accessibility enhancement -->
+  <meta name="theme-color" content="#080a12">
+  
+  <!-- Performance optimization -->
+  <script defer src="/performance.js"></script>
 </head>
-<body>
-  <!-- Navbar -->
-  <header>
-    <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="divisions.html">Divisions</a>
-      <a href="apps.html">Apps</a>
-      <a href="Store.html">Tools & Resources</a>
-    </nav>
+<body data-page="about">
+  <a class="skip-link" href="#main">Skip to content</a>
+ 
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <img src="/public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
+          <span class="logo-text">AeroVista</span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="/index.html" class="nav-link">Home</a></li>
+            <li><a href="/divisions.html" class="nav-link">Divisions</a></li>
+            <li><a href="/apps.html" class="nav-link">Apps</a></li>
+            <li><a href="/Store.html" class="nav-link">Tools & Resources</a></li>
+            <li><a href="/about.html" class="nav-link active">About</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero" style="background:linear-gradient(135deg,#3a47d589 0%,#ff3caf44 100%);min-height:50vh;">
-    <h1 class="text-gradient glitch" data-text="A Vision-Driven Studio">A Vision-Driven Studio</h1>
-    <p>AeroVista is a collaborative studio powered by creators, educators, developers, and dreamers. We believe in the power of story, visuals, and technology to transform how people learn, play, and grow.</p>
-    <p>Operating across six distinct divisions, we remain agile and modular—building across mediums and ideas without limitation.</p>
-    <p><strong>Where vision takes flight.</strong></p>
-  </section>
+  <!-- Main content -->
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <h1 class="glitch" data-scramble="true" data-text="About AeroVista">About <span class="brand-name">AeroVista</span></h1>
+        <p class="subheading">We blend artistry with technical mastery, combining agility with vision to bring bold ideas to life. Every challenge is a canvas, every solution a crafted expression of our values.</p>
+      </div>
+    </section>
 
-  <!-- Our Mission Section -->
-  <section class="container">
-    <h2>Our Philosophy</h2>
-    <div class="text-center" data-animate="fade-up">
-      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">
-        We blend artistry with technical mastery, combining agility with vision to bring bold ideas to life. Every challenge is a canvas, every solution a crafted expression of our values.
-      </p>
-    </div>
-  </section>
+    <section class="vision">
+      <div class="container">
+        <h2>Where Vision Takes Flight</h2>
+        <p>AeroVista is more than a studio—we're a launchpad for transformative ideas. Our mission-driven divisions operate at the intersection of imagination and implementation.</p>
+        <ul class="pillars">
+          <li><strong>Creative Vision:</strong> Bold ideas that challenge conventions and reimagine possibilities.</li>
+          <li><strong>Technical Excellence:</strong> Leveraging cutting-edge tools and emerging technologies.</li>
+          <li><strong>Collaborative Approach:</strong> Cross-discipline experts solving complex challenges together.</li>
+        </ul>
+      </div>
+    </section>
 
-  <!-- Timeline -->
-  <section class="container">
-    <h2>Milestones</h2>
-    <div class="timeline">
-      <div class="timeline-entry">
-        <h4>2019 — First Drone Footage Project</h4>
-        <p>Horizon Aerial & Visual captures cinematic landscapes, sparking the vision for a multi‑disciplinary studio.</p>
+    <section class="team">
+      <div class="container">
+        <h2>Who We Are</h2>
+        <p>Our team is a mix of artists, engineers, educators, and entrepreneurs. We believe in the power of shared stories and collaborative progress.</p>
       </div>
-      <div class="timeline-entry">
-        <h4>2021 — BytePad Alpha</h4>
-        <p>Our local‑first sticky notes prototype sets the foundation for user‑centric productivity tools.</p>
-      </div>
-      <div class="timeline-entry">
-        <h4>2023 — AeroVista LLC Formation</h4>
-        <p>Seven divisions unite under a single banner with cohesive branding and shared resources.</p>
-      </div>
-      <div class="timeline-entry">
-        <h4>2025 — First Public Product Launch</h4>
-        <p>BytePad Pro hits the store, marking the beginning of our commercial lineup.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Team Grid -->
-  <section class="container">
-    <h2>Our Creative Collaborative Network</h2>
-    <div class="text-center" data-animate="fade-up">
-      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">
-        At AeroVista, our impact is shaped by trusted collaborators and long-term creative partnerships.
-        From writers and designers to technologists and educators, we work with a fluid team of aligned professionals who bring their best to each project. Leadership provides the vision—our network brings it to life.
-      </p>
-    </div>
-    <div class="team-grid">
-      <div class="team-card" data-animate="fade-up">
-        <img 
-          src="public/images/portfolio/portfolio-1.png" 
-          alt="SkyForge Creative" 
-          loading="lazy"
-          width="120"
-          height="120" />
-        <h3>SkyForge Creative</h3>
-        <p>Game Development</p>
+    <section class="network">
+      <div class="container">
+        <h2 class="section-title">Our Creative Collaborative Network</h2>
+        <p class="section-intro">
+          At AeroVista, our impact is shaped by trusted collaborators and long-term creative partnerships. From writers and designers to technologists and educators, we work with a fluid team of aligned professionals who bring their best to each project. Leadership provides the vision—our network brings it to life.
+        </p>
+        <div class="division-grid">
+          <div class="division-card skyforge">
+            <div class="division-card-inner">
+              <div class="division-logo">
+                <img src="/public/images/divisions/skyforge.png" alt="SkyForge Creative Studios Logo" />
+              </div>
+              <h3>SkyForge Creative</h3>
+              <p>Game Development</p>
+              <div class="division-theme" style="background: linear-gradient(135deg, #6A0DAD, #FF0090);"></div>
+              <a href="/Divisions/skyforge-creative.html" class="btn-explore">Explore</a>
+            </div>
+          </div>
+          <div class="division-card nexus">
+            <div class="division-card-inner">
+              <div class="division-logo">
+                <img src="/public/images/divisions/nexus.png" alt="Nexus TechWorks Logo" />
+              </div>
+              <h3>Nexus TechWorks</h3>
+              <p>Technology & Development</p>
+              <div class="division-theme" style="background: linear-gradient(135deg, #00FF7F, #101820);"></div>
+              <a href="/Divisions/nexus-techworks.html" class="btn-explore">Explore</a>
+            </div>
+          </div>
+          <div class="division-card lumina">
+            <div class="division-card-inner">
+              <div class="division-logo">
+                <img src="/public/images/divisions/lumina.png" alt="Lumina Creative Logo" />
+              </div>
+              <h3>Lumina Creative</h3>
+              <p>Branding & Design</p>
+              <div class="division-theme" style="background: linear-gradient(135deg, #FFD700, #111111);"></div>
+              <a href="/Divisions/lumina-creative.html" class="btn-explore">Explore</a>
+            </div>
+          </div>
+          <div class="division-card echoverse">
+            <div class="division-card-inner">
+              <div class="division-logo">
+                <img src="/public/images/divisions/echoverse.png" alt="EchoVerse Audio Logo" />
+              </div>
+              <h3>EchoVerse Audio</h3>
+              <p>Audio Production</p>
+              <div class="division-theme" style="background: linear-gradient(135deg, #FF1493, #9400D3);"></div>
+              <a href="/Divisions/echoverse-audio.html" class="btn-explore">Explore</a>
+            </div>
+          </div>
+          <div class="division-card summit">
+            <div class="division-card-inner">
+              <div class="division-logo">
+                <img src="/public/images/divisions/summit.png" alt="Summit Learning Logo" />
+              </div>
+              <h3>Summit Learning</h3>
+              <p>Educational Experiences</p>
+              <div class="division-theme" style="background: linear-gradient(135deg, #228B22, #FFD700);"></div>
+              <a href="/Divisions/summit-learning.html" class="btn-explore">Explore</a>
+            </div>
+          </div>
+          <div class="division-card vespera">
+            <div class="division-card-inner">
+              <div class="division-logo">
+                <img src="/public/images/divisions/vespera.png" alt="Vespera Publishing Logo" />
+              </div>
+              <h3>Vespera Publishing</h3>
+              <p>Publishing & Content</p>
+              <div class="division-theme" style="background: linear-gradient(135deg, #DC143C, #F8F8F8);"></div>
+              <a href="/Divisions/vespera-publishing.html" class="btn-explore">Explore</a>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="team-card" data-animate="fade-up">
-        <img 
-          src="public/images/portfolio/portfolio-4.png" 
-          alt="Nexus TechWorks" 
-          loading="lazy"
-          width="120"
-          height="120" />
-        <h3>Nexus TechWorks</h3>
-        <p>Technology & Development</p>
-      </div>
-      <div class="team-card" data-animate="fade-up">
-        <img 
-          src="public/images/portfolio/portfolio-6.png" 
-          alt="Lumina Creative" 
-          loading="lazy"
-          width="120"
-          height="120" />
-        <h3>Lumina Creative</h3>
-        <p>Branding & Design</p>
-      </div>
-      <div class="team-card" data-animate="fade-up">
-        <img 
-          src="public/images/portfolio/portfolio-3.png" 
-          alt="EchoVerse Audio" 
-          loading="lazy"
-          width="120"
-          height="120" />
-        <h3>EchoVerse Audio</h3>
-        <p>Audio Production</p>
-      </div>
-      <div class="team-card" data-animate="fade-up">
-        <img 
-          src="public/images/portfolio/portfolio-5.png" 
-          alt="Summit Learning" 
-          loading="lazy"
-          width="120"
-          height="120" />
-        <h3>Summit Learning</h3>
-        <p>Educational Experiences</p>
-      </div>
-      <div class="team-card" data-animate="fade-up">
-        <img 
-          src="public/images/portfolio/portfolio-2.png" 
-          alt="Vespera Publishing" 
-          loading="lazy"
-          width="120"
-          height="120" />
-        <h3>Vespera Publishing</h3>
-        <p>Publishing & Content</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Division Highlights -->
-  <section class="container">
-    <h2>Division Highlights</h2>
-    <div class="grid grid-cols-4 stagger">
-      <div class="card glass" data-animate="fade-up">
-        <div style="font-size:2.5rem;margin-bottom:1rem;color:var(--color-accent);">🎮</div>
-        <h3>SkyForge</h3>
-        <p>"Our prototype narrative game received pilot funding for Phase 2."</p>
+    <section class="contact" id="contact-form">
+      <div class="container">
+        <h2>Interested in Collaborating?</h2>
+        <p>Reach out to discuss how our divisions can support your next project.</p>
+        <form aria-label="Contact form">
+          <input type="text" name="name" placeholder="Your Name" required />
+          <input type="email" name="email" placeholder="Your Email" required />
+          <textarea name="message" placeholder="Tell us about your project..." required></textarea>
+          <button type="submit" class="btn">Send Message</button>
+        </form>
       </div>
-      <div class="card glass" data-animate="fade-up">
-        <div style="font-size:2.5rem;margin-bottom:1rem;color:var(--color-hot);">📚</div>
-        <h3>Summit Learning</h3>
-        <p>"Over 100 students completed our seasonal reflection journal."</p>
-      </div>
-      <div class="card glass" data-animate="fade-up">
-        <div style="font-size:2.5rem;margin-bottom:1rem;color:var(--color-primary);">🎵</div>
-        <h3>EchoVerse Audio</h3>
-        <p>"Generated 25+ original tracks in collaboration with local artists."</p>
-      </div>
-      <div class="card glass" data-animate="fade-up">
-        <div style="font-size:2.5rem;margin-bottom:1rem;color:var(--color-accent);">💻</div>
-        <h3>Nexus TechWorks</h3>
-        <p>"Launched 2 productivity apps into open beta in under 6 months."</p>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- Footer -->
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
-
-  <script type="module" src="main.js"></script>
-  <script type="module">
-    import { initLazyLoading } from './src/imageUtil.js'; 
-    document.addEventListener('DOMContentLoaded', () => {
-      initLazyLoading();
-    });
-  </script>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="footer-logo"><span class="brand-name">AeroVista</span></a>
+          <p>Where creativity and code shape the future of media, learning, and innovation. Our seven specialized divisions bring unique expertise to every project.</p>
+        </div>
+        <div class="footer-links-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/divisions.html">Divisions</a></li>
+            <li><a href="/apps.html">Apps</a></li>
+            <li><a href="/Store.html">Tools & Resources</a></li>
+            <li><a href="/about.html">About</a></li>
+          </ul>
+        </div>
+        <div class="footer-links-section">
+          <h4>Connect</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:info@aerovista.co">Email Us</a></li>
+            <li><a href="/surron_squad.html">Surron Squad</a></li>
+          </ul>
+        </div>
+        <div class="footer-links-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="/legal/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/legal/terms-of-service.html">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter"><span class="social-icon">Twitter</span></a>
+          <a href="#" aria-label="Instagram"><span class="social-icon">Instagram</span></a>
+          <a href="https://www.youtube.com/@aerovistaus" target="_blank" rel="noopener" aria-label="YouTube"><span class="social-icon">YouTube</span></a>
+          <a href="#" aria-label="GitHub"><span class="social-icon">GitHub</span></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <!-- Easter Egg element -->
+  <div class="easter-egg-trigger"></div>
+  
+  <!-- Scripts -->
+  <script src="/main.js"></script>
 </body>
 </html>

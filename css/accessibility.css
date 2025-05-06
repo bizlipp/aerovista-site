@@ -1,0 +1,295 @@
+/* 
+ * AeroVista - Accessibility CSS
+ * Centralized file for all accessibility-related styling and improvements
+ */
+
+/* ==================== Focus Management ==================== */
+/* Enhanced focus styles that work for both mouse and keyboard users */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 1px var(--color-bg);
+  transition: outline-offset var(--transition-fast);
+}
+
+/* Add focus indicator for interactive elements without default focus styles */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 3px;
+}
+
+/* Skip link (already in base.css, but enhanced here) */
+.skip-to-content {
+  position: absolute;
+  top: -9999px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-accent);
+  color: var(--color-bg);
+  padding: 1rem 1.5rem;
+  z-index: var(--z-max);
+  border-radius: 0 0 var(--radius-base) var(--radius-base);
+  text-decoration: none;
+  font-weight: var(--font-weight-bold);
+  box-shadow: var(--shadow-soft);
+  transition: top var(--transition-medium) var(--easing-standard);
+}
+
+.skip-to-content:focus-visible {
+  top: 0;
+  outline-offset: -1px;
+}
+
+/* ==================== Text & Typography ==================== */
+/* Ensure sufficient color contrast */
+.high-contrast-text {
+  color: var(--color-text);
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.3);
+}
+
+/* Improve readability for text on gradient backgrounds */
+.text-on-gradient {
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Prevent text from being too light/transparent */
+.text-readable {
+  opacity: 0.95;
+  font-weight: var(--font-weight-medium);
+}
+
+/* Minimum text sizing for readability */
+.text-minimum {
+  font-size: max(16px, 1rem);
+  line-height: 1.5;
+}
+
+/* ==================== Content Accessibility ==================== */
+/* Visually hidden content that remains accessible to screen readers */
+.sr-only,
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Classes that correspond to aria attributes for consistency */
+/* Use alongside the proper HTML attribute aria-hidden="true" */
+.visually-hidden-content {
+  opacity: 0.5; /* Visual indicator that content is hidden from screen readers */
+}
+
+/* Style for elements that have aria-hidden attribute */
+[aria-hidden="true"] {
+  opacity: 0.5;
+}
+
+/* Make table elements more accessible */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+th {
+  text-align: left;
+  font-weight: var(--font-weight-bold);
+}
+
+th, td {
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+caption {
+  margin-bottom: 0.5rem;
+  font-weight: var(--font-weight-medium);
+  text-align: left;
+}
+
+/* ==================== Form Accessibility ==================== */
+/* Improved form controls for accessibility */
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: var(--font-weight-medium);
+}
+
+/* Add clear focus states for form elements */
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+/* Style for form validation messages */
+.form-error {
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+  margin-top: 0.5rem;
+}
+
+.form-success {
+  color: var(--color-success);
+  font-size: var(--font-size-sm);
+  margin-top: 0.5rem;
+}
+
+/* Improve checkbox/radio accessibility */
+input[type="checkbox"],
+input[type="radio"] {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+/* ==================== Motion & Animation ==================== */
+/* Enhanced prefers-reduced-motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+  
+  .scroll-smooth {
+    scroll-behavior: auto;
+  }
+  
+  [data-animate],
+  .stagger > *,
+  .animated,
+  .glitch,
+  .glitch-text,
+  .shimmer,
+  .rotate,
+  .blink,
+  .pan-background,
+  .float {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  
+  /* Prevent background animations */
+  .floating-element,
+  .floating-bg,
+  .liquid-bg,
+  .glass-sphere {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* ==================== ARIA Enhancement Classes ==================== */
+/* Classes to be used alongside ARIA attributes for enhanced accessibility */
+.aria-current {
+  position: relative;
+  font-weight: var(--font-weight-medium);
+}
+
+.aria-current::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.25rem;
+  height: 2px;
+  background: currentColor;
+}
+
+/* ==================== Print Styles ==================== */
+@media print {
+  /* Set page margins and use high contrast colors */
+  * {
+    background: transparent !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  
+  abbr[title]::after {
+    content: " (" attr(title) ")";
+  }
+  
+  pre {
+    white-space: pre-wrap !important;
+  }
+  
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+  
+  thead {
+    display: table-header-group;
+  }
+  
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+  
+  p,
+  h2,
+  h3 {
+    /* Remove non-standard CSS properties */
+    /* orphans and widows are print-specific properties for controlling paragraph breaks */
+    /* They are not well-supported in modern browsers for on-screen display */
+    /* For print stylesheets, they can be used but with caution */
+    page-break-after: avoid;
+  }
+  
+  /* Hide unnecessary elements for print */
+  nav,
+  .navbar,
+  .footer,
+  .dark-mode-toggle,
+  .scroll-top,
+  .floating-bg,
+  .glass-sphere,
+  .floating-elements,
+  .mouse-follower,
+  button:not([type="submit"]) {
+    display: none !important;
+  }
+  
+  /* Set up page for printing */
+  body {
+    margin: 1cm;
+  }
+  
+  .container {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+} 

@@ -1,0 +1,95 @@
+/* Animation Controls Styles */
+.animation-controls {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: var(--z-tooltip);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  
+  /* Only display for users who prefer reduced motion */
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animation-controls {
+    display: flex;
+  }
+}
+
+.animation-toggle {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-standard);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.animation-toggle::before {
+  content: "🚫";
+  font-size: 1em;
+}
+
+.animation-toggle.active {
+  background: var(--gradient-primary);
+  color: white;
+  border-color: transparent;
+}
+
+.animation-toggle.active::before {
+  content: "✨";
+}
+
+.animation-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+.animation-toggle:active {
+  transform: translateY(0);
+}
+
+/* Apply this class to body when animations are enabled */
+body.enable-animations * {
+  animation-duration: initial !important;
+  transition-duration: initial !important;
+  scroll-behavior: smooth !important;
+}
+
+body.enable-animations [data-animate] {
+  animation: var(--animation-fade-up) !important;
+}
+
+body.enable-animations .glitch {
+  animation: glitch 1s infinite linear !important;
+}
+
+body.enable-animations .stagger > * {
+  opacity: 0;
+}
+
+body.enable-animations .stagger > *:nth-child(1) { animation-delay: 0.1s !important; }
+body.enable-animations .stagger > *:nth-child(2) { animation-delay: 0.2s !important; }
+body.enable-animations .stagger > *:nth-child(3) { animation-delay: 0.3s !important; }
+body.enable-animations .stagger > *:nth-child(4) { animation-delay: 0.4s !important; }
+body.enable-animations .stagger > *:nth-child(5) { animation-delay: 0.5s !important; }
+body.enable-animations .stagger > *:nth-child(6) { animation-delay: 0.6s !important; }
+body.enable-animations .stagger > *:nth-child(7) { animation-delay: 0.7s !important; }
+body.enable-animations .stagger > *:nth-child(8) { animation-delay: 0.8s !important; }
+
+/* Hide when printing */
+@media print {
+  .animation-controls {
+    display: none !important;
+  }
+} 

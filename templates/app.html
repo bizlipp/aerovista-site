@@ -1,0 +1,147 @@
+{{> header}}
+
+    <!-- App Hero Section -->
+    <section class="app-hero" style="background-image: linear-gradient(to right, {{gradient_start}} 0%, {{gradient_end}} 100%);">
+        <div class="app-hero__content">
+            <h1 class="app-hero__title text-gradient glitch" data-text="{{app_name}}">{{app_name}}</h1>
+            <p class="app-hero__tagline">{{app_tagline}}</p>
+            <div class="app-hero__status">
+                <span class="badge {{app_status_class}}">{{app_status}}</span>
+            </div>
+            <div class="app-hero__actions">
+                {{#app_download_url}}
+                <a href="{{app_download_url}}" class="btn" data-animate="fade-up">Download</a>
+                {{/app_download_url}}
+                {{#app_demo_url}}
+                <a href="{{app_demo_url}}" class="btn alt" data-animate="fade-up">Try Demo</a>
+                {{/app_demo_url}}
+            </div>
+        </div>
+        <div class="app-hero__media">
+            <img src="{{app_hero_image}}" alt="{{app_name}} interface" loading="lazy" width="600" height="400" class="app-screenshot">
+        </div>
+    </section>
+
+    <!-- App Overview -->
+    <section class="container section-md lazy-section">
+        <div class="split-layout">
+            <div class="split-layout__content">
+                <h2 class="text-gradient">About {{app_name}}</h2>
+                <p class="lead-text">{{app_description}}</p>
+                {{{app_about}}}
+            </div>
+            <div class="split-layout__media">
+                <img src="{{app_overview_image}}" alt="{{app_name}} in use" loading="lazy" width="500" height="350" class="rounded-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="container section-lg lazy-section">
+        <h2 class="text-center mb-lg">Key Features</h2>
+        <div class="features-grid">
+            {{#features}}
+            <div class="feature-box" data-animate="fade-up">
+                <div class="icon-circle">
+                    <div class="icon">{{{icon}}}</div>
+                </div>
+                <h3>{{title}}</h3>
+                <p>{{description}}</p>
+            </div>
+            {{/features}}
+        </div>
+    </section>
+
+    <!-- Screenshots -->
+    {{#has_screenshots}}
+    <section class="container section-lg lazy-section">
+        <h2 class="text-center mb-lg">Screenshots</h2>
+        <div class="screenshots-grid">
+            {{#screenshots}}
+            <div class="screenshot" data-animate="fade-up">
+                <img src="{{url}}" alt="{{caption}}" loading="lazy" width="400" height="250">
+                <p class="screenshot-caption">{{caption}}</p>
+            </div>
+            {{/screenshots}}
+        </div>
+    </section>
+    {{/has_screenshots}}
+
+    <!-- Testimonials -->
+    {{#has_testimonials}}
+    <section class="container section-lg lazy-section">
+        <h2 class="text-center mb-lg">What Users Say</h2>
+        <div class="testimonials-grid">
+            {{#testimonials}}
+            <div class="testimonial-card" data-animate="fade-up">
+                <div class="testimonial-card__quote">"{{quote}}"</div>
+                <div class="testimonial-card__author">
+                    <strong>{{author}}</strong>
+                    <span>{{position}}</span>
+                </div>
+            </div>
+            {{/testimonials}}
+        </div>
+    </section>
+    {{/has_testimonials}}
+
+    <!-- Pricing -->
+    {{#has_pricing}}
+    <section class="container section-lg lazy-section">
+        <h2 class="text-center mb-lg">Pricing Options</h2>
+        <div class="pricing-grid">
+            {{#pricing_plans}}
+            <div class="pricing-card" data-animate="fade-up">
+                <div class="pricing-card__header">
+                    <h3>{{name}}</h3>
+                    <div class="pricing-card__price">{{price}}</div>
+                    <div class="pricing-card__period">{{period}}</div>
+                </div>
+                <div class="pricing-card__features">
+                    <ul>
+                        {{#features}}
+                        <li>{{.}}</li>
+                        {{/features}}
+                    </ul>
+                </div>
+                <div class="pricing-card__action">
+                    <a href="{{action_url}}" class="btn">{{action_text}}</a>
+                </div>
+            </div>
+            {{/pricing_plans}}
+        </div>
+    </section>
+    {{/has_pricing}}
+
+    <!-- FAQ -->
+    {{#has_faq}}
+    <section class="container section-lg lazy-section">
+        <h2 class="text-center mb-lg">Frequently Asked Questions</h2>
+        <div class="faq-list">
+            {{#faq_items}}
+            <div class="faq-item" data-animate="fade-up">
+                <div class="faq-question">{{question}}</div>
+                <p class="faq-answer">{{answer}}</p>
+            </div>
+            {{/faq_items}}
+        </div>
+    </section>
+    {{/has_faq}}
+
+    <!-- CTA -->
+    <section class="cta-section glass lazy-section">
+        <div class="container">
+            <div class="cta-content text-center">
+                <h2 class="text-gradient">Ready to Get Started?</h2>
+                <p>Experience the power of {{app_name}} today.</p>
+                {{#app_download_url}}
+                <a href="{{app_download_url}}" class="btn" data-animate="fade-up">Download Now</a>
+                {{/app_download_url}}
+                {{^app_download_url}}
+                <a href="#contact" class="btn" data-animate="fade-up">Join Waitlist</a>
+                {{/app_download_url}}
+            </div>
+        </div>
+    </section>
+
+{{> footer}} 

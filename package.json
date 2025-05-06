@@ -5,9 +5,14 @@
   "scripts": {
     "start": "node src/server/index.js",
     "dev": "nodemon src/server/index.js",
-    "build": "npm install",
+    "build": "npm install && npm run generate-pages",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "check-links": "node link-checker.js"
+    "check-links": "node link-checker.js",
+    "generate-pages": "node src/generate-pages.js",
+    "generate-home": "node -e \"require('./src/generate-pages').generateHomePage()\"",
+    "generate-about": "node -e \"require('./src/generate-pages').generateAboutPage()\"",
+    "generate-divisions": "node -e \"require('./src/generate-pages').generateDivisionsPage()\"",
+    "generate-apps": "node -e \"require('./src/generate-pages').generateAppsPage()\""
   },
   "repository": {
     "type": "git",
@@ -28,6 +33,7 @@
     "express-rate-limit": "^6.7.0",
     "helmet": "^7.0.0",
     "jsdom": "^24.0.0",
+    "mustache": "^4.2.0",
     "nodemailer": "^6.9.1",
     "sharp": "^0.34.0"
   },

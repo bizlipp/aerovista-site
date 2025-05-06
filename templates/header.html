@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{title}} | AeroVista</title>
+  
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="css/variables.css" as="style">
+  <link rel="preload" href="css/base.css" as="style">
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fonts & Styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Main CSS - Imports all modular files -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  
+  <!-- Meta Tags for SEO and Open Graph -->
+  <meta name="description" content="{{description}}">
+  <meta property="og:title" content="{{title}} | AeroVista">
+  <meta property="og:description" content="{{og_description}}">
+  <meta property="og:image" content="https://aerovista.us/preview-image.png">
+  <meta property="og:url" content="https://aerovista.us{{canonical_url}}">
+  <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://aerovista.us{{canonical_url}}">
+  
+  <!-- Accessibility enhancement -->
+  <meta name="theme-color" content="#080a12">
+  
+  <!-- Performance scripts - add "js-loading" class for initial paint optimization -->
+  <script>document.documentElement.classList.add('js-loading');</script>
+  
+  <!-- Custom CSS - For page-specific styles -->
+  {{#custom_css}}
+  <style>
+    {{custom_css}}
+  </style>
+  {{/custom_css}}
+</head>
+<body data-page="{{page_id}}" class="js-loading">
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <!-- Navbar -->
+  <header class="navbar" role="banner">
+    <div class="navbar-brand"><a href="index.html"><strong>AeroVista</strong></a></div>
+    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
+      <a href="index.html" {{#is_home}}class="active" aria-current="page"{{/is_home}}>Home</a>
+      <a href="divisions.html" {{#is_divisions}}class="active" aria-current="page"{{/is_divisions}}>Divisions</a>
+      <a href="apps.html" {{#is_apps}}class="active" aria-current="page"{{/is_apps}}>Apps</a>
+      <a href="Store.html" {{#is_store}}class="active" aria-current="page"{{/is_store}}>Tools & Resources</a>
+      <a href="about.html" {{#is_about}}class="active" aria-current="page"{{/is_about}}>About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="navbar-nav">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- Main content -->
+  <main id="main-content"> 

@@ -1,386 +1,221 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AeroVista | Apps</title>
-  <!-- Fonts & Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Main CSS - Imports all modular files -->
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
-  <meta name="description" content="Explore AeroVista's sleek, local-first apps – from sticky-note productivity to glitch-punk file managers and more.">
-  <meta property="og:title" content="AeroVista | Apps & Products">
-  <meta property="og:description" content="Browse our flagship tools built with a local-first mindset and sleek AeroVista polish.">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self'; connect-src 'self';">
+  <title>Apps | AeroVista</title>
+  
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="/css/theme-variables.css" as="style">
+  <link rel="preload" href="/css/variables.css" as="style">
+  <link rel="preload" href="/css/base.css" as="style">
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="/css/main.css?v=1.0.6" />
+  <link rel="preload" href="/css/performance.css" as="style" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <!-- Meta Tags for SEO and Open Graph -->
+  <meta name="description" content="Discover AeroVista's suite of innovative applications, from productivity tools to creative software.">
+  <meta property="og:title" content="Apps | AeroVista">
+  <meta property="og:description" content="Explore our collection of thoughtfully designed apps built with modern technology and attention to user experience.">
   <meta property="og:image" content="https://aerovista.us/preview-image.png">
   <meta property="og:url" content="https://aerovista.us/apps.html">
   <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://aerovista.us/apps.html">
+
+  <!-- Accessibility enhancement -->
+  <meta name="theme-color" content="#080a12">
+  
+  <!-- Performance optimization -->
+  <script defer src="/performance.js"></script>
 </head>
 <body data-page="apps-hub">
-  <!-- Accessibility skip link -->
-  <a href="#main-content" class="skip-to-content">Skip to content</a>
-
-  <!-- Navbar -->
-  <header class="navbar" role="banner">
-    <div class="navbar-brand"><a href="index.html"><strong>AeroVista</strong></a></div>
-    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
-      <a href="index.html">Home</a>
-      <a href="divisions.html">Divisions</a>
-      <a href="apps.html" class="active">Apps</a>
-      <a href="Store.html">Tools & Resources</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+  <a class="skip-link" href="#main">Skip to content</a>
+ 
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <img src="/public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
+          <span class="logo-text">AeroVista</span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="/index.html" class="nav-link">Home</a></li>
+            <li><a href="/divisions.html" class="nav-link">Divisions</a></li>
+            <li><a href="/apps.html" class="nav-link active">Apps</a></li>
+            <li><a href="/Store.html" class="nav-link">Tools & Resources</a></li>
+            <li><a href="/about.html" class="nav-link">About</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- Main content -->
-  <main id="main-content">
-    <!-- Hero section -->
-    <section class="apps-hero">
-      <div class="apps-hero__content">
-        <h1 class="apps-hero__headline">Our Apps & Tools</h1>
-        <p class="apps-hero__description">Discover our collection of innovative applications designed with a local-first mindset, exceptional performance, and that signature AeroVista aesthetic touch.</p>
-        <div class="apps-hero__buttons">
-          <a href="#featured-apps" class="btn" data-animate="fade-up">Explore Apps</a>
-          <a href="#contact" class="btn alt" data-animate="fade-up">Request Custom App</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- App Showcase Section -->
-    <section id="featured-apps" class="apps-section">
+  <main id="main">
+    <section class="hero">
       <div class="container">
-        <h2 class="text-center mb-xl">Featured Applications</h2>
-        
-        <div class="app-tabs">
-          <div class="app-tab active" data-category="all">All Apps</div>
-          <div class="app-tab" data-category="productivity">Productivity</div>
-          <div class="app-tab" data-category="creative">Creative</div>
-          <div class="app-tab" data-category="utility">Utility</div>
-        </div>
-        
-        <div class="apps-grid">
-          <div class="app-card" data-category="productivity">
-            <div class="app-card__image">
-              <img src="public/images/apps/memflow.jpg" alt="MemFlow app interface showcasing the note organization system" loading="lazy">
-              <div class="app-card__badge badge">Productivity</div>
-            </div>
-            <div class="app-card__content">
-              <h3 class="app-card__title">MemFlow</h3>
-              <p class="app-card__description">Ultra-minimal sticky note system with a focus on keyboard-driven workflow and local-first data storage. Perfect for quick thoughts, code snippets, and daily tasks.</p>
-              <div class="app-card__footer">
-                <a href="#" class="app-card__link">Learn more <span>→</span></a>
-                <div class="app-card__icon">⟳</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="app-card" data-category="utility">
-            <div class="app-card__image">
-              <img src="public/images/apps/warp-sync.jpg" alt="WarpSync file manager with a retro-futuristic interface" loading="lazy">
-              <div class="app-card__badge badge hot">New</div>
-            </div>
-            <div class="app-card__content">
-              <h3 class="app-card__title">WarpSync</h3>
-              <p class="app-card__description">Glitch-punk file manager with powerful sync capabilities, encryption, and a unique visual approach to file organization that makes digital asset management feel tactile.</p>
-              <div class="app-card__footer">
-                <a href="#" class="app-card__link">Learn more <span>→</span></a>
-                <div class="app-card__icon">⟳</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="app-card" data-category="creative">
-            <div class="app-card__image">
-              <img src="public/images/apps/pixel-forge.jpg" alt="PixelForge pixel art creation tool with a sample artwork" loading="lazy">
-              <div class="app-card__badge badge">Creative</div>
-            </div>
-            <div class="app-card__content">
-              <h3 class="app-card__title">PixelForge</h3>
-              <p class="app-card__description">Intuitive pixel art creation tool with animation capabilities, custom palette management, and export options for game development and digital art.</p>
-              <div class="app-card__footer">
-                <a href="#" class="app-card__link">Learn more <span>→</span></a>
-                <div class="app-card__icon">⟳</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="app-card" data-category="productivity">
-            <div class="app-card__image">
-              <img src="public/images/apps/code-beacon.jpg" alt="CodeBeacon IDE with syntax highlighting and integrated documentation" loading="lazy">
-              <div class="app-card__badge badge">Productivity</div>
-            </div>
-            <div class="app-card__content">
-              <h3 class="app-card__title">CodeBeacon</h3>
-              <p class="app-card__description">Lightweight code editor with integrated AI assistance, markdown support, and context-aware documentation that adapts to your current project.</p>
-              <div class="app-card__footer">
-                <a href="#" class="app-card__link">Learn more <span>→</span></a>
-                <div class="app-card__icon">⟳</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="app-card" data-category="utility">
-            <div class="app-card__image">
-              <img src="public/images/apps/echo-chamber.jpg" alt="EchoChamber audio processing tool with waveform visualization" loading="lazy">
-              <div class="app-card__badge badge">Utility</div>
-            </div>
-            <div class="app-card__content">
-              <h3 class="app-card__title">EchoChamber</h3>
-              <p class="app-card__description">Audio processing tool for recording, editing, and enhancing sound with built-in effects, noise reduction, and AI-powered audio cleanup.</p>
-              <div class="app-card__footer">
-                <a href="#" class="app-card__link">Learn more <span>→</span></a>
-                <div class="app-card__icon">⟳</div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="app-card" data-category="creative">
-            <div class="app-card__image">
-              <img src="public/images/apps/neural-canvas.jpg" alt="NeuralCanvas AI art generation tool showing example outputs" loading="lazy">
-              <div class="app-card__badge badge hot">Premium</div>
-            </div>
-            <div class="app-card__content">
-              <h3 class="app-card__title">NeuralCanvas</h3>
-              <p class="app-card__description">AI-assisted art generation tool with local processing capabilities, style customization, and seamless integration with other creative applications.</p>
-              <div class="app-card__footer">
-                <a href="#" class="app-card__link">Learn more <span>→</span></a>
-                <div class="app-card__icon">⟳</div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <h1 class="glitch" data-scramble="true" data-text="Our Apps">Our Apps</h1>
+        <p class="subheading">Thoughtfully designed software built with cutting-edge technology and cyberpunk aesthetics. Each app blends function and artistry to deliver exceptional user experiences.</p>
       </div>
     </section>
-
-    <!-- Featured App -->
-    <section class="container section-lg">
-      <div class="featured-app">
-        <div class="featured-app__media">
-          <img src="public/images/apps/memflow-showcase.jpg" alt="MemFlow app showcasing multiple features and use cases" loading="lazy">
-        </div>
-        <div class="featured-app__content">
-          <div class="featured-app__badge badge">Flagship App</div>
-          <h2 class="featured-app__title">MemFlow Pro</h2>
-          <p class="featured-app__description">Our flagship productivity application, designed to transform how you capture and organize information. With local-first architecture, powerful search, and customizable workflows, MemFlow helps you build your second brain.</p>
-          
-          <div class="featured-app__features">
-            <div class="feature-list-item">
-              <div class="feature-list-item__icon">✓</div>
-              <div class="feature-list-item__text">Keyboard-driven interface for maximum efficiency</div>
-            </div>
-            <div class="feature-list-item">
-              <div class="feature-list-item__icon">✓</div>
-              <div class="feature-list-item__text">End-to-end encryption for privacy</div>
-            </div>
-            <div class="feature-list-item">
-              <div class="feature-list-item__icon">✓</div>
-              <div class="feature-list-item__text">Markdown and rich text support</div>
-            </div>
-            <div class="feature-list-item">
-              <div class="feature-list-item__icon">✓</div>
-              <div class="feature-list-item__text">Cross-platform synchronization</div>
-            </div>
-          </div>
-          
-          <a href="#" class="btn">Learn More About MemFlow</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Workflow Section -->
-    <section class="container section-md">
-      <h2 class="text-center mb-lg">Our App Development Philosophy</h2>
-      <p class="text-center mx-auto mb-xl">We craft our applications with a set of principles that prioritize user experience, privacy, and longevity. Here's how we approach app development:</p>
-      
-      <div class="grid-cols-4 gap-md">
-        <div class="card p-md text-center">
-          <div class="card-icon mb-sm">🛠️</div>
-          <h3 class="card-title">Local-First</h3>
-          <p>Your data lives on your device first, with optional syncing. Apps work even when offline.</p>
-        </div>
-        
-        <div class="card p-md text-center">
-          <div class="card-icon mb-sm">🔒</div>
-          <h3 class="card-title">Privacy-Focused</h3>
-          <p>End-to-end encryption and transparent data practices that respect your privacy.</p>
-        </div>
-        
-        <div class="card p-md text-center">
-          <div class="card-icon mb-sm">⚡</div>
-          <h3 class="card-title">Performance</h3>
-          <p>Optimized code for speed and efficiency, even on older devices.</p>
-        </div>
-        
-        <div class="card p-md text-center">
-          <div class="card-icon mb-sm">🎨</div>
-          <h3 class="card-title">Design-Driven</h3>
-          <p>Beautiful interfaces that balance aesthetics with usability.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- App Newsletter Section -->
-    <section class="apps-newsletter">
+    
+    <section class="featured-app">
       <div class="container">
-        <div class="apps-newsletter__content">
-          <h2 class="apps-newsletter__heading">Stay Updated</h2>
-          <p class="apps-newsletter__description">Subscribe to our newsletter to receive updates about new app releases, feature additions, and special offers.</p>
-          
-          <form class="newsletter-form">
-            <input type="email" class="newsletter-form__input" placeholder="Your email address" required aria-label="Your email address">
-            <button type="submit" class="newsletter-form__button">Subscribe</button>
-          </form>
+        <div class="app-showcase">
+          <div class="app-info">
+            <span class="app-status">Released</span>
+            <h2>BytePad</h2>
+            <p>A sticky-note productivity app with local-first sync across devices. Minimal and distraction-free, BytePad helps capture ideas quickly with our signature glitch-punk UI style.</p>
+            <div class="app-features">
+              <span class="feature-tag">Offline-first</span>
+              <span class="feature-tag">Cross-platform</span>
+              <span class="feature-tag">Encrypted</span>
+            </div>
+            <a href="/Apps/bytepad.html" class="btn btn-primary">Learn More</a>
+          </div>
+          <div class="app-preview">
+            <img src="/public/images/apps/bytepad-preview.png" alt="BytePad app interface" />
+            <div class="preview-glow"></div>
+          </div>
         </div>
+      </div>
+    </section>
+    
+    <section class="apps-grid">
+      <div class="container">
+        <h2>Explore Our Applications</h2>
+        <div class="app-cards" id="app-grid">
+          <!-- App cards will be dynamically added here by main.js, but showing examples -->
+          <div class="app-card vaultmaster">
+            <div class="app-card-inner">
+              <div class="app-icon">
+                <img src="/public/images/apps/vaultmaster-icon.png" alt="VaultMaster Icon" />
+              </div>
+              <h3>VaultMaster</h3>
+              <span class="app-status beta">Beta</span>
+              <p>Local-first file manager with glitch-punk UI and advanced encryption.</p>
+              <a href="/Apps/vaultmaster.html" class="btn-explore">Preview</a>
+            </div>
+          </div>
+          
+          <div class="app-card rydesync">
+            <div class="app-card-inner">
+              <div class="app-icon">
+                <img src="/public/images/apps/rydesync-icon.png" alt="RydeSync Icon" />
+              </div>
+              <h3>RydeSync</h3>
+              <span class="app-status coming-soon">Coming Soon</span>
+              <p>Offline-first ride community with synced music rooms.</p>
+              <a href="/Apps/rydesync.html" class="btn-explore">Learn More</a>
+            </div>
+          </div>
+          <!-- More app cards will be added by JavaScript -->
+        </div>
+      </div>
+    </section>
+    
+    <section class="apps-philosophy">
+      <div class="container">
+        <h2>Our Development Philosophy</h2>
+        <div class="philosophy-grid">
+          <div class="philosophy-item">
+            <div class="philosophy-icon">🛡️</div>
+            <h3>User Privacy First</h3>
+            <p>We build with privacy and data security as our top priorities, using local-first architecture and minimizing data collection.</p>
+          </div>
+          <div class="philosophy-item">
+            <div class="philosophy-icon">🎨</div>
+            <h3>Distinctive Aesthetics</h3>
+            <p>Our cyberpunk-inspired visual design creates memorable and engaging user experiences across all our apps.</p>
+          </div>
+          <div class="philosophy-item">
+            <div class="philosophy-icon">⚡</div>
+            <h3>Performance Focused</h3>
+            <p>We optimize for speed and responsiveness, even in complex applications with rich feature sets.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact-form">
+      <div class="container">
+        <h2>Have App Ideas?</h2>
+        <p>We'd love to hear your feedback or discuss custom application development.</p>
+        <form aria-label="Contact form">
+          <input type="text" name="name" placeholder="Your Name" required />
+          <input type="email" name="email" placeholder="Your Email" required />
+          <textarea name="message" placeholder="Tell us about your idea..." required></textarea>
+          <button type="submit" class="btn">Send Message</button>
+        </form>
       </div>
     </section>
   </main>
 
-  <!-- Contact Section -->
-  <section id="contact" class="container section-md" aria-labelledby="contact-heading">
-    <h2 id="contact-heading" class="text-center mb-lg">Get in Touch</h2>
-    <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
-      <input class="form-control mb-sm" required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
-      <input class="form-control mb-sm" required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
-      <textarea class="form-control mb-md" required rows="5" placeholder="Tell us about your project..." data-animate="fade-up" aria-label="Your message"></textarea>
-      <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
-    </form>
-  </section>
-
   <!-- Footer -->
-  <footer class="footer" role="contentinfo">
+  <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-logo"><a href="index.html"><strong>AeroVista</strong></a></div>
-          <p>Our work is fueled by a dynamic network of contributors, guided by clear creative leadership and a shared commitment to excellence.</p>
+          <a href="/" class="footer-logo"><span class="brand-name">AeroVista</span></a>
+          <p>Where creativity and code shape the future of media, learning, and innovation. Our seven specialized divisions bring unique expertise to every project.</p>
         </div>
-        <div>
-          <h4 class="footer-heading">Quick Links</h4>
-          <div class="footer-links">
-            <a href="about.html" aria-label="About AeroVista">About</a>
-            <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
-            <a href="apps.html" aria-label="View our apps">Apps</a>
-            <a href="Store.html" aria-label="Tools and resources">Tools & Resources</a>
-          </div>
+        <div class="footer-links-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/divisions.html">Divisions</a></li>
+            <li><a href="/apps.html">Apps</a></li>
+            <li><a href="/Store.html">Tools & Resources</a></li>
+            <li><a href="/about.html">About</a></li>
+          </ul>
         </div>
-        <div>
-          <h4 class="footer-heading">Connect</h4>
-          <div class="footer-links">
-            <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
-            <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
-            <a href="surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
-          </div>
+        <div class="footer-links-section">
+          <h4>Connect</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:info@aerovista.co">Email Us</a></li>
+            <li><a href="/surron_squad.html">Surron Squad</a></li>
+          </ul>
         </div>
-        <div>
-          <h4 class="footer-heading">Legal</h4>
-          <div class="footer-links">
-            <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
-            <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
-          </div>
+        <div class="footer-links-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="/legal/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/legal/terms-of-service.html">Terms of Service</a></li>
+          </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <p>© 2025 AeroVista LLC — All rights reserved.</p>
-        <div class="footer-social">
-          <a href="#" aria-label="Twitter"><i class="icon">Twitter</i></a>
-          <a href="#" aria-label="Instagram"><i class="icon">Instagram</i></a>
-          <a href="#" aria-label="GitHub"><i class="icon">GitHub</i></a>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter"><span class="social-icon">Twitter</span></a>
+          <a href="#" aria-label="Instagram"><span class="social-icon">Instagram</span></a>
+          <a href="#" aria-label="GitHub"><span class="social-icon">GitHub</span></a>
         </div>
       </div>
     </div>
   </footer>
-
-  <!-- Dark mode toggle -->
-  <button class="dark-mode-toggle" aria-label="Toggle dark mode">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
-  </button>
-
-  <!-- Scroll to top button -->
-  <button class="scroll-top" aria-label="Scroll to top">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.828L7.05 15.778L5.636 14.364L12 8L18.364 14.364L16.95 15.778L12 10.828Z"></path></svg>
-  </button>
-
-  <script src="main.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // App category filtering
-      const appTabs = document.querySelectorAll('.app-tab');
-      const appCards = document.querySelectorAll('.app-card');
-      
-      appTabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-          // Update active tab
-          appTabs.forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          
-          // Filter apps by category
-          const category = tab.getAttribute('data-category');
-          
-          appCards.forEach(card => {
-            if (category === 'all' || card.getAttribute('data-category') === category) {
-              card.style.display = 'block';
-            } else {
-              card.style.display = 'none';
-            }
-          });
-        });
-      });
-      
-      // Initialize dark mode toggle
-      initDarkModeToggle();
-      
-      // Initialize scroll to top button
-      initScrollToTop();
-    });
-    
-    function initDarkModeToggle() {
-      const darkModeToggle = document.querySelector('.dark-mode-toggle');
-      if (!darkModeToggle) return;
-      
-      // Check for saved preference
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        document.body.classList.toggle('dark-theme', savedTheme === 'dark');
-        document.body.classList.toggle('light-theme', savedTheme === 'light');
-      }
-      
-      darkModeToggle.addEventListener('click', () => {
-        if (document.body.classList.contains('light-theme')) {
-          document.body.classList.remove('light-theme');
-          document.body.classList.add('dark-theme');
-          localStorage.setItem('theme', 'dark');
-        } else {
-          document.body.classList.remove('dark-theme');
-          document.body.classList.add('light-theme');
-          localStorage.setItem('theme', 'light');
-        }
-      });
-    }
-    
-    function initScrollToTop() {
-      const scrollTopBtn = document.querySelector('.scroll-top');
-      if (!scrollTopBtn) return;
-      
-      window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-          scrollTopBtn.classList.add('visible');
-        } else {
-          scrollTopBtn.classList.remove('visible');
-        }
-      });
-      
-      scrollTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      });
-    }
-  </script>
+  
+  <!-- Easter Egg element -->
+  <div class="easter-egg-trigger"></div>
+  
+  <!-- Scripts -->
+  <script src="/main.js"></script>
 </body>
-</html>
+</html> 

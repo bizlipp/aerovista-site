@@ -1,0 +1,205 @@
+/* 
+ * AeroVista - Performance CSS
+ * Optimizations and techniques for faster loading and rendering
+ */
+
+/* ==================== Image & Resource Optimizations ==================== */
+/* Content-visibility to improve rendering performance for off-screen content */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px; /* Placeholder size to prevent layout shifts */
+}
+
+/* Apply to sections that are typically below the fold */
+.cv-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 800px;
+}
+
+/* Apply to card grids for render optimization */
+.cv-cards {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 400px;
+}
+
+/* Force hardware acceleration for smoother animations */
+.hardware-accelerated {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Apply to important images that should load with priority */
+.priority-img {
+  z-index: 1; /* Slight priority hint for rendering */
+}
+
+/* Add a comment to document the proper usage for developers */
+/* 
+ * Usage for priority images:
+ * <img src="..." class="priority-img" loading="eager" alt="...">
+ */
+
+/* Responsive image container with predefined aspect ratio to prevent CLS */
+.img-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.img-container::before {
+  content: "";
+  display: block;
+  padding-top: var(--ratio-landscape); /* Default 16:9 ratio */
+}
+
+.img-container > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Define aspect ratio variations */
+.img-container.square::before {
+  padding-top: var(--ratio-square);
+}
+
+.img-container.portrait::before {
+  padding-top: var(--ratio-portrait);
+}
+
+.img-container.wide::before {
+  padding-top: var(--ratio-ultrawide);
+}
+
+/* ==================== Font & Text Performance ==================== */
+/* Apply font-display: swap to ensure text remains visible during font loading */
+@font-face {
+  font-family: 'Chakra Petch';
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+}
+
+/* Prevent text layout shifts by providing a fixed line height */
+.stable-text {
+  line-height: var(--line-height-normal);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* ==================== CSS Containment ==================== */
+/* Apply layout containment for better rendering performance */
+.contain-layout {
+  contain: layout;
+}
+
+/* Apply paint containment for better rendering performance */
+.contain-paint {
+  contain: paint;
+}
+
+/* Apply size containment for better rendering performance */
+.contain-size {
+  contain: size;
+}
+
+/* Apply strict containment (all properties) */
+.contain-strict {
+  contain: strict;
+}
+
+/* ==================== Loading & Visual Optimizations ==================== */
+/* Placeholder skeleton for content loading */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-surface) 0%,
+    var(--color-surface-alt) 50%,
+    var(--color-surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: var(--radius-base);
+}
+
+/* Disable animations when page is loading to improve FCP */
+.js-loading * {
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+}
+
+/* Lazy-loaded sections fade in when they enter viewport */
+.lazy-section {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity var(--transition-medium) var(--easing-standard),
+              transform var(--transition-medium) var(--easing-standard);
+}
+
+.lazy-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==================== Media Query Optimizations ==================== */
+/* Only load heavy animations on desktop devices */
+@media (min-width: 1025px) {
+  .desktop-only-animation {
+    animation: var(--animation-fade-up);
+  }
+}
+
+/* Only use backdrop-filter on supported browsers */
+@supports (backdrop-filter: blur(10px)) {
+  .glass {
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+  }
+}
+
+/* Fallback for browsers that don't support backdrop-filter */
+.glass {
+  background-color: var(--glass-bg);
+}
+
+/* ==================== Reduced Motion Override ==================== */
+/* Offer an explicit opt-in for animations regardless of system preference */
+.enable-animations {
+  animation-duration: var(--transition-medium) !important;
+  transition-duration: var(--transition-medium) !important;
+}
+
+/* ==================== Print Performance ==================== */
+@media print {
+  /* Ensure all background images are never printed */
+  * {
+    background-image: none !important;
+  }
+  
+  /* Collapse all margins to save paper */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+/* ==================== CSS Optimization Notes ==================== */
+/*
+ * Performance Best Practices:
+ * 1. Use transform/opacity for animations instead of properties that cause layout recalculation
+ * 2. Leverage content-visibility for off-screen content
+ * 3. Apply will-change sparingly and only for elements that need hardware acceleration
+ * 4. Use aspect ratio containers to prevent CLS
+ * 5. Load critical CSS inline, defer non-critical
+ * 6. Leverage @font-display: swap to prevent font loading from blocking paint
+ * 7. Use modern image formats (WebP) with fallbacks
+ * 8. Apply preloading for critical resources
+ */ 

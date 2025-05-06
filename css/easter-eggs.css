@@ -1,0 +1,120 @@
+/* ======================================================
+   AeroVista — Easter Eggs
+   ====================================================== */
+
+/* Hidden trigger element */
+.easter-egg-trigger {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 10px;
+  height: 10px;
+  background: transparent;
+  z-index: 1000;
+  cursor: default;
+}
+
+/* Synthwave mode styles */
+body.synthwave-mode {
+  --bg-color: #120458;
+  --text-color: #f8f8f8;
+  --accent-color: #fd3777;
+  --secondary-accent: #43ffff;
+  
+  background: linear-gradient(180deg, var(--bg-color) 0%, #2a0a91 85%);
+  color: var(--text-color);
+}
+
+body.synthwave-mode .site-header {
+  background: rgba(42, 10, 145, 0.8);
+  border-bottom-color: rgba(67, 255, 255, 0.3);
+}
+
+body.synthwave-mode .site-footer {
+  background: rgba(18, 4, 88, 0.9);
+  border-top-color: rgba(253, 55, 119, 0.3);
+}
+
+body.synthwave-mode .card,
+body.synthwave-mode .division-card,
+body.synthwave-mode .app-card {
+  background: rgba(42, 10, 145, 0.7);
+  border-color: rgba(253, 55, 119, 0.2);
+}
+
+body.synthwave-mode .hero h1 {
+  color: var(--accent-color);
+  text-shadow: 
+    0 0 5px var(--accent-color),
+    0 0 10px var(--accent-color),
+    0 0 20px var(--accent-color);
+}
+
+body.synthwave-mode .btn,
+body.synthwave-mode .btn-explore {
+  background: var(--accent-color);
+  color: var(--text-color);
+  border-color: var(--secondary-accent);
+}
+
+/* Secret notification */
+.secret-found {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 16px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.secret-found.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Glitched logo */
+.logo-glitched {
+  animation: glitch-animation 0.5s infinite;
+}
+
+@keyframes glitch-animation {
+  0% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+    filter: hue-rotate(0deg);
+  }
+  10% {
+    opacity: 0.9;
+    transform: translateX(-2px) translateY(1px);
+    filter: hue-rotate(45deg);
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(1px) translateY(-1px);
+    filter: hue-rotate(0deg);
+  }
+  30% {
+    opacity: 0.9;
+    transform: translateX(0) translateY(2px);
+    filter: hue-rotate(-45deg);
+  }
+  40% {
+    opacity: 1;
+    transform: translateX(-1px) translateY(0);
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+    filter: hue-rotate(0deg);
+  }
+} 

@@ -1,0 +1,68 @@
+/* Animation Controls Styles */
+.animation-controls {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: var(--z-tooltip);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  
+  /* Only display for users who prefer reduced motion */
+  display: none;/* Fixed orphaned closing brace */
+/* Fixed incomplete media query */ @media all {
+  .animation-controls {
+    display: flex;/* Fixed orphaned closing brace *//* Fixed orphaned closing brace */
+.animation-toggle {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1rem;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-standard);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;/* Fixed orphaned closing brace */
+.animation-toggle::before {
+  content: "🚫";
+  font-size: 1em;/* Fixed orphaned closing brace */
+.animation-toggle.active {
+  background: var(--gradient-primary);
+  color: white;
+  border-color: transparent;/* Fixed orphaned closing brace */
+.animation-toggle.active::before {
+  content: "✨";/* Fixed orphaned closing brace */
+.animation-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);/* Fixed orphaned closing brace */
+.animation-toggle:active {
+  transform: translateY(0);/* Fixed orphaned closing brace */
+/* Apply this class to body when animations are enabled */
+body.enable-animations /* Fixed invalid selector char */ .fixed-selector {
+  animation-duration: initial !important;
+  transition-duration: initial !important;
+  scroll-behavior: smooth !important;/* Fixed orphaned closing brace */
+body.enable-animations [data-animate] {
+  animation: var(--animation-fade-up) !important;/* Fixed orphaned closing brace */
+body.enable-animations .glitch {
+  animation: glitch 1s infinite linear !important;/* Fixed orphaned closing brace */
+body.enable-animations .stagger > /* Fixed invalid selector char */ .fixed-selector {
+  opacity: 0;/* Fixed orphaned closing brace */
+body.enable-animations .stagger > *:nth-child(1/* Fixed invalid selector char */ .fixed-selector { animation-delay: 0.1s !important; }
+body.enable-animations .stagger > *:nth-child(2/* Fixed invalid selector char */ .fixed-selector { animation-delay: 0.2s !important; }
+body.enable-animations .stagger > *:nth-child(3/* Fixed invalid selector char */ .fixed-selector { animation-delay: 0.3s !important; }
+body.enable-animations .stagger > *:nth-child(4/* Fixed invalid selector char */ .fixed-selector { animation-delay: 0.4s !important; }
+body.enable-animations .stagger > *:nth-child(5/* Fixed invalid selector char */ .fixed-selector { animation-delay: 0.5s !important; }
+body.enable-animations .stagger > *:nth-child(6/* Fixed invalid selector char */ .fixed-selector { animation-delay: 0.6s !important; }
+body.enable-animations .stagger > *:nth-child(7/* Fixed invalid selector char */ .fixed-selector { animation-delay: 0.7s !important; }
+body.enable-animations .stagger > *:nth-child(8/* Fixed invalid selector char */ .fixed-selector { animation-delay: 0.8s !important; }
+
+/* Hide when printing */
+/* Fixed incomplete media query */ @media all {
+  .animation-controls {
+    display: none !important;/* Fixed orphaned closing brace *//* Fixed orphaned closing brace */

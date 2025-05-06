@@ -1,0 +1,128 @@
+/* ======================================================
+   AeroVista — Typography Styles
+   ====================================================== */
+
+/* Heading styles */
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+/* Special styles for h1 elements using Saira Condensed */
+h1 {
+  font-family: 'Saira Condensed', sans-serif;
+  font-style: italic;
+  font-weight: 700;
+  text-transform: capitalize;
+  letter-spacing: 0.02em;
+  margin-bottom: 1rem;
+}
+
+/* Special case for AeroVista to maintain correct capitalization */
+h1[data-text="AeroVista"] {
+  text-transform: none;
+}
+
+/* Reusable brand name class for consistent styling of AeroVista text */
+.brand-name {
+  font-family: 'Saira Condensed', sans-serif;
+  font-style: italic;
+  font-weight: 700;
+  text-transform: none; /* Ensures correct capitalization */
+  letter-spacing: 0.02em;
+  /* No specific styles for color or size to make it adaptable */
+}
+
+/* Standard heading styles */
+h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+h4 {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 500;
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+/* Consistent paragraph styling */
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Special subheading class for hero sections */
+.subheading {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+/* Section titles */
+.section-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.section-intro {
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 3rem;
+  opacity: 0.9;
+}
+
+/* Glitch effect text */
+.glitch {
+  position: relative;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+  
+  .subheading {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+} 

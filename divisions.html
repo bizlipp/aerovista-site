@@ -1,362 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AeroVista | Divisions</title>
-  <!-- Fonts & Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Main CSS - Imports all modular files -->
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self'; connect-src 'self';">
+  <title>Divisions | AeroVista</title>
+  
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="/css/theme-variables.css" as="style">
+  <link rel="preload" href="/css/variables.css" as="style">
+  <link rel="preload" href="/css/base.css" as="style">
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="/css/main.css?v=1.0.6" />
+  <link rel="preload" href="/css/performance.css" as="style" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <!-- Meta Tags for SEO and Open Graph -->
   <meta name="description" content="Explore AeroVista's seven specialist divisions, each bringing unique expertise in tech, media, and creative services.">
-  <meta property="og:title" content="AeroVista | Divisions">
+  <meta property="og:title" content="Divisions | AeroVista">
   <meta property="og:description" content="Discover our seven specialized divisions offering expertise in game development, audio production, creative services, and more.">
   <meta property="og:image" content="https://aerovista.us/preview-image.png">
   <meta property="og:url" content="https://aerovista.us/divisions.html">
   <meta property="og:type" content="website">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://aerovista.us/divisions.html">
+
+  <!-- Accessibility enhancement -->
+  <meta name="theme-color" content="#080a12">
+  
+  <!-- Performance optimization -->
+  <script defer src="/performance.js"></script>
 </head>
 <body data-page="divisions-hub">
-  <!-- Accessibility skip link -->
-  <a href="#main-content" class="skip-to-content">Skip to content</a>
-
-  <!-- Navbar -->
-  <header class="navbar" role="banner">
-    <div class="navbar-brand"><a href="index.html"><strong>AeroVista</strong></a></div>
-    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
-      <a href="index.html">Home</a>
-      <a href="divisions.html" class="active">Divisions</a>
-      <a href="apps.html">Apps</a>
-      <a href="Store.html">Tools & Resources</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+  <a class="skip-link" href="#main">Skip to content</a>
+ 
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <img src="/public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
+          <span class="logo-text">AeroVista</span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="/index.html" class="nav-link">Home</a></li>
+            <li><a href="/divisions.html" class="nav-link active">Divisions</a></li>
+            <li><a href="/apps.html" class="nav-link">Apps</a></li>
+            <li><a href="/Store.html" class="nav-link">Tools & Resources</a></li>
+            <li><a href="/about.html" class="nav-link">About</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
   </header>
 
-  <!-- Main content area -->
-  <main id="main-content">
-
-  <!-- Hero -->
-  <section class="division-hero">
-    <div class="division-hero__content">
-      <h1 class="division-hero__headline" data-text="Our Seven Divisions">Our Seven Divisions</h1>
-      <p class="division-hero__description">Each branch of AeroVista brings a unique craft to the table. Explore them below and discover opportunities to collaborate.</p>
-      <a href="#divisions" class="btn" data-animate="fade-up">Explore All Divisions</a>
-    </div>
-  </section>
-
-  <!-- Stats Overview -->
-  <section class="container section-md">
-    <h2 class="text-center mb-xl">Division Overview</h2>
-    <div class="overview-grid">
-      <div class="overview-box" data-animate="fade-up">
-        <div class="count">7</div>
-        <div class="label">Specialist Divisions</div>
+  <!-- Main content -->
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <h1 class="glitch" data-scramble="true" data-text="Our Divisions">Our Divisions</h1>
+        <p class="subheading">Seven specialized teams working together under one cohesive vision. Each division brings unique expertise while maintaining our signature aesthetic and philosophy.</p>
       </div>
-      <div class="overview-box" data-animate="fade-up">
-        <div class="count">Creative</div>
-        <div class="label">Collaborative Network</div>
-      </div>
-      <div class="overview-box" data-animate="fade-up">
-        <div class="count">12</div>
-        <div class="label">Years Combined Experience</div>
-      </div>
-      <div class="overview-box" data-animate="fade-up">
-        <div class="count">100+</div>
-        <div class="label">Completed Projects</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Divisions -->
-  <section id="divisions" class="container section-lg">
-    <h2 class="text-center mb-xl">Our Divisions</h2>
+    </section>
     
-    <div class="division-item">
-      <div class="division-item__content">
-        <h3 class="division-item__name">Lumina Creative</h3>
-        <p class="division-item__desc">Our flagship creative division specializing in immersive experiences, interactive media, and mixed reality development. We blend art and technology to create memorable digital experiences.</p>
-        <a href="Divisions/lumina-creative/" class="division-item__link">
-          Learn more about Lumina Creative →
-        </a>
-      </div>
-      <div class="division-item__media">
-        <img src="public/images/divisions/lumina-creative.jpg" alt="Lumina Creative division showcasing immersive tech" loading="lazy">
-      </div>
-    </div>
-    
-    <div class="division-item">
-      <div class="division-item__content">
-        <h3 class="division-item__name">Skyforge Creative</h3>
-        <p class="division-item__desc">Game development studio crafting innovative interactive experiences, from small indie titles to ambitious collaborative projects across multiple platforms.</p>
-        <a href="Divisions/skyforge-creative/" class="division-item__link">
-          Learn more about Skyforge Creative →
-        </a>
-      </div>
-      <div class="division-item__media">
-        <img src="public/images/divisions/skyforge-creative.jpg" alt="Skyforge Creative division showcasing game development" loading="lazy">
-      </div>
-    </div>
-    
-    <div class="division-item">
-      <div class="division-item__content">
-        <h3 class="division-item__name">Echo Systems</h3>
-        <p class="division-item__desc">Audio design, sound engineering, and music production for games, media, and immersive experiences. Creating soundscapes that transform how users connect with digital worlds.</p>
-        <a href="#" class="division-item__link">
-          Learn more about Echo Systems →
-        </a>
-      </div>
-      <div class="division-item__media">
-        <img src="public/images/divisions/echo-systems.jpg" alt="Echo Systems division showcasing audio production" loading="lazy">
-      </div>
-    </div>
-    
-    <div class="division-item">
-      <div class="division-item__content">
-        <h3 class="division-item__name">Nova Learning</h3>
-        <p class="division-item__desc">Educational technology and learning innovation, creating next-generation e-learning, training simulations, and interactive educational content.</p>
-        <a href="#" class="division-item__link">
-          Learn more about Nova Learning →
-        </a>
-      </div>
-      <div class="division-item__media">
-        <img src="public/images/divisions/nova-learning.jpg" alt="Nova Learning division showcasing edtech innovation" loading="lazy">
-      </div>
-    </div>
-    
-    <div class="division-item">
-      <div class="division-item__content">
-        <h3 class="division-item__name">Quantum Solutions</h3>
-        <p class="division-item__desc">Enterprise software development, backend systems, and business automation tools for workflow optimization and creative business solutions.</p>
-        <a href="#" class="division-item__link">
-          Learn more about Quantum Solutions →
-        </a>
-      </div>
-      <div class="division-item__media">
-        <img src="public/images/divisions/quantum-solutions.jpg" alt="Quantum Solutions division showcasing enterprise software" loading="lazy">
-      </div>
-    </div>
-    
-    <div class="division-item">
-      <div class="division-item__content">
-        <h3 class="division-item__name">Pulse Media</h3>
-        <p class="division-item__desc">Digital content creation studio developing video, motion graphics, animation, and mixed-media content for brands and creative projects.</p>
-        <a href="#" class="division-item__link">
-          Learn more about Pulse Media →
-        </a>
-      </div>
-      <div class="division-item__media">
-        <img src="public/images/divisions/pulse-media.jpg" alt="Pulse Media division showcasing video production" loading="lazy">
-      </div>
-    </div>
-    
-    <div class="division-item">
-      <div class="division-item__content">
-        <h3 class="division-item__name">Horizon Ventures</h3>
-        <p class="division-item__desc">Research and development wing focused on exploring emerging technologies, sustainable solutions, and future-forward concepts.</p>
-        <a href="#" class="division-item__link">
-          Learn more about Horizon Ventures →
-        </a>
-      </div>
-      <div class="division-item__media">
-        <img src="public/images/divisions/horizon-ventures.jpg" alt="Horizon Ventures division showcasing R&D innovation" loading="lazy">
-      </div>
-    </div>
-  </section>
-
-  <!-- Division FAQ Section -->
-  <section class="division-faq">
-    <div class="container">
-      <h2 class="division-faq__heading">Frequently Asked Questions</h2>
-      
-      <div class="faq-list">
-        <div class="faq-item">
-          <div class="faq-question">How do your divisions collaborate with each other?</div>
-          <p class="faq-answer">Our divisions operate both independently and cooperatively. Projects may involve multiple divisions, with each bringing specialized expertise to the table. Our organizational structure encourages cross-pollination of ideas and collaborative problem-solving across traditionally separate domains.</p>
+    <section class="divisions-overview">
+      <div class="container">
+        <div class="division-cards" id="division-grid">
+          <!-- Division cards will be dynamically added here by main.js, but showing the first one as an example -->
+          <div class="division-card skyforge">
+            <div class="division-card-inner">
+              <div class="division-logo">
+                <img src="/public/images/divisions/skyforge.png" alt="SkyForge Creative Studios Logo" />
+              </div>
+              <h3>SkyForge Creative</h3>
+              <p>Game development & AI-powered interactive storytelling</p>
+              <div class="division-theme" style="background: linear-gradient(135deg, #6A0DAD, #FF0090);"></div>
+              <a href="/Divisions/skyforge-creative.html" class="btn-explore">Explore</a>
+            </div>
+          </div>
+          <!-- More division cards will be added by JavaScript -->
         </div>
+      </div>
+    </section>
+    
+    <section class="divisions-mission">
+      <div class="container">
+        <h2>The AeroVista Ecosystem</h2>
+        <p>Our divisions operate independently yet collaboratively, creating a powerful synergy that allows us to deliver comprehensive solutions across various media and technology platforms.</p>
         
-        <div class="faq-item">
-          <div class="faq-question">Do you work with external clients and partners?</div>
-          <p class="faq-answer">Yes, all our divisions work with external clients and partners. We maintain a balance between internal projects and collaborative ventures with other organizations. If you're interested in working with us, please reach out through our contact form.</p>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">How do you decide which division handles a particular project?</div>
-          <p class="faq-answer">Project assignment is based on required expertise, division specialization, and team availability. Many projects involve multiple divisions collaborating, with each handling aspects that align with their core competencies. Our administrative team helps coordinate cross-division collaboration.</p>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">What is the typical size of your divisions?</div>
-          <p class="faq-answer">Division sizes vary based on specialization and current projects. We maintain a flexible network of full-time team members and trusted collaborators, scaling each division as needed while maintaining consistent creative leadership.</p>
-        </div>
-        
-        <div class="faq-item">
-          <div class="faq-question">Can I commission work from a specific division?</div>
-          <p class="faq-answer">Absolutely. You can request to work with a specific division if you know which one best suits your needs. For projects that might benefit from multiple specialties, we can recommend the optimal mix of talents from across our divisions.</p>
+        <div class="mission-grid">
+          <div class="mission-item">
+            <div class="mission-icon">🧭</div>
+            <h3>Unified Vision</h3>
+            <p>All divisions share our core values of innovation, creative excellence, and technical mastery.</p>
+          </div>
+          <div class="mission-item">
+            <div class="mission-icon">🔄</div>
+            <h3>Cross-Division Collaboration</h3>
+            <p>Projects often tap into multiple divisions, creating richer, more cohesive outcomes.</p>
+          </div>
+          <div class="mission-item">
+            <div class="mission-icon">🎨</div>
+            <h3>Consistent Aesthetics</h3>
+            <p>Our cyberpunk-inspired visual language creates unity across all our work.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CTA Section -->
-  <section class="app-cta">
-    <div class="container">
-      <div class="app-cta__content">
-        <h2 class="app-cta__heading">Ready to Collaborate?</h2>
-        <p class="app-cta__description">Whether you're looking to partner with a specific division or need help figuring out the right mix of expertise for your project, we're here to help turn your vision into reality.</p>
-        <div class="app-cta__buttons">
-          <a href="#contact" class="app-cta__button">Get in Touch</a>
-          <a href="about.html" class="app-cta__button outline">Learn About Our Approach</a>
-        </div>
+    <!-- Contact Section -->
+    <section class="contact" id="contact-form">
+      <div class="container">
+        <h2>Interested in Working Together?</h2>
+        <p>Reach out to discuss how our divisions can support your next project.</p>
+        <form aria-label="Contact form">
+          <input type="text" name="name" placeholder="Your Name" required />
+          <input type="email" name="email" placeholder="Your Email" required />
+          <textarea name="message" placeholder="Tell us about your project..." required></textarea>
+          <button type="submit" class="btn">Send Message</button>
+        </form>
       </div>
-    </div>
-  </section>
+    </section>
   </main>
 
-  <!-- Contact Section -->
-  <section id="contact" class="container section-md" aria-labelledby="contact-heading">
-    <h2 id="contact-heading" class="text-center mb-lg">Get in Touch</h2>
-    <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
-      <input class="form-control mb-sm" required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
-      <input class="form-control mb-sm" required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
-      <textarea class="form-control mb-md" required rows="5" placeholder="Tell us about your project..." data-animate="fade-up" aria-label="Your message"></textarea>
-      <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
-    </form>
-  </section>
-
   <!-- Footer -->
-  <footer class="footer" role="contentinfo">
+  <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-logo"><a href="index.html"><strong>AeroVista</strong></a></div>
-          <p>Our work is fueled by a dynamic network of contributors, guided by clear creative leadership and a shared commitment to excellence.</p>
+          <a href="/" class="footer-logo"><span class="brand-name">AeroVista</span></a>
+          <p>Where creativity and code shape the future of media, learning, and innovation. Our seven specialized divisions bring unique expertise to every project.</p>
         </div>
-        <div>
-          <h4 class="footer-heading">Quick Links</h4>
-          <div class="footer-links">
-            <a href="about.html" aria-label="About AeroVista">About</a>
-            <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
-            <a href="apps.html" aria-label="View our apps">Apps</a>
-            <a href="Store.html" aria-label="Tools and resources">Tools & Resources</a>
-          </div>
+        <div class="footer-links-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/divisions.html">Divisions</a></li>
+            <li><a href="/apps.html">Apps</a></li>
+            <li><a href="/Store.html">Tools & Resources</a></li>
+            <li><a href="/about.html">About</a></li>
+          </ul>
         </div>
-        <div>
-          <h4 class="footer-heading">Connect</h4>
-          <div class="footer-links">
-            <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
-            <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
-            <a href="surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
-          </div>
+        <div class="footer-links-section">
+          <h4>Connect</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:info@aerovista.co">Email Us</a></li>
+            <li><a href="/surron_squad.html">Surron Squad</a></li>
+          </ul>
         </div>
-        <div>
-          <h4 class="footer-heading">Legal</h4>
-          <div class="footer-links">
-            <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
-            <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
-          </div>
+        <div class="footer-links-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="/legal/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/legal/terms-of-service.html">Terms of Service</a></li>
+          </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <p>© 2025 AeroVista LLC — All rights reserved.</p>
-        <div class="footer-social">
-          <a href="#" aria-label="Twitter"><i class="icon">Twitter</i></a>
-          <a href="#" aria-label="Instagram"><i class="icon">Instagram</i></a>
-          <a href="#" aria-label="GitHub"><i class="icon">GitHub</i></a>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter"><span class="social-icon">Twitter</span></a>
+          <a href="#" aria-label="Instagram"><span class="social-icon">Instagram</span></a>
+          <a href="#" aria-label="GitHub"><span class="social-icon">GitHub</span></a>
         </div>
       </div>
     </div>
   </footer>
-
-  <!-- Dark mode toggle -->
-  <button class="dark-mode-toggle" aria-label="Toggle dark mode">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
-  </button>
-
-  <!-- Scroll to top button -->
-  <button class="scroll-top" aria-label="Scroll to top">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.828L7.05 15.778L5.636 14.364L12 8L18.364 14.364L16.95 15.778L12 10.828Z"></path></svg>
-  </button>
-
-  <script src="main.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Set up FAQ accordion
-      const faqItems = document.querySelectorAll('.faq-item');
-      
-      faqItems.forEach(item => {
-        const question = item.querySelector('.faq-question');
-        
-        question.addEventListener('click', () => {
-          // Toggle active class
-          const isActive = item.classList.contains('active');
-          
-          // Close all FAQs
-          faqItems.forEach(faq => {
-            faq.classList.remove('active');
-          });
-          
-          // Open clicked FAQ if it wasn't already open
-          if (!isActive) {
-            item.classList.add('active');
-          }
-        });
-      });
-      
-      // Initialize dark mode toggle
-      initDarkModeToggle();
-      
-      // Initialize scroll to top button
-      initScrollToTop();
-    });
-    
-    function initDarkModeToggle() {
-      const darkModeToggle = document.querySelector('.dark-mode-toggle');
-      if (!darkModeToggle) return;
-      
-      // Check for saved preference
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        document.body.classList.toggle('dark-theme', savedTheme === 'dark');
-        document.body.classList.toggle('light-theme', savedTheme === 'light');
-      }
-      
-      darkModeToggle.addEventListener('click', () => {
-        if (document.body.classList.contains('light-theme')) {
-          document.body.classList.remove('light-theme');
-          document.body.classList.add('dark-theme');
-          localStorage.setItem('theme', 'dark');
-        } else {
-          document.body.classList.remove('dark-theme');
-          document.body.classList.add('light-theme');
-          localStorage.setItem('theme', 'light');
-        }
-      });
-    }
-    
-    function initScrollToTop() {
-      const scrollTopBtn = document.querySelector('.scroll-top');
-      if (!scrollTopBtn) return;
-      
-      window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-          scrollTopBtn.classList.add('visible');
-        } else {
-          scrollTopBtn.classList.remove('visible');
-        }
-      });
-      
-      scrollTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      });
-    }
-  </script>
+  
+  <!-- Easter Egg element -->
+  <div class="easter-egg-trigger"></div>
+  
+  <!-- Scripts -->
+  <script src="/main.js"></script>
 </body>
-</html>
+</html> 

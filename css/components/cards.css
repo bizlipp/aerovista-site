@@ -1,0 +1,245 @@
+/* ======================================================
+   AeroVista — Card Components
+   ====================================================== */
+
+/* Base card styling */
+.card {
+  border-radius: 12px;
+  background-color: rgba(18, 20, 30, 0.7);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.card-inner {
+  padding: 24px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Division Cards */
+.division-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.division-card {
+  composes: card;
+  position: relative;
+  text-align: center;
+}
+
+.division-card-inner {
+  composes: card-inner;
+  position: relative;
+  z-index: 2;
+}
+
+.division-logo {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.division-logo img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.division-card h3 {
+  margin-bottom: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.division-card p {
+  margin-bottom: 24px;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.division-theme {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  z-index: 1;
+}
+
+/* App Cards */
+.app-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.app-card {
+  composes: card;
+  position: relative;
+  text-align: center;
+}
+
+.app-card-inner {
+  composes: card-inner;
+  position: relative;
+  z-index: 2;
+}
+
+.app-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.app-icon img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.app-card h3 {
+  margin-bottom: 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.25rem;
+  text-align: center;
+}
+
+.app-card p {
+  margin-bottom: 24px;
+  opacity: 0.8;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.app-status {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.app-status.beta {
+  background-color: rgba(255, 155, 0, 0.2);
+  color: #FF9B00;
+}
+
+.app-status.coming-soon {
+  background-color: rgba(0, 174, 239, 0.2);
+  color: #00AEEF;
+}
+
+/* Button styles for cards */
+.btn-explore {
+  display: inline-block;
+  padding: 8px 24px;
+  border-radius: 4px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: auto;
+  text-align: center;
+}
+
+.btn-explore:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  transform: translateY(-2px);
+}
+
+/* Featured App/Division styling */
+.app-showcase,
+.division-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin: 64px 0;
+}
+
+.app-info,
+.division-info {
+  padding-right: 20px;
+}
+
+.app-preview,
+.division-preview {
+  position: relative;
+}
+
+.app-preview img,
+.division-preview img {
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.preview-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(0, 174, 239, 0.3);
+  opacity: 0.5;
+  z-index: -1;
+}
+
+/* Responsive styles */
+@media (max-width: 900px) {
+  .division-cards,
+  .app-cards {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  
+  .app-showcase,
+  .division-showcase {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  
+  .app-info,
+  .division-info {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .division-cards,
+  .app-cards {
+    grid-template-columns: 1fr;
+    max-width: 350px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+} 

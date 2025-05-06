@@ -1,0 +1,167 @@
+/**
+ * AeroVista - Analytics CSS
+ * Styles for cookie consent banner and other analytics UI elements
+ */
+
+/* Consent Banner */
+.consent-banner {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-overlay);
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+  animation: slide-in-bottom 0.5s var(--easing-standard) forwards;
+}
+
+.consent-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.consent-content p {
+  margin: 0;
+  flex: 1;
+  font-size: var(--font-size-sm);
+}
+
+.consent-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Button variants for consent */
+.btn-sm {
+  padding: 0.35rem 1rem;
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-standard);
+  border: none;
+  background: var(--gradient-primary);
+  color: white;
+}
+
+.btn-sm.alt {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.btn-sm:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-sm:active {
+  transform: translateY(0);
+}
+
+/* Privacy preferences panel */
+.privacy-preferences {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: var(--z-tooltip);
+  display: flex;
+}
+
+.privacy-toggle {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-circle);
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast) var(--easing-standard);
+}
+
+.privacy-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.privacy-toggle svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: var(--color-text);
+}
+
+/* For users who have opted out */
+.analytics-opted-out .analytics-dependent {
+  display: none !important;
+}
+
+/* Animations */
+@keyframes slide-in-bottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-out-bottom {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .consent-banner {
+    background-color: var(--color-surface-dark);
+    border-top: 1px solid var(--color-border-dark);
+  }
+  
+  .btn-sm.alt {
+    border-color: var(--color-border-dark);
+    color: var(--color-text-dark);
+  }
+  
+  .privacy-toggle {
+    background: var(--color-surface-dark);
+    border-color: var(--color-border-dark);
+  }
+  
+  .privacy-toggle svg {
+    fill: var(--color-text-dark);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .consent-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .consent-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .consent-banner {
+    animation: none;
+  }
+} 

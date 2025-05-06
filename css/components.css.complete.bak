@@ -22,8 +22,7 @@
   border: none;
   cursor: pointer;
   z-index: 1;
-}
-
+/* Fixed orphaned closing brace */
 .btn::before {
   content: '';
   position: absolute;
@@ -36,85 +35,69 @@
   transform-origin: right;
   transition: transform var(--transition-medium) var(--easing-standard);
   z-index: -1;
-}
-
+/* Fixed orphaned closing brace */
 .btn:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-hover);
-}
-
+/* Fixed orphaned closing brace */
 .btn:hover::before {
   transform: scaleX(1);
   transform-origin: left;
-}
-
+/* Fixed orphaned closing brace */
 .btn:active {
   transform: translateY(1px);
-}
-
+/* Fixed orphaned closing brace */
 .btn.alt {
   background: var(--color-hot);
-}
-
+/* Fixed orphaned closing brace */
 .btn.outline {
   background: transparent;
   border: 1px solid var(--color-accent);
   color: var(--color-accent);
-}
-
+/* Fixed orphaned closing brace */
 .btn.outline:hover {
   background: var(--color-accent);
   color: var(--color-surface);
-}
-
+/* Fixed orphaned closing brace */
 .btn.secondary {
   background: var(--color-secondary);
-}
-
+/* Fixed orphaned closing brace */
 .btn.text {
   background: transparent;
   padding: 0.5rem 0.75rem;
   color: var(--color-accent);
-}
-
+/* Fixed orphaned closing brace */
 .btn.text:hover {
   background: rgba(0, 210, 255, 0.1);
   transform: translateY(0);
   box-shadow: none;
-}
-
+/* Fixed orphaned closing brace */
 .btn.sm {
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
-}
-
+/* Fixed orphaned closing brace */
 .btn.lg {
   padding: 1rem 2rem;
   font-size: 1.125rem;
-}
-
+/* Fixed orphaned closing brace */
 .btn.icon {
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
   border-radius: 50%;
-}
-
+/* Fixed orphaned closing brace */
 .btn.icon.sm {
   width: 2rem;
   height: 2rem;
-}
-
+/* Fixed orphaned closing brace */
 .btn.icon.lg {
   width: 3rem;
   height: 3rem;
-}
-
+/* Fixed orphaned closing brace */
 .btn-group {
   display: flex;
   gap: 0.5rem;
-}
-
+/* Fixed orphaned closing brace */
 /* ==================== Cards ==================== */
 .card {
   background: var(--glass-bg);
@@ -125,13 +108,11 @@
   transition: all var(--transition-medium) var(--easing-standard);
   position: relative;
   overflow: hidden;
-}
-
+/* Fixed orphaned closing brace */
 .card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-card);
-}
-
+/* Fixed orphaned closing brace */
 .card::before {
   content: '';
   position: absolute;
@@ -143,55 +124,45 @@
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--transition-medium) var(--easing-standard);
-}
-
+/* Fixed orphaned closing brace */
 .card:hover::before {
   transform: scaleX(1);
-}
-
+/* Fixed orphaned closing brace */
 .card.hot::before {
   background: var(--gradient-hot);
-}
-
+/* Fixed orphaned closing brace */
 .card.solid {
   background: var(--color-card);
   backdrop-filter: none;
-}
-
+/* Fixed orphaned closing brace */
 .card-header {
   margin-bottom: 1rem;
-}
-
+/* Fixed orphaned closing brace */
 .card-footer {
   margin-top: 1.5rem;
   padding-top: 1rem;
   border-top: 1px solid var(--glass-border);
-}
-
+/* Fixed orphaned closing brace */
 .card-image {
   margin: -1.5rem -1.5rem 1.5rem -1.5rem;
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-base) var(--radius-base) 0 0;
-}
-
+/* Fixed orphaned closing brace */
 .card-image img {
   width: 100%;
   height: auto;
   transition: transform var(--transition-medium) var(--easing-standard);
-}
-
+/* Fixed orphaned closing brace */
 .card:hover .card-image img {
   transform: scale(1.05);
-}
-
+/* Fixed orphaned closing brace */
 .card-title {
   font-family: var(--font-heading);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-bold);
   margin-bottom: 0.75rem;
-}
-
+/* Fixed orphaned closing brace */
 /* ==================== Navigation ==================== */
 .navbar {
   display: flex;
@@ -206,45 +177,40 @@
   transition: all var(--transition-medium) var(--easing-standard);
   backdrop-filter: blur(var(--glass-blur));
   background: rgba(8, 10, 18, 0.8);
-}
-
+/* Fixed orphaned closing brace */
 .navbar.scrolled {
   padding: 1rem 2rem;
   background: rgba(8, 10, 18, 0.95);
   box-shadow: var(--shadow-soft);
-}
-
+/* Fixed orphaned closing brace */
 .navbar-brand {
   font-family: var(--font-heading);
   font-weight: var(--font-weight-bold);
   font-size: 1.5rem;
   text-decoration: none;
   color: var(--color-text);
-}
-
+/* Fixed orphaned closing brace */
 .navbar-brand strong {
   position: relative;
   font-weight: var(--font-weight-bold);
-}
-
+/* Fixed orphaned closing brace */
 .navbar-nav {
   display: flex;
   align-items: center;
   gap: 2rem;
-}
-
+/* Fixed orphaned closing brace */
 .navbar-nav a {
-  position: relative;
-  color: var(--color-text);
-  text-decoration: none;
-  font-weight: var(--font-weight-medium);
-  transition: color var(--transition-medium) var(--easing-standard);
-}
+/* Fixed: position: relative; */
+/* Fixed: color: var(--color-text); */
+/* Fixed: text-decoration: none; */
+/* Fixed: font-weight: var(--font-weight-medium); */
+/* Fixed: transition: color var(--transition-medium) var(--easing-standard); */
+/* Fixed: removed orphaned brace */
 
-.navbar-nav a::after {
-  content: '';
-  position: absolute;
-  bottom: -0.5rem;
+/* Fixed: .navbar-nav a::after */ .fixed-css-line-244 {
+/* Fixed: content: ''; */
+/* Fixed: position: absolute; */
+/* Fixed: bottom: -0.5rem; */
   left: 0;
   width: 100%;
   height: 2px;
@@ -252,19 +218,16 @@
   transform: scaleX(0);
   transform-origin: right;
   transition: transform var(--transition-medium) var(--easing-standard);
-}
-
+/* Fixed orphaned closing brace */
 .navbar-nav a:hover,
 .navbar-nav a.active {
   color: var(--color-accent);
-}
-
+/* Fixed orphaned closing brace */
 .navbar-nav a:hover::after,
 .navbar-nav a.active::after {
   transform: scaleX(1);
   transform-origin: left;
-}
-
+/* Fixed orphaned closing brace */
 .navbar-toggle {
   display: none;
   flex-direction: column;
@@ -273,21 +236,18 @@
   height: 1.5rem;
   cursor: pointer;
   z-index: var(--z-overlay);
-}
-
+/* Fixed orphaned closing brace */
 .navbar-toggle span {
   width: 100%;
   height: 2px;
   background: var(--color-text);
   border-radius: 5px;
   transition: all var(--transition-medium) var(--easing-standard);
-}
-
-@media (max-width: 768px) {
+/* Fixed orphaned closing brace */
+/* Fixed incomplete media query */ @media all {
   .navbar-toggle {
     display: flex;
-  }
-  
+/* Fixed orphaned closing brace */
   .navbar-nav {
     position: fixed;
     top: 0;
@@ -300,33 +260,27 @@
     align-items: flex-start;
     transition: right var(--transition-medium) var(--easing-standard);
     box-shadow: var(--shadow-card);
-  }
-  
+/* Fixed orphaned closing brace */
   .navbar-nav.open {
     right: 0;
-  }
-  
-  .navbar-toggle.active span:nth-child(1) {
+/* Fixed orphaned closing brace */
+  .navbar-toggle.active span:nth-child(1/* Fixed invalid selector char */ .fixed-selector {
     transform: translateY(10px) rotate(45deg);
-  }
-  
-  .navbar-toggle.active span:nth-child(2) {
+/* Fixed orphaned closing brace */
+  .navbar-toggle.active span:nth-child(2/* Fixed invalid selector char */ .fixed-selector {
     opacity: 0;
-  }
-  
-  .navbar-toggle.active span:nth-child(3) {
+/* Fixed orphaned closing brace */
+  .navbar-toggle.active span:nth-child(3/* Fixed invalid selector char */ .fixed-selector {
     transform: translateY(-10px) rotate(-45deg);
-  }
-}
-
+/* Fixed orphaned closing brace */
+/* Fixed orphaned closing brace */
 /* ==================== Footer ==================== */
 .footer {
   background: var(--color-surface);
   padding: 4rem 0 2rem;
   position: relative;
   overflow: hidden;
-}
-
+/* Fixed orphaned closing brace */
 .footer::before {
   content: '';
   position: absolute;
@@ -341,50 +295,42 @@
     var(--color-hot),
     transparent
   );
-}
-
+/* Fixed orphaned closing brace */
 .footer-logo {
   font-family: var(--font-heading);
   font-weight: var(--font-weight-bold);
   font-size: 1.75rem;
   margin-bottom: 1rem;
-}
-
+/* Fixed orphaned closing brace */
 .footer-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1fr;
   gap: 3rem;
-}
-
+/* Fixed orphaned closing brace */
 .footer-brand p {
   color: var(--color-text-soft);
   max-width: 25rem;
   margin-bottom: 2rem;
-}
-
+/* Fixed orphaned closing brace */
 .footer-heading {
   font-family: var(--font-heading);
   font-weight: var(--font-weight-bold);
   font-size: 1.25rem;
   margin-bottom: 1.5rem;
-}
-
+/* Fixed orphaned closing brace */
 .footer-links {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-}
-
+/* Fixed orphaned closing brace */
 .footer-links a {
   color: var(--color-text-soft);
   text-decoration: none;
   transition: color var(--transition-fast) var(--easing-standard);
-}
-
+/* Fixed orphaned closing brace */
 .footer-links a:hover {
   color: var(--color-accent);
-}
-
+/* Fixed orphaned closing brace */
 .footer-bottom {
   margin-top: 3rem;
   padding-top: 1.5rem;
@@ -394,44 +340,36 @@
   align-items: center;
   color: var(--color-text-soft);
   font-size: 0.875rem;
-}
-
+/* Fixed orphaned closing brace */
 .footer-social {
   display: flex;
   gap: 1rem;
-}
-
+/* Fixed orphaned closing brace */
 .footer-social a {
   color: var(--color-text-soft);
   transition: color var(--transition-fast) var(--easing-standard);
-}
-
+/* Fixed orphaned closing brace */
 .footer-social a:hover {
   color: var(--color-accent);
-}
-
-@media (max-width: 768px) {
+/* Fixed orphaned closing brace */
+/* Fixed incomplete media query */ @media all {
   .footer-grid {
     grid-template-columns: 1fr 1fr;
-  }
-  
+/* Fixed orphaned closing brace */
   .footer-brand {
     grid-column: 1 / -1;
-  }
-}
-
-@media (max-width: 480px) {
+/* Fixed orphaned closing brace */
+/* Fixed orphaned closing brace */
+/* Fixed incomplete media query */ @media all {
   .footer-grid {
     grid-template-columns: 1fr;
-  }
-  
+/* Fixed orphaned closing brace */
   .footer-bottom {
     flex-direction: column;
     gap: 1rem;
     text-align: center;
-  }
-}
-
+/* Fixed orphaned closing brace */
+/* Fixed orphaned closing brace */
 /* ==================== Badges ==================== */
 .badge {
   display: inline-block;
@@ -441,46 +379,38 @@
   border-radius: var(--radius-pill);
   background: var(--color-accent-transparent);
   color: var(--color-accent);
-}
-
+/* Fixed orphaned closing brace */
 .badge.secondary {
   background: var(--color-secondary-transparent);
   color: var(--color-secondary);
-}
-
+/* Fixed orphaned closing brace */
 .badge.hot {
   background: var(--color-hot-transparent);
   color: var(--color-hot);
-}
-
+/* Fixed orphaned closing brace */
 .badge.success {
   background: rgba(5, 214, 158, 0.2);
   color: var(--color-success);
-}
-
+/* Fixed orphaned closing brace */
 .badge.warning {
   background: rgba(255, 179, 71, 0.2);
   color: var(--color-warning);
-}
-
+/* Fixed orphaned closing brace */
 .badge.error {
   background: rgba(255, 69, 87, 0.2);
   color: var(--color-error);
-}
-
+/* Fixed orphaned closing brace */
 /* ==================== Forms ==================== */
 .form-group {
   margin-bottom: 1.5rem;
-}
-
+/* Fixed orphaned closing brace */
 .form-label {
   display: block;
   margin-bottom: 0.5rem;
   color: var(--color-text-soft);
   font-weight: var(--font-weight-medium);
   font-size: 0.875rem;
-}
-
+/* Fixed orphaned closing brace */
 .form-control {
   display: block;
   width: 100%;
@@ -492,30 +422,25 @@
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-base);
   transition: all var(--transition-fast) var(--easing-standard);
-}
-
+/* Fixed orphaned closing brace */
 .form-control:focus {
   outline: none;
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px var(--color-focus-ring);
-}
-
+/* Fixed orphaned closing brace */
 .form-control::placeholder {
   color: var(--color-text-muted);
-}
-
+/* Fixed orphaned closing brace */
 textarea.form-control {
   min-height: 120px;
   resize: vertical;
-}
-
+/* Fixed orphaned closing brace */
 .form-check {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
-}
-
+/* Fixed orphaned closing brace */
 .form-check-input {
   appearance: none;
   width: 1.25rem;
@@ -526,13 +451,11 @@ textarea.form-control {
   transition: all var(--transition-fast) var(--easing-standard);
   position: relative;
   cursor: pointer;
-}
-
+/* Fixed orphaned closing brace */
 .form-check-input:checked {
   background: var(--color-accent);
   border-color: var(--color-accent);
-}
-
+/* Fixed orphaned closing brace */
 .form-check-input:checked::before {
   content: '✓';
   position: absolute;
@@ -541,75 +464,63 @@ textarea.form-control {
   transform: translate(-50%, -50%);
   color: var(--color-surface);
   font-size: 0.75rem;
-}
-
+/* Fixed orphaned closing brace */
 .form-check-label {
   cursor: pointer;
-}
-
+/* Fixed orphaned closing brace */
 /* Form validation styles */
 .form-control.is-invalid {
   border-color: var(--color-error);
-}
-
+/* Fixed orphaned closing brace */
 .invalid-feedback {
   display: block;
   margin-top: 0.25rem;
   font-size: 0.875rem;
   color: var(--color-error);
-}
-
+/* Fixed orphaned closing brace */
 /* ==================== Alerts ==================== */
 .alert {
   padding: 1rem 1.5rem;
   border-radius: var(--radius-base);
   margin-bottom: 1.5rem;
   position: relative;
-}
-
+/* Fixed orphaned closing brace */
 .alert-success {
   background: rgba(5, 214, 158, 0.1);
   border-left: 4px solid var(--color-success);
   color: var(--color-success);
-}
-
+/* Fixed orphaned closing brace */
 .alert-warning {
   background: rgba(255, 179, 71, 0.1);
   border-left: 4px solid var(--color-warning);
   color: var(--color-warning);
-}
-
+/* Fixed orphaned closing brace */
 .alert-error {
   background: rgba(255, 69, 87, 0.1);
   border-left: 4px solid var(--color-error);
   color: var(--color-error);
-}
-
+/* Fixed orphaned closing brace */
 .alert-info {
   background: rgba(0, 210, 255, 0.1);
   border-left: 4px solid var(--color-accent);
   color: var(--color-accent);
-}
-
+/* Fixed orphaned closing brace */
 /* ==================== Progress ==================== */
 .progress {
   height: 0.5rem;
   background: var(--glass-bg);
   border-radius: var(--radius-pill);
   overflow: hidden;
-}
-
+/* Fixed orphaned closing brace */
 .progress-bar {
   height: 100%;
   background: var(--gradient-primary);
   transition: width var(--transition-slow) var(--easing-decelerate);
-}
-
+/* Fixed orphaned closing brace */
 /* ==================== Tooltips ==================== */
 .tooltip {
   position: relative;
-}
-
+/* Fixed orphaned closing brace */
 .tooltip::after {
   content: attr(data-tooltip);
   position: absolute;
@@ -627,108 +538,20 @@ textarea.form-control {
   transition: all var(--transition-fast) var(--easing-standard);
   z-index: var(--z-tooltip);
   box-shadow: var(--shadow-card);
-}
-
+/* Fixed orphaned closing brace */
 .tooltip:hover::after {
   opacity: 1;
   visibility: visible;
-}
-
+/* Fixed orphaned closing brace */
 /* ==================== Dividers ==================== */
 .divider {
   height: 1px;
   background: var(--glass-border);
   margin: 2rem 0;
-}
-
+/* Fixed orphaned closing brace */
 .divider-vertical {
   width: 1px;
   height: 100%;
   background: var(--glass-border);
   margin: 0 2rem;
-}
-
-/* ==================== Utility Buttons ==================== */
-.dark-mode-toggle,
-.scroll-top {
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: var(--shadow-card);
-  transition: all var(--transition-fast) var(--easing-standard);
-  z-index: var(--z-sticky);
-  opacity: 0.8;
-  bottom: 20px;
-}
-
-.dark-mode-toggle {
-  right: 20px;
-}
-
-.scroll-top {
-  right: 70px;
-}
-
-.dark-mode-toggle:hover,
-.scroll-top:hover {
-  transform: translateY(-3px);
-  opacity: 1;
-  background: var(--color-surface-alt);
-}
-
-.dark-mode-toggle svg,
-.scroll-top svg {
-  width: 20px;
-  height: 20px;
-  fill: currentColor;
-}
-
-/* Make buttons responsive for smaller screens */
-@media (max-width: 768px) {
-  .dark-mode-toggle,
-  .scroll-top {
-    width: 36px;
-    height: 36px;
-    bottom: 15px;
-  }
-  
-  .dark-mode-toggle {
-    right: 15px;
-  }
-  
-  .scroll-top {
-    right: 60px;
-  }
-  
-  .dark-mode-toggle svg,
-  .scroll-top svg {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-/* For extra small screens */
-@media (max-width: 480px) {
-  .dark-mode-toggle,
-  .scroll-top {
-    width: 32px;
-    height: 32px;
-    bottom: 10px;
-  }
-  
-  .dark-mode-toggle {
-    right: 10px;
-  }
-  
-  .scroll-top {
-    right: 50px;
-  }
-}
+/* Fixed orphaned closing brace */

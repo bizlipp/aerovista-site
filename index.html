@@ -1,281 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AeroVista | Home</title>
-  <!-- Fonts & Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Main CSS - Imports all modular files -->
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <meta name="description" content="AeroVista merges creativity and code to shape the future of media, learning, and innovation." />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self'; connect-src 'self';">
+  <title>AeroVista | Where Vision Takes Flight</title>
+  
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="/css/theme-variables.css" as="style">
+  <link rel="preload" href="/css/variables.css" as="style">
+  <link rel="preload" href="/css/base.css" as="style">
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="/css/main.css?v=1.0.6" />
+  <link rel="preload" href="/css/performance.css" as="style" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
   <!-- Meta Tags for SEO and Open Graph -->
-  <meta name="description" content="AeroVista is a visionary creative and technology studio uniting talent across immersive media, learning innovation, and future-forward development.">
   <meta property="og:title" content="AeroVista | Where Vision Takes Flight">
-  <meta property="og:description" content="AeroVista is a future-forward studio blending creativity and technology to shape immersive media, learning innovation, and digital experiences across seven divisions.">
+  <meta property="og:description" content="AeroVista merges creativity and code to shape the future of media, learning, and innovation.">
   <meta property="og:image" content="https://aerovista.us/preview-image.png">
-  <meta property="og:url" content="https://aerovista.us">
+  <meta property="og:url" content="https://aerovista.us/index.html">
   <meta property="og:type" content="website">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://aerovista.us/">
+  <link rel="canonical" href="https://aerovista.us/index.html">
+
+  <!-- Accessibility enhancement -->
+  <meta name="theme-color" content="#080a12">
+  
+  <!-- Performance optimization -->
+  <script defer src="/performance.js"></script>
 </head>
 <body data-page="home">
-  <!-- Accessibility skip link -->
-  <a href="#main-content" class="skip-to-content">Skip to content</a>
-
-  <!-- Navbar -->
-  <header class="navbar" role="banner">
-    <div class="navbar-brand"><a href="index.html"><strong>AeroVista</strong></a></div>
-    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
-      <a href="index.html" class="active">Home</a>
-      <a href="divisions.html">Divisions</a>
-      <a href="apps.html">Apps</a>
-      <a href="Store.html">Tools & Resources</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
+  <a class="skip-link" href="#main">Skip to content</a>
+ 
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <img src="/public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
+          <span class="logo-text">AeroVista</span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="/index.html" class="nav-link active">Home</a></li>
+            <li><a href="/divisions.html" class="nav-link">Divisions</a></li>
+            <li><a href="/apps.html" class="nav-link">Apps</a></li>
+            <li><a href="/Store.html" class="nav-link">Tools & Resources</a></li>
+            <li><a href="/about.html" class="nav-link">About</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
   </header>
 
-  <!-- Main content -->
-  <main id="main-content">
-    <section class="index-hero" aria-label="Hero section">
-      <!-- Floating letters background -->
-      <div class="floating-bg" id="floatingBg"></div>
-      
-      <div class="index-hero__content">
-        <h1 class="index-hero__headline text-gradient-hot glitch" data-text="AeroVista">AeroVista</h1>
-        
-        <p class="index-hero__subheading"><strong>AeroVista LLC</strong> Bold ideas. Smart tech. Real impact. AeroVista merges creativity and code to shape the future of media, learning, and innovation.</p>
-        <p class="index-hero__subheading"><strong>Where vision takes flight.</strong></p>
-        
-        <div class="index-hero__buttons">
-          <a href="divisions.html" class="btn" data-animate="fade-up">Explore Divisions</a>
-          <a href="apps.html" class="btn alt" data-animate="fade-up">Our Apps</a>
+  <!-- Hero -->
+  <main id="main">
+    <section class="hero">
+      <div class="container">
+        <img src="/images/aerovista-logo.png" alt="AeroVista Logo" class="hero-logo" />
+        <h1 class="glitch" data-scramble="true" data-text="AeroVista"><span class="brand-name">AeroVista</span></h1>
+        <p class="subheading">AeroVista merges creativity and code to shape the future of media, learning, and innovation.</p>
+        <h5 class="subheading" data-text="Where Vision Takes Flight">Where Vision Takes Flight</h5>
+        <div class="cta-buttons">
+          <a href="/divisions.html" class="btn btn-primary">Explore Divisions</a>
+          <a href="#contact-form" class="btn btn-secondary">Start a Conversation</a>
         </div>
       </div>
-      
-      <div class="mouse-follower" aria-hidden="true"></div>
     </section>
 
-    <!-- Vision Callout Section -->
-    <section class="container section-sm" aria-labelledby="vision-heading">
-      <div class="liquid-bg" aria-hidden="true"></div>
-      <h2 id="vision-heading" class="text-gradient glitch text-center" data-text="Where Vision Takes Flight">Where Vision Takes Flight</h2>
-      <p class="text-center mx-auto">More than a studio—AeroVista is a launchpad for bold ideas in storytelling, immersive design, and tech innovation. Our divisions work across boundaries to create meaningful, mission-driven experiences.</p>
-    </section>
-
-    <!-- Vision & Values CTA -->
-    <section class="cta-section glass" aria-labelledby="innovation-heading">
+    <!-- Callout -->
+    <section class="callout">
       <div class="container">
-        <div class="grid-system split-40-60">
-          <div class="flow">
-            <h2 id="innovation-heading" class="text-gradient">Innovation Across Disciplines</h2>
-            <p>At AeroVista, we bring together specialists across seven divisions to create cutting-edge digital experiences, immersive worlds, and technological solutions that push boundaries.</p>
-            <div class="feature-list">
-              <div class="feature-item" data-animate="fade-up">
-                <div class="feature-icon" aria-hidden="true">✦</div>
-                <div class="feature-text">
-                  <h3>Creative Vision</h3>
-                  <p>Bold ideas that challenge conventions and reimagine possibilities.</p>
-                </div>
-              </div>
-              <div class="feature-item" data-animate="fade-up">
-                <div class="feature-icon" aria-hidden="true">✦</div>
-                <div class="feature-text">
-                  <h3>Technical Excellence</h3>
-                  <p>Leveraging cutting-edge tools and emerging technologies.</p>
-                </div>
-              </div>
-              <div class="feature-item" data-animate="fade-up">
-                <div class="feature-icon" aria-hidden="true">✦</div>
-                <div class="feature-text">
-                  <h3>Collaborative Approach</h3>
-                  <p>Cross-discipline experts working together to solve complex challenges.</p>
-                </div>
-              </div>
-            </div>
-            <div class="btn-group mt-lg">
-              <a href="divisions.html" class="btn" data-animate="fade-up">Explore Our Divisions</a>
-              <a href="#contact" class="btn alt" data-animate="fade-up">Start a Conversation</a>
-            </div>
-          </div>
-          <div class="cta-visual" aria-hidden="true">
-            <div class="glass-sphere"></div>
-            <div class="floating-elements">
-              <div class="floating-element" style="--delay:0s; --size:40px; --top:10%; --left:20%;"></div>
-              <div class="floating-element" style="--delay:2s; --size:60px; --top:60%; --left:70%;"></div>
-              <div class="floating-element" style="--delay:4s; --size:30px; --top:40%; --left:85%;"></div>
-              <div class="floating-element" style="--delay:1s; --size:50px; --top:80%; --left:30%;"></div>
-              <div class="floating-element" style="--delay:3s; --size:25px; --top:30%; --left:50%;"></div>
-            </div>
-          </div>
-        </div>
+        <h2>Innovation Across Disciplines</h2>
+        <ul class="features">
+          <li><span class="feature-icon">✦</span>Creative Vision</li>
+          <li><span class="feature-icon">✦</span>Technical Excellence</li>
+          <li><span class="feature-icon">✦</span>Collaborative Approach</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact-form">
+      <div class="container">
+        <h2>Get in Touch</h2>
+        <form aria-label="Contact form">
+          <input type="text" name="name" placeholder="Your Name" required />
+          <input type="email" name="email" placeholder="Your Email" required />
+          <textarea name="message" placeholder="Your Message" required></textarea>
+          <button type="submit" class="btn">Send Message</button>
+        </form>
       </div>
     </section>
   </main>
 
-  <!-- Contact Section -->
-  <section id="contact" class="container section-md" aria-labelledby="contact-heading">
-    <h2 id="contact-heading" class="text-center mb-lg">Get in Touch</h2>
-    <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
-      <input class="form-control mb-sm" required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
-      <input class="form-control mb-sm" required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
-      <textarea class="form-control mb-md" required rows="5" placeholder="Tell us about your project..." data-animate="fade-up" aria-label="Your message"></textarea>
-      <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
-    </form>
-  </section>
-
   <!-- Footer -->
-  <footer class="footer" role="contentinfo">
+  <footer class="site-footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="footer-logo"><a href="index.html"><strong>AeroVista</strong></a></div>
-          <p>Our work is fueled by a dynamic network of contributors, guided by clear creative leadership and a shared commitment to excellence.</p>
+          <a href="/" class="footer-logo"><span class="brand-name">AeroVista</span></a>
+          <p>Where creativity and code shape the future of media, learning, and innovation. Our seven specialized divisions bring unique expertise to every project.</p>
         </div>
-        <div>
-          <h4 class="footer-heading">Quick Links</h4>
-          <div class="footer-links">
-            <a href="about.html" aria-label="About AeroVista">About</a>
-            <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
-            <a href="apps.html" aria-label="View our apps">Apps</a>
-            <a href="Store.html" aria-label="Tools and resources">Tools & Resources</a>
-          </div>
+        <div class="footer-links-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="/index.html">Home</a></li>
+            <li><a href="/divisions.html">Divisions</a></li>
+            <li><a href="/apps.html">Apps</a></li>
+            <li><a href="/Store.html">Tools & Resources</a></li>
+            <li><a href="/about.html">About</a></li>
+          </ul>
         </div>
-        <div>
-          <h4 class="footer-heading">Connect</h4>
-          <div class="footer-links">
-            <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
-            <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
-            <a href="surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
-          </div>
+        <div class="footer-links-section">
+          <h4>Connect</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:info@aerovista.co">Email Us</a></li>
+            <li><a href="/surron_squad.html">Surron Squad</a></li>
+          </ul>
         </div>
-        <div>
-          <h4 class="footer-heading">Legal</h4>
-          <div class="footer-links">
-            <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
-            <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
-          </div>
+        <div class="footer-links-section">
+          <h4>Legal</h4>
+          <ul class="footer-links">
+            <li><a href="/legal/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/legal/terms-of-service.html">Terms of Service</a></li>
+          </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <p>© 2025 AeroVista LLC — All rights reserved.</p>
-        <div class="footer-social">
-          <a href="#" aria-label="Twitter"><i class="icon">Twitter</i></a>
-          <a href="#" aria-label="Instagram"><i class="icon">Instagram</i></a>
-          <a href="#" aria-label="GitHub"><i class="icon">GitHub</i></a>
+        <div class="social-links">
+          <a href="#" aria-label="Twitter"><span class="social-icon">Twitter</span></a>
+          <a href="#" aria-label="Instagram"><span class="social-icon">Instagram</span></a>
+          <a href="#" aria-label="GitHub"><span class="social-icon">GitHub</span></a>
         </div>
       </div>
     </div>
   </footer>
-
-  <!-- Dark mode toggle -->
-  <button class="dark-mode-toggle" aria-label="Toggle dark mode">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
-  </button>
-
-  <!-- Scroll to top button -->
-  <button class="scroll-top" aria-label="Scroll to top">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.828L7.05 15.778L5.636 14.364L12 8L18.364 14.364L16.95 15.778L12 10.828Z"></path></svg>
-  </button>
-
-  <script src="main.js"></script>
-  <script>
-    // Inline the formerly imported functions to avoid CORS issues when viewing locally
-    function initLazyLoading() {
-      // Native lazy loading is handled by loading="lazy" attribute
-      console.log("Lazy loading initialized");
-    }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      // Add floating elements to the background
-      const floatingBg = document.getElementById('floatingBg');
-      const elementCount = 25;
-      const elements = ['⬡', '⬢', '◆', '■', '●', '▲', '◇', '△', '○', '□'];
-      
-      for (let i = 0; i < elementCount; i++) {
-        const element = document.createElement('div');
-        element.className = 'floating-element';
-        element.textContent = elements[Math.floor(Math.random() * elements.length)];
-        
-        // Random position and size
-        const posX = Math.random() * 100;
-        const size = Math.random() * 30 + 20;
-        const delay = Math.random() * 10;
-        const duration = Math.random() * 10 + 10;
-        const rotation = Math.random() * 360;
-        
-        element.style.left = `${posX}%`;
-        element.style.fontSize = `${size}px`;
-        element.style.animationDelay = `${delay}s`;
-        element.style.animationDuration = `${duration}s`;
-        element.style.transform = `rotate(${rotation}deg)`;
-        
-        floatingBg.appendChild(element);
-      }
-      
-      // Call initLazyLoading for compatibility, but it now uses native lazy loading
-      initLazyLoading();
-      
-      // Add body-loaded class for glitch animation
-      setTimeout(() => {
-        document.body.classList.add('body-loaded');
-      }, 100);
-      
-      // Initialize dark mode toggle
-      initDarkModeToggle();
-      
-      // Initialize scroll to top button
-      initScrollToTop();
-    });
-    
-    function initDarkModeToggle() {
-      const darkModeToggle = document.querySelector('.dark-mode-toggle');
-      if (!darkModeToggle) return;
-      
-      // Check for saved preference
-      const savedTheme = localStorage.getItem('theme');
-      if (savedTheme) {
-        document.body.classList.toggle('dark-theme', savedTheme === 'dark');
-        document.body.classList.toggle('light-theme', savedTheme === 'light');
-      }
-      
-      darkModeToggle.addEventListener('click', () => {
-        if (document.body.classList.contains('light-theme')) {
-          document.body.classList.remove('light-theme');
-          document.body.classList.add('dark-theme');
-          localStorage.setItem('theme', 'dark');
-        } else {
-          document.body.classList.remove('dark-theme');
-          document.body.classList.add('light-theme');
-          localStorage.setItem('theme', 'light');
-        }
-      });
-    }
-    
-    function initScrollToTop() {
-      const scrollTopBtn = document.querySelector('.scroll-top');
-      if (!scrollTopBtn) return;
-      
-      window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 300) {
-          scrollTopBtn.classList.add('visible');
-        } else {
-          scrollTopBtn.classList.remove('visible');
-        }
-      });
-      
-      scrollTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-      });
-    }
-  </script>
+  
+  <!-- Easter Egg element (from websiteLayoutStrategyEasterEggs.md) -->
+  <div class="easter-egg-trigger"></div>
+  
+  <!-- Scripts -->
+  <script src="/main.js"></script>
 </body>
 </html>

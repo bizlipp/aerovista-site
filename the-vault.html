@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self'; connect-src 'self';">
+  <title>The Vault | AeroVista</title>
+  
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="/css/theme-variables.css" as="style">
+  <link rel="preload" href="/css/variables.css" as="style">
+  <link rel="preload" href="/css/base.css" as="style">
+  
+  <!-- Preconnect to external domains -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Montserrat:wght@300;400;500;700&family=Saira+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="/css/main.css?v=1.0.6" />
+  <link rel="preload" href="/css/performance.css" as="style" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  
+  <meta name="robots" content="noindex, nofollow">
+
+  <style>
+    body {
+      background: #080a12;
+      color: #ffffff;
+    }
+    
+    .vault-hero {
+      background: radial-gradient(circle at center, rgba(0, 174, 239, 0.2), transparent 70%);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .terminal {
+      max-width: 800px;
+      width: 100%;
+      height: 400px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 8px;
+      padding: 24px;
+      font-family: monospace;
+      border: 1px solid rgba(0, 174, 239, 0.5);
+      box-shadow: 0 0 30px rgba(0, 174, 239, 0.3);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .terminal-title {
+      font-family: 'Orbitron', sans-serif;
+      color: rgba(0, 174, 239, 1);
+    }
+    
+    .terminal-content {
+      height: calc(100% - 50px);
+      overflow-y: auto;
+      color: #00ff00;
+      line-height: 1.5;
+    }
+    
+    .typing {
+      border-right: 0.1em solid #00ff00;
+      white-space: nowrap;
+      animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+      overflow: hidden;
+    }
+    
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+    }
+    
+    @keyframes blink-caret {
+      from, to { border-color: transparent }
+      50% { border-color: #00ff00 }
+    }
+    
+    .return-link {
+      margin-top: 40px;
+      color: rgba(255, 255, 255, 0.5);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .return-link:hover {
+      color: white;
+      text-decoration: underline;
+    }
+    
+    .vault-passcode {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <section class="vault-hero">
+    <div class="terminal">
+      <div class="terminal-header">
+        <div class="terminal-title">AeroVista Secure Terminal</div>
+        <div class="terminal-controls">▢ □ ×</div>
+      </div>
+      <div class="terminal-content" id="terminal">
+        <p class="typing">Accessing AeroVista secure database...</p>
+        <p>Authentication successful. Welcome back, Developer.</p>
+        <p>System status: All systems nominal</p>
+        <p>Last login: Today at [REDACTED]</p>
+        <br>
+        <p>> Congratulations! You've discovered our hidden vault.</p>
+        <p>> Here's a special message from the AeroVista team:</p>
+        <br>
+        <p style="color: #ff00ff;">Thank you for exploring our website deeply enough to find this page.</p>
+        <p style="color: #ff00ff;">We appreciate curious minds like yours!</p>
+        <br>
+        <p>> Try the Konami code on the main site: ↑ ↑ ↓ ↓ ← → ← → B A</p>
+        <p>> Check the console for more secrets</p>
+        <br>
+        <p>Connection will terminate in 60 seconds...</p>
+        <span class="vault-passcode">PASSCODE: SKYFORGE-NEXUS-1991</span>
+      </div>
+    </div>
+    <a href="/" class="return-link">Return to main site</a>
+  </section>
+
+  <script>
+    // Simple terminal animation
+    document.addEventListener('DOMContentLoaded', function() {
+      const terminal = document.getElementById('terminal');
+      
+      // Record that user found this easter egg in localStorage
+      localStorage.setItem('aerovista_vault_found', 'true');
+      
+      // Console easter egg for this page
+      console.log('%c🔐 VAULT ACCESS GRANTED 🔐', 'font-size:20px; color:#00ff00; font-weight:bold;');
+      console.log('%cYou have unlocked all AeroVista secrets!', 'font-size:14px; color:#00AEEF;');
+      
+      // Auto redirect after 60 seconds
+      setTimeout(() => {
+        terminal.innerHTML += '<p style="color: red;">Connection terminated. Redirecting to home page...</p>';
+        
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 3000);
+      }, 60000);
+    });
+  </script>
+</body>
+</html> 

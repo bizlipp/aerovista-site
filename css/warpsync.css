@@ -1,0 +1,251 @@
+/*
+ * AeroVista - WarpSync App Styles
+ * Specific styles for the WarpSync app interface
+ */
+
+/* ==================== WarpSync Variables ==================== */
+/* These variables are now defined in theme-variables.css */
+/* Using the RGB values for rgba() calculations */
+:root {
+  /* Additional app-specific accent colors */
+  --warpsync-highlight: #a78bfa;
+  --warpsync-highlight-rgb: 167, 139, 250;
+  --warpsync-subtle: #c4b5fd;
+  --warpsync-subtle-rgb: 196, 181, 253;
+  --warpsync-danger: #ef4444;
+  --warpsync-danger-rgb: 239, 68, 68;
+}
+
+/* ==================== WarpSync Layout ==================== */
+.warpsync-container {
+  background-color: var(--warpsync-surface);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+}
+
+.warpsync-sidebar {
+  background-color: rgba(var(--warpsync-surface-rgb), 0.8);
+  backdrop-filter: blur(var(--glass-blur));
+  border-right: 1px solid rgba(var(--warpsync-text-rgb), 0.1);
+  padding: 1.5rem;
+}
+
+.warpsync-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(var(--warpsync-text-rgb), 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.warpsync-content {
+  padding: 1.5rem;
+}
+
+/* ==================== WarpSync Typography ==================== */
+.warpsync-title {
+  color: var(--warpsync-primary);
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xl);
+  margin-bottom: 1rem;
+}
+
+.warpsync-subtitle {
+  color: rgba(var(--warpsync-text-rgb), 0.8);
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-lg);
+  margin-bottom: 0.75rem;
+}
+
+.warpsync-text {
+  color: var(--warpsync-text);
+  line-height: var(--line-height-normal);
+}
+
+.warpsync-small {
+  font-size: var(--font-size-sm);
+  color: rgba(var(--warpsync-text-rgb), 0.7);
+}
+
+/* ==================== WarpSync Components ==================== */
+.warpsync-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--warpsync-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-base);
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-standard);
+}
+
+.warpsync-button:hover {
+  background-color: rgba(var(--warpsync-primary-rgb), 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--warpsync-primary-rgb), 0.3);
+}
+
+.warpsync-button.secondary {
+  background-color: rgba(var(--warpsync-primary-rgb), 0.15);
+  color: var(--warpsync-primary);
+}
+
+.warpsync-button.secondary:hover {
+  background-color: rgba(var(--warpsync-primary-rgb), 0.25);
+}
+
+.warpsync-button.accent {
+  background-color: var(--warpsync-accent);
+  color: var(--warpsync-surface);
+}
+
+.warpsync-button.accent:hover {
+  background-color: rgba(var(--warpsync-accent-rgb), 0.9);
+  box-shadow: 0 4px 12px rgba(var(--warpsync-accent-rgb), 0.3);
+}
+
+.warpsync-button.subtle {
+  background-color: transparent;
+  color: var(--warpsync-text);
+  padding: 0.5rem 0.75rem;
+}
+
+.warpsync-button.subtle:hover {
+  background-color: rgba(var(--warpsync-text-rgb), 0.1);
+  box-shadow: none;
+}
+
+.warpsync-card {
+  background-color: rgba(var(--warpsync-surface-rgb), 0.5);
+  border-radius: var(--radius-base);
+  box-shadow: var(--shadow-soft);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(var(--warpsync-text-rgb), 0.1);
+  transition: all var(--transition-medium) var(--easing-standard);
+}
+
+.warpsync-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+  border-color: rgba(var(--warpsync-primary-rgb), 0.3);
+}
+
+.warpsync-input {
+  background-color: rgba(var(--warpsync-surface-rgb), 0.3);
+  border: 1px solid rgba(var(--warpsync-text-rgb), 0.2);
+  border-radius: var(--radius-base);
+  padding: 0.75rem 1rem;
+  color: var(--warpsync-text);
+  font-family: var(--font-body);
+  width: 100%;
+  transition: border-color var(--transition-fast) var(--easing-standard);
+}
+
+.warpsync-input:focus {
+  border-color: var(--warpsync-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--warpsync-primary-rgb), 0.2);
+}
+
+.warpsync-input::placeholder {
+  color: rgba(var(--warpsync-text-rgb), 0.5);
+}
+
+.warpsync-tab {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  color: rgba(var(--warpsync-text-rgb), 0.7);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-standard);
+}
+
+.warpsync-tab:hover {
+  color: var(--warpsync-text);
+}
+
+.warpsync-tab.active {
+  color: var(--warpsync-accent);
+  border-bottom-color: var(--warpsync-accent);
+}
+
+/* ==================== WarpSync Status Indicators ==================== */
+.warpsync-status {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  color: rgba(var(--warpsync-text-rgb), 0.7);
+}
+
+.warpsync-status::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  background-color: rgba(var(--warpsync-text-rgb), 0.5);
+}
+
+.warpsync-status.active::before {
+  background-color: var(--warpsync-primary);
+  box-shadow: 0 0 8px rgba(var(--warpsync-primary-rgb), 0.5);
+}
+
+.warpsync-status.syncing::before {
+  background-color: var(--warpsync-accent);
+  box-shadow: 0 0 8px rgba(var(--warpsync-accent-rgb), 0.5);
+  animation: warpsync-pulse 1.5s infinite ease-in-out;
+}
+
+.warpsync-status.error::before {
+  background-color: var(--warpsync-danger);
+  box-shadow: 0 0 8px rgba(var(--warpsync-danger-rgb), 0.5);
+}
+
+/* ==================== WarpSync Animations ==================== */
+@keyframes warpsync-pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.warpsync-pulse {
+  animation: warpsync-pulse 2s infinite ease-in-out;
+}
+
+/* ==================== WarpSync Responsive Adjustments ==================== */
+@media (max-width: 768px) {
+  .warpsync-sidebar {
+    border-right: none;
+    border-bottom: 1px solid rgba(var(--warpsync-text-rgb), 0.1);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .warpsync-title {
+    font-size: var(--font-size-lg);
+  }
+  
+  .warpsync-subtitle {
+    font-size: var(--font-size-md);
+  }
+} 

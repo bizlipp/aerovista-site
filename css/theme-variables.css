@@ -6,32 +6,61 @@
 :root {
   /* Color System - Base Palette */
   --color-primary: #474dff;
+  --color-primary-rgb: 71, 77, 255; /* RGB values for rgba() calculations */
   --color-primary-dark: #363deb;
+  --color-primary-dark-rgb: 54, 61, 235;
+  
   --color-secondary: #492eff;
+  --color-secondary-rgb: 73, 46, 255;
   --color-secondary-dark: #3a25db;
+  --color-secondary-dark-rgb: 58, 37, 219;
+  
   --color-accent: #00d2ff;
+  --color-accent-rgb: 0, 210, 255;
   --color-accent-dark: #00b4db;
+  --color-accent-dark-rgb: 0, 180, 219;
+  
   --color-hot: #ff3caf;
+  --color-hot-rgb: 255, 60, 175;
   --color-hot-dark: #e01c8c;
+  --color-hot-dark-rgb: 224, 28, 140;
+  
   --color-warm: #ffb347;
+  --color-warm-rgb: 255, 179, 71;
   --color-warm-dark: #e69b2f;
+  --color-warm-dark-rgb: 230, 155, 47;
+  
   --color-cool: #05d69e;
+  --color-cool-rgb: 5, 214, 158;
   --color-cool-dark: #02b987;
+  --color-cool-dark-rgb: 2, 185, 135;
+  
   --color-purple: #c471ed;
+  --color-purple-rgb: 196, 113, 237;
   --color-purple-dark: #a74cce;
+  --color-purple-dark-rgb: 167, 76, 206;
   
   /* UI Colors */
   --color-success: #05d69e;
+  --color-success-rgb: 5, 214, 158;
   --color-warning: #ffb347;
+  --color-warning-rgb: 255, 179, 71;
   --color-error: #ff4557;
+  --color-error-rgb: 255, 69, 87;
   --color-info: #00d2ff;
+  --color-info-rgb: 0, 210, 255;
   
   /* Themed Colors */
   --color-seasons-spring: #7cff96;
+  --color-seasons-spring-rgb: 124, 255, 150;
   --color-seasons-summer: #ffd96f;
+  --color-seasons-summer-rgb: 255, 217, 111;
   --color-seasons-autumn: #ff793f;
+  --color-seasons-autumn-rgb: 255, 121, 63;
   --color-seasons-fall: #c471ed;
+  --color-seasons-fall-rgb: 196, 113, 237;
   --color-seasons-winter: #00d2ff;
+  --color-seasons-winter-rgb: 0, 210, 255;
   
   /* State-specific Colors */
   --color-focus-ring: rgba(0, 210, 255, 0.5);
@@ -42,18 +71,27 @@
   --color-bg: #080a12;
   --color-bg-rgb: 8, 10, 18; /* For rgba() calculations */
   --color-surface: #101418;
+  --color-surface-rgb: 16, 20, 24;
   --color-surface-alt: #141822;
+  --color-surface-alt-rgb: 20, 24, 34;
   --color-card: #161c28;
+  --color-card-rgb: 22, 28, 40;
   --color-card-hover: #1c2435;
+  --color-card-hover-rgb: 28, 36, 53;
   --color-text: #ffffffee;
+  --color-text-rgb: 255, 255, 255;
   --color-text-soft: #ffffffaa;
   --color-text-muted: #ffffff77;
   --color-border: #ffffff22;
+  --color-border-rgb: 255, 255, 255;
   
-  /* Dark Mode Fallbacks */
+  /* Dark Mode Variables */
   --color-surface-dark: #121212;
+  --color-surface-dark-rgb: 18, 18, 18;
   --color-border-dark: #2c2c2c;
+  --color-border-dark-rgb: 44, 44, 44;
   --color-text-dark: #f5f5f5;
+  --color-text-dark-rgb: 245, 245, 245;
   
   /* Transparent Versions for Overlays */
   --color-primary-transparent: rgba(71, 77, 255, 0.4);
@@ -73,8 +111,11 @@
   
   /* Glass Effect */
   --glass-bg: rgba(16, 20, 28, 0.7);
+  --glass-bg-rgb: 16, 20, 28;
   --glass-blur: 10px;
   --glass-border: rgba(255, 255, 255, 0.05);
+  --glass-border-rgb: 255, 255, 255;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   
   /* Shadows */
   --shadow-soft: 0 8px 30px -5px rgba(0, 0, 0, 0.3);
@@ -172,10 +213,43 @@
   --grid-gap-sm: 1rem;
   --grid-gap-md: 1.5rem;
   --grid-gap-lg: 2rem;
+  
+  /* App-specific Variables */
+  /* MemFlow */
+  --memflow-primary: #0070ff;
+  --memflow-primary-rgb: 0, 112, 255;
+  --memflow-secondary: #06c1ff;
+  --memflow-secondary-rgb: 6, 193, 255;
+  --memflow-accent: #ffb347;
+  --memflow-accent-rgb: 255, 179, 71;
+  --memflow-surface: #1a1f2e;
+  --memflow-surface-rgb: 26, 31, 46;
+  --memflow-text: #f5f7ff;
+  --memflow-text-rgb: 245, 247, 255;
+  
+  /* WarpSync */
+  --warpsync-primary: #6610f2;
+  --warpsync-primary-rgb: 102, 16, 242;
+  --warpsync-secondary: #8833ff;
+  --warpsync-secondary-rgb: 136, 51, 255;
+  --warpsync-accent: #00ffc0;
+  --warpsync-accent-rgb: 0, 255, 192;
+  --warpsync-surface: #0f1620;
+  --warpsync-surface-rgb: 15, 22, 32;
+  --warpsync-text: #e2e8f0;
+  --warpsync-text-rgb: 226, 232, 240;
+}
+
+/* Dark Theme Specific Variables */
+[data-theme="dark"] {
+  --color-surface: var(--color-surface-dark);
+  --color-border: var(--color-border-dark);
+  --color-text: var(--color-text-dark);
+  --glass-bg: rgba(18, 18, 18, 0.7);
 }
 
 /* ========================
-   Additional Styles
+   Additional Styles (Consider moving these to separate stylesheets)
    ======================== */
 
 /* Ensuring section h1 styles are applied */

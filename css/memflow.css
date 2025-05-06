@@ -1,0 +1,240 @@
+/*
+ * AeroVista - MemFlow App Styles
+ * Specific styles for the MemFlow app interface
+ */
+
+/* ==================== MemFlow Variables ==================== */
+/* These variables are now defined in theme-variables.css */
+/* Using the RGB values for rgba() calculations */
+:root {
+  /* App-specific accent colors */
+  --memflow-highlight: #69e1ff;
+  --memflow-highlight-rgb: 105, 225, 255;
+  --memflow-subtle: #8bb2ff;
+  --memflow-subtle-rgb: 139, 178, 255;
+  --memflow-danger: #ff5a5f;
+  --memflow-danger-rgb: 255, 90, 95;
+}
+
+/* ==================== MemFlow Layout ==================== */
+.memflow-container {
+  background-color: var(--memflow-surface);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-card);
+}
+
+.memflow-sidebar {
+  background-color: rgba(var(--memflow-surface-rgb), 0.8);
+  backdrop-filter: blur(var(--glass-blur));
+  border-right: 1px solid rgba(var(--memflow-text-rgb), 0.1);
+  padding: 1.5rem;
+}
+
+.memflow-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(var(--memflow-text-rgb), 0.1);
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.memflow-content {
+  padding: 1.5rem;
+}
+
+/* ==================== MemFlow Typography ==================== */
+.memflow-title {
+  color: var(--memflow-primary);
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xl);
+  margin-bottom: 1rem;
+}
+
+.memflow-subtitle {
+  color: rgba(var(--memflow-text-rgb), 0.8);
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-lg);
+  margin-bottom: 0.75rem;
+}
+
+.memflow-text {
+  color: var(--memflow-text);
+  line-height: var(--line-height-normal);
+}
+
+.memflow-small {
+  font-size: var(--font-size-sm);
+  color: rgba(var(--memflow-text-rgb), 0.7);
+}
+
+/* ==================== MemFlow Components ==================== */
+.memflow-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--memflow-primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-base);
+  padding: 0.75rem 1.25rem;
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-standard);
+}
+
+.memflow-button:hover {
+  background-color: rgba(var(--memflow-primary-rgb), 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(var(--memflow-primary-rgb), 0.3);
+}
+
+.memflow-button.secondary {
+  background-color: rgba(var(--memflow-primary-rgb), 0.15);
+  color: var(--memflow-primary);
+}
+
+.memflow-button.secondary:hover {
+  background-color: rgba(var(--memflow-primary-rgb), 0.25);
+}
+
+.memflow-button.subtle {
+  background-color: transparent;
+  color: var(--memflow-text);
+  padding: 0.5rem 0.75rem;
+}
+
+.memflow-button.subtle:hover {
+  background-color: rgba(var(--memflow-text-rgb), 0.1);
+  box-shadow: none;
+}
+
+.memflow-card {
+  background-color: rgba(var(--memflow-surface-rgb), 0.5);
+  border-radius: var(--radius-base);
+  box-shadow: var(--shadow-soft);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(var(--memflow-text-rgb), 0.1);
+  transition: all var(--transition-medium) var(--easing-standard);
+}
+
+.memflow-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card);
+  border-color: rgba(var(--memflow-primary-rgb), 0.3);
+}
+
+.memflow-input {
+  background-color: rgba(var(--memflow-surface-rgb), 0.3);
+  border: 1px solid rgba(var(--memflow-text-rgb), 0.2);
+  border-radius: var(--radius-base);
+  padding: 0.75rem 1rem;
+  color: var(--memflow-text);
+  font-family: var(--font-body);
+  width: 100%;
+  transition: border-color var(--transition-fast) var(--easing-standard);
+}
+
+.memflow-input:focus {
+  border-color: var(--memflow-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(var(--memflow-primary-rgb), 0.2);
+}
+
+.memflow-input::placeholder {
+  color: rgba(var(--memflow-text-rgb), 0.5);
+}
+
+.memflow-tab {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  color: rgba(var(--memflow-text-rgb), 0.7);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast) var(--easing-standard);
+}
+
+.memflow-tab:hover {
+  color: var(--memflow-text);
+}
+
+.memflow-tab.active {
+  color: var(--memflow-primary);
+  border-bottom-color: var(--memflow-primary);
+}
+
+/* ==================== MemFlow Status Indicators ==================== */
+.memflow-status {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  color: rgba(var(--memflow-text-rgb), 0.7);
+}
+
+.memflow-status::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  background-color: rgba(var(--memflow-text-rgb), 0.5);
+}
+
+.memflow-status.active::before {
+  background-color: var(--memflow-primary);
+  box-shadow: 0 0 8px rgba(var(--memflow-primary-rgb), 0.5);
+}
+
+.memflow-status.warning::before {
+  background-color: var(--memflow-accent);
+  box-shadow: 0 0 8px rgba(var(--memflow-accent-rgb), 0.5);
+}
+
+.memflow-status.error::before {
+  background-color: var(--memflow-danger);
+  box-shadow: 0 0 8px rgba(var(--memflow-danger-rgb), 0.5);
+}
+
+/* ==================== MemFlow Animations ==================== */
+@keyframes memflow-pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.memflow-pulse {
+  animation: memflow-pulse 2s infinite ease-in-out;
+}
+
+/* ==================== MemFlow Responsive Adjustments ==================== */
+@media (max-width: 768px) {
+  .memflow-sidebar {
+    border-right: none;
+    border-bottom: 1px solid rgba(var(--memflow-text-rgb), 0.1);
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .memflow-title {
+    font-size: var(--font-size-lg);
+  }
+  
+  .memflow-subtitle {
+    font-size: var(--font-size-md);
+  }
+} 
