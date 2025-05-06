@@ -6,11 +6,8 @@
   <title>AeroVista | Home</title>
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- CSS: Design System Variables First -->
-  <link rel="stylesheet" href="theme-variables.css" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="responsive-fixes.css" />
-  <link rel="stylesheet" href="theme-classes.css" />
+  <!-- Main CSS - Imports all modular files -->
+  <link rel="stylesheet" href="css/main.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <!-- Meta Tags for SEO and Open Graph -->
   <meta name="description" content="AeroVista is a visionary creative and technology studio uniting talent across immersive media, learning innovation, and future-forward development.">
@@ -27,16 +24,16 @@
   <a href="#main-content" class="skip-to-content">Skip to content</a>
 
   <!-- Navbar -->
-  <header role="banner">
-    <div class="logo"><a href="index.html"><strong>AeroVista</strong></a></div>
-    <nav role="navigation" aria-label="Main Navigation">
-      <a href="index.html">Home</a>
+  <header class="navbar" role="banner">
+    <div class="navbar-brand"><a href="index.html"><strong>AeroVista</strong></a></div>
+    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
+      <a href="index.html" class="active">Home</a>
       <a href="divisions.html">Divisions</a>
       <a href="apps.html">Apps</a>
       <a href="Store.html">Tools & Resources</a>
       <a href="#contact">Contact</a>
     </nav>
-    <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+    <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span>
       <span></span>
       <span></span>
@@ -45,35 +42,37 @@
 
   <!-- Main content -->
   <main id="main-content">
-    <section class="hero" aria-label="Hero section" style="background:linear-gradient(135deg, rgba(0, 40, 80, 0.5) 0%, rgba(10, 13, 20, 0.7) 100%);">
+    <section class="index-hero" aria-label="Hero section">
       <!-- Floating letters background -->
       <div class="floating-bg" id="floatingBg"></div>
       
-      <h1 class="text-gradient-hot glitch heading-xl" data-text="AeroVista">AeroVista</h1>
-      
-      <p><strong>AeroVista LLC</strong> Bold ideas. Smart tech. Real impact. AeroVista merges creativity and code to shape the future of media, learning, and innovation.</p>
-      <p><strong>Where vision takes flight.</strong></p>
-      
-      <div class="flex gap-md" style="margin-top:1.5rem;">
-        <a href="divisions.html" class="btn" data-animate="fade-up">Explore Divisions</a>
-        <a href="apps.html" class="btn alt" data-animate="fade-up">Our Apps</a>
+      <div class="index-hero__content">
+        <h1 class="index-hero__headline text-gradient-hot glitch" data-text="AeroVista">AeroVista</h1>
+        
+        <p class="index-hero__subheading"><strong>AeroVista LLC</strong> Bold ideas. Smart tech. Real impact. AeroVista merges creativity and code to shape the future of media, learning, and innovation.</p>
+        <p class="index-hero__subheading"><strong>Where vision takes flight.</strong></p>
+        
+        <div class="index-hero__buttons">
+          <a href="divisions.html" class="btn" data-animate="fade-up">Explore Divisions</a>
+          <a href="apps.html" class="btn alt" data-animate="fade-up">Our Apps</a>
+        </div>
       </div>
       
       <div class="mouse-follower" aria-hidden="true"></div>
     </section>
 
     <!-- Vision Callout Section -->
-    <section class="container banner" aria-labelledby="vision-heading">
+    <section class="container section-sm" aria-labelledby="vision-heading">
       <div class="liquid-bg" aria-hidden="true"></div>
-      <h2 id="vision-heading" class="text-gradient glitch" data-text="Where Vision Takes Flight">Where Vision Takes Flight</h2>
-      <p>More than a studio—AeroVista is a launchpad for bold ideas in storytelling, immersive design, and tech innovation. Our divisions work across boundaries to create meaningful, mission-driven experiences.</p>
+      <h2 id="vision-heading" class="text-gradient glitch text-center" data-text="Where Vision Takes Flight">Where Vision Takes Flight</h2>
+      <p class="text-center mx-auto">More than a studio—AeroVista is a launchpad for bold ideas in storytelling, immersive design, and tech innovation. Our divisions work across boundaries to create meaningful, mission-driven experiences.</p>
     </section>
 
     <!-- Vision & Values CTA -->
-    <section class="cta-section glass-panel" aria-labelledby="innovation-heading">
+    <section class="cta-section glass" aria-labelledby="innovation-heading">
       <div class="container">
-        <div class="cta-grid">
-          <div class="cta-content">
+        <div class="grid-system split-40-60">
+          <div class="flow">
             <h2 id="innovation-heading" class="text-gradient">Innovation Across Disciplines</h2>
             <p>At AeroVista, we bring together specialists across seven divisions to create cutting-edge digital experiences, immersive worlds, and technological solutions that push boundaries.</p>
             <div class="feature-list">
@@ -99,7 +98,7 @@
                 </div>
               </div>
             </div>
-            <div class="cta-buttons">
+            <div class="btn-group mt-lg">
               <a href="divisions.html" class="btn" data-animate="fade-up">Explore Our Divisions</a>
               <a href="#contact" class="btn alt" data-animate="fade-up">Start a Conversation</a>
             </div>
@@ -120,44 +119,57 @@
   </main>
 
   <!-- Contact Section -->
-  <section id="contact" class="container" aria-labelledby="contact-heading">
-    <h2 id="contact-heading">Get in Touch</h2>
-    <form id="contactForm" role="form" aria-label="Contact form">
-      <input required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
-      <input required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
-      <textarea required rows="5" placeholder="Tell us about your project..." data-animate="fade-up" aria-label="Your message"></textarea>
+  <section id="contact" class="container section-md" aria-labelledby="contact-heading">
+    <h2 id="contact-heading" class="text-center mb-lg">Get in Touch</h2>
+    <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
+      <input class="form-control mb-sm" required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
+      <input class="form-control mb-sm" required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
+      <textarea class="form-control mb-md" required rows="5" placeholder="Tell us about your project..." data-animate="fade-up" aria-label="Your message"></textarea>
       <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
     </form>
   </section>
 
   <!-- Footer -->
-  <footer role="contentinfo">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="logo"><a href="index.html"><strong>AeroVista</strong></a></div>
-        <p>Our work is fueled by a dynamic network of contributors, guided by clear creative leadership and a shared commitment to excellence.</p>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"><a href="index.html"><strong>AeroVista</strong></a></div>
+          <p>Our work is fueled by a dynamic network of contributors, guided by clear creative leadership and a shared commitment to excellence.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <div class="footer-links">
+            <a href="about.html" aria-label="About AeroVista">About</a>
+            <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
+            <a href="apps.html" aria-label="View our apps">Apps</a>
+            <a href="Store.html" aria-label="Tools and resources">Tools & Resources</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Connect</h4>
+          <div class="footer-links">
+            <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
+            <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
+            <a href="surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Legal</h4>
+          <div class="footer-links">
+            <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
+            <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
+          </div>
+        </div>
       </div>
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <a href="about.html" aria-label="About AeroVista">About</a>
-        <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
-        <a href="apps.html" aria-label="View our apps">Apps</a>
-        <a href="Store.html" aria-label="Tools and resources">Tools & Resources</a>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter"><i class="icon">Twitter</i></a>
+          <a href="#" aria-label="Instagram"><i class="icon">Instagram</i></a>
+          <a href="#" aria-label="GitHub"><i class="icon">GitHub</i></a>
+        </div>
       </div>
-      <div class="footer-links">
-        <h4>Connect</h4>
-        <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
-        <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
-        <a href="surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
-      </div>
-      <div class="footer-links">
-        <h4>Legal</h4>
-        <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
-        <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © 2025 AeroVista LLC — All rights reserved.
     </div>
   </footer>
 
@@ -214,18 +226,6 @@
         document.body.classList.add('body-loaded');
       }, 100);
       
-      // Reality-bending particle field
-      createParticleField();
-      
-      // Create glitching text effect
-      initGlitchEffect();
-      
-      // Initialize 3D cube rotation
-      initCubeAnimation();
-      
-      // Initialize mouse follower
-      initMouseFollower();
-      
       // Initialize dark mode toggle
       initDarkModeToggle();
       
@@ -258,159 +258,22 @@
     }
     
     function initScrollToTop() {
-      const scrollTopButton = document.querySelector('.scroll-top');
-      if (!scrollTopButton) return;
+      const scrollTopBtn = document.querySelector('.scroll-top');
+      if (!scrollTopBtn) return;
       
-      // Show button when scrolling down
       window.addEventListener('scroll', () => {
-        if (window.scrollY > 200) {
-          scrollTopButton.classList.add('visible');
+        if (window.pageYOffset > 300) {
+          scrollTopBtn.classList.add('visible');
         } else {
-          scrollTopButton.classList.remove('visible');
+          scrollTopBtn.classList.remove('visible');
         }
       });
       
-      // Scroll to top when clicked
-      scrollTopButton.addEventListener('click', () => {
+      scrollTopBtn.addEventListener('click', () => {
         window.scrollTo({
           top: 0,
           behavior: 'smooth'
         });
-      });
-    }
-    
-    function createParticleField() {
-      const particleField = document.querySelector('.particle-field');
-      if (!particleField) return;
-      
-      // Generate random particles
-      for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        const size = Math.random() * 6 + 1;
-        const posX = Math.random() * 100;
-        const posY = Math.random() * 100;
-        const duration = Math.random() * 20 + 10;
-        const delay = Math.random() * 5;
-        const opacity = Math.random() * 0.7 + 0.3;
-        
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        particle.style.left = `${posX}%`;
-        particle.style.top = `${posY}%`;
-        particle.style.animationDuration = `${duration}s`;
-        particle.style.animationDelay = `${delay}s`;
-        particle.style.opacity = opacity;
-        
-        particleField.appendChild(particle);
-      }
-    }
-    
-    function initGlitchEffect() {
-      const glitchText = document.querySelector('.glitch');
-      const glitchEffect = document.querySelector('.glitch-effect');
-      if (!glitchText || !glitchEffect) return;
-      
-      // Track if animation is in progress to avoid stacking
-      let isGlitching = false;
-      
-      // Create random glitch intervals
-      setInterval(() => {
-        // Only trigger if not already glitching and with random chance
-        if (!isGlitching && Math.random() > 0.9) {
-          isGlitching = true;
-          glitchEffect.classList.add('active');
-          
-          // Random distortion values
-          const skewX = (Math.random() - 0.5) * 10;
-          const skewY = (Math.random() - 0.5) * 10;
-          const translateX = (Math.random() - 0.5) * 10;
-          
-          // Apply distortion
-          glitchText.style.transform = `skew(${skewX}deg, ${skewY}deg) translateX(${translateX}px)`;
-          
-          // Reset after short duration
-          setTimeout(() => {
-            glitchEffect.classList.remove('active');
-            glitchText.style.transform = '';
-            
-            // Allow new animations after a cooldown
-            setTimeout(() => {
-              isGlitching = false;
-            }, 300);
-          }, 200);
-        }
-      }, 2000);
-    }
-    
-    function initCubeAnimation() {
-      const cube = document.querySelector('.reality-cube');
-      if (!cube) return;
-      
-      let rotationX = 0;
-      let rotationY = 0;
-      let animationFrameId;
-      
-      function animate() {
-        rotationX += 0.2;
-        rotationY += 0.4;
-        
-        cube.style.transform = `rotateX(${rotationX}deg) rotateY(${rotationY}deg)`;
-        
-        animationFrameId = requestAnimationFrame(animate);
-      }
-      
-      // Start animation
-      animate();
-      
-      // Clean up animation when leaving page
-      window.addEventListener('beforeunload', () => {
-        if (animationFrameId) {
-          cancelAnimationFrame(animationFrameId);
-        }
-      });
-    }
-    
-    function initMouseFollower() {
-      const follower = document.querySelector('.mouse-follower');
-      const hero = document.querySelector('.hero');
-      if (!follower || !hero) return;
-      
-      let mouseX = 0;
-      let mouseY = 0;
-      let followerX = 0;
-      let followerY = 0;
-      let animationFrameId;
-      
-      hero.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-      });
-      
-      function animate() {
-        // Calculate distance between mouse and follower
-        const distX = mouseX - followerX;
-        const distY = mouseY - followerY;
-        
-        // Smooth follower movement with easing
-        followerX += distX * 0.1;
-        followerY += distY * 0.1;
-        
-        // Apply position with transform for better performance
-        follower.style.transform = `translate(${followerX}px, ${followerY}px)`;
-        
-        animationFrameId = requestAnimationFrame(animate);
-      }
-      
-      // Start animation
-      animate();
-      
-      // Clean up animation when leaving page
-      window.addEventListener('beforeunload', () => {
-        if (animationFrameId) {
-          cancelAnimationFrame(animationFrameId);
-        }
       });
     }
   </script>

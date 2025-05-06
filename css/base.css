@@ -1,24 +1,190 @@
 /* base.css */
-/* Typography, reset, and global elements */
-html, body {
+/* Base element styling for the entire site */
+
+/* Reset and base styles */
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Inter', sans-serif;
-  background: var(--color-bg);
-  color: var(--color-text);
 }
 
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: var(--line-height-normal);
+  font-size: var(--font-size-base);
+  min-height: 100vh;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+img, svg, video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Typography */
 h1, h2, h3, h4, h5, h6 {
-  margin: 0 0 1rem;
-  font-weight: 600;
+  font-family: var(--font-heading);
+  line-height: var(--line-height-tight);
+  margin-bottom: 1rem;
+  font-weight: var(--font-weight-bold);
+}
+
+h1 {
+  font-size: var(--font-size-3xl);
+}
+
+h2 {
+  font-size: var(--font-size-2xl);
+}
+
+h3 {
+  font-size: var(--font-size-xl);
+}
+
+h4 {
+  font-size: var(--font-size-lg);
+}
+
+h5 {
+  font-size: var(--font-size-md);
+}
+
+h6 {
+  font-size: var(--font-size-base);
 }
 
 p {
-  margin: 0 0 1rem;
-  line-height: 1.6;
+  margin-bottom: 1rem;
+  max-width: 70ch;
 }
 
 a {
+  color: var(--color-accent);
   text-decoration: none;
+  transition: color var(--transition-fast) var(--easing-standard);
+}
+
+a:hover {
+  color: var(--color-accent-dark);
+}
+
+/* Lists */
+ul, ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* Code and pre */
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+}
+
+code {
+  padding: 0.2em 0.4em;
+}
+
+pre {
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+pre code {
+  padding: 0;
+  background: transparent;
+}
+
+/* Form elements */
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
   color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea, select {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  padding: 0.75rem 1rem;
+  background: var(--glass-bg);
+  color: var(--color-text);
+  width: 100%;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+label {
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+/* Accessibility */
+.skip-to-content {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: var(--z-max);
+}
+
+.skip-to-content:focus {
+  left: 0;
+  top: 0;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  background: var(--color-accent);
+  color: white;
+}
+
+/* Simple horizontal rule */
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: 2rem 0;
+}
+
+/* Selection styling */
+::selection {
+  background: var(--color-accent);
+  color: white;
+}
+
+/* Focus styling */
+:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
 }

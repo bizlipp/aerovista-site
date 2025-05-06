@@ -6,9 +6,8 @@
   <title>AeroVista | Divisions</title>
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="responsive-fixes.css" />
-  <link rel="stylesheet" href="theme-classes.css" />
+  <!-- Main CSS - Imports all modular files -->
+  <link rel="stylesheet" href="css/main.css" />
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="description" content="Explore AeroVista's seven specialist divisions, each bringing unique expertise in tech, media, and creative services.">
   <meta property="og:title" content="AeroVista | Divisions">
@@ -16,217 +15,43 @@
   <meta property="og:image" content="https://aerovista.us/preview-image.png">
   <meta property="og:url" content="https://aerovista.us/divisions.html">
   <meta property="og:type" content="website">
-  <style>
-    .division-spotlight {
-      position: relative;
-      margin: 4rem 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-    }
-    
-    .division-spotlight:nth-child(even) {
-      grid-template-columns: 1fr 1fr;
-    }
-    
-    .division-spotlight:nth-child(odd) {
-      grid-template-columns: 1fr 1fr;
-      direction: rtl;
-    }
-    
-    .division-spotlight:nth-child(odd) .spotlight-content {
-      direction: ltr;
-    }
-    
-    .division-spotlight:nth-child(odd) .spotlight-image {
-      direction: ltr;
-    }
-    
-    .spotlight-content {
-      padding: 2rem;
-    }
-    
-    .spotlight-content h3 {
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-      font-family: var(--font-heading);
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    
-    .spotlight-content p {
-      margin-bottom: 2rem;
-      font-size: 1.1rem;
-      color: var(--color-text-soft);
-      line-height: 1.7;
-    }
-    
-    .spotlight-image {
-      position: relative;
-      border-radius: var(--radius-base);
-      overflow: hidden;
-      aspect-ratio: 4/3;
-      transform-style: preserve-3d;
-    }
-    
-    .spotlight-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: var(--radius-base);
-      box-shadow: var(--shadow-card);
-      transition: transform var(--transition-medium) ease;
-    }
-    
-    .spotlight-image:hover img {
-      transform: scale(1.05);
-    }
-    
-    .spotlight-image::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: var(--gradient-primary);
-      opacity: 0.2;
-      z-index: 1;
-      border-radius: var(--radius-base);
-      transition: opacity var(--transition-medium) ease;
-    }
-    
-    .spotlight-image:hover::before {
-      opacity: 0;
-    }
-    
-    .overview-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-      margin-bottom: 4rem;
-    }
-    
-    .overview-box {
-      padding: 2rem;
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--glass-blur));
-      border-radius: var(--radius-base);
-      border: 1px solid var(--glass-border);
-      text-align: center;
-      transition: transform var(--transition-medium) ease;
-    }
-    
-    .overview-box:hover {
-      transform: translateY(-10px);
-    }
-    
-    .overview-box .count {
-      font-size: 3rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-      font-family: var(--font-heading);
-      background: var(--gradient-primary);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    
-    .overview-box .label {
-      font-size: 1.1rem;
-      color: var(--color-text-soft);
-    }
-    
-    @media (max-width: 768px) {
-      .division-spotlight,
-      .division-spotlight:nth-child(even),
-      .division-spotlight:nth-child(odd) {
-        grid-template-columns: 1fr;
-        direction: ltr;
-      }
-      
-      .division-spotlight .spotlight-content,
-      .division-spotlight:nth-child(odd) .spotlight-content {
-        direction: ltr;
-        padding: 0;
-      }
-      
-      .division-spotlight .spotlight-image,
-      .division-spotlight:nth-child(odd) .spotlight-image {
-        direction: ltr;
-      }
-    }
-    
-    /* Style for permanent division cards */
-    .permanent-card {
-      opacity: 1 !important; /* Force visibility */
-      animation: fadeIn 0.5s ease-in-out !important;
-      transform: none !important; /* Prevent transform changes */
-      visibility: visible !important;
-      display: block !important;
-      position: relative !important;
-    }
-    
-    /* Apply separate animations to each card for a staggered effect */
-    .permanent-card:nth-child(1) { animation-delay: 0.1s !important; }
-    .permanent-card:nth-child(2) { animation-delay: 0.2s !important; }
-    .permanent-card:nth-child(3) { animation-delay: 0.3s !important; }
-    .permanent-card:nth-child(4) { animation-delay: 0.4s !important; }
-    .permanent-card:nth-child(5) { animation-delay: 0.5s !important; }
-    .permanent-card:nth-child(6) { animation-delay: 0.6s !important; }
-    .permanent-card:nth-child(7) { animation-delay: 0.7s !important; }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    /* Make sure stagger animation doesn't affect visibility */
-    .stagger .permanent-card {
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-    
-    /* Add hover effect styles directly in CSS */
-    .permanent-card:hover {
-      transform: translateY(-10px) !important;
-      transition: transform 0.3s ease-out;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-    }
-  </style>
 </head>
 <body data-page="divisions-hub">
   <!-- Accessibility skip link -->
   <a href="#main-content" class="skip-to-content">Skip to content</a>
 
   <!-- Navbar -->
-  <header role="banner">
-    <div class="logo"><a href="index.html"><strong>AeroVista</strong></a></div>
-    <nav role="navigation" aria-label="Main Navigation">
+  <header class="navbar" role="banner">
+    <div class="navbar-brand"><a href="index.html"><strong>AeroVista</strong></a></div>
+    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
       <a href="index.html">Home</a>
-      <a href="divisions.html">Divisions</a>
+      <a href="divisions.html" class="active">Divisions</a>
       <a href="apps.html">Apps</a>
       <a href="Store.html">Tools & Resources</a>
       <a href="#contact">Contact</a>
     </nav>
+    <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </header>
 
   <!-- Main content area -->
   <main id="main-content">
 
   <!-- Hero -->
-  <section class="hero skyforge-bg">
-    <h1 class="text-gradient glitch" data-text="Our Seven Divisions">Our Seven Divisions</h1>
-    <p>Each branch of AeroVista brings a unique craft to the table. Explore them below and discover opportunities to collaborate.</p>
-    <a href="#divisions" class="btn" data-animate="fade-up">Explore All Divisions</a>
+  <section class="division-hero">
+    <div class="division-hero__content">
+      <h1 class="division-hero__headline" data-text="Our Seven Divisions">Our Seven Divisions</h1>
+      <p class="division-hero__description">Each branch of AeroVista brings a unique craft to the table. Explore them below and discover opportunities to collaborate.</p>
+      <a href="#divisions" class="btn" data-animate="fade-up">Explore All Divisions</a>
+    </div>
   </section>
 
   <!-- Stats Overview -->
-  <section class="container">
-    <h2>Division Overview</h2>
+  <section class="container section-md">
+    <h2 class="text-center mb-xl">Division Overview</h2>
     <div class="overview-grid">
       <div class="overview-box" data-animate="fade-up">
         <div class="count">7</div>
@@ -248,242 +73,290 @@
   </section>
 
   <!-- Featured Divisions -->
-  <section class="container">
-    <h2>Featured Divisions</h2>
+  <section id="divisions" class="container section-lg">
+    <h2 class="text-center mb-xl">Our Divisions</h2>
     
-    <div class="division-spotlight" data-animate="fade-up">
-      <div class="spotlight-content">
-        <h3>SkyForge Creative</h3>
-        <p>Our game development and virtual storytelling studio crafts immersive experiences that transport users beyond the screen. Using cutting-edge technologies, we create interactive worlds that engage, educate, and entertain across AR, VR, and traditional platforms.</p>
-        <a href="Divisions/skyforge-creative.html" class="btn">Learn More</a>
+    <div class="division-item">
+      <div class="division-item__content">
+        <h3 class="division-item__name">Lumina Creative</h3>
+        <p class="division-item__desc">Our flagship creative division specializing in immersive experiences, interactive media, and mixed reality development. We blend art and technology to create memorable digital experiences.</p>
+        <a href="Divisions/lumina-creative/" class="division-item__link">
+          Learn more about Lumina Creative →
+        </a>
       </div>
-      <div class="spotlight-image">
-        <img 
-          src="public/images/skyforge.png" 
-          alt="SkyForge Creative - Game development studio creating a futuristic cityscape with neon elements and geometric structures" 
-          loading="lazy"
-          width="600"
-          height="600">
+      <div class="division-item__media">
+        <img src="public/images/divisions/lumina-creative.jpg" alt="Lumina Creative division showcasing immersive tech" loading="lazy">
       </div>
     </div>
     
-    <div class="division-spotlight" data-animate="fade-up">
-      <div class="spotlight-content">
-        <h3>Nexus TechWorks</h3>
-        <p>Our engineering powerhouse develops full-stack web applications, AI solutions, and innovative products focused on performance and user experience. We specialize in offline-first architecture, ensuring our digital solutions work reliably even in challenging connectivity environments.</p>
-        <a href="Divisions/nexus-techworks.html" class="btn">Learn More</a>
+    <div class="division-item">
+      <div class="division-item__content">
+        <h3 class="division-item__name">Skyforge Creative</h3>
+        <p class="division-item__desc">Game development studio crafting innovative interactive experiences, from small indie titles to ambitious collaborative projects across multiple platforms.</p>
+        <a href="Divisions/skyforge-creative/" class="division-item__link">
+          Learn more about Skyforge Creative →
+        </a>
       </div>
-      <div class="spotlight-image">
-        <img 
-          src="public/images/nexus.png" 
-          alt="Nexus TechWorks - Advanced development workspace with multiple code windows and a glowing green data visualization" 
-          loading="lazy"
-          width="600"
-          height="600">
+      <div class="division-item__media">
+        <img src="public/images/divisions/skyforge-creative.jpg" alt="Skyforge Creative division showcasing game development" loading="lazy">
       </div>
     </div>
     
-    <div class="division-spotlight" data-animate="fade-up">
-      <div class="spotlight-content">
-        <h3>Horizon Aerial & Visual</h3>
-        <p>Capturing breathtaking aerial cinematography and providing precision mapping solutions, our drone specialists elevate perspectives both literally and figuratively. We serve clients across real estate, agriculture, construction, and entertainment with professional-grade aerial services.</p>
-        <a href="Divisions/horizon-aerial-visual.html" class="btn">Learn More</a>
+    <div class="division-item">
+      <div class="division-item__content">
+        <h3 class="division-item__name">Echo Systems</h3>
+        <p class="division-item__desc">Audio design, sound engineering, and music production for games, media, and immersive experiences. Creating soundscapes that transform how users connect with digital worlds.</p>
+        <a href="#" class="division-item__link">
+          Learn more about Echo Systems →
+        </a>
       </div>
-      <div class="spotlight-image">
-        <img 
-          src="public/images/horizon.png" 
-          alt="Horizon Aerial & Visual - Advanced drone capturing nighttime city skyline with vibrant blue and purple lighting" 
-          loading="lazy"
-          width="600"
-          height="600">
+      <div class="division-item__media">
+        <img src="public/images/divisions/echo-systems.jpg" alt="Echo Systems division showcasing audio production" loading="lazy">
       </div>
     </div>
     
-    <div class="division-spotlight" data-animate="fade-up">
-      <div class="spotlight-content">
-        <h3>EchoVerse Audio</h3>
-        <p>Our audio production and music technology division creates immersive soundscapes, AI-driven music, and innovative audio solutions. We blend cutting-edge technology with artistic vision to create unique sonic experiences for games, media, and live events.</p>
-        <a href="Divisions/echoverse-audio.html" class="btn">Learn More</a>
+    <div class="division-item">
+      <div class="division-item__content">
+        <h3 class="division-item__name">Nova Learning</h3>
+        <p class="division-item__desc">Educational technology and learning innovation, creating next-generation e-learning, training simulations, and interactive educational content.</p>
+        <a href="#" class="division-item__link">
+          Learn more about Nova Learning →
+        </a>
       </div>
-      <div class="spotlight-image">
-        <img 
-          src="public/images/synthetic_souls.png" 
-          alt="EchoVerse Audio - Holographic band 'Synthetic Souls' performing with glowing instruments and vibrant lighting effects" 
-          loading="lazy"
-          width="600"
-          height="600">
+      <div class="division-item__media">
+        <img src="public/images/divisions/nova-learning.jpg" alt="Nova Learning division showcasing edtech innovation" loading="lazy">
       </div>
     </div>
     
-    <div class="division-spotlight" data-animate="fade-up">
-      <div class="spotlight-content">
-        <h3>Vespera Publishing</h3>
-        <p>Our publishing and educational media division produces books, interactive learning materials, and digital content that inspire growth. We blend traditional publishing expertise with innovative digital formats to create accessible, impactful learning resources.</p>
-        <a href="Divisions/vespera-publishing.html" class="btn">Learn More</a>
+    <div class="division-item">
+      <div class="division-item__content">
+        <h3 class="division-item__name">Quantum Solutions</h3>
+        <p class="division-item__desc">Enterprise software development, backend systems, and business automation tools for workflow optimization and creative business solutions.</p>
+        <a href="#" class="division-item__link">
+          Learn more about Quantum Solutions →
+        </a>
       </div>
-      <div class="spotlight-image">
-        <img 
-          src="public/images/vespera.png" 
-          alt="Vespera Publishing - Digital library in a futuristic cityscape with floating digital books and red neon lighting" 
-          loading="lazy"
-          width="600"
-          height="600">
+      <div class="division-item__media">
+        <img src="public/images/divisions/quantum-solutions.jpg" alt="Quantum Solutions division showcasing enterprise software" loading="lazy">
+      </div>
+    </div>
+    
+    <div class="division-item">
+      <div class="division-item__content">
+        <h3 class="division-item__name">Pulse Media</h3>
+        <p class="division-item__desc">Digital content creation studio developing video, motion graphics, animation, and mixed-media content for brands and creative projects.</p>
+        <a href="#" class="division-item__link">
+          Learn more about Pulse Media →
+        </a>
+      </div>
+      <div class="division-item__media">
+        <img src="public/images/divisions/pulse-media.jpg" alt="Pulse Media division showcasing video production" loading="lazy">
+      </div>
+    </div>
+    
+    <div class="division-item">
+      <div class="division-item__content">
+        <h3 class="division-item__name">Horizon Ventures</h3>
+        <p class="division-item__desc">Research and development wing focused on exploring emerging technologies, sustainable solutions, and future-forward concepts.</p>
+        <a href="#" class="division-item__link">
+          Learn more about Horizon Ventures →
+        </a>
+      </div>
+      <div class="division-item__media">
+        <img src="public/images/divisions/horizon-ventures.jpg" alt="Horizon Ventures division showcasing R&D innovation" loading="lazy">
       </div>
     </div>
   </section>
 
-  <!-- All Divisions Grid -->
-  <section id="divisions" class="container">
-    <h2>Explore All Divisions</h2>
-    <div id="divisionsHub" class="grid grid-cols-3 stagger">
-      <!-- Permanent Static Cards with animations -->
-      <a href="Divisions/skyforge-creative.html" class="card permanent-card" data-animate="fade-up">
-        <h3 class="glitch" data-text="SkyForge Creative">SkyForge Creative</h3>
-        <p>Immersive game development & virtual storytelling studio.</p>
-      </a>
-      <a href="Divisions/horizon-aerial-visual.html" class="card permanent-card" data-animate="fade-up">
-        <h3 class="glitch" data-text="Horizon Aerial & Visual">Horizon Aerial & Visual</h3>
-        <p>Professional drone cinematography & mapping.</p>
-      </a>
-      <a href="Divisions/lumina-creative.html" class="card permanent-card" data-animate="fade-up">
-        <h3 class="glitch" data-text="Lumina Creative">Lumina Creative</h3>
-        <p>Branding, marketing & digital media.</p>
-      </a>
-      <a href="Divisions/vespera-publishing.html" class="card permanent-card" data-animate="fade-up">
-        <h3 class="glitch" data-text="Vespera Publishing">Vespera Publishing</h3>
-        <p>Books & educational media for holistic growth.</p>
-      </a>
-      <a href="Divisions/summit-learning.html" class="card permanent-card" data-animate="fade-up">
-        <h3 class="glitch" data-text="Summit Learning">Summit Learning</h3>
-        <p>Personal development & training programs.</p>
-      </a>
-      <a href="Divisions/nexus-techworks.html" class="card permanent-card" data-animate="fade-up">
-        <h3 class="glitch" data-text="Nexus TechWorks">Nexus TechWorks</h3>
-        <p>Web, AI & product engineering services.</p>
-      </a>
-      <a href="Divisions/echoverse-audio.html" class="card permanent-card" data-animate="fade-up">
-        <h3 class="glitch" data-text="EchoVerse Audio">EchoVerse Audio</h3>
-        <p>AI‑driven music production & sound design.</p>
-      </a>
-    </div>
-  </section>
-  
-  <!-- Other Division Work -->
-  <section class="container">
-    <h2 class="mb-lg">Recent Division Projects</h2>
-    <p style="max-width:700px;margin:0 auto 2rem;text-align:center;">
-      From immersive games to original books, branding projects, and AI music, our divisions produce work that merges storytelling, technology, and design.
-    </p>
-    <div class="grid grid-cols-3 stagger">
-      <div class="card glass" data-animate="fade-up">
-        <img 
-          src="public/images/echoverse.png" 
-          alt="EchoVerse Audio - AI-driven music production studio with holographic band members and neon visualization" 
-          loading="lazy"
-          width="600"
-          height="400">
-        <h3>EchoVerse Audio</h3>
-        <p>AI-generated music from the EchoVerse collective.</p>
-      </div>
-      <div class="card glass" data-animate="fade-up">
-        <img 
-          src="public/images/vespera.png" 
-          alt="Vespera Publishing - Digital library in a futuristic cityscape with floating digital books" 
-          loading="lazy"
-          width="600"
-          height="400">
-        <h3>Vespera Publishing</h3>
-        <p>Digital publishing and educational media for holistic growth.</p>
-      </div>
-      <div class="card glass" data-animate="fade-up">
-        <img 
-          src="public/images/autumns_harvest.png" 
-          alt="Summit Learning - Autumn's Harvest publication featuring seasonal themes for personal growth" 
-          loading="lazy"
-          width="600"
-          height="400">
-        <h3>Summit Learning</h3>
-        <p>Guided self-reflection in holistic learning spaces.</p>
+  <!-- Division FAQ Section -->
+  <section class="division-faq">
+    <div class="container">
+      <h2 class="division-faq__heading">Frequently Asked Questions</h2>
+      
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">How do your divisions collaborate with each other?</div>
+          <p class="faq-answer">Our divisions operate both independently and cooperatively. Projects may involve multiple divisions, with each bringing specialized expertise to the table. Our organizational structure encourages cross-pollination of ideas and collaborative problem-solving across traditionally separate domains.</p>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">Do you work with external clients and partners?</div>
+          <p class="faq-answer">Yes, all our divisions work with external clients and partners. We maintain a balance between internal projects and collaborative ventures with other organizations. If you're interested in working with us, please reach out through our contact form.</p>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">How do you decide which division handles a particular project?</div>
+          <p class="faq-answer">Project assignment is based on required expertise, division specialization, and team availability. Many projects involve multiple divisions collaborating, with each handling aspects that align with their core competencies. Our administrative team helps coordinate cross-division collaboration.</p>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">What is the typical size of your divisions?</div>
+          <p class="faq-answer">Division sizes vary based on specialization and current projects. We maintain a flexible network of full-time team members and trusted collaborators, scaling each division as needed while maintaining consistent creative leadership.</p>
+        </div>
+        
+        <div class="faq-item">
+          <div class="faq-question">Can I commission work from a specific division?</div>
+          <p class="faq-answer">Absolutely. You can request to work with a specific division if you know which one best suits your needs. For projects that might benefit from multiple specialties, we can recommend the optimal mix of talents from across our divisions.</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- Collaboration Callout -->
-  <section class="cta-section">
-    <h2 style="margin-bottom:1.5rem;">Need Specialized Expertise?</h2>
-    <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">Our divisions can work independently or in concert to deliver comprehensive solutions for your most complex challenges. Let's explore how our specialized teams can help you.</p>
-    <a href="#contact" class="btn alt" data-animate="fade-up">Start a Conversation</a>
+  <!-- CTA Section -->
+  <section class="app-cta">
+    <div class="container">
+      <div class="app-cta__content">
+        <h2 class="app-cta__heading">Ready to Collaborate?</h2>
+        <p class="app-cta__description">Whether you're looking to partner with a specific division or need help figuring out the right mix of expertise for your project, we're here to help turn your vision into reality.</p>
+        <div class="app-cta__buttons">
+          <a href="#contact" class="app-cta__button">Get in Touch</a>
+          <a href="about.html" class="app-cta__button outline">Learn About Our Approach</a>
+        </div>
+      </div>
+    </div>
   </section>
-
-  <!-- Schema.org data will be injected here by JS -->
-  <div class="schema-metadata" aria-hidden="true"></div>
-
   </main>
 
-  <!-- Contact CTA -->
-  <section id="contact">
-    <div class="container">
-      <h2>Let's Collaborate</h2>
-      <form id="contactForm">
-        <input required type="text" placeholder="Your Name" data-animate="fade-up" />
-        <input required type="email" placeholder="Email" data-animate="fade-up" />
-        <textarea required rows="5" placeholder="Tell us about your project..." data-animate="fade-up"></textarea>
-        <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
-      </form>
-    </div>
+  <!-- Contact Section -->
+  <section id="contact" class="container section-md" aria-labelledby="contact-heading">
+    <h2 id="contact-heading" class="text-center mb-lg">Get in Touch</h2>
+    <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
+      <input class="form-control mb-sm" required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
+      <input class="form-control mb-sm" required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
+      <textarea class="form-control mb-md" required rows="5" placeholder="Tell us about your project..." data-animate="fade-up" aria-label="Your message"></textarea>
+      <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
+    </form>
   </section>
 
-  <footer>
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="logo"><strong>AeroVista</strong></div>
-          <p>Crafting bold tech &amp; creative experiences since 2019.</p>
+          <div class="footer-logo"><a href="index.html"><strong>AeroVista</strong></a></div>
+          <p>Our work is fueled by a dynamic network of contributors, guided by clear creative leadership and a shared commitment to excellence.</p>
         </div>
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <a href="about.html">About Us</a>
-          <a href="divisions.html">Divisions</a>
-          <a href="apps.html">Apps</a>
-          <a href="Store.html">Tools & Resources</a>
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <div class="footer-links">
+            <a href="about.html" aria-label="About AeroVista">About</a>
+            <a href="divisions.html" aria-label="Explore our divisions">Divisions</a>
+            <a href="apps.html" aria-label="View our apps">Apps</a>
+            <a href="Store.html" aria-label="Tools and resources">Tools & Resources</a>
+          </div>
         </div>
-        <div class="footer-links">
-          <h4>Legal</h4>
-          <a href="privacy-policy.html">Privacy Policy</a>
-          <a href="terms-of-service.html">Terms of Service</a>
+        <div>
+          <h4 class="footer-heading">Connect</h4>
+          <div class="footer-links">
+            <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
+            <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
+            <a href="surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Legal</h4>
+          <div class="footer-links">
+            <a href="privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
+            <a href="terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
+          </div>
         </div>
       </div>
       <div class="footer-bottom">
         <p>© 2025 AeroVista LLC — All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter"><i class="icon">Twitter</i></a>
+          <a href="#" aria-label="Instagram"><i class="icon">Instagram</i></a>
+          <a href="#" aria-label="GitHub"><i class="icon">GitHub</i></a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <script type="module" src="main.js"></script>
-  <script type="module">
-    import { initLazyLoading } from './src/imageUtil.js'; 
-    import { divisions, renderGrid } from './main.js';
-    
+  <!-- Dark mode toggle -->
+  <button class="dark-mode-toggle" aria-label="Toggle dark mode">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
+  </button>
+
+  <!-- Scroll to top button -->
+  <button class="scroll-top" aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.828L7.05 15.778L5.636 14.364L12 8L18.364 14.364L16.95 15.778L12 10.828Z"></path></svg>
+  </button>
+
+  <script src="main.js"></script>
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
-      initLazyLoading();
+      // Set up FAQ accordion
+      const faqItems = document.querySelectorAll('.faq-item');
       
-      // Add body-loaded class for glitch animation
-      setTimeout(() => {
-        document.body.classList.add('body-loaded');
-      }, 100);
+      faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
+        
+        question.addEventListener('click', () => {
+          // Toggle active class
+          const isActive = item.classList.contains('active');
+          
+          // Close all FAQs
+          faqItems.forEach(faq => {
+            faq.classList.remove('active');
+          });
+          
+          // Open clicked FAQ if it wasn't already open
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
       
-      // Manual check to ensure divisions are loaded, but don't remove permanent cards
-      console.log('Manual check for divisions grid');
-      const divisionsHub = document.getElementById('divisionsHub');
+      // Initialize dark mode toggle
+      initDarkModeToggle();
       
-      // Only attempt to render divisions if the permanent cards aren't present
-      if (divisionsHub && divisionsHub.querySelectorAll('.permanent-card').length === 0) {
-        console.log('No permanent cards found, attempting to render dynamic cards');
-        renderGrid(divisions, 'divisionsHub', 'division');
-      } else {
-        console.log('Permanent cards are present, skipping dynamic rendering');
-      }
+      // Initialize scroll to top button
+      initScrollToTop();
     });
+    
+    function initDarkModeToggle() {
+      const darkModeToggle = document.querySelector('.dark-mode-toggle');
+      if (!darkModeToggle) return;
+      
+      // Check for saved preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+        document.body.classList.toggle('light-theme', savedTheme === 'light');
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('light-theme')) {
+          document.body.classList.remove('light-theme');
+          document.body.classList.add('dark-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.body.classList.remove('dark-theme');
+          document.body.classList.add('light-theme');
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    }
+    
+    function initScrollToTop() {
+      const scrollTopBtn = document.querySelector('.scroll-top');
+      if (!scrollTopBtn) return;
+      
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          scrollTopBtn.classList.add('visible');
+        } else {
+          scrollTopBtn.classList.remove('visible');
+        }
+      });
+      
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
   </script>
 </body>
 </html>
