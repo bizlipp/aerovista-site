@@ -7,9 +7,9 @@
   <title>The Vault | AeroVista</title>
   
   <!-- Preload critical CSS -->
-  <link rel="preload" href="/css/theme-variables.css" as="style">
-  <link rel="preload" href="/css/variables.css" as="style">
-  <link rel="preload" href="/css/base.css" as="style">
+  <link rel="preload" href="css/theme-variables.css" as="style">
+  <link rel="preload" href="css/variables.css" as="style">
+  <link rel="preload" href="css/base.css" as="style">
   
   <!-- Preconnect to external domains -->
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
@@ -17,9 +17,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Montserrat:wght@300;400;500;700&family=Saira+Condensed:wght@400;500;700&display=swap" rel="stylesheet">
   
   <!-- Main CSS -->
-  <link rel="stylesheet" href="/css/main.css?v=1.0.6" />
-  <link rel="preload" href="/css/performance.css" as="style" />
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/main.css?v=1.0.6" />
+  <link rel="preload" href="css/performance.css" as="style" />
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   
   <meta name="robots" content="noindex, nofollow">
 
@@ -139,7 +139,7 @@
         <span class="vault-passcode">PASSCODE: SKYFORGE-NEXUS-1991</span>
       </div>
     </div>
-    <a href="/" class="return-link">Return to main site</a>
+    <a href="index.html" class="return-link">Return to main site</a>
   </section>
 
   <script>
@@ -159,7 +159,7 @@
         terminal.innerHTML += '<p style="color: red;">Connection terminated. Redirecting to home page...</p>';
         
         setTimeout(() => {
-          window.location.href = '/';
+          window.location.href = 'index.html';
         }, 3000);
       }, 60000);
     });
