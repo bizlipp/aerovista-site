@@ -3,53 +3,117 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RydeSync — Ride. Chat. Sync. | AeroVista</title>
-  <!-- Fonts & Styles -->
+  <title>RydeSync | AeroVista</title>
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles.css" />
-  <style>
-    .carousel { display:flex; overflow-x:auto; gap:1rem; padding:1rem 0; scroll-snap-type:x mandatory; }
-    .carousel img { width:300px; height:180px; object-fit:cover; border-radius:var(--radius-base); scroll-snap-align:center; }
-  </style>
+  <link rel="stylesheet" href="../css/main.css" />
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <meta name="description" content="RydeSync is a real-time ride and music coordination app for group travel.">
+  <meta property="og:title" content="RydeSync | AeroVista">
+  <meta property="og:description" content="Ride. Chat. Sync. Real-time group coordination.">
+  <meta property="og:image" content="https://aerovista.us/public/images/apps/rydesync.jpg">
+  <meta property="og:url" content="https://aerovista.us/Apps/rydesync.html">
+  <meta property="og:type" content="website">
 </head>
-<body>
-  <!-- Accessibility skip link -->
+<body data-page="app-single" data-app="rydesync">
   <a href="#main-content" class="skip-to-content">Skip to content</a>
-
-  <!-- Navbar -->
-  <header role="banner">
-    <div class="logo"><strong>AeroVista</strong></div>
-    <nav role="navigation" aria-label="Main Navigation">
+  <header class="navbar" role="banner">
+    <div class="navbar-brand"><a href="../index.html"><strong>AeroVista</strong></a></div>
+    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
       <a href="../index.html">Home</a>
       <a href="../divisions.html">Divisions</a>
-      <a href="../apps.html">Apps</a>
+      <a href="../apps.html" class="active">Apps</a>
       <a href="../Store.html">Tools & Resources</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <!-- Main content area -->
   <main id="main-content">
-    <!-- App Hero -->
-    <section class="hero" style="background:linear-gradient(135deg,#474dff55 0%,#00d2ff33 100%);min-height:60vh;">
-      <h1>RydeSync</h1>
-      <p>Real-time rideshare coordination app optimized for group travel</p>
+    <section class="app-hero">
+      <div class="container">
+        <div class="app-hero__split">
+          <div class="app-hero__text">
+            <div class="app-hero__badge badge">Group Coordination</div>
+            <h1 class="app-hero__title">RydeSync</h1>
+            <div class="app-hero__subtitle">Ride. Chat. Sync.</div>
+            <p class="app-hero__description">Real-time rideshare and music coordination tool built for group travel. Connect with friends, share routes, and sync playlists in style.</p>
+            <div class="app-hero__cta">
+              <a href="#pricing" class="btn">Download Now</a>
+              <a href="#features" class="btn alt">Learn More</a>
+            </div>
+          </div>
+          <div class="app-hero__media">
+            <img src="../public/images/apps/rydesync-device.png" alt="RydeSync interface" class="app-hero__device">
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="container">
-      <h2>Coming Soon</h2>
-      <p>RydeSync is currently in development. Check back for updates!</p>
+    <section id="features" class="app-features">
+      <div class="container">
+        <h2 class="app-features__heading">Key Features</h2>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-card__icon">🚗</div>
+            <h3 class="feature-card__title">Live Ride Coordination</h3>
+            <p class="feature-card__description">Group up, see who's on the move, and plan pit stops in real time.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon">🎵</div>
+            <h3 class="feature-card__title">Synced Music Playback</h3>
+            <p class="feature-card__description">Sync playback using a host playlist. Powered by Firestore and modular sync logic.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon">🧩</div>
+            <h3 class="feature-card__title">Plugin-Based Architecture</h3>
+            <p class="feature-card__description">Modular plugins with isolated track control and full cleanup logic per room.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon">📋</div>
+            <h3 class="feature-card__title">Paste-to-Playlist™</h3>
+            <p class="feature-card__description">Generate playlists from Riffusion or other metadata sources with one click.</p>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer>© 2025 AeroVista LLC — All rights reserved.</footer>
-
-  <script type="module" src="../main.js"></script>
-  <script type="module">
-    import { initLazyLoading } from '../src/imageUtil.js'; 
-    document.addEventListener('DOMContentLoaded', () => {
-      initLazyLoading();
-    });
-  </script>
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"><a href="../index.html"><strong>AeroVista</strong></a></div>
+          <p>RydeSync is powered by Nexus TechWorks, a division of AeroVista LLC.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <div class="footer-links">
+            <a href="../about.html">About</a>
+            <a href="../divisions.html">Divisions</a>
+            <a href="../apps.html">Apps</a>
+            <a href="../Store.html">Tools & Resources</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Connect</h4>
+          <div class="footer-links">
+            <a href="mailto:hello@aerovista.us">Email Us</a>
+            <a href="tel:+15551234567">Call Us</a>
+            <a href="../surron_build/surron_squad.html">Surron Squad</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Legal</h4>
+          <div class="footer-links">
+            <a href="../privacy-policy.html">Privacy Policy</a>
+            <a href="../terms-of-service.html">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+  <script src="../main.js"></script>
 </body>
 </html>
