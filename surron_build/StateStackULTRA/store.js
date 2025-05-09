@@ -126,32 +126,6 @@ export function createStore(reducer, initialState, enhancer) {
 }
 
 /**
- * Creates a store enhancer that applies middleware
- * @param {...Function} middlewares - Middleware functions
- * @returns {Function} Store enhancer
- */
-export function applyMiddleware(...middlewares) {
-  return (createStore) => (reducer, initialState) => {
-    const store = createStore(reducer, initialState);
-    let dispatch = store.dispatch;
-    let chain = [];
-
-    const middlewareAPI = {
-      getState: store.getState,
-      dispatch: (action) => dispatch(action),
-    };
-
-    chain = middlewares.map(middleware => middleware(middlewareAPI));
-    dispatch = composeMiddleware(...chain)(store.dispatch);
-
-    return {
-      ...store,
-      dispatch,
-    };
-  };
-}
-
-/**
  * Combines multiple reducers into a single reducer
  * @param {Object} reducers - Object of reducer functions
  * @returns {Function} Combined reducer function
