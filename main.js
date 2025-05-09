@@ -718,7 +718,7 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   // Glitch effect for elements with data-scramble="true"
-  const glitchElements = document.querySelectorAll('[data-scramble="true"]');
+  const glitchElements = document.querySelectorAll('[data-scramble="true"]:not(.clickable-scramble)');
   
   glitchElements.forEach(element => {
     const originalText = element.textContent;

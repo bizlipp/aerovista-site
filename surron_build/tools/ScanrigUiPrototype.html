@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScanRig v1.7</title>
+  <style>
+    body {
+      background: #111;
+      color: #0f0;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .scanrig {
+      border: 4px solid #0f0;
+      padding: 16px;
+      width: 480px;
+      background: #001100;
+      box-shadow: 0 0 20px #0f0;
+    }
+
+    .screen-header {
+      border-bottom: 1px solid #0f0;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+    }
+
+    .section {
+      margin-bottom: 12px;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    button {
+      background: #0f0;
+      color: #000;
+      font-weight: bold;
+      padding: 6px 12px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .console {
+      height: 100px;
+      overflow-y: auto;
+      border-top: 1px dashed #0f0;
+      padding-top: 6px;
+      font-size: 0.9rem;
+    }
+
+    .console-line {
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+  <div class="scanrig">
+    <div class="screen-header">[ SCANRIG V1.7 – DIAG TOOLS ONLINE ]</div>
+
+    <div class="section" id="target-display">
+      <strong>[Target Vehicle]</strong><br />
+      VIN: <span id="vin">???</span>  | YEAR: <span id="year">????</span>  | STATUS: <span id="status">--</span>
+    </div>
+
+    <div class="section">
+      <strong>[Module Scan]</strong><br />
+      ECU: <span id="ecu">---</span>  | STATUS: <span id="ecuStatus">---</span><br />
+      BMS: <span id="bms">---</span>  | CELLS: <span id="bmsCells">?/4 OK</span><br />
+      Logs: <button onclick="logCrash()">View Crash Log</button>
+    </div>
+
+    <div class="button-row">
+      <button onclick="scanVehicle()">🔍 SCAN</button>
+      <button onclick="overrideSystems()">⚡ OVERRIDE</button>
+      <button onclick="startSalvage()">🛠 SALVAGE</button>
+    </div>
+
+    <div class="console" id="console"></div>
+  </div>
+
+  <script>
+    const consoleOutput = document.getElementById("console");
+
+    function log(message) {
+      const line = document.createElement("div");
+      line.className = "console-line";
+      line.textContent = "> " + message;
+      consoleOutput.appendChild(line);
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    }
+
+    function scanVehicle() {
+      log("Connecting to vehicle...");
+      setTimeout(() => {
+        document.getElementById("vin").textContent = "WBAPA73597WW22104";
+        document.getElementById("year").textContent = "2008";
+        document.getElementById("status").textContent = "SCANNING";
+        document.getElementById("ecu").textContent = "Bosch ME9.2";
+        document.getElementById("ecuStatus").textContent = "OK";
+        document.getElementById("bms").textContent = "BMS-Std v1.3";
+        document.getElementById("bmsCells").textContent = "4/4 OK";
+        log("Scan complete. Modules operational.");
+      }, 1000);
+    }
+
+    function overrideSystems() {
+      log("Attempting override...");
+      setTimeout(() => {
+        log("Bypass failed. Alarm armed.");
+      }, 800);
+    }
+
+    function startSalvage() {
+      log("Engaging salvage operation...");
+      setTimeout(() => {
+        log("BMS successfully removed.");
+      }, 1200);
+    }
+
+    function logCrash() {
+      log("Crash log: Airbag deployed. March 2008. 2 occupants. Status: Recovered.");
+    }
+  </script>
+</body>
+</html>

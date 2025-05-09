@@ -57,6 +57,7 @@
     .program-card {
       padding: 2rem;
       background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-base);
@@ -135,6 +136,7 @@
       text-align: center;
       padding: 2rem;
       background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-base);
@@ -160,6 +162,7 @@
     
     .testimonial-card {
       background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-base);
@@ -251,15 +254,30 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <header>
-    <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
-      <a href="../index.html">Home</a>
-      <a href="../divisions.html">Divisions</a>
-      <a href="../apps.html">Apps</a>
-      <a href="#contact">Contact</a>
-    </nav>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../" class="logo">
+          <img src="../public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
+          <span class="logo-text">AeroVista</span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="../divisions.html" class="nav-link">Divisions</a></li>
+            <li><a href="../apps.html" class="nav-link">Apps</a></li>
+            <li><a href="../Store.html" class="nav-link">Tools & Resources</a></li>
+            <li><a href="../about.html" class="nav-link">About</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- Division Hero -->
@@ -426,7 +444,7 @@
   </section>
 
   <!-- Approach Callout -->
-  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));">
+  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);-webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));">
     <h2 style="margin-bottom:1rem;" class="text-gradient">Our Learning Approach</h2>
     <p style="max-width:600px;color:var(--color-text-soft);">We combine cognitive science, behavioral psychology, and industry expertise to create immersive learning experiences that stick. Every program balances theory, practice, and accountability.</p>
     <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Schedule a Consultation</a>

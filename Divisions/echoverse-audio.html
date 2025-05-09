@@ -36,6 +36,7 @@
     
     .service-card {
       background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-base);
@@ -160,21 +161,39 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <header>
-    <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
-      <a href="../index.html">Home</a>
-      <a href="../divisions.html">Divisions</a>
-      <a href="../apps.html">Apps</a>
-      <a href="#contact">Contact</a>
-    </nav>
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../" class="logo">
+          <img src="../public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
+          <span class="logo-text">AeroVista</span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="../divisions.html" class="nav-link">Divisions</a></li>
+            <li><a href="../apps.html" class="nav-link">Apps</a></li>
+            <li><a href="../Store.html" class="nav-link">Tools & Resources</a></li>
+            <li><a href="../about.html" class="nav-link">About</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- Division Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#474dff55 100%);">
     <div class="audio-waves"></div>
-    <h1 class="text-gradient glitch" data-text="EchoVerse Audio">EchoVerse Audio</h1>
+    <h1 class="text-gradient glitch" data-text="EchoVerse Audio" data-scramble="true">EchoVerse Audio</h1>
     <p>AI‑driven music production and sound design crafting immersive sonic experiences across media.</p>
     <a href="#contact" class="btn" data-animate="fade-up">Request a Demo Reel</a>
   </section>
@@ -285,7 +304,7 @@
 
   <!-- Collaboration Callout -->
   <section class="hero" style="min-height:auto;padding:4rem 1rem;background:var(--color-surface);">
-    <h2 style="margin-bottom:1.5rem;">Need a Signature Sound?</h2>
+    <h2 style="margin-bottom:1.5rem;" data-scramble="true" data-text="Need a Signature Sound?">Need a Signature Sound?</h2>
     <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">From high‑octane trailers to meditative ambience, EchoVerse Audio composes sonic worlds that resonate with audiences and elevate your creative vision.</p>
     <a href="#contact" class="btn alt" data-animate="fade-up">Request a Demo Reel</a>
   </section>

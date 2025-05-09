@@ -56,6 +56,7 @@
     
     .book-card {
       background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-base);
@@ -219,6 +220,7 @@
     
     .service-item {
       background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-base);
@@ -299,21 +301,36 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <header>
-    <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
-      <a href="../index.html">Home</a>
-      <a href="../divisions.html">Divisions</a>
-      <a href="../apps.html">Apps</a>
-      <a href="#contact">Contact</a>
-    </nav>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../" class="logo">
+          <img src="../public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
+          <span class="logo-text">AeroVista</span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="../divisions.html" class="nav-link">Divisions</a></li>
+            <li><a href="../apps.html" class="nav-link">Apps</a></li>
+            <li><a href="../Store.html" class="nav-link">Tools & Resources</a></li>
+            <li><a href="../about.html" class="nav-link">About</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- Division Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#ffb34733 100%);">
     <div class="book-bg" id="bookBg"></div>
-    <h1 class="text-gradient-hot glitch" data-text="Vespera Publishing">Vespera Publishing</h1>
+    <h1 class="text-gradient-hot glitch" data-text="Vespera Publishing" data-scramble="true">Vespera Publishing</h1>
     <p>Books, courses, and multimedia resources crafted to spark holistic growth and lifelong learning.</p>
     <a href="#books" class="btn" data-animate="fade-up">Browse Collection</a>
   </section>
@@ -489,8 +506,8 @@
   </section>
 
   <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));">
-    <h2 style="margin-bottom:1rem;" class="text-gradient-hot">Seeking Publishing Partners & Contributors</h2>
+  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);-webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));">
+    <h2 style="margin-bottom:1rem;" class="text-gradient-hot" data-scramble="true" data-text="Seeking Publishing Partners & Contributors">Seeking Publishing Partners & Contributors</h2>
     <p style="max-width:600px;color:var(--color-text-soft);">We welcome authors, illustrators, and educators aligned with our mission to co‑create the next wave of growth‑focused content and transformative publications.</p>
     <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Pitch Your Idea</a>
   </section>
@@ -501,7 +518,7 @@
     <form id="contactForm" class="bg-glass" style="border-radius:var(--radius-base);padding:2rem;border:1px solid var(--glass-border);">
       <input required type="text" placeholder="Your Name" data-animate="fade-up" />
       <input required type="email" placeholder="Email" data-animate="fade-up" />
-      <textarea required rows="5" placeholder="Share your proposal or inquiry..." data-animate="fade-up"></textarea>
+      <textarea required rows="5" placeholder="Tell us about your project or inquiry..." data-animate="fade-up"></textarea>
       <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
     </form>
   </section>
@@ -516,7 +533,7 @@
         <h4>Divisions</h4>
         <a href="skyforge-creative.html">SkyForge Creative</a>
         <a href="vespera-publishing.html">Vespera Publishing</a>
-        <a href="summit-learning.html">Summit Learning</a>
+        <a href="nexus-techworks.html">Nexus TechWorks</a>
       </div>
       <div class="footer-links">
         <h4>Quick Links</h4>
@@ -541,26 +558,26 @@
     document.addEventListener('DOMContentLoaded', () => {
       // Create floating letters in the background
       const bookBg = document.getElementById('bookBg');
+      const letters = ['A', 'B', 'C', 'V', 'E', 'S', 'P', 'E', 'R', 'A'];
       const letterCount = 20;
-      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
       
       for (let i = 0; i < letterCount; i++) {
         const letter = document.createElement('div');
         letter.className = 'floating-letters';
         letter.textContent = letters[Math.floor(Math.random() * letters.length)];
         
-        // Random position and size
-        const posX = Math.random() * 100;
+        // Random properties
         const size = Math.random() * 30 + 20;
+        const posX = Math.random() * 100;
         const delay = Math.random() * 10;
         const duration = Math.random() * 10 + 10;
-        const rotation = Math.random() * 360;
+        const opacity = Math.random() * 0.3 + 0.1;
         
-        letter.style.left = `${posX}%`;
         letter.style.fontSize = `${size}px`;
+        letter.style.left = `${posX}%`;
         letter.style.animationDelay = `${delay}s`;
         letter.style.animationDuration = `${duration}s`;
-        letter.style.transform = `rotate(${rotation}deg)`;
+        letter.style.opacity = opacity;
         
         bookBg.appendChild(letter);
       }

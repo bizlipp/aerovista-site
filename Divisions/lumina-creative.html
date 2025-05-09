@@ -80,6 +80,7 @@
     
     .brand-card {
       background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-base);
@@ -152,6 +153,7 @@
       left: 0;
       right: 0;
       background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       backdrop-filter: blur(var(--glass-blur));
       padding: 1rem;
       transform: translateY(100%);
@@ -205,6 +207,7 @@
       text-align: center;
       padding: 2rem 1rem;
       background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       backdrop-filter: blur(var(--glass-blur));
       border: 1px solid var(--glass-border);
       border-radius: var(--radius-base);
@@ -284,15 +287,33 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <header>
-    <div class="logo"><strong>AeroVista</strong></div>
-    <nav>
-      <a href="../index.html">Home</a>
-      <a href="../divisions.html">Divisions</a>
-      <a href="../apps.html">Apps</a>
-      <a href="#contact">Contact</a>
-    </nav>
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../" class="logo">
+          <img src="../public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
+          <span class="logo-text">AeroVista</span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="../divisions.html" class="nav-link">Divisions</a></li>
+            <li><a href="../apps.html" class="nav-link">Apps</a></li>
+            <li><a href="../Store.html" class="nav-link">Tools & Resources</a></li>
+            <li><a href="../about.html" class="nav-link">About</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- Division Hero -->
@@ -302,7 +323,7 @@
       <div class="orb"></div>
       <div class="orb"></div>
     </div>
-    <h1 class="text-gradient-hot glitch" data-text="Lumina Creative">Lumina Creative</h1>
+    <h1 class="text-gradient-hot glitch" data-text="Lumina Creative" data-scramble="true">Lumina Creative</h1>
     <p>Branding, marketing, and digital media that amplifies stories with bold visuals and strategic clarity.</p>
     <a href="#contact" class="btn" data-animate="fade-up">Book a Discovery Call</a>
   </section>
@@ -503,8 +524,8 @@
   </section>
 
   <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));">
-    <h2 style="margin-bottom:1rem;" class="text-gradient-hot">Let's Light Up Your Brand</h2>
+  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);-webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));">
+    <h2 style="margin-bottom:1rem;" class="text-gradient-hot" data-scramble="true" data-text="Let's Light Up Your Brand">Let's Light Up Your Brand</h2>
     <p style="max-width:600px;color:var(--color-text-soft);">From startups to enterprise rebrands, Lumina Creative crafts visuals that resonate and strategies that convert. Ready to stand out?</p>
     <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Book a Discovery Call</a>
   </section>

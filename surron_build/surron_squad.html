@@ -162,7 +162,13 @@
     </div>
   </div>
 
+  <!-- Load our new state management system first -->
+  <script type="module" src="game/main.js"></script>
+  
+  <!-- Then load legacy scripts that will use the bridge -->
+  <script src="player-state.js"></script>
   <script src="surron_squad.js"></script>
+  
   <script>
     function downloadLore() {
       // Create a link to download the lore.md file

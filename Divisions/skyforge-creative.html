@@ -68,6 +68,7 @@
       margin-bottom: 2rem;
       padding: 1.5rem;
       background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
       backdrop-filter: blur(var(--glass-blur));
       border-radius: var(--radius-base);
       border: 1px solid var(--glass-border);
@@ -106,23 +107,37 @@
 </head>
 <body>
   <!-- Accessibility skip link -->
-  <a href="#main-content" class="skip-to-content">Skip to content</a>
+  <a href="#main-content" class="skip-link">Skip to content</a>
   
-  <!-- Navbar -->
-  <header role="banner">
-    <div class="logo"><strong>AeroVista</strong></div>
-    <nav role="navigation" aria-label="Main Navigation">
-      <a href="../index.html">Home</a>
-      <a href="../divisions.html">Divisions</a>
-      <a href="../apps.html">Apps</a>
-      <a href="../Store.html">Tools & Resources</a>
-      <a href="#contact">Contact</a>
-    </nav>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <a href="../" class="logo">
+          <img src="../public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
+          <span class="logo-text">AeroVista</span>
+        </a>
+        <nav class="main-nav">
+          <ul class="nav-list">
+            <li><a href="../index.html" class="nav-link">Home</a></li>
+            <li><a href="../divisions.html" class="nav-link">Divisions</a></li>
+            <li><a href="../apps.html" class="nav-link">Apps</a></li>
+            <li><a href="../Store.html" class="nav-link">Tools & Resources</a></li>
+            <li><a href="../about.html" class="nav-link">About</a></li>
+          </ul>
+        </nav>
+        <button class="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </button>
+      </div>
+    </div>
   </header>
 
   <!-- Division Hero -->
   <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#492eff66 100%);">
-    <h1 class="text-gradient glitch" data-text="SkyForge Creative">SkyForge Creative</h1>
+    <h1 class="text-gradient glitch" data-text="SkyForge Creative" data-scramble="true">SkyForge Creative</h1>
     <p>Immersive game development & virtual storytelling studio crafting worlds that resonate beyond the screen.</p>
     <a href="#contact" class="btn" data-animate="fade-up">Start a Project</a>
   </section>
@@ -230,7 +245,7 @@
 
     <!-- Collaboration Callout -->
     <section class="hero" style="min-height:auto;padding:4rem 1rem;background:#1a1d24;">
-      <h2 style="margin-bottom:1.5rem;">Looking to Level Up Your Story?</h2>
+      <h2 style="margin-bottom:1.5rem;" data-scramble="true" data-text="Looking to Level Up Your Story?">Looking to Level Up Your Story?</h2>
       <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">Whether you need full‑scale game development, narrative design, or XR consulting, our team is ready to bring your vision to life. Let's build the next world together.</p>
       <a href="#contact" class="btn alt" data-animate="fade-up">Start the Conversation</a>
     </section>

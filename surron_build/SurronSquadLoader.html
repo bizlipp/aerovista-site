@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Surron Squad - Loading...</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      background: #000;
+      color: #0f0;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .title {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 6px #0f0;
+    }
+
+    .loading-bar {
+      width: 80%;
+      max-width: 400px;
+      height: 10px;
+      background: #222;
+      border: 1px solid #0f0;
+      margin-top: 1rem;
+    }
+
+    .loading-fill {
+      height: 100%;
+      background: #0f0;
+      width: 0%;
+    }
+
+    .fade {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">Surron Squad</div>
+  <div>Initializing GameCore...</div>
+  <div class="loading-bar">
+    <div class="loading-fill" id="loadingFill"></div>
+  </div>
+
+  <script type="module">
+    import GameCore from './game/GameCore.js';
+
+    const fill = document.getElementById('loadingFill');
+
+    async function simulateBootProgress() {
+      let percent = 0;
+
+      const interval = setInterval(() => {
+        percent += Math.random() * 10;
+        fill.style.width = Math.min(percent, 100) + '%';
+
+        if (percent >= 100) {
+          clearInterval(interval);
+          startGame();
+        }
+      }, 200);
+    }
+
+    async function startGame() {
+      await GameCore.boot();
+
+      // Redirect to Squad HQ
+      window.location.href = 'squad-hq.html';
+    }
+
+    simulateBootProgress();
+  </script>
+</body>
+</html>
