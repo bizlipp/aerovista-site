@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Squad HQ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="surron_squad.css">
+  <style>
+    #quest-board {
+      margin-top: 2rem;
+      background: rgba(0,0,0,0.3);
+      padding: 1.25rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px limegreen;
+    }
+    .quest-list { list-style: none; padding-left: 0; }
+    .quest-item { margin-bottom: 1.5rem; background: rgba(0,0,0,0.2); padding: 1rem; border-left: 4px solid lime; border-radius: 8px; }
+    .quest-item.charlie { border-color: #e63946; }
+    .quest-item.billy { border-color: #7d8260; }
+    .quest-item.tbd { border-color: #264653; }
+    .quest-char-icon.charlie { color: #e63946; }
+    .quest-char-icon.billy { color: #7d8260; }
+    .quest-char-icon.tbd { color: #264653; }
+    .quest-progress { font-size: 0.9rem; color: lime; margin-bottom: 1rem; }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #222;
+      color: #0f0;
+      border: 2px solid #0f0;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      font-family: monospace;
+      box-shadow: 0 0 10px #0f0;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 1000;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="surron-squad-theme">
+  <div class="container">
+    <h1 class="main-title">🏠 Squad HQ</h1>
+    <p class="subtitle">Welcome back, Rider. Let’s check in on the crew and prep your next move.</p>
+
+    <!-- Player stats, relationship meters, etc. here -->
+
+    <!-- 🔥 NEW QUEST BOARD PLACEMENT -->
+    <div id="quest-board"></div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script type="module">
+    import { initQuestBoard } from './quest-board.js';
+
+    initQuestBoard();
+
+    // Notification system
+    const toast = document.getElementById('toast');
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    window.addEventListener('questCompleted', (e) => {
+      const questId = e.detail;
+      const messages = {
+        heist_planning: '🎉 Quest Complete: Heist Planning – +100 XP, +200 SurCoins',
+        fish_delivery: '🎣 Quest Complete: Fish Delivery – +75 XP, +150 SurCoins',
+        charlie_build_review: '🍕 Quest Complete: Charlie\'s Build Review – +50 XP, +2 Charisma'
+      };
+      if (messages[questId]) showToast(messages[questId]);
+    });
+  </script>
+</body>
+</html>

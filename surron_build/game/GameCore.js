@@ -1,7 +1,13 @@
 // game/GameCore.js
 import { store } from '../StateStackULTRA/store/gameStore.js';
-import { playerActions } from '../StateStackULTRA/slices/StateStackULTRA/slices/playerSlice.js';
+import { playerSlice } from '../StateStackULTRA/slices/StateStackULTRA/slices/playerSlice.js';
 import { PlayerModel } from '../DataStackULTRA/models/playerModel.js';
+
+// Create dynamic action creators from slice reducers
+const playerActions = Object.keys(playerSlice.reducers).reduce((actions, actionName) => {
+  actions[actionName] = (payload) => ({ type: `${playerSlice.name}/${actionName}`, payload });
+  return actions;
+}, {});
 
 const GameCore = {
   /**
@@ -10,12 +16,17 @@ const GameCore = {
   async boot() {
     console.info('[GameCore] Booting game...');
 
-    const data = await PlayerModel.get('main');
-    if (data) {
-      store.dispatch(playerActions.loadFromStorage(data));
-      console.info('[GameCore] Loaded player state from storage:', data);
-    } else {
-      console.info('[GameCore] No saved player state found. Starting fresh.');
+    try {
+      const data = await PlayerModel.get('main');
+      if (data) {
+        store.dispatch(playerActions.loadFromStorage(data));
+        console.info('[GameCore] Loaded player state from storage:', data);
+      } else {
+        console.info('[GameCore] No saved player state found. Starting fresh.');
+      }
+    } catch (error) {
+      console.error('[GameCore] Boot error:', error);
+      throw error;
     }
 
     // Auto-save on any change
