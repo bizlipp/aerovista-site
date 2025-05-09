@@ -3,7 +3,7 @@
  * Provides core state management functionality
  */
 
-import { composeMiddleware } from './middleware';
+import { applyMiddleware, createLoggerMiddleware } from './ss_middleware.js';
 
 /**
  * Creates a store to manage application state
