@@ -6,84 +6,57 @@
 import { applyMiddleware, createLoggerMiddleware } from './ss_middleware.js';
 
 /**
- * Creates a store to manage application state
- * @param {Function} reducer - Root reducer function
- * @param {*} initialState - Initial state
- * @param {Function} [enhancer] - Store enhancer function
- * @returns {Object} Store object
+ * Creates a Redux-style store to manage app state
  */
 export function createStore(reducer, initialState, enhancer) {
   if (typeof enhancer === 'function') {
     return enhancer(createStore)(reducer, initialState);
   }
 
-  let currentState = initialState;
   let currentReducer = reducer;
+  let currentState = initialState;
   let listeners = [];
+  let nextListeners = listeners;
   let isDispatching = false;
 
-  /**
-   * Gets the current state
-   * @returns {*} Current state
-   */
+  function ensureCanMutateNextListeners() {
+    if (nextListeners === listeners) {
+      nextListeners = listeners.slice();
+    }
+  }
+
   function getState() {
     if (isDispatching) {
-      throw new Error(
-        'You may not call store.getState() while the reducer is executing.'
-      );
+      throw new Error('You may not call store.getState() while the reducer is executing.');
     }
-
     return currentState;
   }
 
-  /**
-   * Subscribes to state changes
-   * @param {Function} listener - Listener function
-   * @returns {Function} Unsubscribe function
-   */
   function subscribe(listener) {
     if (typeof listener !== 'function') {
       throw new Error('Expected the listener to be a function.');
     }
 
-    if (isDispatching) {
-      throw new Error(
-        'You may not call store.subscribe() while the reducer is executing.'
-      );
-    }
-
     let isSubscribed = true;
-    listeners.push(listener);
+    ensureCanMutateNextListeners();
+    nextListeners.push(listener);
 
     return function unsubscribe() {
-      if (!isSubscribed) {
-        return;
-      }
-
+      if (!isSubscribed) return;
       if (isDispatching) {
-        throw new Error(
-          'You may not unsubscribe from a store listener while the reducer is executing.'
-        );
+        throw new Error('You may not unsubscribe from a store listener while the reducer is executing.');
       }
 
       isSubscribed = false;
-      const index = listeners.indexOf(listener);
-      listeners.splice(index, 1);
+      ensureCanMutateNextListeners();
+      const index = nextListeners.indexOf(listener);
+      nextListeners.splice(index, 1);
     };
   }
 
-  /**
-   * Dispatches an action
-   * @param {Object} action - Action object
-   * @returns {Object} Action object
-   */
   function dispatch(action) {
-    if (!action || typeof action !== 'object') {
-      throw new Error('Actions must be plain objects.');
-    }
-
-    if (typeof action.type === 'undefined') {
-      throw new Error('Actions must have a type property.');
+    if (typeof action !== 'object' || action === null || typeof action.type === 'undefined') {
+      throw new Error('Actions must be plain objects with a "type" property.');
     }
 
     if (isDispatching) {
@@ -97,38 +70,35 @@ export function createStore(reducer, initialState, enhancer) {
       isDispatching = false;
     }
 
-    listeners.forEach(listener => listener());
+    const listenersToNotify = (listeners = nextListeners);
+    for (let i = 0; i < listenersToNotify.length; i++) {
+      listenersToNotify[i]();
+    }
+
     return action;
   }
 
-  /**
-   * Replaces the current reducer
-   * @param {Function} nextReducer - Next reducer function
-   */
   function replaceReducer(nextReducer) {
     if (typeof nextReducer !== 'function') {
       throw new Error('Expected the nextReducer to be a function.');
     }
-
     currentReducer = nextReducer;
-    dispatch({ type: '@@StateStackULTRA/REPLACE' });
+    dispatch({ type: '@@STORE/REPLACE' });
   }
 
-  // Dispatch initial action to populate store with initial state
-  dispatch({ type: '@@StateStackULTRA/INIT' });
+  // Initialize
+  dispatch({ type: '@@STORE/INIT' });
 
   return {
-    getState,
-    subscribe,
     dispatch,
-    replaceReducer,
+    subscribe,
+    getState,
+    replaceReducer
   };
 }
 
 /**
- * Combines multiple reducers into a single reducer
- * @param {Object} reducers - Object of reducer functions
- * @returns {Function} Combined reducer function
+ * Combines multiple reducer functions into one
  */
 export function combineReducers(reducers) {
   const reducerKeys = Object.keys(reducers);
@@ -141,20 +111,20 @@ export function combineReducers(reducers) {
     }
   }
 
-  const finalReducerKeys = Object.keys(finalReducers);
+  const finalKeys = Object.keys(finalReducers);
 
   return function combination(state = {}, action) {
     let hasChanged = false;
     const nextState = {};
 
-    for (let i = 0; i < finalReducerKeys.length; i++) {
-      const key = finalReducerKeys[i];
+    for (let i = 0; i < finalKeys.length; i++) {
+      const key = finalKeys[i];
       const reducer = finalReducers[key];
       const previousStateForKey = state[key];
       const nextStateForKey = reducer(previousStateForKey, action);
 
       if (typeof nextStateForKey === 'undefined') {
-        throw new Error(`Reducer "${key}" returned undefined when handling "${action.type}" action.`);
+        throw new Error(`Reducer for key "${key}" returned undefined when handling action "${action.type}"`);
       }
 
       nextState[key] = nextStateForKey;
