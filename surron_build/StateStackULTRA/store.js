@@ -165,8 +165,4 @@ export function combineReducers(reducers) {
   };
 }
 
-export default {
-  createStore,
-  applyMiddleware,
-  combineReducers,
-}; 
+export { createStore, combineReducers }; 
