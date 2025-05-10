@@ -1155,13 +1155,25 @@
                   <li>Relax and Restore Energy (Always Available)</li>
                 </ul>
               </div>
-              <button class="action-button go-fishing-btn" style="margin-top: 1.5rem;">Go Fishing</button>
+              <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button class="action-button go-fishing-btn">Go Fishing</button>
+                <button class="action-button continue-adventure" style="background-color: var(--squad-neon); color: black;">Continue Adventure</button>
+              </div>
             `;
             
             // Add event listener after rendering the content
             setTimeout(() => {
               document.querySelector('.go-fishing-btn').addEventListener('click', function() {
                 startFishing();
+              });
+              
+              // Add event listener for continue adventure button
+              document.querySelector('.continue-adventure')?.addEventListener('click', function() {
+                // Close the location modal
+                document.getElementById('location-modal').style.display = 'none';
+                
+                // Redirect to the adventure engine
+                window.location.href = 'adventure-engine.html';
               });
             }, 100);
             break;

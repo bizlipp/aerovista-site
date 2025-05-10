@@ -52,12 +52,41 @@ class GameBridge {
   }
   
   /**
+   * Ensure the bridge is ready before executing a callback
+   * @param {Function} callback - Function to call when bridge is ready
+   */
+  ensureReady(callback) {
+    if (this.isReady) {
+      callback();
+    } else {
+      this.listeners.push(callback);
+      console.log("Deferred operation until GameBridge is ready");
+    }
+  }
+  
+  /**
    * Notify all listeners that the bridge is ready
    * @private
    */
   _notifyReady() {
     this.listeners.forEach(callback => callback());
     this.listeners = [];
+  }
+  
+  /**
+   * Trigger a state change event that all modules can listen for
+   * @param {string} changeType - Type of change (xp, currency, etc.)
+   * @param {any} data - Data associated with the change
+   */
+  triggerStateChange(changeType, data) {
+    // Trigger an event that all modules can listen for
+    window.dispatchEvent(new CustomEvent('playerStateChanged', {
+      detail: {type: changeType, data: data}
+    }));
+    // Always save after a change
+    this.save();
+    
+    console.log(`State change triggered: ${changeType}`, data);
   }
   
   /**
@@ -91,12 +120,18 @@ class GameBridge {
    * @returns {Object|null} Level-up info if player leveled up, null otherwise
    */
   addXP(amount) {
+    let result = null;
+    
     if (this.hasGameCore) {
-      return GameCore.addXP(amount);
+      result = GameCore.addXP(amount);
     } else if (this.hasPlayerState) {
-      return window.playerState.addXP(amount);
+      result = window.playerState.addXP(amount);
     }
-    return null;
+    
+    // Trigger state change event
+    this.triggerStateChange('xp', {amount, newValue: this.getPlayerState().xp, levelUp: result});
+    
+    return result;
   }
   
   /**
@@ -109,6 +144,9 @@ class GameBridge {
     } else if (this.hasPlayerState) {
       window.playerState.addCurrency(amount);
     }
+    
+    // Trigger state change event
+    this.triggerStateChange('currency', {amount, newValue: this.getPlayerState().currency});
   }
   
   /**
@@ -122,6 +160,10 @@ class GameBridge {
     } else if (this.hasPlayerState) {
       window.playerState.changeRelationship(character, amount);
     }
+    
+    // Trigger state change event
+    const newValue = this.getPlayerState().relationships[character];
+    this.triggerStateChange('relationship', {character, amount, newValue});
   }
   
   /**
@@ -135,6 +177,9 @@ class GameBridge {
     } else if (this.hasPlayerState) {
       window.playerState.addItem(item, quantity);
     }
+    
+    // Trigger state change event
+    this.triggerStateChange('inventory', {item, quantity});
   }
   
   /**
@@ -163,6 +208,9 @@ class GameBridge {
     if (!state.completedMissions.includes(missionId)) {
       state.completedMissions.push(missionId);
       this.save();
+      
+      // Trigger state change event
+      this.triggerStateChange('mission', {missionId, completed: true});
       
       // Dispatch event for quest completion
       window.dispatchEvent(new CustomEvent('questCompleted', { 
@@ -194,6 +242,9 @@ class GameBridge {
     
     state.builds.push(build);
     this.save();
+    
+    // Trigger state change event
+    this.triggerStateChange('build', {build, totalBuilds: state.builds.length});
   }
   
   /**

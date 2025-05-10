@@ -38,8 +38,14 @@ class PlayerState {
     // Last action timestamp for tracking new items, rewards, etc.
     this.lastActionTime = Date.now();
     
+    // Save queue for deferred saving
+    this.saveQueue = [];
+    
     // Initialize from saved data if available
     this.load();
+    
+    // Validate state to ensure it's complete
+    this.validateState();
   }
   
   /**
@@ -48,6 +54,9 @@ class PlayerState {
    * @returns {object|null} - Level up info if leveled up, null otherwise
    */
   addXP(amount) {
+    const oldXP = this.xp;
+    const oldLevel = this.level;
+    
     this.xp += amount;
     
     // Check for level up
@@ -60,12 +69,47 @@ class PlayerState {
       // Update last action time
       this.lastActionTime = Date.now();
       
+      const rewards = this.getLevelRewards(this.level);
+      
+      // Auto-apply rewards
+      if (rewards.currency) {
+        this.addCurrency(rewards.currency);
+      }
+      
+      // Add reward items
+      if (rewards.items && rewards.items.length > 0) {
+        rewards.items.forEach(item => {
+          this.addItem(item.id, 1);
+        });
+      }
+      
+      // Broadcast level up event
+      document.dispatchEvent(new CustomEvent('playerLevelUp', { 
+        detail: {
+          newLevel: this.level,
+          oldLevel: oldLevel,
+          rewards: rewards
+        }
+      }));
+      
+      // Broadcast general state update
+      this.broadcastStateUpdate('level', this.level, oldLevel);
+      
+      // Queue save
+      this.queueSave();
+      
       // Return level up information
       return {
         newLevel: this.level,
-        rewards: this.getLevelRewards(this.level)
+        rewards: rewards
       };
     }
+    
+    // Broadcast XP update even if no level up
+    this.broadcastStateUpdate('xp', this.xp, oldXP);
+    
+    // Queue save
+    this.queueSave();
     
     return null;
   }
@@ -112,6 +156,8 @@ class PlayerState {
    * @param {number} quantity - Number of items to add (default: 1)
    */
   addItem(itemId, quantity = 1) {
+    const oldInventoryCount = this.inventory.length;
+    
     const existingItem = this.inventory.find(item => item.id === itemId);
     
     if (existingItem) {
@@ -130,6 +176,12 @@ class PlayerState {
     
     // Update last action time
     this.lastActionTime = Date.now();
+    
+    // Broadcast inventory update
+    this.broadcastStateUpdate('inventory', this.inventory, oldInventoryCount);
+    
+    // Queue save
+    this.queueSave();
   }
   
   /**
@@ -137,10 +189,17 @@ class PlayerState {
    * @param {number} amount - Amount to add
    */
   addCurrency(amount) {
+    const oldCurrency = this.currency;
     this.currency += amount;
     
     // Update last action time
     this.lastActionTime = Date.now();
+    
+    // Broadcast currency update
+    this.broadcastStateUpdate('currency', this.currency, oldCurrency);
+    
+    // Queue save
+    this.queueSave();
   }
   
   /**
@@ -149,10 +208,18 @@ class PlayerState {
    */
   completeScene(sceneId) {
     if (!this.adventureProgress.completedScenes.includes(sceneId)) {
+      const oldScenes = [...this.adventureProgress.completedScenes];
+      
       this.adventureProgress.completedScenes.push(sceneId);
       
       // Update last action time
       this.lastActionTime = Date.now();
+      
+      // Broadcast scene completion
+      this.broadcastStateUpdate('adventureProgress', this.adventureProgress, oldScenes);
+      
+      // Queue save
+      this.queueSave();
     }
   }
   
@@ -163,12 +230,69 @@ class PlayerState {
    */
   changeRelationship(character, amount) {
     if (this.relationships[character] !== undefined) {
+      const oldValue = this.relationships[character];
+      
       this.relationships[character] += amount;
       // Clamp to 1-10 range
       this.relationships[character] = Math.max(1, Math.min(10, this.relationships[character]));
       
       // Update last action time
       this.lastActionTime = Date.now();
+      
+      // Broadcast relationship update
+      this.broadcastStateUpdate('relationship', 
+        {character, value: this.relationships[character]}, 
+        {character, value: oldValue}
+      );
+      
+      // Queue save
+      this.queueSave();
+    }
+  }
+  
+  /**
+   * Broadcast a state update event
+   * @param {string} property - The property that changed
+   * @param {any} value - New value
+   * @param {any} oldValue - Previous value
+   */
+  broadcastStateUpdate(property, value, oldValue) {
+    document.dispatchEvent(new CustomEvent('playerStateUpdated', {
+      detail: {
+        property: property,
+        value: value,
+        oldValue: oldValue,
+        timestamp: Date.now()
+      }
+    }));
+  }
+  
+  /**
+   * Queue a state save operation
+   */
+  queueSave() {
+    this.saveQueue.push(Date.now());
+    if (this.saveQueue.length === 1) {
+      this._processSaveQueue();
+    }
+  }
+  
+  /**
+   * Process the save queue
+   * @private
+   */
+  _processSaveQueue() {
+    if (this.saveQueue.length === 0) return;
+    
+    // Save state to localStorage
+    this.save();
+    
+    // Remove oldest save request
+    this.saveQueue.shift();
+    
+    // Process next save if any
+    if (this.saveQueue.length > 0) {
+      setTimeout(() => this._processSaveQueue(), 100);
     }
   }
   
@@ -248,6 +372,43 @@ class PlayerState {
   }
   
   /**
+   * Validate state to ensure all properties exist and have correct types
+   * @returns {boolean} - True if validation succeeded
+   */
+  validateState() {
+    // Ensure required properties exist
+    if (this.level === undefined) this.level = 1;
+    if (this.xp === undefined) this.xp = 0;
+    if (this.xpToNextLevel === undefined) this.xpToNextLevel = 100;
+    if (this.currency === undefined) this.currency = 250;
+    if (this.reputation === undefined) this.reputation = 0;
+    
+    // Ensure arrays exist
+    if (!Array.isArray(this.inventory)) this.inventory = [];
+    if (!Array.isArray(this.builds)) this.builds = [];
+    if (!Array.isArray(this.completedMissions)) this.completedMissions = [];
+    
+    // Ensure adventureProgress exists
+    if (!this.adventureProgress) {
+      this.adventureProgress = {
+        currentChapter: 1,
+        completedScenes: [],
+        currentScene: 'intro'
+      };
+    }
+    
+    // Ensure relationship values are valid
+    const relationships = this.relationships || {};
+    this.relationships = {
+      charlie: relationships.charlie || 1,
+      billy: relationships.billy || 1,
+      tbd: relationships.tbd || 1
+    };
+    
+    return true;
+  }
+  
+  /**
    * Reset player state to defaults
    */
   reset() {
@@ -276,6 +437,9 @@ class PlayerState {
     // Clear from localStorage
     localStorage.removeItem('surronSquadPlayerState');
     console.log('Player state reset to defaults');
+    
+    // Broadcast full state reset
+    this.broadcastStateUpdate('fullReset', null, null);
   }
   
   /**
@@ -342,8 +506,14 @@ class PlayerState {
       this.achievements = importedState.achievements;
       this.lastActionTime = Date.now(); // Use current time as import time
       
+      // Validate the loaded state
+      this.validateState();
+      
       // Save to localStorage
       this.save();
+      
+      // Broadcast full state import
+      this.broadcastStateUpdate('fullImport', null, null);
       
       console.log('Player state imported successfully');
       return true;

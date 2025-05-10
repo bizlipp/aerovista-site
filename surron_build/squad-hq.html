@@ -684,6 +684,73 @@
           updatePlayerLevel();
         });
       }
+      
+      // Listen for player state updates
+      document.addEventListener('playerStateUpdated', function(event) {
+        const {property, value} = event.detail;
+        
+        console.log(`Player state updated: ${property}`, event.detail);
+        
+        switch(property) {
+          case 'xp':
+            updatePlayerLevel();
+            break;
+          case 'level':
+            updatePlayerLevel();
+            checkUnlockedFeatures();
+            break;
+          case 'currency':
+            updateCurrencyDisplay();
+            break;
+          case 'relationship':
+            updateCharacterRelationships();
+            break;
+          case 'inventory':
+            updatePlayerProfile();
+            break;
+          case 'fullReset':
+          case 'fullImport':
+            // Full state changed, update everything
+            updatePlayerProfile();
+            updateReputationLevel();
+            updateCharacterRelationships();
+            checkUnlockedFeatures();
+            updateCurrencyDisplay();
+            updatePlayerLevel();
+            break;
+        }
+      });
+      
+      // Listen for level up events to show special notification
+      document.addEventListener('playerLevelUp', function(event) {
+        const {newLevel, rewards} = event.detail;
+        
+        // Show level up notification
+        const message = `🎉 Level Up! You reached level ${newLevel}!`;
+        const details = [];
+        
+        if (rewards.currency) {
+          details.push(`+${rewards.currency} SurCoins`);
+        }
+        
+        if (rewards.items && rewards.items.length > 0) {
+          rewards.items.forEach(item => {
+            details.push(`Received: ${item.name}`);
+          });
+        }
+        
+        if (rewards.unlockedFeatures && rewards.unlockedFeatures.length > 0) {
+          rewards.unlockedFeatures.forEach(feature => {
+            details.push(`Unlocked: ${feature.replace('_', ' ')}`);
+          });
+        }
+        
+        // Add level up notification
+        addNotification('⭐', message, details.join(', '), true);
+        
+        // Check for feature unlocks
+        checkUnlockedFeatures();
+      });
     });
     
     // Update player level display
@@ -940,9 +1007,26 @@
         }, 10);
       }
     }
+    
+    // Function to update currency display
+    function updateCurrencyDisplay() {
+      if (!window.playerState) return;
+      
+      const currencyDisplay = document.getElementById('currency-value');
+      if (currencyDisplay) {
+        currencyDisplay.textContent = window.playerState.currency;
+        
+        // Add animation effect
+        currencyDisplay.style.animation = 'pulse 0.5s';
+        setTimeout(() => {
+          currencyDisplay.style.animation = '';
+        }, 500);
+      }
+    }
   </script>
   <script type="module">
     import { initQuestBoard } from './quest-board.js';
+    import director from './gameplay-director.js';
     
     // Initialize quest board after player state is ready
     document.addEventListener('playerStateReady', function() {
