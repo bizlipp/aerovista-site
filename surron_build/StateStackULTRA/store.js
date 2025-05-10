@@ -133,6 +133,4 @@ export function combineReducers(reducers) {
 
     return hasChanged ? nextState : state;
   };
-}
-
-export { createStore, combineReducers }; 
+} 
