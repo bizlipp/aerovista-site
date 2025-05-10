@@ -1,11 +1,12 @@
-// FishingGameSession.js - Core fishing game logic that integrates with the Redux store
-import { store } from './StateStackULTRA/store/gameStore.js';
-import * as fishingSelectors from './StateStackULTRA/slices/fishingSelectors.js';
-import { playerActions } from './StateStackULTRA/slices/playerSlice.js';
-import { fishingActions } from './StateStackULTRA/slices/fishingSlice.js';
-import GameCore from './game/GameCore.js';
+// FishingGameSession.js - Non-module version
+// Core fishing game logic that integrates with the game state
 
-// Fish types definition with probabilities
+/**
+ * This is a non-module version of FishingGameSession.js that works without ES modules.
+ * It uses global objects like window.store and window.game instead of imports.
+ */
+
+// Fish types definition with probabilities 
 const FISH_TYPES = [
   { name: 'Small Perch', value: 10, rarity: 'common', difficulty: 1, size: 'Small', probability: 0.30 },
   { name: 'Bluegill', value: 15, rarity: 'common', difficulty: 1, size: 'Small', probability: 0.25 },
@@ -25,21 +26,34 @@ const RARITY_TIERS = {
   legendary: { chance: 0.005, fishes: FISH_TYPES.filter(fish => fish.rarity === 'legendary') }
 };
 
+// Default game state for fishing
+const defaultFishingState = {
+  active: false,
+  streak: 0,
+  lastCatch: null,
+  catches: [],
+  equipment: {
+    rod: null,
+    lure: null
+  }
+};
+
+// Global fishing state (instead of using Redux store)
+window.fishingState = window.fishingState || defaultFishingState;
+
 /**
  * Start a fishing session
  * @returns {boolean} Success status
  */
-export function startFishing() {
-  const state = store.getState();
-  
+function startFishing() {
   // Check if fishing is already active
-  if (fishingSelectors.isFishingActive(state)) {
+  if (window.fishingState.active) {
     console.log('Fishing session already active');
     return false;
   }
   
-  // Dispatch action to start fishing
-  store.dispatch(fishingActions.startFishing());
+  // Update state to start fishing
+  window.fishingState.active = true;
   console.log('Fishing session started');
   
   return true;
@@ -49,17 +63,15 @@ export function startFishing() {
  * End the current fishing session
  * @returns {boolean} Success status
  */
-export function endFishing() {
-  const state = store.getState();
-  
+function endFishing() {
   // Check if fishing is active
-  if (!fishingSelectors.isFishingActive(state)) {
+  if (!window.fishingState.active) {
     console.log('No active fishing session to end');
     return false;
   }
   
-  // Dispatch action to end fishing
-  store.dispatch(fishingActions.endFishing());
+  // Update state to end fishing
+  window.fishingState.active = false;
   console.log('Fishing session ended');
   
   return true;
@@ -70,19 +82,17 @@ export function endFishing() {
  * @param {number} castPower - Power of the cast (0-100)
  * @returns {boolean} Whether a fish was caught
  */
-export function attemptCatch(castPower = 50) {
-  const state = store.getState();
-  
+function attemptCatch(castPower = 50) {
   // Check if fishing is active
-  if (!fishingSelectors.isFishingActive(state)) {
+  if (!window.fishingState.active) {
     console.log('Cannot attempt catch: No active fishing session');
     return false;
   }
   
   // Get current equipment
-  const rod = fishingSelectors.getCurrentRod(state);
-  const lure = fishingSelectors.getCurrentLure(state);
-  const streak = fishingSelectors.getCurrentStreak(state);
+  const rod = window.fishingState.equipment.rod;
+  const lure = window.fishingState.equipment.lure;
+  const streak = window.fishingState.streak;
   
   // Calculate catch chance based on equipment and cast power
   // Base chance is 30% + cast power influence + rod quality + lure attract power + streak bonus
@@ -108,7 +118,7 @@ export function attemptCatch(castPower = 50) {
   
   // If failed, reset streak
   if (streak > 0) {
-    store.dispatch(fishingActions.resetStreak());
+    window.fishingState.streak = 0;
   }
   
   return false;
@@ -118,18 +128,16 @@ export function attemptCatch(castPower = 50) {
  * Resolve a successful catch, determining what fish was caught
  * @returns {Object|null} The caught fish or null if error
  */
-export function resolveCatch() {
-  const state = store.getState();
-  
+function resolveCatch() {
   // Check if fishing is active
-  if (!fishingSelectors.isFishingActive(state)) {
+  if (!window.fishingState.active) {
     console.log('Cannot resolve catch: No active fishing session');
     return null;
   }
   
   // Get current equipment
-  const lure = fishingSelectors.getCurrentLure(state);
-  const streak = fishingSelectors.getCurrentStreak(state);
+  const lure = window.fishingState.equipment.lure;
+  const streak = window.fishingState.streak;
   
   // Determine rarity based on lure and streak
   const rarityRoll = Math.random();
@@ -179,190 +187,145 @@ export function resolveCatch() {
 }
 
 /**
- * Record a caught fish in the store and give player rewards
+ * Record a caught fish
  * @param {Object} fish - The caught fish
  */
 function recordCatch(fish) {
   if (!fish) return;
   
   // Increment streak
-  store.dispatch(fishingActions.incrementStreak());
+  window.fishingState.streak += 1;
   
   // Record the catch
-  store.dispatch(fishingActions.recordCatch(fish));
+  window.fishingState.lastCatch = fish;
+  window.fishingState.catches.push(fish);
   
-  // Add fish to inventory as an item
-  store.dispatch(playerActions.addItem({
-    id: fish.id,
-    name: fish.name,
-    type: 'fish',
-    rarity: fish.rarity,
-    value: fish.value,
-    description: `A ${fish.size} ${fish.rarity} ${fish.name} caught while fishing.`,
-    acquired: fish.timestamp,
-    quantity: 1
-  }));
-  
-  // Add currency
-  store.dispatch(playerActions.addCurrency(fish.value));
-  
-  // Add XP based on fish rarity
-  let xpReward = 0;
-  switch(fish.rarity) {
-    case 'legendary': xpReward = 100; break;
-    case 'rare': xpReward = 50; break;
-    case 'uncommon': xpReward = 25; break;
-    case 'common': default: xpReward = 10; break;
+  // Add fish to inventory, if the game is available
+  if (window.game && typeof window.game.addItem === 'function') {
+    window.game.addItem({
+      id: fish.id,
+      name: fish.name,
+      type: 'fish',
+      rarity: fish.rarity,
+      value: fish.value,
+      quantity: 1
+    });
   }
   
-  store.dispatch(playerActions.addXP(xpReward));
-  
-  // Improve relationship with Billy when catching rarer fish
-  if (fish.rarity !== 'common') {
-    const relationshipBonus = fish.rarity === 'legendary' ? 3 : 
-                              fish.rarity === 'rare' ? 2 : 1;
-    
-    // Use GameCore for relationship update
-    GameCore.updateRelationship('billy', relationshipBonus);
+  // Add currency from the fish
+  if (window.game && typeof window.game.addCurrency === 'function') {
+    window.game.addCurrency(fish.value);
   }
-  
-  // Save game state
-  GameCore.save();
 }
 
 /**
- * Get all available fishing equipment from player inventory
- * @returns {Object} Equipment object with rods and lures arrays
+ * Get the fishing equipment available to the player
+ * @returns {Object} Available fishing equipment
  */
-export function getAvailableFishingEquipment() {
-  const state = store.getState();
-  const inventory = state.player?.inventory || [];
+function getAvailableFishingEquipment() {
+  const inventory = window.game && typeof window.game.getInventory === 'function' 
+    ? window.game.getInventory() 
+    : [];
   
-  // Filter for fishing equipment
-  const rods = inventory.filter(item => 
-    item.type === 'equipment' && 
-    item.name.toLowerCase().includes('rod')
-  );
+  // Find all rods and lures in inventory
+  const rods = inventory.filter(item => item.type === 'fishing_rod');
+  const lures = inventory.filter(item => item.type === 'fishing_lure');
   
-  const lures = inventory.filter(item => 
-    item.type === 'equipment' && 
-    item.name.toLowerCase().includes('lure')
-  );
+  // Always include default equipment
+  if (rods.length === 0) {
+    rods.push({ 
+      id: 'default_rod', 
+      name: 'Basic Rod', 
+      quality: 1, 
+      reelSpeed: 1, 
+      catchBonus: 0 
+    });
+  }
+  
+  if (lures.length === 0) {
+    lures.push({ 
+      id: 'default_lure', 
+      name: 'Basic Lure', 
+      attractPower: 1, 
+      rarityBonus: 0 
+    });
+  }
   
   return { rods, lures };
 }
 
 /**
  * Set the fishing equipment to use
- * @param {string} rodId - ID of the rod to equip
- * @param {string} lureId - ID of the lure to equip
+ * @param {string} rodId - Rod ID
+ * @param {string} lureId - Lure ID
  * @returns {boolean} Success status
  */
-export function setFishingEquipment(rodId, lureId) {
-  const state = store.getState();
-  const inventory = state.player?.inventory || [];
+function setFishingEquipment(rodId, lureId) {
+  const equipment = getAvailableFishingEquipment();
   
-  // Find the items in inventory
-  const rod = inventory.find(item => item.id === rodId);
-  const lure = inventory.find(item => item.id === lureId);
-  
-  // Check if items were found
-  if (!rod || !lure) {
-    console.error('Equipment not found in inventory');
+  // Find selected rod
+  const rod = equipment.rods.find(r => r.id === rodId);
+  if (!rod) {
+    console.log(`Rod with ID ${rodId} not found`);
     return false;
   }
   
-  // Dispatch actions to set equipment
-  store.dispatch(fishingActions.setRod(rod));
-  store.dispatch(fishingActions.setLure(lure));
+  // Find selected lure
+  const lure = equipment.lures.find(l => l.id === lureId);
+  if (!lure) {
+    console.log(`Lure with ID ${lureId} not found`);
+    return false;
+  }
   
-  console.log(`Equipped ${rod.name} and ${lure.name}`);
+  // Set equipment
+  window.fishingState.equipment.rod = rod;
+  window.fishingState.equipment.lure = lure;
+  
+  console.log(`Fishing equipment set: ${rod.name}, ${lure.name}`);
   return true;
 }
 
 /**
- * Get catch bonus multiplier based on current equipment and streak
- * @returns {number} The bonus multiplier (1.0 = no bonus)
- */
-export function getCatchBonusMultiplier() {
-  const state = store.getState();
-  
-  const rod = fishingSelectors.getCurrentRod(state);
-  const lure = fishingSelectors.getCurrentLure(state);
-  const streak = fishingSelectors.getCurrentStreak(state);
-  
-  // Calculate bonuses
-  const rodBonus = rod?.catchBonus ? (rod.catchBonus / 100) : 0;
-  const streakBonus = Math.min(streak, 10) * 0.1; // 10% per streak, max 100%
-  
-  return 1.0 + rodBonus + streakBonus;
-}
-
-/**
  * Process fishing session results
- * @param {Object} results - Results from fishing session
+ * @param {Object} results - Fishing session results
  */
-export function processFishingResults(results) {
-  if (!results) return;
+function processFishingResults(results) {
+  console.log('Processing fishing results:', results);
   
-  // If we have caught fish, add them to inventory
-  if (results.caughtFish && results.caughtFish.length > 0) {
-    results.caughtFish.forEach(fish => {
-      recordCatch(fish);
-    });
+  // Add XP based on session value
+  const xpAmount = Math.floor(results.sessionValue / 2);
+  if (window.game && typeof window.game.addXP === 'function') {
+    window.game.addXP(xpAmount);
   }
   
-  // End fishing session
-  endFishing();
+  // Check for any quest progression
+  if (window.game && typeof window.game.progressQuest === 'function') {
+    // Check if there's a fishing quest
+    window.game.progressQuest('fish_delivery', results.caughtFish.length);
+  }
+  
+  // Reset fishing state
+  window.fishingState = { ...defaultFishingState };
 }
 
-/**
- * Choose a random fish based on rarity distribution (modified by bonuses)
- * @param {number} rarityBonus - Bonus to rarity chance (0-1)
- * @returns {Object} The selected fish
- */
-export function chooseRandomFish(rarityBonus = 0) {
-  // Adjust rarity chances based on bonus
-  const adjustedRarities = {};
-  for (const [rarity, data] of Object.entries(RARITY_TIERS)) {
-    // Increase higher rarity chances, decrease common chance
-    if (rarity === 'common') {
-      adjustedRarities[rarity] = { ...data, chance: data.chance - (rarityBonus * 0.5) };
-    } else {
-      // Distribute the bonus among rarities, giving more to higher rarities
-      const bonusFactor = rarity === 'legendary' ? 0.4 : 
-                          rarity === 'rare' ? 0.3 : 0.3;
-      adjustedRarities[rarity] = { ...data, chance: data.chance + (rarityBonus * bonusFactor) };
-    }
-  }
-  
-  // Roll for rarity
-  const roll = Math.random();
-  let selectedRarity = 'common';
-  let cumulativeChance = 0;
-  
-  for (const [rarity, rarityData] of Object.entries(adjustedRarities)) {
-    cumulativeChance += rarityData.chance;
-    if (roll <= cumulativeChance) {
-      selectedRarity = rarity;
-      break;
-    }
-  }
-  
-  // Get a fish from the selected rarity
-  const rarityFishes = RARITY_TIERS[selectedRarity].fishes;
-  const fishIndex = Math.floor(Math.random() * rarityFishes.length);
-  return rarityFishes[fishIndex] || FISH_TYPES[0];
-}
-
-export default {
+// Add functions to the window object for non-module access
+window.FishingGameSession = {
   startFishing,
   endFishing,
   attemptCatch,
   resolveCatch,
   getAvailableFishingEquipment,
   setFishingEquipment,
-  getCatchBonusMultiplier,
-  processFishingResults,
-  chooseRandomFish
-}; 
+  processFishingResults
+};
+
+// Support ES modules if they're available
+if (typeof exports !== 'undefined') {
+  exports.startFishing = startFishing;
+  exports.endFishing = endFishing;
+  exports.attemptCatch = attemptCatch;
+  exports.resolveCatch = resolveCatch;
+  exports.getAvailableFishingEquipment = getAvailableFishingEquipment;
+  exports.setFishingEquipment = setFishingEquipment;
+  exports.processFishingResults = processFishingResults;
+} 

@@ -1,7 +1,7 @@
-// Surron Squad Fishing Mini-Game
-import GameCore from './game/GameCore.js';
-import { processFishingResults } from './game/FishingGameIntegration.js';
+// Surron Squad Fishing Mini-Game - Non-module version
+// This file provides a non-module version of the fishing game that doesn't require ES6 imports
 
+// Define the fishing game class
 class FishingGame {
   constructor(containerId, equipment = null) {
     this.container = document.getElementById(containerId);
@@ -325,7 +325,7 @@ class FishingGame {
     };
     
     // Process results through store integration
-    processFishingResults(results);
+    this.processFishingResults(results);
   }
   
   handleClick(event) {
@@ -861,12 +861,57 @@ class FishingGame {
       lureTypeEl.textContent = equipment.lure.name || 'Basic Lure';
     }
   }
+  
+  processFishingResults(results) {
+    // Simplified version that would normally rely on GameCore
+    try {
+      console.log('Processing fishing results:', results);
+      
+      // Add currency
+      if (window.game && typeof window.game.addCurrency === 'function') {
+        window.game.addCurrency(results.sessionValue);
+      }
+      
+      // Add experience
+      if (window.game && typeof window.game.addXP === 'function') {
+        window.game.addXP(Math.floor(results.sessionValue / 2));
+      }
+      
+      // Update inventory
+      if (results.caughtFish && results.caughtFish.length > 0) {
+        results.caughtFish.forEach(fish => {
+          if (window.game && typeof window.game.addItem === 'function') {
+            window.game.addItem({
+              id: `fish_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`,
+              name: fish.name,
+              type: 'fish',
+              value: fish.value
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error processing fishing results:', error);
+    }
+  }
+  
+  // Export the function to start a fishing session
+  static startFishingSession(containerId, equipment = null) {
+    console.log('Starting fishing session with equipment:', equipment);
+    return new FishingGame(containerId, equipment);
+  }
 }
 
-// Export the FishingGame class
-export default FishingGame;
+// Make the fishing game accessible globally
+window.FishingGame = FishingGame;
+window.startFishingSession = function(containerId, equipment = null) {
+  return FishingGame.startFishingSession(containerId, equipment);
+};
 
-// Factory function for creating fishing games
-export function startFishingSession(containerId, equipment = null) {
-  return new FishingGame(containerId, equipment);
+// Export for module environments
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    FishingGame,
+    startFishingSession: FishingGame.startFishingSession
+  };
 } 

@@ -427,7 +427,7 @@ class AjvValidator extends SchemaValidator {
     super();
     this.options = options;
     this.schemas = new Map();
-    console.log('AjvValidator created with SimplyAjv implementation');
+    console.log('AjvValidator created with proper implementation');
   }
   
   /**
@@ -450,40 +450,208 @@ class AjvValidator extends SchemaValidator {
       }
     }
     
+    // Initialize result
     const errors = [];
     let isValid = true;
     
-    // Validate data type
-    if (schema.type && !this._validateType(data, schema.type)) {
-      errors.push({
-        message: `Type mismatch: expected ${schema.type}, got ${typeof data}`,
-        path: '',
-        value: data
-      });
-      isValid = false;
-    }
-    
-    // Validate data properties
-    if (schema.properties && typeof data === 'object' && data !== null) {
-      for (const [prop, propSchema] of Object.entries(schema.properties)) {
-        if (prop in data) {
-          const propResult = this.validate(data[prop], propSchema);
-          if (!propResult.isValid) {
-            errors.push(...propResult.errors.map(err => ({
-              ...err,
-              path: prop + (err.path ? '.' + err.path : '')
-            })));
+    try {
+      // Check data type
+      if (schema.type && !this._validateType(data, schema.type)) {
+        errors.push({
+          message: `Type mismatch: expected ${schema.type}, got ${this._getType(data)}`,
+          path: '',
+          value: data
+        });
+        isValid = false;
+      }
+      
+      // If this is an object schema, validate each property
+      if (schema.type === 'object' && schema.properties && typeof data === 'object' && data !== null) {
+        // Check required properties
+        if (schema.required && Array.isArray(schema.required)) {
+          for (const prop of schema.required) {
+            if (data[prop] === undefined) {
+              errors.push({
+                message: `Missing required property: ${prop}`,
+                path: prop,
+                value: undefined
+              });
+              isValid = false;
+            }
+          }
+        }
+        
+        // Check each property against its schema
+        for (const [prop, propSchema] of Object.entries(schema.properties)) {
+          if (data[prop] !== undefined) {
+            const propResult = this.validate(data[prop], propSchema, options);
+            if (!propResult.isValid) {
+              isValid = false;
+              // Add property path to errors
+              propResult.errors.forEach(err => {
+                errors.push({
+                  ...err,
+                  path: prop + (err.path ? '.' + err.path : '')
+                });
+              });
+            }
+          }
+        }
+        
+        // Check for additional properties if specified
+        if (schema.additionalProperties === false) {
+          const schemaProps = new Set(Object.keys(schema.properties));
+          for (const prop in data) {
+            if (!schemaProps.has(prop)) {
+              errors.push({
+                message: `Additional property not allowed: ${prop}`,
+                path: prop,
+                value: data[prop]
+              });
+              isValid = false;
+            }
+          }
+        }
+      }
+      
+      // If this is an array schema, validate each item
+      if (schema.type === 'array' && Array.isArray(data)) {
+        // Check minItems/maxItems
+        if (schema.minItems !== undefined && data.length < schema.minItems) {
+          errors.push({
+            message: `Array has too few items (${data.length}), minimum is ${schema.minItems}`,
+            path: '',
+            value: data
+          });
+          isValid = false;
+        }
+        
+        if (schema.maxItems !== undefined && data.length > schema.maxItems) {
+          errors.push({
+            message: `Array has too many items (${data.length}), maximum is ${schema.maxItems}`,
+            path: '',
+            value: data
+          });
+          isValid = false;
+        }
+        
+        // Validate each item if we have an items schema
+        if (schema.items) {
+          for (let i = 0; i < data.length; i++) {
+            const itemResult = this.validate(data[i], schema.items, options);
+            if (!itemResult.isValid) {
+              isValid = false;
+              // Add array index to errors
+              itemResult.errors.forEach(err => {
+                errors.push({
+                  ...err,
+                  path: `[${i}]` + (err.path ? '.' + err.path : '')
+                });
+              });
+            }
+          }
+        }
+      }
+      
+      // Check string validations
+      if (schema.type === 'string' && typeof data === 'string') {
+        // Check minLength/maxLength
+        if (schema.minLength !== undefined && data.length < schema.minLength) {
+          errors.push({
+            message: `String is too short (${data.length} chars), minimum is ${schema.minLength}`,
+            path: '',
+            value: data
+          });
+          isValid = false;
+        }
+        
+        if (schema.maxLength !== undefined && data.length > schema.maxLength) {
+          errors.push({
+            message: `String is too long (${data.length} chars), maximum is ${schema.maxLength}`,
+            path: '',
+            value: data
+          });
+          isValid = false;
+        }
+        
+        // Check pattern
+        if (schema.pattern) {
+          const regex = new RegExp(schema.pattern);
+          if (!regex.test(data)) {
+            errors.push({
+              message: `String does not match pattern: ${schema.pattern}`,
+              path: '',
+              value: data
+            });
             isValid = false;
           }
-        } else if (schema.required && schema.required.includes(prop)) {
+        }
+      }
+      
+      // Check number validations
+      if ((schema.type === 'number' || schema.type === 'integer') && typeof data === 'number') {
+        // Check minimum/maximum
+        if (schema.minimum !== undefined && data < schema.minimum) {
           errors.push({
-            message: `Missing required property: ${prop}`,
-            path: prop,
-            value: undefined
+            message: `Number is too small (${data}), minimum is ${schema.minimum}`,
+            path: '',
+            value: data
+          });
+          isValid = false;
+        }
+        
+        if (schema.maximum !== undefined && data > schema.maximum) {
+          errors.push({
+            message: `Number is too large (${data}), maximum is ${schema.maximum}`,
+            path: '',
+            value: data
+          });
+          isValid = false;
+        }
+        
+        // Check multipleOf
+        if (schema.multipleOf !== undefined) {
+          const remainder = data % schema.multipleOf;
+          if (Math.abs(remainder) > Number.EPSILON) {
+            errors.push({
+              message: `Number is not a multiple of ${schema.multipleOf}`,
+              path: '',
+              value: data
+            });
+            isValid = false;
+          }
+        }
+        
+        // Check integer type
+        if (schema.type === 'integer' && !Number.isInteger(data)) {
+          errors.push({
+            message: `Value is not an integer: ${data}`,
+            path: '',
+            value: data
           });
           isValid = false;
         }
       }
+      
+      // Check enum values
+      if (schema.enum && Array.isArray(schema.enum)) {
+        if (!schema.enum.includes(data)) {
+          errors.push({
+            message: `Value is not one of the allowed enum values: ${schema.enum.join(', ')}`,
+            path: '',
+            value: data
+          });
+          isValid = false;
+        }
+      }
+    } catch (error) {
+      // Handle validation errors
+      errors.push({
+        message: `Validation error: ${error.message}`,
+        path: '',
+        value: data
+      });
+      isValid = false;
     }
     
     // Return the validation result
@@ -505,7 +673,7 @@ class AjvValidator extends SchemaValidator {
       case 'string':
         return typeof value === 'string';
       case 'number':
-        return typeof value === 'number';
+        return typeof value === 'number' && !isNaN(value);
       case 'integer':
         return typeof value === 'number' && Number.isInteger(value);
       case 'boolean':
@@ -519,6 +687,17 @@ class AjvValidator extends SchemaValidator {
       default:
         return false;
     }
+  }
+  
+  /**
+   * Get the type of a value
+   * @param {any} value - Value to check type of
+   * @returns {string} - Type of the value
+   */
+  _getType(value) {
+    if (value === null) return 'null';
+    if (Array.isArray(value)) return 'array';
+    return typeof value;
   }
   
   /**
