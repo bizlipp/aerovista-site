@@ -1,105 +1,67 @@
-// questSlice.js
-import { createSlice, createEntityAdapter } from '../toolkit.js';
+// slices/questSlice.js
+import { createSlice, createEntityAdapter } from "../toolkit.js";
 
-// Create entity adapter for quests
 const questsAdapter = createEntityAdapter();
 
-const initialState = questsAdapter.getInitialState({
-  isLoading: false,
-  activeQuestId: null
-});
+const initialQuests = [
+  {
+    id: 'theFirstVolt',
+    title: 'The First Volt',
+    description: 'Complete your first 72V build...',
+    difficulty: 'Beginner',
+    status: 'Active',
+    progress: 60,
+    character: 'charlie',
+    steps: [
+      { description: 'Visit Charlie\'s Workshop', completed: true },
+      { description: 'Select battery components', completed: true },
+      { description: 'Assemble and test battery pack', completed: false },
+      { description: 'Install and test with Charlie', completed: false }
+    ]
+  },
+  {
+    id: 'goneFishin',
+    title: 'Gone Fishin\'',
+    description: 'Join Billy on his fishing trip...',
+    difficulty: 'Intermediate',
+    status: 'Not Started',
+    progress: 0,
+    character: 'billy',
+    steps: [
+      { description: 'Visit Billy at the lake', completed: false },
+      { description: 'Catch your first fish', completed: false },
+      { description: 'Learn about waterproofing', completed: false },
+      { description: 'Build waterproof housing', completed: false },
+      { description: 'Test build in lake', completed: false }
+    ]
+  }
+];
 
-export const questSlice = createSlice({
+const questSlice = createSlice({
   name: 'quests',
-  initialState,
+  initialState: questsAdapter.addMany(questsAdapter.getInitialState(), initialQuests),
   reducers: {
-    // Add a new quest
-    addQuest: (state, action) => {
-      questsAdapter.addOne(state, action.payload);
-    },
-    
-    // Add multiple quests
-    addQuests: (state, action) => {
-      questsAdapter.addMany(state, action.payload);
-    },
-    
-    // Update a quest's status (Active, Completed, Failed)
-    updateQuestStatus: (state, action) => {
-      const { id, status } = action.payload;
-      questsAdapter.updateOne(state, {
-        id,
-        changes: { status }
-      });
-    },
-    
-    // Update a quest's progress (0-100)
-    updateQuestProgress: (state, action) => {
-      const { questId, progress } = action.payload;
-      questsAdapter.updateOne(state, {
-        id: questId,
-        changes: { progress }
-      });
-    },
-    
-    // Update a quest step's completion status
-    updateQuestStep: (state, action) => {
-      const { questId, stepIndex, completed } = action.payload;
-      const quest = state.entities[questId];
-      
-      if (quest && quest.steps && quest.steps[stepIndex]) {
-        quest.steps[stepIndex].completed = completed;
-      }
-    },
-    
-    // Progress a quest step (mark as completed)
     progressStep: (state, action) => {
-      const { questId, stepIndex } = action.payload;
-      const quest = state.entities[questId];
-      
-      if (quest && quest.steps && quest.steps[stepIndex]) {
-        quest.steps[stepIndex].completed = true;
-        
-        // Update progress percentage
-        const completedSteps = quest.steps.filter(step => step.completed).length;
-        const totalSteps = quest.steps.length;
-        quest.progress = Math.floor((completedSteps / totalSteps) * 100);
-        
-        // Auto complete quest if all steps are done
-        if (quest.progress >= 100) {
+      const { id, step } = action.payload;
+      const quest = state.entities[id];
+      if (quest && quest.steps[step] && !quest.steps[step].completed) {
+        quest.steps[step].completed = true;
+        const completedSteps = quest.steps.filter(s => s.completed).length;
+        quest.progress = Math.round((completedSteps / quest.steps.length) * 100);
+        if (quest.progress === 100) {
           quest.status = 'Completed';
         }
       }
     },
-    
-    // Remove a quest
-    removeQuest: (state, action) => {
-      questsAdapter.removeOne(state, action.payload);
-    },
-    
-    // Clear all quests
-    clearQuests: (state) => {
-      questsAdapter.removeAll(state);
-    },
-    
-    // Set active quest
-    setActiveQuest: (state, action) => {
-      state.activeQuestId = action.payload;
+    updateQuestStatus: (state, action) => {
+      const { id, status } = action.payload;
+      if (state.entities[id]) {
+        state.entities[id].status = status;
+      }
     }
   }
 });
 
-// Export the actions
-export const { 
-  addQuest, 
-  addQuests, 
-  updateQuestStatus, 
-  updateQuestProgress, 
-  updateQuestStep,
-  progressStep,
-  removeQuest,
-  clearQuests,
-  setActiveQuest
-} = questSlice.actions;
-
-// Export the reducer
-export default questSlice.reducer; 
+export const { selectAll: selectAllQuests, selectById: selectQuestById } = questsAdapter.getSelectors(state => state.quests);
+export const { progressStep, updateQuestStatus } = questSlice.actions;
+export default questSlice.reducer;

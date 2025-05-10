@@ -1,116 +1,69 @@
-// characterSlice.js
-import { createSlice, createEntityAdapter } from '../toolkit.js';
+// slices/characterSlice.js
+import { createSlice } from "../toolkit.js";
 
-// Create entity adapter for characters
-const charactersAdapter = createEntityAdapter();
-
-const initialState = charactersAdapter.getInitialState({
-  characters: {
-    charlie: {
-      id: 'charlie',
-      name: 'Charlie "Throttle"',
-      relationship: 0,
-      questsCompleted: 0,
-      level: 1,
-      portrait: 'images/surron-charlie-alert-pose.png',
-      stats: {
-        power: 85,
-        stealth: 30,
-        tech: 60,
-        charm: 50,
-        intelligence: 65
-      }
+const initialState = {
+  charlie: {
+    name: "Charlie \"Throttle\"",
+    level: 3,
+    relationship: 5,
+    stats: {
+      power: 85,
+      control: 35,
+      durability: 50,
+      pizzaCapacity: 95
     },
-    billy: {
-      id: 'billy',
-      name: 'Billy "Baggin\'s"',
-      relationship: 0,
-      questsCompleted: 0,
-      level: 1,
-      portrait: 'images/surron-billy-fishing_ready-pose.png',
-      stats: {
-        power: 60,
-        stealth: 75,
-        tech: 40,
-        charm: 70,
-        intelligence: 80
-      }
+    questsCompleted: 0
+  },
+  billy: {
+    name: "Billy \"Baggin's\"",
+    level: 2,
+    relationship: 3,
+    stats: {
+      power: 45,
+      control: 65,
+      durability: 80,
+      fishingSkill: 90
     },
-    tbd: {
-      id: 'tbd',
-      name: 'TBD',
-      relationship: 0,
-      questsCompleted: 0,
-      level: 1,
-      portrait: 'images/surron-tbd-terminal-ready.png',
-      stats: {
-        power: 30,
-        stealth: 60,
-        tech: 95,
-        charm: 40,
-        intelligence: 99
-      }
-    }
+    questsCompleted: 0
+  },
+  tbd: {
+    name: "TBD",
+    level: 4,
+    relationship: 2,
+    stats: {
+      power: 60,
+      control: 90,
+      durability: 70,
+      techSkills: 98
+    },
+    questsCompleted: 0
   }
-});
+};
 
-export const characterSlice = createSlice({
+const characterSlice = createSlice({
   name: 'characters',
   initialState,
   reducers: {
-    // Update relationship with a character
-    updateRelationship: (state, action) => {
+    updateRelationship(state, action) {
       const { character, delta } = action.payload;
-      if (state.characters[character]) {
-        state.characters[character].relationship += delta;
-        
-        // Cap relationship value between -10 and 10
-        if (state.characters[character].relationship > 10) {
-          state.characters[character].relationship = 10;
-        } else if (state.characters[character].relationship < -10) {
-          state.characters[character].relationship = -10;
-        }
+      if (state[character]) {
+        state[character].relationship = Math.max(0, Math.min(10, state[character].relationship + delta));
       }
     },
-    
-    // Increment quests completed by a character
-    incrementQuestCount: (state, action) => {
-      const characterId = action.payload;
-      if (state.characters[characterId]) {
-        state.characters[characterId].questsCompleted += 1;
-        
-        // Auto level up character after every 3 quests
-        if (state.characters[characterId].questsCompleted % 3 === 0) {
-          state.characters[characterId].level += 1;
-        }
+    incrementQuestCount(state, action) {
+      const character = action.payload;
+      if (state[character]) {
+        state[character].questsCompleted++;
       }
     },
-    
-    // Set character level
-    setCharacterLevel: (state, action) => {
-      const { character, level } = action.payload;
-      if (state.characters[character]) {
-        state.characters[character].level = level;
-      }
-    },
-    
-    // Update character stats
-    updateCharacterStat: (state, action) => {
-      const { character, stat, value } = action.payload;
-      if (state.characters[character] && state.characters[character].stats) {
-        state.characters[character].stats[stat] = value;
+    adjustStat(state, action) {
+      const { character, stat, amount } = action.payload;
+      if (state[character]?.stats[stat] !== undefined) {
+        state[character].stats[stat] = Math.max(0, state[character].stats[stat] + amount);
       }
     }
   }
 });
 
-// Export the actions
-export const { 
-  updateRelationship, 
-  incrementQuestCount, 
-  setCharacterLevel,
-  updateCharacterStat
-} = characterSlice.actions;
-
-// Export the reducer
-export default characterSlice.reducer; 
+export const { updateRelationship, incrementQuestCount, adjustStat } = characterSlice.actions;
+export default characterSlice.reducer;

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surron Squad</title>
+  <link rel="stylesheet" href="../surron_squad.css">
+  <link rel="stylesheet" href="../.staged files/style/components.css">
+</head>
+<body class="surron-squad-theme">
+  <header>
+    <nav class="main-nav">
+      <div class="logo">SURRON SQUAD</div>
+      <div class="nav-links">
+        <a href="#squad-dashboard">Squad</a>
+        <a href="#quest-board">Quests</a>
+        <a href="#build-selector">Build</a>
+        <a href="#fishing-ui">Fishing</a>
+      </div>
+    </nav>
+  </header>
+  
+  <main class="game-container">
+    <section id="squad-dashboard" class="game-section"></section>
+    <section id="quest-board" class="game-section"></section>
+    <section id="build-selector" class="game-section"></section>
+    <section id="fishing-ui" class="game-section"></section>
+    <section id="adventure-engine" class="game-section"></section>
+  </main>
+  
+  <script type="module">
+    // Import and initialize all components
+    import SquadDashboard from '../.staged files/components/SquadDashboard.js';
+    import QuestBoardComponent from '../.staged files/components/QuestBoardComponent.js';
+    import BuildSelectorComponent from '../.staged files/components/BuildSelectorComponent.js';
+    import FishingComponent from '../.staged files/components/FishingComponent.js';
+    import AdventureEngineComponent from '../.staged files/components/AdventureEngineComponent.js';
+    
+    // Game components
+    let dashboardComponent, questBoardComponent, buildSelectorComponent, fishingComponent, adventureComponent;
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Initializing Surron Squad game components...');
+      
+      // Initialize components
+      try {
+        dashboardComponent = new SquadDashboard();
+        dashboardComponent.mount(document.getElementById('squad-dashboard'));
+        
+        questBoardComponent = new QuestBoardComponent();
+        questBoardComponent.mount(document.getElementById('quest-board'));
+        
+        buildSelectorComponent = new BuildSelectorComponent();
+        buildSelectorComponent.mount(document.getElementById('build-selector'));
+        
+        fishingComponent = new FishingComponent();
+        fishingComponent.mount(document.getElementById('fishing-ui'));
+        
+        adventureComponent = new AdventureEngineComponent();
+        adventureComponent.mount(document.getElementById('adventure-engine'));
+        
+        console.log('All components initialized successfully');
+      } catch (error) {
+        console.error('Error initializing components:', error);
+      }
+    });
+    
+    // Clean up on page unload
+    window.addEventListener('unload', () => {
+      if (dashboardComponent) dashboardComponent.unmount();
+      if (questBoardComponent) questBoardComponent.unmount();
+      if (buildSelectorComponent) buildSelectorComponent.unmount();
+      if (fishingComponent) fishingComponent.unmount();
+      if (adventureComponent) adventureComponent.unmount();
+    });
+  </script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 // quest-board.js
 import gameBridge from './game/GameBridge.js';
+import { store } from './StateStackULTRA/store/gameStore.js';
+import { getPlayerLevel, getPlayerCurrency } from './selectors.js';
 
 const quests = [
   {
@@ -9,7 +11,8 @@ const quests = [
     character: 'tbd',
     requirement: () => {
       try {
-        return gameBridge.getPlayerState().level >= 2;
+        const state = store.getState();
+        return getPlayerLevel(state) >= 2;
       } catch (e) {
         return false;
       }

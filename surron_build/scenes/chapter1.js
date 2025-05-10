@@ -1,6 +1,6 @@
 // scenes/chapter1.js
 import { store } from '../StateStackULTRA/store/gameStore.js';
-import { playerActions } from '../StateStackULTRA/slices/StateStackULTRA/slices/playerSlice.js';
+import { playerActions } from '../StateStackULTRA/slices/playerSlice.js';
 import { dispatchers } from '../actionDispatchers.js';
 import GameCore from '../game/GameCore.js';
 

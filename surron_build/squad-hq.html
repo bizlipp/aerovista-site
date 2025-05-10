@@ -522,7 +522,7 @@
         <div class="module-content">
           <h3 class="module-title">Fishing with Billy</h3>
           <p class="module-description">Relax by the lake and catch some fish to earn extra SurCoins.</p>
-          <a href="adventure.html" class="btn-module">Go Fishing</a>
+          <a href="MainGameShell.html?activity=fishing" class="btn-module">Go Fishing</a>
         </div>
       </div>
       
@@ -587,7 +587,7 @@
           </div>
         </div>
         <p class="character-quote">"I'd rather fish, but I guess we're building bikes. Again."</p>
-        <a href="adventure.html" class="character-action">Go Fishing with Billy</a>
+        <a href="MainGameShell.html?activity=fishing&character=billy" class="character-action">Go Fishing with Billy</a>
       </div>
       
       <div class="character-card tbd">
@@ -814,7 +814,7 @@
     console.log("Squad HQ: Loading modules...");
     
     // Try importing modules with error handling
-    let GameCore, initQuestBoard, director;
+    let GameCore, director;
     
     try {
       // Import modules one by one with error handling
@@ -823,11 +823,20 @@
       GameCore = gameCoreMod.default;
       
       try {
-        const questBoardMod = await import('./quest-board.js');
-        console.log("Quest board module loaded successfully");
-        initQuestBoard = questBoardMod.initQuestBoard;
+        // Use the new QuestBoardComponent instead of quest-board.js
+        const questBoardMod = await import('./components/QuestBoardComponent.js');
+        console.log("QuestBoard component loaded successfully");
+        // Mount the component after DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+          const questBoardContainer = document.getElementById('quest-board');
+          if (questBoardContainer && questBoardMod.default) {
+            const questBoard = new questBoardMod.default();
+            questBoard.mount(questBoardContainer);
+            console.log("QuestBoard component mounted");
+          }
+        });
       } catch (error) {
-        console.error("Error loading quest-board.js:", error);
+        console.error("Error loading QuestBoardComponent:", error);
       }
       
       try {
@@ -846,11 +855,7 @@
           await GameCore.boot();
           console.log("GameCore initialized in Squad HQ");
           
-          // Initialize quest board if available
-          if (typeof initQuestBoard === 'function') {
-            console.log("Initializing quest board...");
-            initQuestBoard();
-          }
+          // Initialize quest board not needed here - handled by component
           
           // Update player profile with latest state
           if (typeof updatePlayerProfile === 'function') {

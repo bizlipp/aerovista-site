@@ -1,6 +1,6 @@
 // chapter2.js - Chapter 2: Lakeside Legends
 import { store } from '../StateStackULTRA/store/gameStore.js';
-import { playerActions } from '../StateStackULTRA/slices/StateStackULTRA/slices/playerSlice.js';
+import { playerActions } from '../StateStackULTRA/slices/playerSlice.js';
 import { progressStep, updateQuestStatus } from '../StateStackULTRA/slices/questSlice.js';
 import { unlockLocation } from '../StateStackULTRA/slices/locationSlice.js';
 import { dispatchers } from '../actionDispatchers.js';

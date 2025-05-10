@@ -299,24 +299,28 @@
         console.error("Error initializing GameCore:", error);
       }
     });
-    
-    // Update player stats in UI
-    function updatePlayerStats() {
-      const playerState = GameCore.getPlayerState();
-      if (!playerState) return;
-      
-      document.getElementById('player-level').textContent = playerState.level;
-      document.getElementById('player-xp').textContent = playerState.xp;
-      document.getElementById('player-xp-next').textContent = playerState.xpToNextLevel;
-      document.getElementById('player-coins').textContent = playerState.currency;
-      document.getElementById('player-builds').textContent = playerState.builds ? playerState.builds.length : 0;
-    }
   </script>
 
   <script>
     // Parts selection logic
     let selectedParts = {};
     let totalPrice = 0;
+    
+    // Define updatePlayerStats in global scope for both modules to use
+    function updatePlayerStats() {
+      try {
+        const playerState = window.GameCore ? window.GameCore.getPlayerState() : null;
+        if (!playerState) return;
+        
+        document.getElementById('player-level').textContent = playerState.level;
+        document.getElementById('player-xp').textContent = playerState.xp;
+        document.getElementById('player-xp-next').textContent = playerState.xpToNextLevel;
+        document.getElementById('player-coins').textContent = playerState.currency;
+        document.getElementById('player-builds').textContent = playerState.builds ? playerState.builds.length : 0;
+      } catch (error) {
+        console.error("Error updating player stats:", error);
+      }
+    }
     
     // Character-specific comments for each part category
     const squadComments = {
@@ -996,7 +1000,21 @@
     `);
   </script>
   
-  <!-- Import BuildIntegration with type="module" -->
-  <script type="module" src="game/BuildIntegration.js"></script>
+  <!-- Import BuildSelectorComponent with type="module" -->
+  <script type="module">
+    import BuildSelectorComponent from './components/BuildSelectorComponent.js';
+    
+    // Initialize the component when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      // Create and mount the BuildSelectorComponent
+      const buildSelector = new BuildSelectorComponent();
+      
+      // Mount the component to an existing container
+      const mainContainer = document.getElementById('parts-select-section');
+      if (mainContainer) {
+        buildSelector.mount(mainContainer);
+      }
+    });
+  </script>
 </body>
 </html>

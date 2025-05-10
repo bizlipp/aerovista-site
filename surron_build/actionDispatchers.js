@@ -3,7 +3,7 @@ import { store } from './StateStackULTRA/store/gameStore.js';
 import { progressStep, updateQuestStatus } from './StateStackULTRA/slices/questSlice.js';
 import { updateRelationship, incrementQuestCount } from './StateStackULTRA/slices/characterSlice.js';
 import { unlockLocation } from './StateStackULTRA/slices/locationSlice.js';
-import { playerActions } from './StateStackULTRA/slices/StateStackULTRA/slices/playerSlice.js';
+import { playerActions } from './StateStackULTRA/slices/playerSlice.js';
 import GameCore from './game/GameCore.js';
 
 export const dispatchers = {

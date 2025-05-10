@@ -1,6 +1,6 @@
 // game/GameCore.js
 import { store } from '../StateStackULTRA/store/gameStore.js';
-import { playerSlice } from '../StateStackULTRA/slices/StateStackULTRA/slices/playerSlice.js';
+import { playerSlice } from '../StateStackULTRA/slices/playerSlice.js';
 import { PlayerModel } from '../DataStackULTRA/models/playerModel.js';
 
 // Create dynamic action creators from slice reducers

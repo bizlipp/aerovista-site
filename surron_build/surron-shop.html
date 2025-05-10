@@ -604,7 +604,37 @@
     
     // Initialize shop
     async function loadItems() {
-      // Implementation of loadItems function
+      try {
+        // Get player state for currency and ownership check
+        updatePlayerCurrency();
+        
+        // Load current tab items
+        loadShopItems(currentTab);
+        
+        // Setup tab event listeners if not already
+        const tabs = document.querySelectorAll('.shop-tab');
+        tabs.forEach(tab => {
+          // Remove any existing event listeners using cloning trick
+          const oldTab = tab;
+          const newTab = oldTab.cloneNode(true);
+          oldTab.parentNode.replaceChild(newTab, oldTab);
+          
+          // Add new event listener
+          newTab.addEventListener('click', () => {
+            // Update active tab
+            tabs.forEach(t => t.classList.remove('active'));
+            newTab.classList.add('active');
+            
+            // Update current tab and load items
+            currentTab = newTab.dataset.tab;
+            loadShopItems(currentTab);
+          });
+        });
+        
+        console.log('[Shop] Items loaded successfully');
+      } catch (error) {
+        console.error('[Shop] Error loading items:', error);
+      }
     }
     
     // Update player currency display

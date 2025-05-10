@@ -11,14 +11,26 @@ import GameCore from './GameCore.js';
  * @returns {Object|null} Level-up info if player leveled up
  */
 export function awardRewards(rewards) {
+  if (!rewards) {
+    console.warn('[AdventureIntegration] No rewards provided');
+    return null;
+  }
+
   let levelUp = null;
+  
+  // Get player state with safety check
+  const playerState = GameCore.getPlayerState();
+  if (!playerState) {
+    console.error('[AdventureIntegration] Player state undefined, cannot award rewards');
+    return null;
+  }
   
   // Award XP
   if (rewards.xp) {
     // Add XP through GameCore and check for level up
-    const oldLevel = GameCore.getPlayerState().level;
+    const oldLevel = playerState.level || 1;
     GameCore.addXP(rewards.xp);
-    const newLevel = GameCore.getPlayerState().level;
+    const newLevel = GameCore.getPlayerState()?.level || oldLevel;
     
     // Check if player leveled up
     if (newLevel > oldLevel) {
@@ -128,6 +140,8 @@ function createItemObject(itemId) {
  * @param {Object} rewards - Reward object
  */
 function showRewardToast(rewards) {
+  if (!rewards) return;
+  
   let message = 'Rewards:';
   
   if (rewards.xp) {
@@ -156,12 +170,14 @@ function showRewardToast(rewards) {
  * @param {string} sceneId - ID of the scene to complete
  */
 export function completeScene(sceneId) {
+  if (!sceneId) {
+    console.warn('[AdventureIntegration] No sceneId provided to complete');
+    return;
+  }
+  
   // Check if scene is already completed
   if (!isSceneCompleted(sceneId)) {
-    GameCore.store.dispatch({
-      type: 'player/completeScene',
-      payload: sceneId
-    });
+    GameCore.dispatch('completeScene', sceneId);
     GameCore.save();
   }
 }
@@ -172,9 +188,11 @@ export function completeScene(sceneId) {
  * @returns {boolean} Whether the scene is completed
  */
 export function isSceneCompleted(sceneId) {
+  if (!sceneId) return false;
+  
   const state = GameCore.getPlayerState();
   
-  if (!state.adventureProgress || !state.adventureProgress.completedScenes) {
+  if (!state || !state.adventureProgress || !state.adventureProgress.completedScenes) {
     return false;
   }
   
@@ -186,10 +204,12 @@ export function isSceneCompleted(sceneId) {
  * @param {string} sceneId - ID of the scene
  */
 export function setCurrentScene(sceneId) {
-  GameCore.store.dispatch({
-    type: 'player/setCurrentScene',
-    payload: sceneId
-  });
+  if (!sceneId) {
+    console.warn('[AdventureIntegration] No sceneId provided to set current scene');
+    return;
+  }
+  
+  GameCore.dispatch('setCurrentScene', sceneId);
   GameCore.save();
 }
 
@@ -199,7 +219,10 @@ export function setCurrentScene(sceneId) {
  */
 export function getCurrentScene() {
   const state = GameCore.getPlayerState();
-  return state?.adventureProgress?.currentScene || 'intro';
+  if (!state || !state.adventureProgress) {
+    return 'intro';
+  }
+  return state.adventureProgress.currentScene || 'intro';
 }
 
 /**
@@ -213,28 +236,25 @@ export function initializeAdventureProgress() {
     console.log('[AdventureIntegration] Player state not found, creating initial state');
     
     // Create initial state with default values
-    GameCore.store.dispatch({
-      type: 'player/loadFromStorage',
-      payload: {
-        level: 1,
-        xp: 0,
-        xpToNextLevel: 100,
-        currency: 250,
-        reputation: 0,
-        inventory: [],
-        builds: [],
-        unlockedParts: [],
-        completedMissions: [],
-        adventureProgress: {
-          currentChapter: 1,
-          completedScenes: [],
-          currentScene: 'intro'
-        },
-        relationships: {
-          charlie: 1,
-          billy: 1,
-          tbd: 1
-        }
+    GameCore.dispatch('loadFromStorage', {
+      level: 1,
+      xp: 0,
+      xpToNextLevel: 100,
+      currency: 250,
+      reputation: 0,
+      inventory: [],
+      builds: [],
+      unlockedParts: [],
+      completedMissions: [],
+      adventureProgress: {
+        currentChapter: 1,
+        completedScenes: [],
+        currentScene: 'intro'
+      },
+      relationships: {
+        charlie: 1,
+        billy: 1,
+        tbd: 1
       }
     });
     
@@ -244,13 +264,10 @@ export function initializeAdventureProgress() {
   
   // Continue with the original logic for partial state
   if (!state.adventureProgress) {
-    GameCore.store.dispatch({
-      type: 'player/initAdventureProgress',
-      payload: {
-        currentChapter: 1,
-        completedScenes: [],
-        currentScene: 'intro'
-      }
+    GameCore.dispatch('initAdventureProgress', {
+      currentChapter: 1,
+      completedScenes: [],
+      currentScene: 'intro'
     });
     GameCore.save();
   }
@@ -262,6 +279,8 @@ export function initializeAdventureProgress() {
  * @returns {string} Character display name
  */
 function getCharacterName(character) {
+  if (!character) return 'Unknown';
+  
   switch(character) {
     case 'charlie': return 'Charlie';
     case 'billy': return 'Billy';

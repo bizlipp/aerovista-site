@@ -1,0 +1,229 @@
+/**
+ * BuildIntegration.js
+ * Provides bike building functionality and integrates with Redux store for state management
+ */
+
+import GameCore from './GameCore.js';
+import { store } from '../StateStackULTRA/store/gameStore.js';
+import { showToast } from './popup-toast.js';
+import { 
+  addBuild, 
+  updateBuild,
+  setActiveBuild,
+  addComponent, 
+  removeComponent,
+  startBuilding,
+  stopBuilding,
+  addToBuildHistory
+} from '../StateStackULTRA/slices/buildSlice.js';
+
+/**
+ * Save a bike build and award rewards
+ * @param {Object} build - Build data
+ * @returns {Object|null} Level-up info if player leveled up
+ */
+export function saveBuild(build) {
+  // Create a unique ID if not provided
+  if (!build.id) {
+    build.id = `build_${Date.now()}`;
+  }
+  
+  // Dispatch to Redux store
+  store.dispatch(addBuild(build));
+  
+  // Calculate XP award based on build complexity
+  // More parts or more expensive builds grant more XP
+  const baseXP = 50;
+  const partBonus = build.parts ? build.parts.length * 5 : 0;
+  const expenseBonus = Math.floor((build.totalPrice || 0) / 100);
+  const totalXP = baseXP + partBonus + expenseBonus;
+  
+  // Award XP
+  const levelUp = GameCore.addXP(totalXP);
+  
+  // Get build count to check for first build
+  const buildCount = getBuildCount();
+  
+  // Award extra SurCoins for first build (beginner reward)
+  if (buildCount === 1) {
+    GameCore.addCurrency(100);
+    showToast({
+      message: 'First build bonus: +100 SurCoins!',
+      type: 'success'
+    });
+    
+    // Check for related quest completion
+    checkBuildQuests(true);
+  } else {
+    // Check for other build-related quests
+    checkBuildQuests(false);
+  }
+  
+  // Save state
+  GameCore.save();
+  
+  // Show toast notification
+  showToast({
+    message: `🏁 Build "${build.name}" saved! +${totalXP} XP`,
+    type: 'success'
+  });
+  
+  // Add to build history
+  store.dispatch(addToBuildHistory({
+    action: 'save',
+    buildId: build.id,
+    details: {
+      name: build.name,
+      xpAwarded: totalXP
+    }
+  }));
+  
+  return levelUp;
+}
+
+/**
+ * Check and potentially complete build-related quests
+ * @param {boolean} isFirstBuild - Whether this is the player's first build
+ */
+function checkBuildQuests(isFirstBuild) {
+  const state = GameCore.getPlayerState();
+  
+  // First build quest
+  if (isFirstBuild && !isMissionCompleted('first_build')) {
+    GameCore.dispatch('completeMission', 'first_build');
+  }
+  
+  // Get build count to check for milestones
+  const buildCount = getBuildCount();
+  
+  // Other build milestones could be rewarded here
+  if (buildCount === 5 && !isMissionCompleted('build_master')) {
+    GameCore.addCurrency(250);
+    GameCore.updateRelationship('charlie', 2);
+    GameCore.dispatch('completeMission', 'build_master');
+    showToast({
+      message: 'Build Master achievement unlocked! +250 SurCoins',
+      type: 'success'
+    });
+  }
+}
+
+/**
+ * Check if a mission is completed
+ * @param {string} missionId - ID of the mission
+ * @returns {boolean} Whether the mission is completed
+ */
+function isMissionCompleted(missionId) {
+  const state = GameCore.getPlayerState();
+  return state.completedMissions?.includes(missionId) || false;
+}
+
+/**
+ * Check if player can afford parts
+ * @param {number} totalPrice - Total price of the build
+ * @returns {boolean} Whether player can afford the build
+ */
+export function canAffordBuild(totalPrice) {
+  const playerState = GameCore.getPlayerState();
+  return (playerState.currency || 0) >= totalPrice;
+}
+
+/**
+ * Get player's builds
+ * @returns {Array} Player's saved builds
+ */
+export function getPlayerBuilds() {
+  const state = store.getState();
+  const builds = state.builds || {};
+  
+  // Convert from entity adapter format to array
+  if (builds.entities && builds.ids) {
+    return builds.ids.map(id => builds.entities[id]);
+  }
+  
+  return [];
+}
+
+/**
+ * Get player's build count
+ * @returns {number} Number of builds player has
+ */
+export function getBuildCount() {
+  const state = store.getState();
+  return state.builds?.ids?.length || 0;
+}
+
+/**
+ * Set active build for editing
+ * @param {string} buildId - ID of the build to edit
+ */
+export function setCurrentBuild(buildId) {
+  store.dispatch(setActiveBuild(buildId));
+  store.dispatch(startBuilding());
+}
+
+/**
+ * Add a component to a build
+ * @param {string} buildId - ID of the build
+ * @param {Object} component - Component data to add
+ */
+export function addBuildComponent(buildId, component) {
+  store.dispatch(addComponent({ buildId, component }));
+  
+  // Add to history
+  store.dispatch(addToBuildHistory({
+    action: 'addComponent',
+    buildId,
+    details: {
+      componentId: component.id,
+      componentName: component.name
+    }
+  }));
+}
+
+/**
+ * Remove a component from a build
+ * @param {string} buildId - ID of the build
+ * @param {string} componentId - ID of the component to remove
+ */
+export function removeBuildComponent(buildId, componentId) {
+  store.dispatch(removeComponent({ buildId, componentId }));
+  
+  // Add to history
+  store.dispatch(addToBuildHistory({
+    action: 'removeComponent',
+    buildId,
+    details: {
+      componentId
+    }
+  }));
+}
+
+/**
+ * Initialize build UI
+ */
+export function setupBuildUI() {
+  if (document.body.classList.contains('build-page')) {
+    const saveBtn = document.querySelector('#saveBuild');
+    
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        // Example build data - in reality this would be collected from the UI
+        const buildData = {
+          name: document.querySelector('#buildName')?.value || 'Untitled Build',
+          parts: [], // Would be collected from UI
+          totalPrice: 0, // Would be calculated from parts
+          description: document.querySelector('#buildDescription')?.value || '',
+          category: document.querySelector('#buildCategory')?.value || 'custom'
+        };
+        
+        saveBuild(buildData);
+      });
+    }
+    
+    // Other UI setup for build page
+  }
+}
+
+// Initialize the build UI when the DOM is loaded
+document.addEventListener('DOMContentLoaded', setupBuildUI); 
