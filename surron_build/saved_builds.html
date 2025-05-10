@@ -560,5 +560,17 @@
       loadSavedBuilds();
     });
   </script>
+  
+  <!-- Initialize GameCore -->
+  <script type="module">
+    import GameCore from './game/GameCore.js';
+    
+    // Initialize GameCore when DOM is ready
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Boot GameCore to initialize state
+      await GameCore.boot();
+      console.log('GameCore initialized in Saved Builds');
+    });
+  </script>
 </body>
 </html> 

@@ -3,7 +3,8 @@
  * Provides bike building functionality and integrates with GameBridge for state management
  */
 
-import gameBridge from './GameBridge.js';
+import GameCore from './GameCore.js';
+import { showToast } from './popup-toast.js';
 
 /**
  * Save a bike build and award rewards
@@ -11,7 +12,7 @@ import gameBridge from './GameBridge.js';
  * @returns {Object|null} Level-up info if player leveled up
  */
 export function saveBuild(build) {
-  const playerState = gameBridge.getPlayerState();
+  const playerState = GameCore.getPlayerState();
   
   // Initialize builds array if it doesn't exist
   if (!playerState.builds) {
@@ -29,12 +30,15 @@ export function saveBuild(build) {
   const totalXP = baseXP + partBonus + expenseBonus;
   
   // Award XP
-  const levelUp = gameBridge.addXP(totalXP);
+  const levelUp = GameCore.addXP(totalXP);
   
   // Award extra SurCoins for first build (beginner reward)
   if (playerState.builds.length === 1) {
-    gameBridge.addCurrency(100);
-    gameBridge.showToast('First build bonus: +100 SurCoins!', 'success');
+    GameCore.addCurrency(100);
+    showToast({
+      message: 'First build bonus: +100 SurCoins!',
+      type: 'success'
+    });
     
     // Check for related quest completion
     checkBuildQuests(true);
@@ -44,10 +48,13 @@ export function saveBuild(build) {
   }
   
   // Save state
-  gameBridge.save();
+  GameCore.save();
   
   // Show toast notification
-  gameBridge.showToast(`Build "${build.name}" saved! +${totalXP} XP`, 'success');
+  showToast({
+    message: `🏁 Build "${build.name}" saved! +${totalXP} XP`,
+    type: 'success'
+  });
   
   return levelUp;
 }
@@ -57,11 +64,11 @@ export function saveBuild(build) {
  * @param {boolean} isFirstBuild - Whether this is the player's first build
  */
 function checkBuildQuests(isFirstBuild) {
-  const state = gameBridge.getPlayerState();
+  const state = GameCore.getPlayerState();
   
   // First build quest
-  if (isFirstBuild && !gameBridge.isMissionCompleted('first_build')) {
-    gameBridge.completeMission('first_build');
+  if (isFirstBuild && !GameCore.isMissionCompleted('first_build')) {
+    GameCore.completeMission('first_build');
   }
   
   // Charlie's build review quest - unlocked when you have at least one build
@@ -69,11 +76,14 @@ function checkBuildQuests(isFirstBuild) {
   const buildCount = state.builds ? state.builds.length : 0;
   
   // Other build milestones could be rewarded here
-  if (buildCount === 5 && !gameBridge.isMissionCompleted('build_master')) {
-    gameBridge.addCurrency(250);
-    gameBridge.updateRelationship('charlie', 2);
-    gameBridge.completeMission('build_master');
-    gameBridge.showToast('Build Master achievement unlocked! +250 SurCoins', 'success');
+  if (buildCount === 5 && !GameCore.isMissionCompleted('build_master')) {
+    GameCore.addCurrency(250);
+    GameCore.updateRelationship('charlie', 2);
+    GameCore.completeMission('build_master');
+    showToast({
+      message: 'Build Master achievement unlocked! +250 SurCoins',
+      type: 'success'
+    });
   }
 }
 
@@ -83,7 +93,7 @@ function checkBuildQuests(isFirstBuild) {
  * @returns {boolean} Whether player can afford the build
  */
 export function canAffordBuild(totalPrice) {
-  const playerState = gameBridge.getPlayerState();
+  const playerState = GameCore.getPlayerState();
   return (playerState.currency || 0) >= totalPrice;
 }
 
@@ -92,7 +102,7 @@ export function canAffordBuild(totalPrice) {
  * @returns {Array} Player's saved builds
  */
 export function getPlayerBuilds() {
-  const playerState = gameBridge.getPlayerState();
+  const playerState = GameCore.getPlayerState();
   return playerState.builds || [];
 }
 
@@ -101,6 +111,56 @@ export function getPlayerBuilds() {
  * @returns {number} Number of builds player has
  */
 export function getBuildCount() {
-  const playerState = gameBridge.getPlayerState();
+  const playerState = GameCore.getPlayerState();
   return playerState.builds ? playerState.builds.length : 0;
-} 
+}
+
+export function awardBuildRewards(buildId, xp, surCoins, rewardItems = []) {
+  GameCore.addXP(xp);
+  GameCore.addCurrency(surCoins);
+
+  rewardItems.forEach(item => {
+    GameCore.addItem({
+      id: item.id,
+      name: item.name,
+      quantity: item.quantity || 1,
+      acquiredAt: Date.now()
+    });
+  });
+
+  showToast({
+    message: `🏁 Build ${buildId} saved! +${xp} XP, +${surCoins} SurCoins`,
+    type: 'success'
+  });
+}
+
+export function handleBuildSave(buildData) {
+  // Triggered when a player finishes a build and saves it
+  // This logic assumes buildData has metadata attached
+
+  const xpReward = buildData.xp || 50;
+  const coinReward = buildData.surCoins || 100;
+  const rewards = buildData.items || [];
+
+  awardBuildRewards(buildData.id, xpReward, coinReward, rewards);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.body.classList.contains('build-page')) {
+    const saveBtn = document.querySelector('#saveBuild');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', () => {
+        const buildData = {
+          id: 'custom_72v_build',
+          xp: 80,
+          surCoins: 150,
+          items: [
+            { id: 'battery_pack', name: 'Battery Pack', quantity: 1 },
+            { id: 'controller_unit', name: 'Controller', quantity: 1 }
+          ]
+        };
+        handleBuildSave(buildData);
+      });
+    }
+  }
+}); 

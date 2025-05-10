@@ -4,20 +4,22 @@
  * Guides players through the core gameplay loop by suggesting next activities
  * based on their current state and progression.
  */
+import GameCore from './game/GameCore.js';
+import { store } from './surron_build/StateStackULTRA/store/gameStore.js';
 
 class GameplayDirector {
   constructor() {
     this.currentSuggestion = null;
     this.suggestionsShown = [];
     
-    // Initialize when player state is ready
-    document.addEventListener('playerStateReady', () => {
+    // Initialize when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
       this.initialize();
     });
     
-    // Update suggestions when state changes
-    document.addEventListener('playerStateUpdated', (event) => {
-      this.updateSuggestion(event.detail.property);
+    // Subscribe to state changes via Redux store
+    store.subscribe(() => {
+      this.updateSuggestion();
     });
     
     // Handle quest completion
@@ -35,10 +37,10 @@ class GameplayDirector {
   /**
    * Check player's initial state and provide appropriate guidance
    */
-  checkInitialState() {
-    if (!window.playerState) return;
+  checkInitialState() {    
+    const state = GameCore.getPlayerState();
+    if (!state) return;
     
-    const state = window.playerState;
     this.updateSuggestion();
     
     // Show first-time user guidance if needed
@@ -52,9 +54,9 @@ class GameplayDirector {
    * Update the current gameplay suggestion based on player state
    */
   updateSuggestion(changedProperty = null) {
-    if (!window.playerState) return;
+    const state = GameCore.getPlayerState();
+    if (!state) return;
     
-    const state = window.playerState;
     const suggestion = this.suggestNextActivity();
     
     // Only show a new suggestion if it's different from the current one
@@ -85,7 +87,7 @@ class GameplayDirector {
    * @returns {Object} Suggested activity with message
    */
   suggestNextActivity() {
-    const state = window.playerState;
+    const state = GameCore.getPlayerState();
     
     if (!state) return null;
     

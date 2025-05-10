@@ -164,7 +164,7 @@
     }
   </style>
 </head>
-<body class="surron-squad-theme">
+<body class="surron-squad-theme build-page">
   <div class="container">
     <div class="header">
       <h1 class="main-title">Configure Your Sur-Ron</h1>
@@ -254,7 +254,7 @@
           </div>
           
           <div class="build-actions">
-            <button id="save-build-btn" class="btn-save" onclick="saveBuild()">Save Build</button>
+            <button id="saveBuild" class="btn-save">Save Build</button>
             <button id="share-build-btn" class="btn-share" onclick="shareBuild()">Share Build</button>
             <button id="show-charlie-btn" class="btn-charlie" onclick="showCharlieGame()">Show to Charlie</button>
           </div>
@@ -311,43 +311,6 @@
       document.getElementById('player-coins').textContent = playerState.currency;
       document.getElementById('player-builds').textContent = playerState.builds ? playerState.builds.length : 0;
     }
-    
-    // Add a build to player state
-    window.saveBuild = function(build) {
-      // Get current player state
-      const playerState = GameCore.getPlayerState();
-      if (playerState) {
-        console.log("Saving build:", build);
-        
-        // Check if builds array exists, create if not
-        if (!playerState.builds) {
-          console.log("Creating builds array");
-          // Player state modification needs to happen through GameCore actions
-          GameCore.store.dispatch({
-            type: 'player/initBuilds',
-            payload: []
-          });
-        }
-        
-        // Add the build using GameCore
-        GameCore.store.dispatch({
-          type: 'player/addBuild',
-          payload: build
-        });
-        
-        // Save changes to storage
-        GameCore.save();
-        
-        // Add XP for creating a build
-        GameCore.addXP(50);
-        
-        // Update UI
-        updatePlayerStats();
-        
-        return true;
-      }
-      return false;
-    };
   </script>
 
   <script>
@@ -683,23 +646,71 @@
       // Handle build name changes
       document.getElementById("build-name").addEventListener("input", updateSummary);
       
-      // Handle save button
-      document.getElementById("save-build-btn").addEventListener("click", saveBuild);
-      
       // Handle share button
       document.getElementById("share-build-btn").addEventListener("click", shareBuild);
       
       // Wait for player state to be ready
-      document.addEventListener('playerStateReady', function() {
-        updatePlayerStats();
-        // Show player stats area
-        document.getElementById('player-stats').style.display = 'flex';
-      });
+      updatePlayerStats();
+      document.getElementById('player-stats').style.display = 'flex';
       
-      // If player state already exists, update stats
-      if (window.playerState) {
-        updatePlayerStats();
-        document.getElementById('player-stats').style.display = 'flex';
+      // Handle the save button click manually
+      const saveBuildBtn = document.getElementById('saveBuild');
+      if (saveBuildBtn) {
+        saveBuildBtn.addEventListener('click', function() {
+          // Prepare build data for BuildIntegration
+          try {
+            // Get build name
+            const buildName = document.getElementById('build-name').value.trim();
+            if (!buildName) {
+              alert('Please enter a name for your build!');
+              return;
+            }
+            
+            // Get all selected parts
+            const selections = document.querySelectorAll('#parts-select select');
+            const parts = [];
+            
+            selections.forEach(sel => {
+              const category = sel.dataset.category;
+              const option = sel.options[sel.selectedIndex];
+              const price = parseFloat(option.value);
+              
+              parts.push({
+                category: category,
+                option: option.textContent,
+                price: price
+              });
+            });
+            
+            // Calculate total price
+            const totalPrice = parts.reduce((sum, part) => sum + part.price, 0);
+            
+            // Create build object to pass to BuildIntegration
+            const buildData = {
+              id: buildName.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+              name: buildName,
+              parts: parts,
+              totalPrice: totalPrice,
+              date: new Date().toISOString(),
+              // These properties are used by BuildIntegration.js
+              xp: 80,
+              surCoins: 150,
+              items: [
+                { id: 'battery_pack', name: 'Battery Pack', quantity: 1 },
+                { id: 'controller_unit', name: 'Controller', quantity: 1 }
+              ]
+            };
+            
+            // Save to localStorage (for backward compatibility)
+            const savedBuilds = JSON.parse(localStorage.getItem('surronSquadBuilds') || '[]');
+            savedBuilds.push(buildData);
+            localStorage.setItem('surronSquadBuilds', JSON.stringify(savedBuilds));
+            
+            console.log('Build saved:', buildData);
+          } catch (error) {
+            console.error('Error preparing build data:', error);
+          }
+        });
       }
     });
 
@@ -830,72 +841,6 @@
         }
       } catch (error) {
         console.error('Error processing selected parts:', error);
-      }
-    }
-    
-    function saveBuild() {
-      try {
-        // Get build name
-        const buildName = document.getElementById('build-name').value.trim();
-        if (!buildName) {
-          alert('Please enter a name for your build!');
-          return;
-        }
-        
-        // Get all selected parts
-        const selections = document.querySelectorAll('#parts-select select');
-        const parts = [];
-        
-        selections.forEach(sel => {
-          const category = sel.dataset.category;
-          const option = sel.options[sel.selectedIndex];
-          const price = parseFloat(option.value);
-          
-          parts.push({
-            category: category,
-            option: option.textContent,
-            price: price
-          });
-        });
-        
-        // Calculate total price
-        const totalPrice = parts.reduce((sum, part) => sum + part.price, 0);
-        
-        // Create build object
-        const build = {
-          name: buildName,
-          parts: parts,
-          totalPrice: totalPrice,
-          date: new Date().toISOString()
-        };
-        
-        // Get existing builds or create empty array
-        const savedBuilds = JSON.parse(localStorage.getItem('surronSquadBuilds') || '[]');
-        
-        // Add new build
-        savedBuilds.push(build);
-        
-        // Save to localStorage
-        localStorage.setItem('surronSquadBuilds', JSON.stringify(savedBuilds));
-        
-        // Use the new GameCore-aware saveBuild function
-        if (window.saveBuild) {
-          // Save to GameCore player state
-          const success = window.saveBuild(build);
-          
-          if (success) {
-            alert(`"${buildName}" has been saved to your build library! (+50 XP)`);
-          } else {
-            alert(`"${buildName}" has been saved to your build library!`);
-          }
-        } else {
-          // Show confirmation if no GameCore saveBuild function
-          alert(`"${buildName}" has been saved to your build library!`);
-        }
-        
-      } catch (error) {
-        console.error('Error saving build:', error);
-        alert('There was an error saving your build. Please try again.');
       }
     }
     
@@ -1050,5 +995,8 @@
       </style>
     `);
   </script>
+  
+  <!-- Import BuildIntegration with type="module" -->
+  <script type="module" src="game/BuildIntegration.js"></script>
 </body>
 </html>

@@ -226,11 +226,11 @@
     }
   </style>
 </head>
-<body class="surron-squad-theme">
+<body class="surron-squad-theme settings-page">
   <div class="settings-container">
     <header>
       <h1>Settings</h1>
-      <p class="subtitle">Manage your Surron Squad experience</p>
+      <p class="subtitle">Configure your Surron Squad experience</p>
       
       <div style="margin-bottom: 15px;">
         <a href="squad-hq.html" class="btn">← Back to Squad HQ</a>
@@ -243,7 +243,7 @@
       <div class="settings-row">
         <div>
           <div class="settings-label">Sound Effects</div>
-          <div class="settings-description">Toggle sound effects in the game</div>
+          <div class="settings-description">Toggle in-game sound effects</div>
         </div>
         <label class="settings-toggle">
           <input type="checkbox" id="sound-toggle" checked>
@@ -363,142 +363,28 @@
   </div>
   
   <script>
-    // Initialize settings
+    // Basic UI controls that don't interact with game state
     document.addEventListener('DOMContentLoaded', function() {
-      // Load saved settings from localStorage
-      loadSettings();
-      
-      // Set up event listeners
-      setupEventListeners();
-      
-      // Reset notifications
-      hideNotifications();
-    });
-    
-    // Load settings from localStorage
-    function loadSettings() {
-      // Sound effects
-      const soundEnabled = localStorage.getItem('surronSquadSoundEnabled');
-      document.getElementById('sound-toggle').checked = soundEnabled !== 'false';
-      
-      // Background music
-      const musicEnabled = localStorage.getItem('surronSquadMusicEnabled');
-      document.getElementById('music-toggle').checked = musicEnabled !== 'false';
-      
-      // Notifications
-      const notificationsEnabled = localStorage.getItem('surronSquadNotificationsEnabled');
-      document.getElementById('notifications-toggle').checked = notificationsEnabled !== 'false';
-    }
-    
-    // Set up event listeners
-    function setupEventListeners() {
-      // Toggle switches
-      document.getElementById('sound-toggle').addEventListener('change', function() {
-        localStorage.setItem('surronSquadSoundEnabled', this.checked);
-      });
-      
-      document.getElementById('music-toggle').addEventListener('change', function() {
-        localStorage.setItem('surronSquadMusicEnabled', this.checked);
-      });
-      
-      document.getElementById('notifications-toggle').addEventListener('change', function() {
-        localStorage.setItem('surronSquadNotificationsEnabled', this.checked);
-      });
-      
-      // Export button
-      document.getElementById('export-button').addEventListener('click', exportSaveData);
-      
-      // Copy export button
-      document.getElementById('copy-export').addEventListener('click', copyExportToClipboard);
-      
-      // Download export button
-      document.getElementById('download-export').addEventListener('click', downloadExportAsFile);
-      
-      // Close export button
-      document.getElementById('close-export').addEventListener('click', function() {
-        document.getElementById('export-container').style.display = 'none';
-      });
-      
-      // Import button
-      document.getElementById('import-button').addEventListener('click', function() {
-        document.getElementById('import-container').style.display = 'block';
-      });
-      
-      // Process import button
-      document.getElementById('process-import').addEventListener('click', processImport);
-      
-      // Import from file button
-      document.getElementById('import-from-file').addEventListener('click', function() {
-        document.getElementById('file-input').click();
-      });
-      
-      // File input change
-      document.getElementById('file-input').addEventListener('change', loadImportFromFile);
-      
-      // Close import button
-      document.getElementById('close-import').addEventListener('click', function() {
-        document.getElementById('import-container').style.display = 'none';
-        document.getElementById('import-area').value = '';
-      });
-      
-      // Reset button
+      // Set up modal controls
       document.getElementById('reset-button').addEventListener('click', function() {
         document.getElementById('reset-modal').style.display = 'flex';
       });
       
-      // Reset cancel button
       document.getElementById('reset-cancel').addEventListener('click', function() {
         document.getElementById('reset-modal').style.display = 'none';
       });
       
-      // Reset confirm button
-      document.getElementById('reset-confirm').addEventListener('click', resetGameProgress);
-      
-      // Credits button
-      document.getElementById('credits-button').addEventListener('click', function() {
-        // In a real implementation, this would show a credits modal or page
-        alert('Surron Squad was created by the awesome team at AeroVista!');
-      });
-    }
-    
-    // Export save data
-    function exportSaveData() {
-      if (!window.playerState) {
-        showNotification('error', 'Error: Player state is not available');
-        return;
-      }
-      
-      try {
-        const exportData = window.playerState.exportState();
-        document.getElementById('export-area').value = exportData;
-        document.getElementById('export-container').style.display = 'block';
-      } catch (error) {
-        console.error('Error exporting save data:', error);
-        showNotification('error', 'Error: Could not export save data');
-      }
-    }
-    
-    // Copy export to clipboard
-    function copyExportToClipboard() {
-      const exportArea = document.getElementById('export-area');
-      exportArea.select();
-      exportArea.setSelectionRange(0, 99999); // For mobile devices
-      
-      try {
+      // Export UI controls
+      document.getElementById('copy-export').addEventListener('click', function() {
+        const exportArea = document.getElementById('export-area');
+        exportArea.select();
         document.execCommand('copy');
-        showNotification('success', 'Save data copied to clipboard!');
-      } catch (error) {
-        console.error('Error copying to clipboard:', error);
-        showNotification('error', 'Error: Could not copy to clipboard');
-      }
-    }
-    
-    // Download export as file
-    function downloadExportAsFile() {
-      const exportData = document.getElementById('export-area').value;
-      if (!exportData) return;
+      });
       
-      try {
+      document.getElementById('download-export').addEventListener('click', function() {
+        const exportData = document.getElementById('export-area').value;
+        if (!exportData) return;
+        
         const blob = new Blob([exportData], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         
@@ -512,116 +398,49 @@
         document.body.appendChild(a);
         a.click();
         
-        // Clean up
         setTimeout(function() {
           document.body.removeChild(a);
           URL.revokeObjectURL(url);
         }, 0);
+      });
+      
+      document.getElementById('close-export').addEventListener('click', function() {
+        document.getElementById('export-container').style.display = 'none';
+      });
+      
+      // Import UI controls
+      document.getElementById('import-button').addEventListener('click', function() {
+        document.getElementById('import-container').style.display = 'block';
+      });
+      
+      document.getElementById('import-from-file').addEventListener('click', function() {
+        document.getElementById('file-input').click();
+      });
+      
+      document.getElementById('file-input').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
         
-        showNotification('success', 'Save data downloaded successfully!');
-      } catch (error) {
-        console.error('Error downloading file:', error);
-        showNotification('error', 'Error: Could not download file');
-      }
-    }
-    
-    // Process import
-    function processImport() {
-      const importData = document.getElementById('import-area').value;
-      if (!importData.trim()) {
-        showNotification('error', 'Error: No import data provided');
-        return;
-      }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('import-area').value = e.target.result;
+        };
+        reader.readAsText(file);
+      });
       
-      if (!window.playerState) {
-        showNotification('error', 'Error: Player state is not available');
-        return;
-      }
+      document.getElementById('close-import').addEventListener('click', function() {
+        document.getElementById('import-container').style.display = 'none';
+        document.getElementById('import-area').value = '';
+      });
       
-      try {
-        const success = window.playerState.importState(importData);
-        
-        if (success) {
-          showNotification('success', 'Save data imported successfully! Refreshing page...');
-          
-          // Hide import container
-          document.getElementById('import-container').style.display = 'none';
-          
-          // Refresh page after a short delay
-          setTimeout(function() {
-            window.location.reload();
-          }, 1500);
-        } else {
-          showNotification('error', 'Error: Invalid save data format');
-        }
-      } catch (error) {
-        console.error('Error importing save data:', error);
-        showNotification('error', 'Error: Could not import save data');
-      }
-    }
-    
-    // Load import from file
-    function loadImportFromFile(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      
-      const reader = new FileReader();
-      
-      reader.onload = function(e) {
-        document.getElementById('import-area').value = e.target.result;
-      };
-      
-      reader.onerror = function() {
-        showNotification('error', 'Error: Could not read file');
-      };
-      
-      reader.readAsText(file);
-    }
-    
-    // Reset game progress
-    function resetGameProgress() {
-      if (!window.playerState) {
-        showNotification('error', 'Error: Player state is not available');
-        return;
-      }
-      
-      try {
-        window.playerState.reset();
-        
-        // Hide reset modal
-        document.getElementById('reset-modal').style.display = 'none';
-        
-        showNotification('success', 'Game progress reset successfully! Refreshing page...');
-        
-        // Refresh page after a short delay
-        setTimeout(function() {
-          window.location.reload();
-        }, 1500);
-      } catch (error) {
-        console.error('Error resetting game progress:', error);
-        showNotification('error', 'Error: Could not reset game progress');
-      }
-    }
-    
-    // Show notification
-    function showNotification(type, message) {
-      hideNotifications();
-      
-      const notification = document.getElementById(`${type}-notification`);
-      notification.textContent = message;
-      notification.style.display = 'block';
-      
-      // Auto-hide after 5 seconds
-      setTimeout(function() {
-        notification.style.display = 'none';
-      }, 5000);
-    }
-    
-    // Hide all notifications
-    function hideNotifications() {
-      document.getElementById('success-notification').style.display = 'none';
-      document.getElementById('error-notification').style.display = 'none';
-    }
+      // Credits button
+      document.getElementById('credits-button').addEventListener('click', function() {
+        alert('Surron Squad was created by the awesome team at AeroVista!');
+      });
+    });
   </script>
+  
+  <!-- Import GameCore and SettingsIntegration -->
+  <script type="module" src="game/SettingsIntegration.js"></script>
 </body>
 </html> 

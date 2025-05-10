@@ -376,36 +376,13 @@
     </div>
   </div>
   
-  <script type="module">
-    // Import the GameBridge
-    import gameBridge from './game/GameBridge.js';
-    
-    // Shop state
-    let shopItems;
+  <!-- Shop JS -->
+  <script>
+    // Player currency
     let playerCurrency = 0;
     
-    // When document is loaded, initialize shop
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Load shop items
-      await loadItems();
-      
-      // Wait for player state to be ready
-      document.addEventListener('playerStateReady', () => {
-        gameBridge.onReady(() => {
-          // Update player currency
-          updatePlayerCurrency();
-        
-          // Load the first tab
-          loadShopItems('upgrades');
-        
-          // Setup tab navigation
-          setupTabNavigation();
-        });
-      });
-    });
-    
-    // Shop item categories
-    shopItems = {
+    // Shop data
+    const shopItems = {
       upgrades: [
         {
           id: "high_power_controller",
@@ -632,9 +609,10 @@
     
     // Update player currency display
     function updatePlayerCurrency() {
-      if (!window.playerState) return;
+      const state = GameCore.getPlayerState();
+      if (!state) return;
       
-      playerCurrency = window.playerState.currency;
+      playerCurrency = state.currency;
       document.getElementById('player-coins').textContent = playerCurrency;
       
       // Show warning if player has less than 200 coins
@@ -810,34 +788,24 @@
     
     // Purchase an item
     function purchaseItem(item) {
-      if (!window.playerState) return;
-      
-      // Check if player has enough currency
-      if (window.playerState.currency < item.price) {
-        alert("You don't have enough SurCoins for this purchase!");
-        return;
-      }
-      
-      // Subtract cost from player currency
-      window.playerState.currency -= item.price;
-      
-      // Add item to player inventory
-      window.playerState.addItem(item.id, 1);
-      
-      // Save player state
-      window.playerState.save();
-      
-      // Update UI
-      updatePlayerCurrency();
-      
-      // Mark item as owned
-      const itemElement = document.querySelector(`.shop-item[data-item-id="${item.id}"]`);
-      if (itemElement) {
-        markItemAsOwned(itemElement);
-      }
-      
-      // Show success notification
-      addNotification(item);
+      // Use ShopIntegration instead of window.playerState
+      import('./game/ShopIntegration.js').then(module => {
+        module.purchaseItem(item.id, item.price, {
+          name: item.name
+        });
+        
+        // Update UI
+        updatePlayerCurrency();
+        
+        // Mark item as owned
+        const itemElement = document.querySelector(`.shop-item[data-item-id="${item.id}"]`);
+        if (itemElement) {
+          markItemAsOwned(itemElement);
+        }
+        
+        // Show success notification
+        addNotification(item);
+      });
     }
     
     // Add a purchase notification
@@ -882,6 +850,19 @@
         }, 300);
       }, 5000);
     }
+  </script>
+  
+  <!-- Import GameCore and ShopIntegration -->
+  <script type="module">
+    import GameCore from './game/GameCore.js';
+    import { setupShopUI } from './game/ShopIntegration.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initialize shop with GameCore
+      window.GameCore = GameCore;
+      updatePlayerCurrency();
+      setupShopUI();
+    });
   </script>
 </body>
 </html> 
