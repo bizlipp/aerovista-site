@@ -811,10 +811,24 @@
   </script>
   
   <script type="module">
-    // Define base URL for imports
-    const BASE_URL = new URL(import.meta.url).pathname.includes('/surron_build/') ? 
-                    './' : 
-                    '/surron_build/';
+    // More robust base URL detection
+    const getBaseUrl = () => {
+      const url = new URL(import.meta.url);
+      const hostname = url.hostname;
+      
+      // Check if we're on localhost or deployed site
+      if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
+        console.log("Local development environment detected");
+        return './';
+      } else {
+        // Use absolute path on deployed site
+        console.log("Production environment detected");
+        return '/surron_build/';
+      }
+    };
+    
+    const BASE_URL = getBaseUrl();
+    console.log("Using base URL for imports:", BASE_URL);
     
     console.log("Squad HQ: Loading modules...");
     
@@ -823,13 +837,13 @@
     
     try {
       // Import modules one by one with error handling
-      const gameCoreMod = await import(`${BASE_URL}game/GameCore.js`);
+      const gameCoreMod = await import(BASE_URL + 'game/GameCore.js');
       console.log("GameCore module loaded successfully");
       GameCore = gameCoreMod.default;
       
       try {
         // Use the new QuestBoardComponent instead of quest-board.js
-        const questBoardMod = await import(`${BASE_URL}components/QuestBoardComponent.js`);
+        const questBoardMod = await import(BASE_URL + 'components/QuestBoardComponent.js');
         console.log("QuestBoard component loaded successfully");
         // Mount the component after DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
@@ -845,7 +859,7 @@
       }
       
       try {
-        const directorMod = await import(`${BASE_URL}gameplay-director.js`);
+        const directorMod = await import(BASE_URL + 'gameplay-director.js');
         console.log("Director module loaded successfully");
         director = directorMod.default;
       } catch (error) {
@@ -918,13 +932,32 @@
     }
   </script>
   <script type="module">
-    // Define base URL for imports (with unique variable name)
-    const ADVENTURE_BASE_URL = new URL(import.meta.url).pathname.includes('/surron_build/') ? 
-                    './' : 
-                    '/surron_build/';
+    // Use the same base URL detection logic
+    const getAdventureBaseUrl = () => {
+      const url = new URL(import.meta.url);
+      const hostname = url.hostname;
+      
+      // Check if we're on localhost or deployed site
+      if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
+        return './';
+      } else {
+        // Use absolute path on deployed site
+        return '/surron_build/';
+      }
+    };
     
-    // Import adventureUI using the same base URL pattern
-    import * as adventureUI from `${ADVENTURE_BASE_URL}adventureUI.js`;
+    const ADVENTURE_BASE_URL = getAdventureBaseUrl();
+    console.log("Using adventure base URL:", ADVENTURE_BASE_URL);
+    
+    // Use dynamic import instead of static import for varying base URL
+    (async function() {
+      try {
+        const adventureUI = await import(ADVENTURE_BASE_URL + 'adventureUI.js');
+        console.log("AdventureUI module loaded successfully");
+      } catch (error) {
+        console.error("Error loading adventureUI.js:", error);
+      }
+    })();
   </script>
 </body>
 </html> 

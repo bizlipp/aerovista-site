@@ -153,10 +153,23 @@
   <script type="module">
     console.log("Loading Surron Squad...");
     
-    // Define base URL for imports
-    const BASE_URL = new URL(import.meta.url).pathname.includes('/surron_build/') ? 
-                    './' : 
-                    '/surron_build/';
+    // More robust base URL detection
+    const getBaseUrl = () => {
+      const url = new URL(import.meta.url);
+      const hostname = url.hostname;
+      
+      // Check if we're on localhost or deployed site
+      if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
+        console.log("Local development environment detected");
+        return './';
+      } else {
+        // Use absolute path on deployed site
+        console.log("Production environment detected");
+        return '/surron_build/';
+      }
+    };
+    
+    const BASE_URL = getBaseUrl();
     console.log("Using base URL for imports:", BASE_URL);
     
     // Preload important modules to check for errors
@@ -166,15 +179,15 @@
         console.log("Preloading critical modules...");
         
         // Load GameCore first
-        const gameCore = await import(`${BASE_URL}game/GameCore.js`);
+        const gameCore = await import(BASE_URL + 'game/GameCore.js');
         console.log("✅ GameCore loaded");
         
         // Then store
-        const store = await import(`${BASE_URL}StateStackULTRA/store/gameStore.js`);
+        const store = await import(BASE_URL + 'StateStackULTRA/store/gameStore.js');
         console.log("✅ Store loaded");
         
         // Then player state
-        const playerSlice = await import(`${BASE_URL}StateStackULTRA/slices/playerSlice.js`);
+        const playerSlice = await import(BASE_URL + 'StateStackULTRA/slices/playerSlice.js');
         console.log("✅ PlayerSlice loaded");
         
         return { success: true };
@@ -216,7 +229,7 @@
           throw new Error(`Critical module loading failed: ${preloadResult.error}`);
         }
         
-        const GameCoreModule = await import(`${BASE_URL}game/GameCore.js`);
+        const GameCoreModule = await import(BASE_URL + 'game/GameCore.js');
         console.log("GameCore module imported successfully");
         window.GameCore = GameCoreModule.default;
         simulateBootProgress();

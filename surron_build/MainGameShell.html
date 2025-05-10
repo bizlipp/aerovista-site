@@ -4,14 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Surron Squad</title>
+  <!-- CSS will be updated by script -->
   <link rel="stylesheet" href="surron_squad.css">
   <link rel="stylesheet" href=".staged files/style/components.css">
   <script>
-    // Handle CSS paths for different environments
+    // Handle CSS paths for different environments using hostname detection
     document.addEventListener('DOMContentLoaded', function() {
-      const baseUrl = window.location.pathname.includes('/surron_build/') ? 
-                     '' : 
-                     '/surron_build/';
+      const getBasePath = () => {
+        const hostname = window.location.hostname;
+        if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
+          console.log("Local development environment detected for CSS");
+          return '';
+        } else {
+          console.log("Production environment detected for CSS");
+          return '/surron_build/';
+        }
+      };
+
+      const baseUrl = getBasePath();
+      console.log("Using base URL for CSS:", baseUrl);
       
       // Update CSS links if needed
       document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
@@ -19,6 +30,7 @@
           const currentHref = link.getAttribute('href');
           if (!currentHref.startsWith('/') && !currentHref.startsWith('./')) {
             link.href = baseUrl + currentHref;
+            console.log("Updated CSS path:", link.href);
           }
         }
       });
@@ -47,43 +59,78 @@
   </main>
   
   <script type="module">
-    // Define base URL for imports
-    const BASE_URL = new URL(import.meta.url).pathname.includes('/surron_build/') ? 
-                    './' : 
-                    '/surron_build/';
+    // More robust base URL detection
+    const getBaseUrl = () => {
+      const url = new URL(import.meta.url);
+      const hostname = url.hostname;
+      
+      // Check if we're on localhost or deployed site
+      if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
+        console.log("Local development environment detected");
+        return './';
+      } else {
+        // Use absolute path on deployed site
+        console.log("Production environment detected");
+        return '/surron_build/';
+      }
+    };
+    
+    const BASE_URL = getBaseUrl();
     console.log("Using base URL for imports:", BASE_URL);
     
     // Determine component paths based on URL
     const COMPONENT_PATH = BASE_URL + '.staged files/components/';
     
-    // Dynamic imports to handle path differences
-    const SquadDashboard = (await import(`${COMPONENT_PATH}SquadDashboard.js`)).default;
-    const QuestBoardComponent = (await import(`${COMPONENT_PATH}QuestBoardComponent.js`)).default;
-    const BuildSelectorComponent = (await import(`${COMPONENT_PATH}BuildSelectorComponent.js`)).default;
-    const FishingComponent = (await import(`${COMPONENT_PATH}FishingComponent.js`)).default;
-    const AdventureEngineComponent = (await import(`${COMPONENT_PATH}AdventureEngineComponent.js`)).default;
+    // Dynamic imports to handle path differences - using string concatenation instead of template literals
+    const loadComponents = async () => {
+      try {
+        const SquadDashboard = (await import(COMPONENT_PATH + 'SquadDashboard.js')).default;
+        const QuestBoardComponent = (await import(COMPONENT_PATH + 'QuestBoardComponent.js')).default;
+        const BuildSelectorComponent = (await import(COMPONENT_PATH + 'BuildSelectorComponent.js')).default;
+        const FishingComponent = (await import(COMPONENT_PATH + 'FishingComponent.js')).default;
+        const AdventureEngineComponent = (await import(COMPONENT_PATH + 'AdventureEngineComponent.js')).default;
+        
+        return {
+          SquadDashboard,
+          QuestBoardComponent,
+          BuildSelectorComponent,
+          FishingComponent,
+          AdventureEngineComponent
+        };
+      } catch (error) {
+        console.error("Error loading components:", error);
+        return null;
+      }
+    };
     
     // Game components
     let dashboardComponent, questBoardComponent, buildSelectorComponent, fishingComponent, adventureComponent;
     
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       console.log('Initializing Surron Squad game components...');
+      
+      // Load components first
+      const components = await loadComponents();
+      if (!components) {
+        console.error("Failed to load components");
+        return;
+      }
       
       // Initialize components
       try {
-        dashboardComponent = new SquadDashboard();
+        dashboardComponent = new components.SquadDashboard();
         dashboardComponent.mount(document.getElementById('squad-dashboard'));
         
-        questBoardComponent = new QuestBoardComponent();
+        questBoardComponent = new components.QuestBoardComponent();
         questBoardComponent.mount(document.getElementById('quest-board'));
         
-        buildSelectorComponent = new BuildSelectorComponent();
+        buildSelectorComponent = new components.BuildSelectorComponent();
         buildSelectorComponent.mount(document.getElementById('build-selector'));
         
-        fishingComponent = new FishingComponent();
+        fishingComponent = new components.FishingComponent();
         fishingComponent.mount(document.getElementById('fishing-ui'));
         
-        adventureComponent = new AdventureEngineComponent();
+        adventureComponent = new components.AdventureEngineComponent();
         adventureComponent.mount(document.getElementById('adventure-engine'));
         
         console.log('All components initialized successfully');
