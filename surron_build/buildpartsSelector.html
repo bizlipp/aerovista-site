@@ -253,13 +253,23 @@
             Name your build and select some parts to get Squad commentary!
           </div>
           
-          <div class="action-buttons">
-            <button class="btn" id="save-build">Save Build</button>
-            <button class="btn share-build" id="share-build">Share with Squad</button>
+          <div class="build-actions">
+            <button id="save-build-btn" class="btn-save" onclick="saveBuild()">Save Build</button>
+            <button id="share-build-btn" class="btn-share" onclick="shareBuild()">Share Build</button>
+            <button id="show-charlie-btn" class="btn-charlie" onclick="showCharlieGame()">Show to Charlie</button>
           </div>
         </section>
       </div>
     </main>
+  </div>
+
+  <!-- Tuning Game Modal -->
+  <div class="modal" id="tuning-game-modal">
+    <div class="modal-content" style="max-width: 700px;">
+      <button class="close-modal">&times;</button>
+      <h2 class="modal-title">Charlie's Bike Tuning Station</h2>
+      <div id="tuning-game-container"></div>
+    </div>
   </div>
 
   <script src="surron_squad.js"></script>
@@ -674,10 +684,10 @@
       document.getElementById("build-name").addEventListener("input", updateSummary);
       
       // Handle save button
-      document.getElementById("save-build").addEventListener("click", saveBuild);
+      document.getElementById("save-build-btn").addEventListener("click", saveBuild);
       
       // Handle share button
-      document.getElementById("share-build").addEventListener("click", shareBuild);
+      document.getElementById("share-build-btn").addEventListener("click", shareBuild);
       
       // Wait for player state to be ready
       document.addEventListener('playerStateReady', function() {
@@ -892,6 +902,153 @@
     function shareBuild() {
       alert("The squad would love to see this build, but social sharing is coming in a future update. For now, save your build and show your friends on your device!");
     }
+    
+    function showCharlieGame() {
+      // Check if player has at least one build
+      try {
+        const savedBuilds = JSON.parse(localStorage.getItem('surronSquadBuilds') || '[]');
+        
+        if (savedBuilds.length === 0) {
+          alert("You need to save a build first before showing it to Charlie!");
+          return;
+        }
+        
+        // Show the tuning game modal
+        const modal = document.getElementById('tuning-game-modal');
+        if (!modal) return;
+        
+        modal.style.display = 'block';
+        
+        // Initialize the tuning game
+        import('./bike-tuning-game.js').then(module => {
+          const gameContainer = document.getElementById('tuning-game-container');
+          if (!gameContainer) return;
+          
+          // Start the tuning game
+          const game = module.startTuningGame('tuning-game-container');
+          
+          // Listen for game completion
+          gameContainer.addEventListener('build-shown', (event) => {
+            const result = event.detail;
+            
+            // Handle the result
+            if (result.score >= 75) {
+              // Success - complete Charlie's quest if available
+              if (window.gameBridge) {
+                // Complete the mission
+                window.gameBridge.completeMission('charlie_build_review');
+                
+                // Show success toast
+                if (window.toast) {
+                  window.toast.show('Charlie approved your build! Quest completed.', 'success');
+                } else {
+                  alert('Charlie approved your build! Quest completed.');
+                }
+                
+                // Refresh quest board if it exists
+                if (typeof window.updateQuestBoard === 'function') {
+                  window.updateQuestBoard();
+                }
+              } else {
+                // Fallback if gameBridge not available
+                alert('Charlie loves your build! "It\'s going to absolutely RIP!"');
+              }
+            } else {
+              // Not good enough
+              alert('Charlie thinks your build needs more work: "Is this a bicycle? WHERE\'S THE POWER?"');
+            }
+            
+            // Close modal
+            modal.style.display = 'none';
+          });
+        }).catch(err => {
+          console.error('Error loading tuning game:', err);
+          alert('Could not load Charlie\'s tuning station. Try again later.');
+        });
+      } catch (error) {
+        console.error('Error checking builds:', error);
+        alert('There was an error. Please try again.');
+      }
+    }
+    
+    // Add event listeners for modal close buttons
+    document.querySelectorAll('.close-modal').forEach(button => {
+      button.addEventListener('click', () => {
+        // Get the parent modal
+        const modal = button.closest('.modal');
+        if (modal) modal.style.display = 'none';
+      });
+    });
+    
+    // Add CSS for the Charlie button
+    document.head.insertAdjacentHTML('beforeend', `
+      <style>
+        .btn-charlie {
+          background: linear-gradient(45deg, #FF5722, #FF9800);
+          color: white;
+          border: none;
+          border-radius: 4px;
+          padding: 0.75rem 1.5rem;
+          font-family: 'Rajdhani', sans-serif;
+          font-weight: bold;
+          font-size: 1rem;
+          cursor: pointer;
+          transition: all 0.2s;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn-charlie:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+        
+        .modal {
+          display: none;
+          position: fixed;
+          z-index: 1000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          background-color: rgba(0,0,0,0.8);
+        }
+        
+        .modal-content {
+          background-color: var(--squad-dark);
+          margin: 5% auto;
+          padding: 20px;
+          border-radius: 8px;
+          box-shadow: 0 0 30px rgba(0,0,0,0.5);
+          position: relative;
+          width: 80%;
+        }
+        
+        .close-modal {
+          position: absolute;
+          right: 10px;
+          top: 10px;
+          color: white;
+          background: rgba(0,0,0,0.3);
+          width: 30px;
+          height: 30px;
+          border: none;
+          border-radius: 50%;
+          font-size: 20px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .modal-title {
+          font-family: 'Bangers', cursive;
+          color: var(--squad-neon);
+          text-align: center;
+          margin-top: 0;
+        }
+      </style>
+    `);
   </script>
 </body>
 </html>

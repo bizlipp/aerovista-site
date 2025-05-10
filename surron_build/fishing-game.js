@@ -1,8 +1,9 @@
 // Surron Squad Fishing Mini-Game
 import GameCore from './game/GameCore.js';
+import { processFishingResults } from './game/FishingGameIntegration.js';
 
 class FishingGame {
-  constructor(containerId) {
+  constructor(containerId, equipment = null) {
     this.container = document.getElementById(containerId);
     this.canvas = document.createElement('canvas');
     this.ctx = this.canvas.getContext('2d');
@@ -16,14 +17,43 @@ class FishingGame {
     
     // Game state
     this.state = 'waiting'; // waiting, casting, reeling, caught
-    this.playerRod = {
-      x: 100,
-      y: 100,
-      power: 50, // Casting power percentage
-      rodQuality: 1, // Will be affected by equipment
-      reelSpeed: 1, // Will be affected by equipment
-      catchBonus: 0 // Will be affected by equipment
-    };
+    
+    // Apply equipment from store if provided
+    if (equipment) {
+      this.playerRod = {
+        x: 100,
+        y: 100,
+        power: 50, // Casting power percentage
+        rodQuality: equipment.rod.quality || 1,
+        reelSpeed: equipment.rod.reelSpeed || 1,
+        catchBonus: equipment.rod.catchBonus || 0
+      };
+      
+      this.lure = {
+        type: equipment.lure.name || 'Basic Lure',
+        attractPower: equipment.lure.attractPower || 1,
+        rarityBonus: equipment.lure.rarityBonus || 0
+      };
+      
+      // Update UI to show equipment
+      this.updateEquipmentUI(equipment);
+    } else {
+      // Default equipment
+      this.playerRod = {
+        x: 100,
+        y: 100,
+        power: 50,
+        rodQuality: 1,
+        reelSpeed: 1,
+        catchBonus: 0
+      };
+      
+      this.lure = {
+        type: 'Basic Lure',
+        attractPower: 1,
+        rarityBonus: 0
+      };
+    }
     
     // Fish state
     this.fishTypes = [
@@ -39,11 +69,6 @@ class FishingGame {
     
     this.activeFish = [];
     this.hook = { x: 0, y: 0, hasFish: false, fishType: null };
-    this.lure = {
-      type: 'Basic Lure',
-      attractPower: 1,
-      rarityBonus: 0
-    };
     
     // Time tracking
     this.lastTimestamp = 0;
@@ -291,6 +316,16 @@ class FishingGame {
     
     // Clean up event listeners
     this.canvas.removeEventListener('click', this.handleClick);
+    
+    // Prepare results for store integration
+    const results = {
+      caughtFish: [...this.caughtFish],
+      totalValue: totalValue,
+      sessionDuration: Math.floor((performance.now() - this.gameStartTime) / 1000)
+    };
+    
+    // Process results through store integration
+    processFishingResults(results);
   }
   
   handleClick(event) {
@@ -812,34 +847,26 @@ class FishingGame {
     this.lure.rarityBonus = rarityBonus;
     document.getElementById('lure-type').textContent = lureName;
   }
-}
-
-// Function to start a fishing session
-function startFishingSession(containerId, equipment) {
-  // Create container if it doesn't exist
-  let container = document.getElementById(containerId);
-  if (!container) {
-    container = document.createElement('div');
-    container.id = containerId;
-    document.body.appendChild(container);
-  }
   
-  // Create fishing game instance
-  const fishingGame = new FishingGame(containerId);
-  
-  // Apply equipment if provided
-  if (equipment) {
-    if (equipment.rod) {
-      fishingGame.upgradeRod(equipment.rod.quality, equipment.rod.name);
+  // Update equipment UI
+  updateEquipmentUI(equipment) {
+    const rodQualityEl = document.getElementById('rod-quality');
+    const lureTypeEl = document.getElementById('lure-type');
+    
+    if (rodQualityEl && equipment.rod) {
+      rodQualityEl.textContent = equipment.rod.name || 'Basic';
     }
     
-    if (equipment.lure) {
-      fishingGame.upgradeLure(equipment.lure.name, equipment.lure.attractPower, equipment.lure.rarityBonus);
+    if (lureTypeEl && equipment.lure) {
+      lureTypeEl.textContent = equipment.lure.name || 'Basic Lure';
     }
   }
-  
-  // Start the game
-  fishingGame.startGame();
-  
-  return fishingGame;
+}
+
+// Export the FishingGame class
+export default FishingGame;
+
+// Factory function for creating fishing games
+export function startFishingSession(containerId, equipment = null) {
+  return new FishingGame(containerId, equipment);
 } 
