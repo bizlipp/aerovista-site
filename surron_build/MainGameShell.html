@@ -4,38 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Surron Squad</title>
-  <!-- CSS will be updated by script -->
+  <!-- Set base URL for all relative paths -->
+  <base href="/surron_build/">
   <link rel="stylesheet" href="surron_squad.css">
   <link rel="stylesheet" href=".staged files/style/components.css">
-  <script>
-    // Handle CSS paths for different environments using hostname detection
-    document.addEventListener('DOMContentLoaded', function() {
-      const getBasePath = () => {
-        const hostname = window.location.hostname;
-        if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
-          console.log("Local development environment detected for CSS");
-          return '';
-        } else {
-          console.log("Production environment detected for CSS");
-          return '/surron_build/';
-        }
-      };
-
-      const baseUrl = getBasePath();
-      console.log("Using base URL for CSS:", baseUrl);
-      
-      // Update CSS links if needed
-      document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-        if (!link.href.startsWith('http')) {
-          const currentHref = link.getAttribute('href');
-          if (!currentHref.startsWith('/') && !currentHref.startsWith('./')) {
-            link.href = baseUrl + currentHref;
-            console.log("Updated CSS path:", link.href);
-          }
-        }
-      });
-    });
-  </script>
 </head>
 <body class="surron-squad-theme">
   <header>
@@ -59,36 +31,16 @@
   </main>
   
   <script type="module">
-    // More robust base URL detection
-    const getBaseUrl = () => {
-      const url = new URL(import.meta.url);
-      const hostname = url.hostname;
-      
-      // Check if we're on localhost or deployed site
-      if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
-        console.log("Local development environment detected");
-        return './';
-      } else {
-        // Use absolute path on deployed site
-        console.log("Production environment detected");
-        return '/surron_build/';
-      }
-    };
+    console.log("Initializing Surron Squad game components...");
     
-    const BASE_URL = getBaseUrl();
-    console.log("Using base URL for imports:", BASE_URL);
-    
-    // Determine component paths based on URL
-    const COMPONENT_PATH = BASE_URL + '.staged files/components/';
-    
-    // Dynamic imports to handle path differences - using string concatenation instead of template literals
-    const loadComponents = async () => {
+    // Dynamic imports
+    async function loadComponents() {
       try {
-        const SquadDashboard = (await import(COMPONENT_PATH + 'SquadDashboard.js')).default;
-        const QuestBoardComponent = (await import(COMPONENT_PATH + 'QuestBoardComponent.js')).default;
-        const BuildSelectorComponent = (await import(COMPONENT_PATH + 'BuildSelectorComponent.js')).default;
-        const FishingComponent = (await import(COMPONENT_PATH + 'FishingComponent.js')).default;
-        const AdventureEngineComponent = (await import(COMPONENT_PATH + 'AdventureEngineComponent.js')).default;
+        const SquadDashboard = (await import('./.staged files/components/SquadDashboard.js')).default;
+        const QuestBoardComponent = (await import('./.staged files/components/QuestBoardComponent.js')).default;
+        const BuildSelectorComponent = (await import('./.staged files/components/BuildSelectorComponent.js')).default;
+        const FishingComponent = (await import('./.staged files/components/FishingComponent.js')).default;
+        const AdventureEngineComponent = (await import('./.staged files/components/AdventureEngineComponent.js')).default;
         
         return {
           SquadDashboard,
@@ -101,13 +53,13 @@
         console.error("Error loading components:", error);
         return null;
       }
-    };
+    }
     
     // Game components
     let dashboardComponent, questBoardComponent, buildSelectorComponent, fishingComponent, adventureComponent;
     
     document.addEventListener('DOMContentLoaded', async () => {
-      console.log('Initializing Surron Squad game components...');
+      console.log('Initializing components...');
       
       // Load components first
       const components = await loadComponents();

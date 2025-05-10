@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Surron Squad - Loading…</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Set base URL for all relative paths -->
+  <base href="/surron_build/">
   <style>
     body {
       margin: 0;
@@ -153,25 +155,6 @@
   <script type="module">
     console.log("Loading Surron Squad...");
     
-    // More robust base URL detection
-    const getBaseUrl = () => {
-      const url = new URL(import.meta.url);
-      const hostname = url.hostname;
-      
-      // Check if we're on localhost or deployed site
-      if (hostname === 'localhost' || hostname.includes('127.0.0.1')) {
-        console.log("Local development environment detected");
-        return './';
-      } else {
-        // Use absolute path on deployed site
-        console.log("Production environment detected");
-        return '/surron_build/';
-      }
-    };
-    
-    const BASE_URL = getBaseUrl();
-    console.log("Using base URL for imports:", BASE_URL);
-    
     // Preload important modules to check for errors
     async function preloadModules() {
       try {
@@ -179,15 +162,15 @@
         console.log("Preloading critical modules...");
         
         // Load GameCore first
-        const gameCore = await import(BASE_URL + 'game/GameCore.js');
+        const gameCore = await import('./game/GameCore.js');
         console.log("✅ GameCore loaded");
         
         // Then store
-        const store = await import(BASE_URL + 'StateStackULTRA/store/gameStore.js');
+        const store = await import('./StateStackULTRA/store/gameStore.js');
         console.log("✅ Store loaded");
         
         // Then player state
-        const playerSlice = await import(BASE_URL + 'StateStackULTRA/slices/playerSlice.js');
+        const playerSlice = await import('./StateStackULTRA/slices/playerSlice.js');
         console.log("✅ PlayerSlice loaded");
         
         return { success: true };
@@ -229,7 +212,7 @@
           throw new Error(`Critical module loading failed: ${preloadResult.error}`);
         }
         
-        const GameCoreModule = await import(BASE_URL + 'game/GameCore.js');
+        const GameCoreModule = await import('./game/GameCore.js');
         console.log("GameCore module imported successfully");
         window.GameCore = GameCoreModule.default;
         simulateBootProgress();
