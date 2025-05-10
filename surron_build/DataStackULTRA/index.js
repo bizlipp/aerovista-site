@@ -177,6 +177,9 @@ export class DataStack {
     // Create mapper for data transformation
     const mapper = this.transform.createMapper(schema);
     
+    // Store reference to parent DataStack instance
+    const dataStackInstance = this;
+    
     // Return model methods
     return {
       /**
@@ -189,12 +192,12 @@ export class DataStack {
         const key = `${keyPrefix}${id}`;
         
         // Check if already exists
-        if (await this.has(id)) {
+        if (await dataStackInstance.has(id)) {
           throw new Error(`Model instance with ID ${id} already exists`);
         }
         
         // Validate and store
-        await this.set(key, data, { schema: name });
+        await dataStackInstance.set(key, data, { schema: name });
         
         return { id, ...data };
       },
@@ -206,7 +209,7 @@ export class DataStack {
        */
       async get(id) {
         const key = `${keyPrefix}${id}`;
-        const data = await this.get(key, null);
+        const data = await dataStackInstance.get(key, null);
         
         if (data === null) {
           return null;
@@ -225,7 +228,7 @@ export class DataStack {
         const key = `${keyPrefix}${id}`;
         
         // Get existing data
-        const existing = await this.get(key, null);
+        const existing = await dataStackInstance.get(key, null);
         
         if (existing === null) {
           throw new Error(`Model instance with ID ${id} not found`);
@@ -235,7 +238,7 @@ export class DataStack {
         const merged = { ...existing, ...data };
         
         // Validate and store
-        await this.set(key, merged, { schema: name });
+        await dataStackInstance.set(key, merged, { schema: name });
         
         return { id, ...merged };
       },
@@ -247,7 +250,7 @@ export class DataStack {
        */
       async delete(id) {
         const key = `${keyPrefix}${id}`;
-        return this.remove(key);
+        return dataStackInstance.remove(key);
       },
       
       /**
@@ -255,14 +258,14 @@ export class DataStack {
        * @returns {Promise<Array<Object>>} - Array of instances
        */
       async getAll() {
-        const allKeys = await this.keys();
+        const allKeys = await dataStackInstance.keys();
         const modelKeys = allKeys.filter(key => key.startsWith(keyPrefix));
         
         const instances = [];
         
         for (const key of modelKeys) {
           const id = key.slice(keyPrefix.length);
-          const data = await this.get(key, null);
+          const data = await dataStackInstance.get(key, null);
           
           if (data !== null) {
             instances.push({ id, ...data });
@@ -287,7 +290,7 @@ export class DataStack {
        * @returns {Object} - Validation result
        */
       validate(data) {
-        return this.schema.validate(data, name);
+        return dataStackInstance.schema.validate(data, name);
       }
     };
   }
