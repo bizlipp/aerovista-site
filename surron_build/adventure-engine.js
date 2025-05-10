@@ -460,6 +460,25 @@ class AdventureEngine {
     this.repDisplay = document.getElementById('rep-stat');
     this.energyDisplay = document.getElementById('energy-stat');
     
+    // Loading indicator
+    this.loadingIndicator = document.createElement('div');
+    this.loadingIndicator.className = 'loading-indicator';
+    this.loadingIndicator.innerHTML = `
+      <div class="loading-spinner"></div>
+      <p>Loading adventure...</p>
+    `;
+    this.loadingIndicator.style.position = 'fixed';
+    this.loadingIndicator.style.top = '50%';
+    this.loadingIndicator.style.left = '50%';
+    this.loadingIndicator.style.transform = 'translate(-50%, -50%)';
+    this.loadingIndicator.style.background = 'rgba(0, 0, 0, 0.8)';
+    this.loadingIndicator.style.padding = '2rem';
+    this.loadingIndicator.style.borderRadius = '12px';
+    this.loadingIndicator.style.color = 'white';
+    this.loadingIndicator.style.textAlign = 'center';
+    this.loadingIndicator.style.zIndex = '1000';
+    document.body.appendChild(this.loadingIndicator);
+    
     // Level-up notification container
     this.createLevelUpContainer();
     
@@ -472,19 +491,94 @@ class AdventureEngine {
   
   // Initialize the game
   init() {
-    // If we have global player state, check for saved adventure progress
-    if (this.hasGlobalState && window.playerState.adventureProgress) {
-      // If there's a saved current scene, use it
-      if (window.playerState.adventureProgress.currentScene) {
-        this.currentScene = window.playerState.adventureProgress.currentScene;
+    console.log("AdventureEngine.init() called");
+    
+    try {
+      // Show loading indicator
+      this.loadingIndicator.style.display = 'block';
+      
+      // If we have global player state, check for saved adventure progress
+      if (this.hasGlobalState && window.playerState.adventureProgress) {
+        console.log("Found saved adventure progress:", window.playerState.adventureProgress);
+        
+        // If there's a saved current scene, use it
+        if (window.playerState.adventureProgress.currentScene) {
+          this.currentScene = window.playerState.adventureProgress.currentScene;
+          console.log("Restored current scene:", this.currentScene);
+        }
+        
+        // Update local stats from global player state
+        this.updateStatsFromGlobal();
+      } else {
+        console.log("No saved adventure progress found, starting fresh");
+        
+        // Initialize adventure progress
+        if (this.hasGlobalState && !window.playerState.adventureProgress) {
+          window.playerState.adventureProgress = {
+            currentScene: 'intro',
+            completedScenes: []
+          };
+          window.playerState.save();
+          console.log("Created new adventure progress object");
+        }
       }
       
-      // Update local stats from global player state
-      this.updateStatsFromGlobal();
+      // Wait a moment to ensure DOM and state are ready
+      setTimeout(() => {
+        try {
+          this.loadScene(this.currentScene);
+          this.updateStats();
+          
+          // Hide loading indicator
+          this.loadingIndicator.style.display = 'none';
+          
+          console.log("Adventure engine initialized successfully");
+        } catch (error) {
+          console.error("Error during scene loading:", error);
+          this.showErrorMessage("Failed to load adventure scene. Please try refreshing the page.");
+        }
+      }, 500);
+    } catch (error) {
+      console.error("Error during adventure initialization:", error);
+      this.showErrorMessage("Failed to initialize adventure. Please try refreshing the page.");
     }
+  }
+  
+  // Show error message
+  showErrorMessage(message) {
+    // Hide loading indicator
+    this.loadingIndicator.style.display = 'none';
     
-    this.loadScene(this.currentScene);
-    this.updateStats();
+    // Show error message
+    const errorContainer = document.createElement('div');
+    errorContainer.className = 'error-message';
+    errorContainer.innerHTML = `
+      <h3>Adventure Error</h3>
+      <p>${message}</p>
+      <button id="retry-adventure">Retry</button>
+      <button id="return-to-hq">Return to HQ</button>
+    `;
+    errorContainer.style.position = 'fixed';
+    errorContainer.style.top = '50%';
+    errorContainer.style.left = '50%';
+    errorContainer.style.transform = 'translate(-50%, -50%)';
+    errorContainer.style.background = 'rgba(0, 0, 0, 0.9)';
+    errorContainer.style.padding = '2rem';
+    errorContainer.style.borderRadius = '12px';
+    errorContainer.style.border = '3px solid #e63946';
+    errorContainer.style.color = 'white';
+    errorContainer.style.textAlign = 'center';
+    errorContainer.style.zIndex = '1000';
+    document.body.appendChild(errorContainer);
+    
+    // Add event listeners for buttons
+    document.getElementById('retry-adventure').addEventListener('click', () => {
+      location.reload();
+    });
+    
+    document.getElementById('return-to-hq').addEventListener('click', () => {
+      window.location.href = 'squad-hq.html';
+    });
   }
   
   // Create level-up notification container
@@ -792,23 +886,83 @@ class AdventureEngine {
 
 // Initialize the adventure engine when the document is loaded
 document.addEventListener('DOMContentLoaded', function() {
+  console.log("DOM loaded, preparing to initialize adventure engine");
+  
+  // Create loading indicator
+  const loadingIndicator = document.createElement('div');
+  loadingIndicator.className = 'initial-loading';
+  loadingIndicator.innerHTML = `
+    <div class="loading-spinner"></div>
+    <p>Loading Midnight Raid Adventure...</p>
+  `;
+  loadingIndicator.style.position = 'fixed';
+  loadingIndicator.style.top = '50%';
+  loadingIndicator.style.left = '50%';
+  loadingIndicator.style.transform = 'translate(-50%, -50%)';
+  loadingIndicator.style.background = 'rgba(0, 0, 0, 0.8)';
+  loadingIndicator.style.padding = '2rem';
+  loadingIndicator.style.borderRadius = '12px';
+  loadingIndicator.style.color = 'white';
+  loadingIndicator.style.textAlign = 'center';
+  loadingIndicator.style.zIndex = '1000';
+  document.body.appendChild(loadingIndicator);
+  
   // Check if player state is already loaded
   if (window.playerState) {
+    console.log("Player state already loaded, initializing adventure");
     initializeAdventure();
   } else {
+    console.log("Waiting for player state to be ready");
     // Wait for player state to be ready
-    document.addEventListener('playerStateReady', initializeAdventure);
+    document.addEventListener('playerStateReady', function() {
+      console.log("Player state ready event received, initializing adventure");
+      initializeAdventure();
+    });
+    
+    // Set a timeout to handle cases where playerStateReady never fires
+    setTimeout(() => {
+      if (!window.adventure) {
+        console.log("Timeout reached, attempting to initialize without waiting for player state");
+        initializeAdventure();
+      }
+    }, 5000);
   }
   
   function initializeAdventure() {
-    const adventure = new AdventureEngine();
-    
-    // Auto-save every 30 seconds
-    setInterval(() => {
-      adventure.saveGame();
-    }, 30000);
-    
-    // Make the adventure available globally for debugging
-    window.adventure = adventure;
+    try {
+      console.log("Creating adventure engine instance");
+      const adventure = new AdventureEngine();
+      
+      // Auto-save every 30 seconds
+      setInterval(() => {
+        try {
+          adventure.saveGame();
+        } catch (e) {
+          console.error("Error auto-saving game:", e);
+        }
+      }, 30000);
+      
+      // Make the adventure available globally for debugging
+      window.adventure = adventure;
+      
+      // Remove initial loading indicator
+      if (document.body.contains(loadingIndicator)) {
+        document.body.removeChild(loadingIndicator);
+      }
+      
+      console.log("Adventure engine initialization complete");
+    } catch (e) {
+      console.error("Error initializing adventure engine:", e);
+      
+      // Update loading indicator to show error
+      loadingIndicator.innerHTML = `
+        <h3 style="color: #e63946;">Adventure Failed to Load</h3>
+        <p>There was an error loading the adventure.</p>
+        <div style="margin-top: 1rem;">
+          <button onclick="location.reload()" style="margin-right: 1rem; background: var(--squad-neon); color: black; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">Retry</button>
+          <button onclick="window.location.href='squad-hq.html'" style="background: #333; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">Return to HQ</button>
+        </div>
+      `;
+    }
   }
 }); 

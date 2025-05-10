@@ -101,9 +101,18 @@ const quests = [
     character: 'charlie',
     requirement: () => {
       try {
+        // More robust check for builds
         const state = gameBridge.getPlayerState();
-        return state && state.builds && state.builds.length >= 1;
+        
+        // Check builds array exists and has at least one item
+        const hasBuilds = state && state.builds && Array.isArray(state.builds) && state.builds.length >= 1;
+        
+        // Log for debugging
+        console.log('Charlie quest requirement check - has builds:', hasBuilds, 'builds count:', state?.builds?.length || 0);
+        
+        return hasBuilds;
       } catch (e) {
+        console.error('Error in Charlie quest requirement check:', e);
         return false;
       }
     },
@@ -134,8 +143,14 @@ const quests = [
     markComplete: () => {
       gameBridge.completeMission('charlie_build_review');
       
-      // Trigger any related game progression
+      // First make sure quest completion is saved
+      gameBridge.save();
+      
+      // Then trigger any related game progression
       unlockNextContent('charlie_quest');
+      
+      // Debug log
+      console.log('Charlie quest marked complete, should unlock midnight heist adventure');
     }
   }
 ];
@@ -150,6 +165,26 @@ function unlockNextContent(questLine) {
   window.dispatchEvent(new CustomEvent('questProgressionUpdate', {
     detail: { questLine }
   }));
+  
+  // Check if this is Charlie's quest completion and explicitly unlock the adventure
+  if (questLine === 'charlie_quest') {
+    console.log('Unlocking Charlie\'s midnight heist adventure');
+    
+    // Initialize adventure progress if not present
+    const state = gameBridge.getPlayerState();
+    if (!state.adventureProgress) {
+      state.adventureProgress = {
+        currentScene: 'intro',
+        completedScenes: []
+      };
+      gameBridge.save();
+    }
+    
+    // Explicitly set the adventure as available
+    window.dispatchEvent(new CustomEvent('adventureUnlocked', {
+      detail: { adventure: 'midnight_heist' }
+    }));
+  }
   
   console.log(`Quest line progressed: ${questLine}`);
 }
@@ -191,7 +226,7 @@ export function initQuestBoard(containerId = 'quest-board') {
             lockedInfo.className = 'quest-locked-info';
             
             // Show appropriate requirement message
-            if (quest.character === 'charlie' && gameBridge.getPlayerState().builds.length < 1) {
+            if (quest.character === 'charlie' && (!gameBridge.getPlayerState().builds || gameBridge.getPlayerState().builds.length < 1)) {
               lockedInfo.textContent = 'Requirement: Build a bike first';
             } else {
               lockedInfo.textContent = `Requirement: Level ${quest.character === 'tbd' ? '2' : '1'}`;

@@ -559,7 +559,7 @@
           </div>
         </div>
         <p class="character-quote">"Let's overvolt it. What's the worst that could happen? Third-degree burns are just spicy memories."</p>
-        <a href="adventure-engine.html" class="character-action">Join Charlie's Adventure</a>
+        <a href="adventure-engine.html" class="character-action" id="charlie-adventure-link">Join Charlie's Adventure</a>
       </div>
       
       <div class="character-card billy">
@@ -626,8 +626,54 @@
     <div id="debug-log" style="max-height: 200px; overflow-y: auto; margin-top: 10px; background: #111; padding: 5px; font-family: monospace; font-size: 12px;"></div>
   </div>
   
+  <!-- Toast notification container -->
+  <div id="toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
+  
   <!-- Show debug panel with key combo Ctrl+Alt+D -->
   <script>
+    // Toast notification function
+    function showToast(message, type = 'success', duration = 5000) {
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = `squad-toast ${type}`;
+      notification.style.position = 'relative';
+      notification.style.marginTop = '10px';
+      notification.style.backgroundColor = type === 'success' ? 'var(--squad-neon)' : 
+                                         type === 'warning' ? 'var(--squad-primary)' : 
+                                         '#e63946';
+      notification.style.color = type === 'success' ? 'black' : 'white';
+      notification.style.padding = '1rem';
+      notification.style.borderRadius = '8px';
+      notification.style.boxShadow = 'var(--squad-shadow)';
+      notification.style.transition = 'opacity 0.3s, transform 0.3s';
+      notification.style.opacity = '0';
+      notification.style.transform = 'translateY(20px)';
+      
+      notification.textContent = message;
+      
+      // Add to container
+      const container = document.getElementById('toast-container');
+      container.appendChild(notification);
+      
+      // Trigger animation
+      setTimeout(() => {
+        notification.style.opacity = '1';
+        notification.style.transform = 'translateY(0)';
+      }, 10);
+      
+      // Remove after specified duration
+      setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+          if (container.contains(notification)) {
+            container.removeChild(notification);
+          }
+        }, 300);
+      }, duration);
+    }
+    
     document.addEventListener('keydown', function(e) {
       if (e.ctrlKey && e.altKey && e.key === 'd') {
         const debugPanel = document.getElementById('debug-panel');
@@ -663,6 +709,9 @@
       loadNotifications();
       loadMessages();
       
+      // Check adventure access
+      checkAdventureAccess();
+      
       // Check if player state is available
       if (window.playerState) {
         updatePlayerProfile();
@@ -672,6 +721,7 @@
         checkNewRewards();
         updateCurrencyDisplay();
         updatePlayerLevel();
+        checkAdventureAccess(); // Check again when playerState is confirmed available
       } else {
         // Wait for player state to be ready
         document.addEventListener('playerStateReady', function() {
@@ -682,8 +732,15 @@
           checkNewRewards();
           updateCurrencyDisplay();
           updatePlayerLevel();
+          checkAdventureAccess(); // Check when playerState becomes ready
         });
       }
+      
+      // Listen for quest completion to update adventure access
+      window.addEventListener('questCompleted', function(event) {
+        console.log('Quest completed event received:', event.detail);
+        checkAdventureAccess();
+      });
       
       // Listen for player state updates
       document.addEventListener('playerStateUpdated', function(event) {
@@ -827,6 +884,45 @@
       if (level <= 6) return 'Good Friend';
       if (level <= 8) return 'Close Ally';
       return 'Trusted Partner';
+    }
+    
+    function checkAdventureAccess() {
+      if (!window.playerState) return;
+      
+      const charlieAdventureLink = document.getElementById('charlie-adventure-link');
+      if (charlieAdventureLink) {
+        // Check if player has completed Charlie's build review quest
+        const charlieQuestCompleted = playerState.completedMissions.includes('charlie_build_review');
+        
+        console.log('Charlie quest status check - completed:', charlieQuestCompleted);
+        
+        if (charlieQuestCompleted) {
+          // Quest is completed, adventure is available
+          charlieAdventureLink.classList.remove('locked');
+          charlieAdventureLink.textContent = 'Join Charlie\'s Midnight Raid';
+          charlieAdventureLink.href = 'adventure-engine.html';
+        } else {
+          // Quest not yet completed, show proper status
+          const hasBikes = playerState.builds && playerState.builds.length > 0;
+          
+          if (hasBikes) {
+            // Player has built a bike but not completed the quest
+            charlieAdventureLink.classList.add('locked');
+            charlieAdventureLink.textContent = 'Complete Charlie\'s Quest First';
+            charlieAdventureLink.href = '#quest-board';
+            
+            // Show guidance toast
+            if (typeof showToast === 'function') {
+              showToast('Complete "Charlie\'s Build Review" quest to unlock the Midnight Raid adventure!');
+            }
+          } else {
+            // Player hasn't built a bike yet
+            charlieAdventureLink.classList.add('locked');
+            charlieAdventureLink.textContent = 'Build a Bike First';
+            charlieAdventureLink.href = 'buildpartsSelector.html';
+          }
+        }
+      }
     }
     
     function checkUnlockedFeatures() {
