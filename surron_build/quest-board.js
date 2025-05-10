@@ -7,8 +7,20 @@ const quests = [
     title: 'Heist Planning',
     description: "Talk to TBD about the warehouse access codes.",
     character: 'tbd',
-    requirement: () => gameBridge.getPlayerState().level >= 2,
-    completed: () => gameBridge.isMissionCompleted('heist_planning'),
+    requirement: () => {
+      try {
+        return gameBridge.getPlayerState().level >= 2;
+      } catch (e) {
+        return false;
+      }
+    },
+    completed: () => {
+      try {
+        return gameBridge.isMissionCompleted('heist_planning');
+      } catch (e) {
+        return false;
+      }
+    },
     reward: () => {
       gameBridge.addXP(100);
       gameBridge.addCurrency(200);
@@ -24,8 +36,20 @@ const quests = [
     title: 'Fish Delivery',
     description: "Catch a fish for Billy and deliver it before it spoils.",
     character: 'billy',
-    requirement: () => gameBridge.getPlayerState().level >= 1,
-    completed: () => gameBridge.isMissionCompleted('fish_delivery'),
+    requirement: () => {
+      try {
+        return gameBridge.getPlayerState().level >= 1;
+      } catch (e) {
+        return false;
+      }
+    },
+    completed: () => {
+      try {
+        return gameBridge.isMissionCompleted('fish_delivery');
+      } catch (e) {
+        return false;
+      }
+    },
     reward: () => {
       gameBridge.addXP(75);
       gameBridge.addCurrency(150);
@@ -41,8 +65,21 @@ const quests = [
     title: 'Charlie\'s Build Review',
     description: "Show Charlie your latest build and survive the feedback.",
     character: 'charlie',
-    requirement: () => gameBridge.getPlayerState().builds?.length >= 1,
-    completed: () => gameBridge.isMissionCompleted('charlie_build_review'),
+    requirement: () => {
+      try {
+        const state = gameBridge.getPlayerState();
+        return state && state.builds && state.builds.length >= 1;
+      } catch (e) {
+        return false;
+      }
+    },
+    completed: () => {
+      try {
+        return gameBridge.isMissionCompleted('charlie_build_review');
+      } catch (e) {
+        return false;
+      }
+    },
     reward: () => {
       gameBridge.addXP(50);
       gameBridge.updateRelationship('charlie', 2);
@@ -59,51 +96,60 @@ export function initQuestBoard(containerId = 'quest-board') {
   if (!container) return;
 
   gameBridge.onReady(() => {
-    container.innerHTML = '<h3>📝 Active Quests</h3>';
-    const list = document.createElement('ul');
-    list.className = 'quest-list';
+    try {
+      container.innerHTML = '<h3>📝 Active Quests</h3>';
+      const list = document.createElement('ul');
+      list.className = 'quest-list';
 
-    let completedCount = 0;
-    let totalCount = 0;
+      let completedCount = 0;
+      let totalCount = 0;
 
-    quests.forEach(quest => {
-      totalCount++;
-      if (quest.completed()) {
-        completedCount++;
-        return;
-      }
-      if (!quest.requirement()) return;
+      quests.forEach(quest => {
+        try {
+          totalCount++;
+          if (quest.completed()) {
+            completedCount++;
+            return;
+          }
+          if (!quest.requirement()) return;
 
-      const li = document.createElement('li');
-      li.className = `quest-item ${quest.character}`;
+          const li = document.createElement('li');
+          li.className = `quest-item ${quest.character}`;
 
-      const title = document.createElement('strong');
-      title.innerHTML = `<span class='quest-char-icon ${quest.character}'>${getIcon(quest.character)}</span> ${quest.title}`;
+          const title = document.createElement('strong');
+          title.innerHTML = `<span class='quest-char-icon ${quest.character}'>${getIcon(quest.character)}</span> ${quest.title}`;
 
-      const desc = document.createElement('p');
-      desc.textContent = quest.description;
+          const desc = document.createElement('p');
+          desc.textContent = quest.description;
 
-      const completeBtn = document.createElement('button');
-      completeBtn.textContent = 'Complete Quest';
-      completeBtn.className = 'btn';
-      completeBtn.onclick = () => {
-        quest.reward();
-        quest.markComplete();
-        initQuestBoard(containerId);
-      };
+          const completeBtn = document.createElement('button');
+          completeBtn.textContent = 'Complete Quest';
+          completeBtn.className = 'btn';
+          completeBtn.onclick = () => {
+            quest.reward();
+            quest.markComplete();
+            initQuestBoard(containerId);
+          };
 
-      li.appendChild(title);
-      li.appendChild(desc);
-      li.appendChild(completeBtn);
-      list.appendChild(li);
-    });
+          li.appendChild(title);
+          li.appendChild(desc);
+          li.appendChild(completeBtn);
+          list.appendChild(li);
+        } catch (e) {
+          console.error(`Error processing quest: ${quest.id}`, e);
+        }
+      });
 
-    const progressBar = document.createElement('div');
-    progressBar.className = 'quest-progress';
-    progressBar.innerHTML = `Progress: ${completedCount}/${totalCount} quests completed`;
-    container.appendChild(progressBar);
+      const progressBar = document.createElement('div');
+      progressBar.className = 'quest-progress';
+      progressBar.innerHTML = `Progress: ${completedCount}/${totalCount} quests completed`;
+      container.appendChild(progressBar);
 
-    container.appendChild(list);
+      container.appendChild(list);
+    } catch (e) {
+      console.error("Error initializing quest board:", e);
+      container.innerHTML = '<h3>📝 Quests loading...</h3>';
+    }
   });
 }
 

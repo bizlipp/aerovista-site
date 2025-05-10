@@ -138,6 +138,11 @@ class FishingGame {
     
     document.getElementById('end-fishing-btn').addEventListener('click', () => {
       this.endGame();
+      // Explicitly close the modal
+      const fishingModal = document.getElementById('fishing-modal');
+      if (fishingModal) {
+        fishingModal.style.display = 'none';
+      }
     });
     
     // Add CSS styles
@@ -297,6 +302,12 @@ class FishingGame {
     // Remove the fishing game
     if (this.container.parentNode) {
       this.container.parentNode.removeChild(this.container);
+    }
+    
+    // Close the fishing modal
+    const fishingModal = document.getElementById('fishing-modal');
+    if (fishingModal) {
+      fishingModal.style.display = 'none';
     }
   }
   

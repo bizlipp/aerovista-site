@@ -146,6 +146,11 @@ class GameBridge {
   completeMission(missionId) {
     const state = this.getPlayerState();
     
+    // Ensure completedMissions exists
+    if (!state.completedMissions) {
+      state.completedMissions = [];
+    }
+    
     if (!state.completedMissions.includes(missionId)) {
       state.completedMissions.push(missionId);
       this.save();
@@ -164,7 +169,7 @@ class GameBridge {
    */
   isMissionCompleted(missionId) {
     const state = this.getPlayerState();
-    return state.completedMissions.includes(missionId);
+    return state && state.completedMissions && state.completedMissions.includes(missionId);
   }
   
   /**

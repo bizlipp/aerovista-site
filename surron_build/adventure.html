@@ -1053,6 +1053,7 @@
           inventoryModal.style.display = 'none';
           locationModal.style.display = 'none';
           document.getElementById('story-intro-modal').style.display = 'none';
+          document.getElementById('fishing-modal').style.display = 'none';
         });
       });
       
@@ -1066,6 +1067,9 @@
         }
         if (e.target === document.getElementById('story-intro-modal')) {
           document.getElementById('story-intro-modal').style.display = 'none';
+        }
+        if (e.target === document.getElementById('fishing-modal')) {
+          document.getElementById('fishing-modal').style.display = 'none';
         }
       });
       
@@ -1126,8 +1130,15 @@
                   <li>Pizza Party (Increases Team Morale)</li>
                 </ul>
               </div>
-              <button class="action-button" style="margin-top: 1.5rem;">Visit Workshop</button>
+              <button class="action-button visit-workshop-btn" style="margin-top: 1.5rem;">Visit Workshop</button>
             `;
+            
+            // Add event listener after rendering the content
+            setTimeout(() => {
+              document.querySelector('.visit-workshop-btn').addEventListener('click', function() {
+                startWorkshop();
+              });
+            }, 100);
             break;
           
           case 'lake':
@@ -1211,6 +1222,19 @@
         setTimeout(() => {
           startFishingSession('fishing-game-container', equipment);
         }, 100);
+      }
+      
+      // Start workshop activities
+      function startWorkshop() {
+        // Close the location modal
+        document.getElementById('location-modal').style.display = 'none';
+        
+        // For now, redirect to the build workshop page
+        window.location.href = 'buildpartsSelector.html';
+        
+        // Alternatively, you could show a workshop modal similar to the fishing modal
+        // const workshopModal = document.getElementById('workshop-modal');
+        // workshopModal.style.display = 'flex';
       }
       
     });
