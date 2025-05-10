@@ -1213,27 +1213,57 @@
           lure: { name: "Basic Lure", attractPower: 1, rarityBonus: 0 }
         };
         
-        if (typeof game !== 'undefined') {
-          // Check if player has better equipment
-          const inventory = game.inventory;
+        // Check if player has better equipment using store
+        try {
+          // Import fishing modules
+          import('./FishingGameSession.js').then(({getAvailableFishingEquipment}) => {
+            const availableEquipment = getAvailableFishingEquipment();
+            
+            if (availableEquipment.rods.length > 0) {
+              // Use best rod (highest quality)
+              const bestRod = availableEquipment.rods.sort((a, b) => (b.quality || 1) - (a.quality || 1))[0];
+              equipment.rod = bestRod;
+            }
+            
+            if (availableEquipment.lures.length > 0) {
+              // Use best lure (highest attractPower)
+              const bestLure = availableEquipment.lures.sort((a, b) => 
+                (b.attractPower || 1) - (a.attractPower || 1)
+              )[0];
+              equipment.lure = bestLure;
+            }
+            
+            // Start the store-based fishing game
+            import('./fishing-game-store.js').then(({startFishingSession}) => {
+              startFishingSession('fishing-game-container', equipment);
+            });
+          });
+        } catch (error) {
+          console.error("Error initializing store-based fishing game:", error);
           
-          // Check for better rod
-          const advancedRod = inventory.find(item => item.name === "Pro Fishing Rod");
-          if (advancedRod && advancedRod.quantity > 0) {
-            equipment.rod = { name: "Pro Fishing Rod", quality: 2 };
+          // Fallback to old system if store integration fails
+          if (typeof game !== 'undefined') {
+            // Check if player has better equipment
+            const inventory = game.inventory;
+            
+            // Check for better rod
+            const advancedRod = inventory.find(item => item.name === "Pro Fishing Rod");
+            if (advancedRod && advancedRod.quantity > 0) {
+              equipment.rod = { name: "Pro Fishing Rod", quality: 2 };
+            }
+            
+            // Check for better lure
+            const advancedLure = inventory.find(item => item.name === "Premium Lure");
+            if (advancedLure && advancedLure.quantity > 0) {
+              equipment.lure = { name: "Premium Lure", attractPower: 1.5, rarityBonus: 0.1 };
+            }
           }
           
-          // Check for better lure
-          const advancedLure = inventory.find(item => item.name === "Premium Lure");
-          if (advancedLure && advancedLure.quantity > 0) {
-            equipment.lure = { name: "Premium Lure", attractPower: 1.5, rarityBonus: 0.1 };
-          }
+          // Start the classic fishing game
+          setTimeout(() => {
+            startFishingSession('fishing-game-container', equipment);
+          }, 100);
         }
-        
-        // Start the fishing game
-        setTimeout(() => {
-          startFishingSession('fishing-game-container', equipment);
-        }, 100);
       }
       
       // Start workshop activities
