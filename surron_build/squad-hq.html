@@ -363,6 +363,59 @@
         width: 100%;
       }
     }
+    
+    /* Quest Board Styles */
+    .quest-list { 
+      list-style: none; 
+      padding-left: 0; 
+    }
+    
+    .quest-item { 
+      margin-bottom: 1.5rem; 
+      background: rgba(0,0,0,0.2); 
+      padding: 1rem; 
+      border-left: 4px solid lime; 
+      border-radius: 8px; 
+    }
+    
+    .quest-item.charlie { 
+      border-left-color: var(--squad-primary);
+    }
+    
+    .quest-item.billy { 
+      border-left-color: #7d8260;
+    }
+    
+    .quest-item.tbd { 
+      border-left-color: #264653;
+    }
+    
+    .quest-item button { 
+      margin-top: 0.5rem; 
+    }
+    
+    .quest-char-icon {
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+    
+    .quest-char-icon.charlie { 
+      color: var(--squad-primary); 
+    }
+    
+    .quest-char-icon.billy { 
+      color: #7d8260; 
+    }
+    
+    .quest-char-icon.tbd { 
+      color: #264653; 
+    }
+    
+    .quest-progress { 
+      font-size: 0.9rem; 
+      color: lime; 
+      margin-bottom: 1rem; 
+    }
   </style>
 </head>
 <body class="surron-squad-theme">
@@ -409,6 +462,12 @@
           <div class="stat-label">Parts Collected</div>
         </div>
       </div>
+    </div>
+    
+    <!-- Quest Board -->
+    <div class="quest-board-panel" style="background-color: rgba(23, 23, 25, 0.7); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: var(--squad-shadow);">
+      <h2>Mission Control</h2>
+      <div id="quest-board" class="quest-board-panel"></div>
     </div>
     
     <div class="notifications">
@@ -799,6 +858,24 @@
         }, 10);
       }
     }
+  </script>
+  <script type="module">
+    import { initQuestBoard } from './quest-board.js';
+    
+    // Initialize quest board after player state is ready
+    document.addEventListener('playerStateReady', function() {
+      initQuestBoard();
+      
+      // Listen for quest completion events
+      window.addEventListener('questCompleted', (event) => {
+        const questId = event.detail;
+        addNotification('📋', 'Quest Completed', `You've completed the ${questId.replace('_', ' ')} quest!`);
+        
+        // Refresh player profile to show updated stats
+        updatePlayerProfile();
+        updateCharacterRelationships();
+      });
+    });
   </script>
 </body>
 </html> 

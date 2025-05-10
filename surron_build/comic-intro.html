@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Surron Squad: The Beginning</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Courier New', monospace;
+      background: #111;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .panel {
+      width: 90%;
+      max-width: 600px;
+      margin: 2rem auto;
+      background: #222;
+      padding: 1.5rem;
+      border: 3px solid #555;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #000;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .panel.visible {
+      opacity: 1;
+    }
+    .image-placeholder {
+      width: 100%;
+      height: 200px;
+      background: #333;
+      color: #888;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      background: #00ff88;
+      border: none;
+      padding: 1rem 2rem;
+      margin: 2rem auto;
+      display: block;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel"><div class="image-placeholder">[Panel 1 Placeholder]</div>“It started with a bet. And a generator they probably shouldn’t have rewired.”</div>
+  <div class="panel"><div class="image-placeholder">[Panel 2 Placeholder]</div>“If we run the battery leads through the beer cooler, we can regulate charge.”</div>
+  <div class="panel"><div class="image-placeholder">[Panel 3 Placeholder]</div>“We’re not just riding. We’re building something they’ll tell stories about.”</div>
+  <div class="panel"><div class="image-placeholder">[Panel 4 Placeholder]</div>“That night, the Surron Squad was born.”</div>
+  <div class="panel">
+    <div class="image-placeholder">[Panel 5 Placeholder]</div>
+    <strong>Let’s ride.</strong><br/><br/>
+    <button onclick="enterHQ()">▶️ Enter HQ</button>
+  </div>
+
+  <script>
+    const panels = document.querySelectorAll('.panel');
+    let index = 0;
+    function showNext() {
+      if (index < panels.length) {
+        panels[index].classList.add('visible');
+        index++;
+        setTimeout(showNext, 2500);
+      }
+    }
+    function enterHQ() {
+      localStorage.setItem('introSeen', 'true');
+      window.location.href = 'squad-hq.html';
+    }
+    window.onload = showNext;
+  </script>
+</body>
+</html>

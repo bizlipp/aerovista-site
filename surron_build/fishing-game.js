@@ -270,8 +270,9 @@ class FishingGame {
     alert(report);
     
     // Return to game with rewards
-    if (typeof game !== 'undefined' && game.player) {
-      game.player.currency += totalValue;
+    if (window.playerState) {
+      // Add currency (SurCoins)
+      window.playerState.addCurrency(totalValue);
       
       // Add fishing XP and check for rare catches
       let xpGained = totalFish * 10;
@@ -281,18 +282,15 @@ class FishingGame {
         xpGained += 50;
         
         // Add reputation for rare catches
-        game.player.reputation += 2;
+        window.playerState.reputation += 2;
       }
       
       // Add XP to player
-      game.addPlayerXP(xpGained);
+      window.playerState.addXP(xpGained);
       
       // Update Billy's relationship if caught fish
       if (totalFish > 0) {
-        game.characters.billy.relationship += 1;
-        
-        // Update UI
-        game.updateUI();
+        window.playerState.changeRelationship('billy', 1);
       }
     }
     

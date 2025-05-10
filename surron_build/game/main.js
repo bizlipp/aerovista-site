@@ -18,7 +18,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 // Create a compatibility layer for existing code
 function createPlayerStateBridge(store) {
-  const storeState = store.getState().player;
+  // Make sure we have a valid state, or provide defaults
+  const storeState = store.getState()?.player || {
+    level: 1,
+    xp: 0,
+    currency: 250,
+    reputation: 0,
+    inventory: [],
+    relationships: { charlie: 1, billy: 1, tbd: 1 }
+  };
   
   // Create a bridge object that mimics the existing PlayerState
   const bridge = {
