@@ -4,8 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Surron Squad</title>
-  <link rel="stylesheet" href="../surron_squad.css">
-  <link rel="stylesheet" href="../.staged files/style/components.css">
+  <link rel="stylesheet" href="surron_squad.css">
+  <link rel="stylesheet" href=".staged files/style/components.css">
+  <script>
+    // Handle CSS paths for different environments
+    document.addEventListener('DOMContentLoaded', function() {
+      const baseUrl = window.location.pathname.includes('/surron_build/') ? 
+                     '' : 
+                     '/surron_build/';
+      
+      // Update CSS links if needed
+      document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+        if (!link.href.startsWith('http')) {
+          const currentHref = link.getAttribute('href');
+          if (!currentHref.startsWith('/') && !currentHref.startsWith('./')) {
+            link.href = baseUrl + currentHref;
+          }
+        }
+      });
+    });
+  </script>
 </head>
 <body class="surron-squad-theme">
   <header>
@@ -29,12 +47,21 @@
   </main>
   
   <script type="module">
-    // Import and initialize all components
-    import SquadDashboard from '../.staged files/components/SquadDashboard.js';
-    import QuestBoardComponent from '../.staged files/components/QuestBoardComponent.js';
-    import BuildSelectorComponent from '../.staged files/components/BuildSelectorComponent.js';
-    import FishingComponent from '../.staged files/components/FishingComponent.js';
-    import AdventureEngineComponent from '../.staged files/components/AdventureEngineComponent.js';
+    // Define base URL for imports
+    const BASE_URL = new URL(import.meta.url).pathname.includes('/surron_build/') ? 
+                    './' : 
+                    '/surron_build/';
+    console.log("Using base URL for imports:", BASE_URL);
+    
+    // Determine component paths based on URL
+    const COMPONENT_PATH = BASE_URL + '.staged files/components/';
+    
+    // Dynamic imports to handle path differences
+    const SquadDashboard = (await import(`${COMPONENT_PATH}SquadDashboard.js`)).default;
+    const QuestBoardComponent = (await import(`${COMPONENT_PATH}QuestBoardComponent.js`)).default;
+    const BuildSelectorComponent = (await import(`${COMPONENT_PATH}BuildSelectorComponent.js`)).default;
+    const FishingComponent = (await import(`${COMPONENT_PATH}FishingComponent.js`)).default;
+    const AdventureEngineComponent = (await import(`${COMPONENT_PATH}AdventureEngineComponent.js`)).default;
     
     // Game components
     let dashboardComponent, questBoardComponent, buildSelectorComponent, fishingComponent, adventureComponent;

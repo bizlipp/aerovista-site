@@ -811,6 +811,11 @@
   </script>
   
   <script type="module">
+    // Define base URL for imports
+    const BASE_URL = new URL(import.meta.url).pathname.includes('/surron_build/') ? 
+                    './' : 
+                    '/surron_build/';
+    
     console.log("Squad HQ: Loading modules...");
     
     // Try importing modules with error handling
@@ -818,13 +823,13 @@
     
     try {
       // Import modules one by one with error handling
-      const gameCoreMod = await import('./game/GameCore.js');
+      const gameCoreMod = await import(`${BASE_URL}game/GameCore.js`);
       console.log("GameCore module loaded successfully");
       GameCore = gameCoreMod.default;
       
       try {
         // Use the new QuestBoardComponent instead of quest-board.js
-        const questBoardMod = await import('./components/QuestBoardComponent.js');
+        const questBoardMod = await import(`${BASE_URL}components/QuestBoardComponent.js`);
         console.log("QuestBoard component loaded successfully");
         // Mount the component after DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
@@ -840,7 +845,7 @@
       }
       
       try {
-        const directorMod = await import('./gameplay-director.js');
+        const directorMod = await import(`${BASE_URL}gameplay-director.js`);
         console.log("Director module loaded successfully");
         director = directorMod.default;
       } catch (error) {
@@ -912,6 +917,14 @@
       }
     }
   </script>
-  <script type="module" src="adventureUI.js"></script>
+  <script type="module">
+    // Define base URL for imports (with unique variable name)
+    const ADVENTURE_BASE_URL = new URL(import.meta.url).pathname.includes('/surron_build/') ? 
+                    './' : 
+                    '/surron_build/';
+    
+    // Import adventureUI using the same base URL pattern
+    import * as adventureUI from `${ADVENTURE_BASE_URL}adventureUI.js`;
+  </script>
 </body>
 </html> 

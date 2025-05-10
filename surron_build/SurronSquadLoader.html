@@ -153,6 +153,12 @@
   <script type="module">
     console.log("Loading Surron Squad...");
     
+    // Define base URL for imports
+    const BASE_URL = new URL(import.meta.url).pathname.includes('/surron_build/') ? 
+                    './' : 
+                    '/surron_build/';
+    console.log("Using base URL for imports:", BASE_URL);
+    
     // Preload important modules to check for errors
     async function preloadModules() {
       try {
@@ -160,15 +166,15 @@
         console.log("Preloading critical modules...");
         
         // Load GameCore first
-        const gameCore = await import('./game/GameCore.js');
+        const gameCore = await import(`${BASE_URL}game/GameCore.js`);
         console.log("✅ GameCore loaded");
         
         // Then store
-        const store = await import('./StateStackULTRA/store/gameStore.js');
+        const store = await import(`${BASE_URL}StateStackULTRA/store/gameStore.js`);
         console.log("✅ Store loaded");
         
         // Then player state
-        const playerSlice = await import('./StateStackULTRA/slices/playerSlice.js');
+        const playerSlice = await import(`${BASE_URL}StateStackULTRA/slices/playerSlice.js`);
         console.log("✅ PlayerSlice loaded");
         
         return { success: true };
@@ -210,7 +216,7 @@
           throw new Error(`Critical module loading failed: ${preloadResult.error}`);
         }
         
-        const GameCoreModule = await import('./game/GameCore.js');
+        const GameCoreModule = await import(`${BASE_URL}game/GameCore.js`);
         console.log("GameCore module imported successfully");
         window.GameCore = GameCoreModule.default;
         simulateBootProgress();
