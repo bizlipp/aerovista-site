@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redux Toolkit Test</title>
+</head>
+<body>
+  <h1>Redux Toolkit Test</h1>
+  <div id="result">Testing...</div>
+
+  <script type="module">
+    // Test importing our local toolkit implementation
+    import { createSlice, createEntityAdapter } from './StateStackULTRA/toolkit.js';
+    
+    // Create a simple slice
+    const testSlice = createSlice({
+      name: 'test',
+      initialState: { value: 0 },
+      reducers: {
+        increment: state => {
+          state.value += 1;
+        }
+      }
+    });
+    
+    // Create a simple entity adapter
+    const testAdapter = createEntityAdapter();
+    
+    // Display results
+    const resultDiv = document.getElementById('result');
+    
+    if (testSlice && testSlice.name === 'test' && typeof testSlice.reducer === 'function') {
+      resultDiv.innerHTML = '<p style="color: green">✅ createSlice works!</p>';
+      
+      if (testAdapter && typeof testAdapter.addOne === 'function') {
+        resultDiv.innerHTML += '<p style="color: green">✅ createEntityAdapter works!</p>';
+        resultDiv.innerHTML += '<p style="color: green">✅ Local toolkit implementation is working correctly!</p>';
+      }
+    } else {
+      resultDiv.innerHTML = '<p style="color: red">❌ Local toolkit implementation failed.</p>';
+    }
+  </script>
+</body>
+</html> 

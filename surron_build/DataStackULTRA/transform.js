@@ -190,160 +190,180 @@ export class TransformerFactory {
 }
 
 /**
- * Main transform manager for serialization and transformations
+ * Transform Manager for DataStackULTRA
+ * Handles data transformations for serialization/deserialization
  */
-export class TransformManager {
-  /**
-   * Create a new TransformManager
-   * @param {Object} options - Configuration options
-   */
-  constructor(options = {}) {
-    this.config = createConfig(options);
-    
-    // Create transformer
-    this.transformer = TransformerFactory.createTransformer(
-      this.config.transform.serializationFormat,
-      {
-        compactOutput: this.config.transform.compactOutput
-      }
-    );
-    
-    // Register transformation pipelines
+class TransformManager {
+  constructor(config) {
+    this.config = config;
     this.pipelines = new Map();
-  }
-  
-  /**
-   * Serialize data to a string
-   * @param {*} data - Data to serialize
-   * @param {Object} options - Serialization options
-   * @returns {string} - Serialized data
-   */
-  serialize(data, options = {}) {
-    return this.transformer.serialize(data, options);
-  }
-  
-  /**
-   * Deserialize string to data
-   * @param {string} serialized - Serialized data
-   * @param {Object} options - Deserialization options
-   * @returns {*} - Deserialized data
-   */
-  deserialize(serialized, options = {}) {
-    return this.transformer.deserialize(serialized, options);
-  }
-  
-  /**
-   * Transform data using a specific transformation config
-   * @param {*} data - Data to transform
-   * @param {Object|string} transformConfig - Transformation configuration or pipeline name
-   * @returns {*} - Transformed data
-   */
-  transform(data, transformConfig) {
-    if (typeof transformConfig === 'string') {
-      const pipeline = this.pipelines.get(transformConfig);
-      if (!pipeline) {
-        throw new Error(`Transform pipeline '${transformConfig}' not found`);
-      }
-      return this._applyPipeline(data, pipeline);
-    }
     
-    return this.transformer.transform(data, transformConfig);
+    // Register built-in transform pipelines
+    this.registerDefaultPipelines();
   }
   
   /**
-   * Register a transformation pipeline
+   * Register built-in pipelines
+   */
+  registerDefaultPipelines() {
+    // JSON serialization pipeline
+    this.registerPipeline('json', [
+      {
+        name: 'stringify',
+        transform: (data) => JSON.stringify(data),
+        reverse: (data) => {
+          try {
+            return JSON.parse(data);
+          } catch (e) {
+            console.error('JSON parse error:', e);
+            return data; // Return original if parse fails
+          }
+        }
+      }
+    ]);
+    
+    // Compression (simple)
+    this.registerPipeline('compress', [
+      {
+        name: 'compress',
+        transform: (data) => {
+          if (typeof data !== 'string') {
+            data = JSON.stringify(data);
+          }
+          // Very simple compression (just a placeholder)
+          return `compressed:${data}`;
+        },
+        reverse: (data) => {
+          if (typeof data === 'string' && data.startsWith('compressed:')) {
+            const decompressed = data.substring(11);
+            try {
+              return JSON.parse(decompressed);
+            } catch (e) {
+              return decompressed;
+            }
+          }
+          return data;
+        }
+      }
+    ]);
+  }
+  
+  /**
+   * Register a transform pipeline
    * @param {string} name - Pipeline name
-   * @param {Array|Object} pipeline - Transformation pipeline or config
+   * @param {Array} steps - Pipeline steps
    * @returns {boolean} - Success status
    */
-  registerPipeline(name, pipeline) {
+  registerPipeline(name, steps) {
     if (!name || typeof name !== 'string') {
-      throw new Error('Pipeline name must be a non-empty string');
+      console.error('Pipeline name must be a non-empty string');
+      return false;
     }
     
-    if (!pipeline) {
-      throw new Error('Pipeline configuration is required');
+    if (!Array.isArray(steps) || steps.length === 0) {
+      console.error('Pipeline steps must be a non-empty array');
+      return false;
     }
     
-    // Convert single transformation to a pipeline
-    const normalizedPipeline = Array.isArray(pipeline) ? pipeline : [pipeline];
-    
-    this.pipelines.set(name, normalizedPipeline);
+    this.pipelines.set(name, steps);
     return true;
   }
   
   /**
-   * Apply a transformation pipeline to data
-   * @private
+   * Apply a transform to data
    * @param {*} data - Data to transform
-   * @param {Array} pipeline - Transformation pipeline
+   * @param {string|Object} pipeline - Pipeline name or pipeline object
+   * @param {boolean} reverse - Whether to apply reverse transform
    * @returns {*} - Transformed data
    */
-  _applyPipeline(data, pipeline) {
-    return pipeline.reduce((result, config) => {
-      return this.transformer.transform(result, config);
-    }, data);
-  }
-  
-  /**
-   * Clone data by serializing and deserializing it
-   * @param {*} data - Data to clone
-   * @returns {*} - Cloned data
-   */
-  clone(data) {
-    const serialized = this.serialize(data);
-    return this.deserialize(serialized);
-  }
-  
-  /**
-   * Create a data mapper for a specific schema
-   * @param {Object} schema - Schema to map to
-   * @returns {Function} - Mapper function
-   */
-  createMapper(schema) {
-    return (sourceData) => {
-      if (!sourceData || typeof sourceData !== 'object') {
-        return sourceData;
+  transform(data, pipeline, reverse = false) {
+    let pipelineSteps;
+    
+    if (typeof pipeline === 'string') {
+      pipelineSteps = this.pipelines.get(pipeline);
+      if (!pipelineSteps) {
+        console.error(`Transform pipeline '${pipeline}' not found`);
+        return data;
       }
-      
-      const result = {};
-      
-      // Map the fields according to the schema
-      for (const [targetField, fieldDef] of Object.entries(schema)) {
-        if (typeof fieldDef === 'string') {
-          // Simple mapping: targetField <- sourceField
-          result[targetField] = sourceData[fieldDef];
-        } else if (typeof fieldDef === 'function') {
-          // Function mapping: targetField <- fn(sourceData)
-          result[targetField] = fieldDef(sourceData);
-        } else if (fieldDef && typeof fieldDef === 'object') {
-          // Object mapping with source field and transformation
-          const { field, transform, default: defaultValue } = fieldDef;
-          
-          let value = field ? sourceData[field] : undefined;
-          
-          if (value === undefined && defaultValue !== undefined) {
-            value = defaultValue;
+    } else if (Array.isArray(pipeline)) {
+      pipelineSteps = pipeline;
+    } else if (typeof pipeline === 'object' && pipeline !== null) {
+      pipelineSteps = [pipeline];
+    } else {
+      console.error('Invalid pipeline specification');
+      return data;
+    }
+    
+    let result = data;
+    
+    // Apply each step in the pipeline
+    if (reverse) {
+      // Apply steps in reverse order
+      for (let i = pipelineSteps.length - 1; i >= 0; i--) {
+        const step = pipelineSteps[i];
+        if (typeof step.reverse === 'function') {
+          try {
+            result = step.reverse(result);
+          } catch (e) {
+            console.error(`Error in reverse transform step ${step.name || i}:`, e);
           }
-          
-          if (transform && typeof transform === 'function') {
-            value = transform(value, sourceData);
-          }
-          
-          result[targetField] = value;
         }
       }
-      
-      return result;
-    };
+    } else {
+      // Apply steps in normal order
+      for (let i = 0; i < pipelineSteps.length; i++) {
+        const step = pipelineSteps[i];
+        if (typeof step.transform === 'function') {
+          try {
+            result = step.transform(result);
+          } catch (e) {
+            console.error(`Error in transform step ${step.name || i}:`, e);
+          }
+        }
+      }
+    }
+    
+    return result;
   }
   
   /**
-   * Get the transformer instance
-   * @returns {Transformer} - Transformer instance
+   * Create a mapper for transforming data according to a schema
+   * @param {Object} schema - Schema to map data against
+   * @returns {Object} - Data mapper
    */
-  getTransformer() {
-    return this.transformer;
+  createMapper(schema) {
+    // Return a simple mapper object
+    return {
+      /**
+       * Map data from one format to another
+       * @param {Object} data - Data to map
+       * @param {Object} options - Mapping options
+       * @returns {Object} - Mapped data
+       */
+      map: (data, options = {}) => {
+        if (!data || typeof data !== 'object') {
+          return data;
+        }
+        
+        const result = {};
+        
+        // If schema has properties, map according to schema
+        if (schema.properties) {
+          for (const [key, propSchema] of Object.entries(schema.properties)) {
+            if (data[key] !== undefined) {
+              result[key] = data[key];
+            } else if (propSchema.default !== undefined) {
+              result[key] = propSchema.default;
+            }
+          }
+          
+          return result;
+        }
+        
+        // If no schema properties, return data as is
+        return data;
+      }
+    };
   }
 }
 

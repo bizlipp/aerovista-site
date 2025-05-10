@@ -110,8 +110,40 @@
     Continue Anyway
   </button>
 
+  <script>
+    // Add a global error handler to capture import errors
+    window.addEventListener('error', function(event) {
+      console.error('Global error:', event);
+      const errorMessage = document.getElementById('errorMessage');
+      errorMessage.style.display = 'block';
+      errorMessage.innerHTML = `Error: ${event.message}<br>File: ${event.filename}<br>Line: ${event.lineno}`;
+      
+      document.getElementById('manualRedirect').style.display = 'block';
+    });
+  </script>
+
   <script type="module">
     console.log("Loading Surron Squad...");
+    
+    // Add a specific handler for module loading errors
+    window.addEventListener('unhandledrejection', function(event) {
+      console.error('Unhandled Promise Rejection:', event.reason);
+      const errorMessage = document.getElementById('errorMessage');
+      errorMessage.style.display = 'block';
+      
+      // Try to extract the file path from the error
+      const errorText = event.reason.toString();
+      const fileMatch = errorText.match(/from '(.+?)'/);
+      const fileUrl = fileMatch ? fileMatch[1] : 'unknown file';
+      
+      errorMessage.innerHTML = `
+        Module Error: ${event.reason}<br>
+        Failed module: ${fileUrl}<br>
+        <small>Check the console for more details</small>
+      `;
+      
+      document.getElementById('manualRedirect').style.display = 'block';
+    });
     
     // Try to import GameCore
     try {
@@ -121,7 +153,15 @@
         simulateBootProgress();
       }).catch(error => {
         console.error("Error importing GameCore:", error);
-        showError("Failed to import GameCore module: " + error.message);
+        
+        // Try to get the specific file causing the error
+        let errorFile = "unknown";
+        const match = error.stack?.match(/import\s+.+\s+from\s+['"]([^'"]+)['"]/);
+        if (match) {
+          errorFile = match[1];
+        }
+        
+        showError(`Failed to import GameCore module: ${error.message}<br>File: ${errorFile}`);
       });
     } catch (error) {
       console.error("Exception during import:", error);
@@ -175,7 +215,7 @@
     
     function showError(message) {
       const errorElement = document.getElementById('errorMessage');
-      errorElement.textContent = message;
+      errorElement.innerHTML = message;
       errorElement.style.display = 'block';
       
       // Show manual redirect button

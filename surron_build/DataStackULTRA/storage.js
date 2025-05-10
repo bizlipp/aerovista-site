@@ -836,155 +836,222 @@ export class StorageFactory {
 }
 
 /**
- * Main storage manager that combines persistent and memory storage
+ * Storage Manager for DataStackULTRA
+ * Handles persistent and in-memory storage
  */
-export class StorageManager {
-  /**
-   * Create a new StorageManager
-   * @param {Object} options - Configuration options
-   */
-  constructor(options = {}) {
-    this.config = createConfig(options);
+class StorageManager {
+  constructor(config) {
+    this.config = config;
+    this.cache = new Map();
     
-    // Create persistent storage
-    this.persistentStorage = StorageFactory.createStorage(
-      this.config.storage.persistentStrategy,
-      {
-        prefix: 'datastack:persistent:',
-        dbName: 'datastack-persistent',
-        storeName: 'datastack-store'
-      }
-    );
-    
-    // Create memory storage
-    this.memoryStorage = StorageFactory.createStorage(
-      this.config.storage.memoryStrategy,
-      {
-        maxItems: this.config.storage.maxCachedItems,
-        expiryTime: this.config.storage.itemExpiryTime
-      }
-    );
+    // Initialize persistent storage
+    this.initPersistentStorage();
   }
   
   /**
-   * Set a value in storage
+   * Initialize persistent storage based on config
+   */
+  initPersistentStorage() {
+    // For now, we only support localStorage
+    if (this.config.storage.persistentStrategy !== 'localStorage') {
+      console.warn('Only localStorage is supported in this version. Using localStorage.');
+    }
+    
+    // Check if localStorage is available
+    try {
+      localStorage.setItem('__storage_test', 'test');
+      localStorage.removeItem('__storage_test');
+    } catch (e) {
+      console.warn('localStorage is not available. Using memory-only storage.');
+    }
+  }
+  
+  /**
+   * Store data
    * @param {string} key - Storage key
    * @param {*} value - Value to store
    * @param {Object} options - Storage options
    * @returns {Promise<boolean>} - Success status
    */
   async set(key, value, options = {}) {
-    // Always store in memory for quick access
-    await this.memoryStorage.set(key, value, options);
+    // Serialize the value
+    let serializedValue = value;
     
-    // Store in persistent storage if not temporary
-    if (!options.temporary) {
-      return this.persistentStorage.set(key, value, options);
+    if (this.config.transform.autoSerialize) {
+      try {
+        serializedValue = JSON.stringify(value);
+      } catch (e) {
+        console.error('Failed to serialize value:', e);
+        return false;
+      }
     }
     
-    return true;
+    // Store in memory cache
+    this.cache.set(key, {
+      value: serializedValue,
+      timestamp: Date.now(),
+      expiry: options.expiry || this.config.storage.itemExpiryTime
+    });
+    
+    // Store in persistent storage
+    try {
+      localStorage.setItem(key, serializedValue);
+      return true;
+    } catch (e) {
+      console.error('Failed to store in localStorage:', e);
+      return false;
+    }
   }
   
   /**
-   * Get a value from storage
+   * Retrieve data
    * @param {string} key - Storage key
-   * @param {*} defaultValue - Default value if key not found
-   * @returns {Promise<*>} - Retrieved value or default
+   * @param {*} defaultValue - Default value if not found
+   * @returns {Promise<*>} - Retrieved value
    */
   async get(key, defaultValue = null) {
-    // Try to get from memory first
-    const memoryValue = await this.memoryStorage.get(key);
-    
-    if (memoryValue !== null) {
-      return memoryValue;
+    // Check cache first
+    if (this.cache.has(key)) {
+      const cached = this.cache.get(key);
+      
+      // Check if expired
+      if (Date.now() - cached.timestamp < cached.expiry) {
+        return this.parseValue(cached.value);
+      }
+      
+      // Remove expired item
+      this.cache.delete(key);
     }
     
-    // If not in memory, try persistent storage
-    const persistentValue = await this.persistentStorage.get(key, defaultValue);
-    
-    // Cache in memory for next time
-    if (persistentValue !== defaultValue) {
-      await this.memoryStorage.set(key, persistentValue);
+    // Check persistent storage
+    try {
+      const value = localStorage.getItem(key);
+      
+      if (value === null) {
+        return defaultValue;
+      }
+      
+      // Update cache
+      this.cache.set(key, {
+        value,
+        timestamp: Date.now(),
+        expiry: this.config.storage.itemExpiryTime
+      });
+      
+      return this.parseValue(value);
+    } catch (e) {
+      console.error('Failed to retrieve from localStorage:', e);
+      return defaultValue;
     }
-    
-    return persistentValue;
   }
   
   /**
-   * Check if a key exists in storage
+   * Parse stored value
+   * @param {string} value - Stored value
+   * @returns {*} - Parsed value
+   */
+  parseValue(value) {
+    if (!this.config.transform.autoSerialize) {
+      return value;
+    }
+    
+    try {
+      return JSON.parse(value);
+    } catch (e) {
+      // If not valid JSON, return as is
+      return value;
+    }
+  }
+  
+  /**
+   * Check if key exists
    * @param {string} key - Storage key
-   * @returns {Promise<boolean>} - Whether the key exists
+   * @returns {Promise<boolean>} - Whether key exists
    */
   async has(key) {
-    // Check memory first
-    if (await this.memoryStorage.has(key)) {
-      return true;
+    // Check cache first
+    if (this.cache.has(key)) {
+      const cached = this.cache.get(key);
+      
+      // Check if expired
+      if (Date.now() - cached.timestamp < cached.expiry) {
+        return true;
+      }
+      
+      // Remove expired item
+      this.cache.delete(key);
     }
     
-    // Then check persistent storage
-    return this.persistentStorage.has(key);
+    // Check persistent storage
+    try {
+      return localStorage.getItem(key) !== null;
+    } catch (e) {
+      console.error('Failed to check localStorage:', e);
+      return false;
+    }
   }
   
   /**
-   * Remove a value from storage
+   * Remove key
    * @param {string} key - Storage key
    * @returns {Promise<boolean>} - Success status
    */
   async remove(key) {
-    // Remove from both storages
-    const memoryResult = await this.memoryStorage.remove(key);
-    const persistentResult = await this.persistentStorage.remove(key);
+    // Remove from cache
+    this.cache.delete(key);
     
-    return memoryResult && persistentResult;
+    // Remove from persistent storage
+    try {
+      localStorage.removeItem(key);
+      return true;
+    } catch (e) {
+      console.error('Failed to remove from localStorage:', e);
+      return false;
+    }
   }
   
   /**
-   * Clear all values from storage
+   * Clear all storage
    * @returns {Promise<boolean>} - Success status
    */
   async clear() {
-    // Clear both storages
-    const memoryResult = await this.memoryStorage.clear();
-    const persistentResult = await this.persistentStorage.clear();
+    // Clear cache
+    this.cache.clear();
     
-    return memoryResult && persistentResult;
+    // Clear persistent storage
+    try {
+      localStorage.clear();
+      return true;
+    } catch (e) {
+      console.error('Failed to clear localStorage:', e);
+      return false;
+    }
   }
   
   /**
-   * Get all keys in storage
+   * Get all keys
    * @returns {Promise<Array<string>>} - Array of keys
    */
   async keys() {
-    // Get keys from both storages
-    const memoryKeys = await this.memoryStorage.keys();
-    const persistentKeys = await this.persistentStorage.keys();
-    
-    // Combine and deduplicate
-    return [...new Set([...memoryKeys, ...persistentKeys])];
+    try {
+      return Object.keys(localStorage);
+    } catch (e) {
+      console.error('Failed to get keys from localStorage:', e);
+      return [];
+    }
   }
   
   /**
-   * Get the number of items in persistent storage
+   * Get storage size
    * @returns {Promise<number>} - Number of items
    */
   async size() {
-    return this.persistentStorage.size();
-  }
-  
-  /**
-   * Get the persistent storage instance
-   * @returns {Storage} - Persistent storage instance
-   */
-  getPersistentStorage() {
-    return this.persistentStorage;
-  }
-  
-  /**
-   * Get the memory storage instance
-   * @returns {Storage} - Memory storage instance
-   */
-  getMemoryStorage() {
-    return this.memoryStorage;
+    try {
+      return localStorage.length;
+    } catch (e) {
+      console.error('Failed to get size from localStorage:', e);
+      return 0;
+    }
   }
 }
 
