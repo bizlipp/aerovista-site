@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=Permanent+Marker&display=swap" rel="stylesheet">
-  <script src="player-state.js"></script>
   <style>
     /* Additional styles specific to parts selector */
     .part-selector {
@@ -264,7 +263,88 @@
   </div>
 
   <script src="surron_squad.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src="s_parts.json" type="text/javascript"></script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- Import GameCore instead of player-state.js -->
+  <script type="module">
+    import GameCore from './game/GameCore.js';
+    
+    // Make GameCore available globally for older scripts that expect it
+    window.GameCore = GameCore;
+    
+    // Initialize GameCore and setup UI
+    document.addEventListener('DOMContentLoaded', async function() {
+      console.log("DOM loaded, initializing GameCore...");
+      
+      try {
+        // Initialize GameCore (loads player state from storage)
+        await GameCore.boot();
+        console.log("GameCore initialized");
+        
+        // Show player stats
+        updatePlayerStats();
+        document.getElementById('player-stats').style.display = 'flex';
+      } catch (error) {
+        console.error("Error initializing GameCore:", error);
+      }
+    });
+    
+    // Update player stats in UI
+    function updatePlayerStats() {
+      const playerState = GameCore.getPlayerState();
+      if (!playerState) return;
+      
+      document.getElementById('player-level').textContent = playerState.level;
+      document.getElementById('player-xp').textContent = playerState.xp;
+      document.getElementById('player-xp-next').textContent = playerState.xpToNextLevel;
+      document.getElementById('player-coins').textContent = playerState.currency;
+      document.getElementById('player-builds').textContent = playerState.builds ? playerState.builds.length : 0;
+    }
+    
+    // Add a build to player state
+    window.saveBuild = function(build) {
+      // Get current player state
+      const playerState = GameCore.getPlayerState();
+      if (playerState) {
+        console.log("Saving build:", build);
+        
+        // Check if builds array exists, create if not
+        if (!playerState.builds) {
+          console.log("Creating builds array");
+          // Player state modification needs to happen through GameCore actions
+          GameCore.store.dispatch({
+            type: 'player/initBuilds',
+            payload: []
+          });
+        }
+        
+        // Add the build using GameCore
+        GameCore.store.dispatch({
+          type: 'player/addBuild',
+          payload: build
+        });
+        
+        // Save changes to storage
+        GameCore.save();
+        
+        // Add XP for creating a build
+        GameCore.addXP(50);
+        
+        // Update UI
+        updatePlayerStats();
+        
+        return true;
+      }
+      return false;
+    };
+  </script>
+
   <script>
+    // Parts selection logic
+    let selectedParts = {};
+    let totalPrice = 0;
+    
     // Character-specific comments for each part category
     const squadComments = {
       'Frame': {
@@ -613,16 +693,6 @@
       }
     });
 
-    function updatePlayerStats() {
-      if (!window.playerState) return;
-      
-      document.getElementById('player-level').textContent = window.playerState.level;
-      document.getElementById('player-xp').textContent = window.playerState.xp;
-      document.getElementById('player-xp-next').textContent = window.playerState.xpToNextLevel;
-      document.getElementById('player-coins').textContent = window.playerState.currency;
-      document.getElementById('player-builds').textContent = window.playerState.builds ? window.playerState.builds.length : 0;
-    }
-
     function loadSavedBuilds() {
       try {
         // Check if we have a loadBuild parameter in the URL
@@ -798,30 +868,18 @@
         // Save to localStorage
         localStorage.setItem('surronSquadBuilds', JSON.stringify(savedBuilds));
         
-        // If we have player state available, add the build there too
-        if (window.playerState) {
-          // Add build to player state
-          if (!window.playerState.builds) {
-            window.playerState.builds = [];
-          }
-          window.playerState.builds.push(build);
+        // Use the new GameCore-aware saveBuild function
+        if (window.saveBuild) {
+          // Save to GameCore player state
+          const success = window.saveBuild(build);
           
-          // Save player state
-          window.playerState.save();
-          
-          // Award XP for completing a build
-          const levelUp = window.playerState.addXP(50);
-          
-          // If leveled up, show notification
-          if (levelUp) {
-            const message = `Level Up! You've reached level ${levelUp.newLevel}!\nYou've earned ${levelUp.rewards.currency} SurCoins and unlocked new rewards!`;
-            alert(message);
-          } else {
-            // Just show regular XP gain
+          if (success) {
             alert(`"${buildName}" has been saved to your build library! (+50 XP)`);
+          } else {
+            alert(`"${buildName}" has been saved to your build library!`);
           }
         } else {
-          // Show confirmation if no player state
+          // Show confirmation if no GameCore saveBuild function
           alert(`"${buildName}" has been saved to your build library!`);
         }
         

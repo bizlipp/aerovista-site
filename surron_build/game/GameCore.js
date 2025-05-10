@@ -90,6 +90,82 @@ const GameCore = {
   navigateTo(target) {
     console.log(`[GameCore] Navigating to scene: ${target}`);
     // Could emit an ICP message or trigger route change
+  },
+
+  /**
+   * Export player state as a JSON string
+   */
+  exportState() {
+    const state = store.getState().player;
+    const exportedState = {
+      ...state,
+      exportedAt: Date.now(),
+      versionInfo: {
+        gameVersion: "1.0.0", // Should be dynamic in a real implementation
+        exportVersion: "1"
+      }
+    };
+    return JSON.stringify(exportedState);
+  },
+
+  /**
+   * Import player state from a JSON string
+   * @param {string} jsonState - JSON representation of player state
+   * @returns {boolean} - Success or failure
+   */
+  importState(jsonState) {
+    try {
+      const importedState = JSON.parse(jsonState);
+      if (!importedState.level || !importedState.versionInfo) {
+        console.error('[GameCore] Invalid player state data');
+        return false;
+      }
+      if (importedState.versionInfo.exportVersion !== "1") {
+        console.error('[GameCore] Incompatible player state version');
+        return false;
+      }
+      store.dispatch(playerActions.loadFromStorage(importedState));
+      this.save();
+      console.log('[GameCore] Player state imported successfully');
+      return true;
+    } catch (error) {
+      console.error('[GameCore] Error importing player state:', error);
+      return false;
+    }
+  },
+
+  /**
+   * Debugging utility for player state
+   */
+  debugPlayerState() {
+    const state = store.getState().player;
+    console.log('==== PLAYER STATE DEBUG ====');
+    console.log('Current level:', state.level);
+    console.log('Current XP:', state.xp);
+    console.log('XP to next level:', state.xpToNextLevel);
+    console.log('Currency:', state.currency);
+    console.log('Inventory items:', state.inventory.length);
+    console.log('Completed missions:', state.completedMissions);
+    // Test XP addition
+    const testXP = 10;
+    const oldXP = state.xp;
+    this.addXP(testXP);
+    const newXP = store.getState().player.xp;
+    console.log(`After adding ${testXP} XP:`, newXP, 'Difference:', newXP - oldXP);
+    // Test currency addition
+    const testCurrency = 50;
+    const oldCurrency = state.currency;
+    this.addCurrency(testCurrency);
+    const newCurrency = store.getState().player.currency;
+    console.log(`After adding ${testCurrency} currency:`, newCurrency, 'Difference:', newCurrency - oldCurrency);
+    // Check persistence
+    try {
+      const savedState = PlayerModel.get('main');
+      console.log('State in PlayerModel:', savedState ? 'Present' : 'Missing');
+    } catch (e) {
+      console.error('Error accessing PlayerModel:', e);
+    }
+    console.log('==== DEBUG COMPLETE ====');
   }
 };
 

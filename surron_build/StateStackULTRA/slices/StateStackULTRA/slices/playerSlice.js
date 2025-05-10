@@ -119,9 +119,19 @@ export const playerSlice = {
       };
     },
     
-    saveBuild: (state, build) => ({
+    initBuilds: (state, buildsArray = []) => ({
       ...state,
-      builds: [...state.builds, build]
+      builds: buildsArray
+    }),
+    
+    addBuild: (state, build) => ({
+      ...state,
+      builds: [...(state.builds || []), build]
+    }),
+    
+    initAdventureProgress: (state, progress) => ({
+      ...state,
+      adventureProgress: progress
     }),
     
     unlockPart: (state, partId) => {

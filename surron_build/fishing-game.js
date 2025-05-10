@@ -1,4 +1,5 @@
 // Surron Squad Fishing Mini-Game
+import GameCore from './game/GameCore.js';
 
 class FishingGame {
   constructor(containerId) {
@@ -253,62 +254,43 @@ class FishingGame {
   }
   
   endGame() {
-    // Calculate rewards
-    const totalValue = this.sessionValue;
-    const totalFish = this.caughtFish.length;
+    this.state = 'ended';
     
-    // Generate report
-    let report = `Fishing Session Completed!\n\n`;
-    report += `Fish Caught: ${totalFish}\n`;
-    report += `Total Value: ${totalValue} SurCoins\n\n`;
+    // Calculate total catch value
+    let totalValue = 0;
+    this.caughtFish.forEach(fish => {
+      totalValue += fish.value;
+    });
     
-    if (this.caughtFish.length > 0) {
-      report += `Your Catch:\n`;
-      this.caughtFish.forEach(fish => {
-        report += `- ${fish.name} (${fish.value} SurCoins)\n`;
-      });
-    } else {
-      report += `You didn't catch any fish today. Better luck next time!`;
-    }
-    
-    // Show report
-    alert(report);
-    
-    // Return to game with rewards
-    if (window.playerState) {
-      // Add currency (SurCoins)
-      window.playerState.addCurrency(totalValue);
+    // Update player stats if available
+    // Use GameCore instead of playerState
+    if (GameCore) {
+      // Add currency
+      GameCore.addCurrency(totalValue);
       
-      // Add fishing XP and check for rare catches
-      let xpGained = totalFish * 10;
-      let hasRare = this.caughtFish.some(fish => fish.rarity === 'rare' || fish.rarity === 'legendary');
+      console.log(`[FISHING] Adding ${totalValue} currency to player`);
       
-      if (hasRare) {
-        xpGained += 50;
+      // Add reputation - future replacement should use GameCore function
+      // For now, modify directly since there's no explicit GameCore method for this
+      const currentState = GameCore.getPlayerState();
+      if (currentState && typeof currentState.reputation === 'number') {
+        GameCore.updateRelationship('billy', 1);
         
-        // Add reputation for rare catches
-        window.playerState.reputation += 2;
-      }
-      
-      // Add XP to player
-      window.playerState.addXP(xpGained);
-      
-      // Update Billy's relationship if caught fish
-      if (totalFish > 0) {
-        window.playerState.changeRelationship('billy', 1);
+        // Calculate XP gain - more fish = more XP
+        const xpGained = this.caughtFish.length * 5 + Math.floor(totalValue / 10);
+        
+        // Add XP
+        GameCore.addXP(xpGained);
+        
+        console.log(`[FISHING] Added ${xpGained} XP and increased Billy relationship`);
       }
     }
     
-    // Remove the fishing game
-    if (this.container.parentNode) {
-      this.container.parentNode.removeChild(this.container);
-    }
+    // Display final results
+    this.showResultsDialog(totalValue);
     
-    // Close the fishing modal
-    const fishingModal = document.getElementById('fishing-modal');
-    if (fishingModal) {
-      fishingModal.style.display = 'none';
-    }
+    // Clean up event listeners
+    this.canvas.removeEventListener('click', this.handleClick);
   }
   
   handleClick(event) {
@@ -467,6 +449,81 @@ class FishingGame {
         }
       }, 500);
     }, 2000);
+  }
+  
+  showResultsDialog(totalValue) {
+    // Calculate rewards
+    const totalFish = this.caughtFish.length;
+    
+    // Generate report
+    let report = `<h3>Fishing Session Completed!</h3>`;
+    report += `<p>Fish Caught: <strong>${totalFish}</strong></p>`;
+    report += `<p>Total Value: <strong>${totalValue} SurCoins</strong></p>`;
+    
+    if (this.caughtFish.length > 0) {
+      report += `<h4>Your Catch:</h4>`;
+      report += `<ul>`;
+      this.caughtFish.forEach(fish => {
+        report += `<li>${fish.name} (${fish.value} SurCoins)</li>`;
+      });
+      report += `</ul>`;
+    } else {
+      report += `<p>You didn't catch any fish today. Better luck next time!</p>`;
+    }
+    
+    // Create dialog
+    const dialog = document.createElement('div');
+    dialog.className = 'fishing-results-dialog';
+    dialog.innerHTML = report;
+    
+    // Style the dialog
+    dialog.style.position = 'absolute';
+    dialog.style.top = '50%';
+    dialog.style.left = '50%';
+    dialog.style.transform = 'translate(-50%, -50%)';
+    dialog.style.background = 'rgba(0, 0, 0, 0.9)';
+    dialog.style.color = 'white';
+    dialog.style.padding = '2rem';
+    dialog.style.borderRadius = '12px';
+    dialog.style.zIndex = '1000';
+    dialog.style.maxWidth = '400px';
+    dialog.style.boxShadow = '0 0 30px rgba(57, 255, 20, 0.3)';
+    dialog.style.border = '2px solid var(--squad-primary)';
+    
+    // Add close button
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'Close';
+    closeButton.style.padding = '0.5rem 1rem';
+    closeButton.style.background = 'var(--squad-primary)';
+    closeButton.style.color = 'white';
+    closeButton.style.border = 'none';
+    closeButton.style.borderRadius = '4px';
+    closeButton.style.cursor = 'pointer';
+    closeButton.style.marginTop = '1rem';
+    
+    dialog.appendChild(closeButton);
+    
+    // Add to container
+    this.container.appendChild(dialog);
+    
+    // Add close handler
+    closeButton.addEventListener('click', () => {
+      // Remove dialog
+      if (dialog.parentNode) {
+        dialog.parentNode.removeChild(dialog);
+      }
+      
+      // Remove the fishing game
+      if (this.container.parentNode) {
+        this.container.parentNode.removeChild(this.container);
+      }
+      
+      // Close the fishing modal
+      const fishingModal = document.getElementById('fishing-modal');
+      if (fishingModal) {
+        fishingModal.style.display = 'none';
+      }
+    });
   }
   
   updateGameLogic(deltaTime) {

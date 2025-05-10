@@ -1,5 +1,6 @@
 // Adventure Engine for Surron Squad
 // This file implements a lightweight adventure game engine for the Surron Squad website
+import GameCore from './game/GameCore.js';
 
 class AdventureEngine {
   constructor() {
@@ -482,14 +483,55 @@ class AdventureEngine {
     // Level-up notification container
     this.createLevelUpContainer();
     
-    // Check if global player state exists
-    this.hasGlobalState = typeof window.playerState !== 'undefined';
-    
-    // Initialize the game with the first scene
-    this.init();
+    // Check for saved game state
+    this.initializeFromGameCore();
   }
   
-  // Initialize the game
+  // Initialize from GameCore
+  initializeFromGameCore() {
+    // Check if GameCore is available
+    this.hasGlobalState = typeof GameCore !== 'undefined';
+    
+    if (this.hasGlobalState) {
+      console.log("GameCore available, checking for saved adventure progress");
+      
+      // Get player state
+      const playerState = GameCore.getPlayerState();
+      
+      // Check if we have adventure progress
+      if (playerState && playerState.adventureProgress) {
+        console.log("Found saved adventure progress:", playerState.adventureProgress);
+        
+        // Restore current scene
+        if (playerState.adventureProgress.currentScene) {
+          this.currentScene = playerState.adventureProgress.currentScene;
+          console.log("Restored scene:", this.currentScene);
+        }
+      } else {
+        console.log("No saved adventure progress found, initializing fresh state");
+        
+        // Initialize adventure progress
+        if (this.hasGlobalState && (!playerState.adventureProgress)) {
+          // Initialize through GameCore dispatch
+          GameCore.store.dispatch({
+            type: 'player/initAdventureProgress',
+            payload: {
+              currentChapter: 1,
+              completedScenes: [],
+              currentScene: 'intro'
+            }
+          });
+          
+          // Save changes
+          GameCore.save();
+        }
+      }
+    } else {
+      console.log("GameCore not available, using local state only");
+    }
+  }
+  
+  // Initialize the game and load the first scene
   init() {
     console.log("AdventureEngine.init() called");
     
@@ -497,37 +539,17 @@ class AdventureEngine {
       // Show loading indicator
       this.loadingIndicator.style.display = 'block';
       
-      // If we have global player state, check for saved adventure progress
-      if (this.hasGlobalState && window.playerState.adventureProgress) {
-        console.log("Found saved adventure progress:", window.playerState.adventureProgress);
-        
-        // If there's a saved current scene, use it
-        if (window.playerState.adventureProgress.currentScene) {
-          this.currentScene = window.playerState.adventureProgress.currentScene;
-          console.log("Restored current scene:", this.currentScene);
-        }
-        
-        // Update local stats from global player state
-        this.updateStatsFromGlobal();
-      } else {
-        console.log("No saved adventure progress found, starting fresh");
-        
-        // Initialize adventure progress
-        if (this.hasGlobalState && !window.playerState.adventureProgress) {
-          window.playerState.adventureProgress = {
-            currentScene: 'intro',
-            completedScenes: []
-          };
-          window.playerState.save();
-          console.log("Created new adventure progress object");
-        }
+      // Update data from GameCore if available
+      if (this.hasGlobalState) {
+        this.syncWithGameCore();
       }
       
-      // Wait a moment to ensure DOM and state are ready
+      // Wait a moment to ensure DOM is ready
       setTimeout(() => {
         try {
-          this.loadScene(this.currentScene);
-          this.updateStats();
+          // Load the current scene
+          this.navigateToScene(this.currentScene);
+          this.updateStatusDisplay();
           
           // Hide loading indicator
           this.loadingIndicator.style.display = 'none';
@@ -601,21 +623,24 @@ class AdventureEngine {
     document.body.appendChild(this.levelUpContainer);
   }
   
-  // Update local stats from global player state
-  updateStatsFromGlobal() {
+  // Sync data with GameCore
+  syncWithGameCore() {
     if (!this.hasGlobalState) return;
     
-    // Parts is now inventory count
-    this.playerState.parts = window.playerState.inventory.length;
+    // Get player state
+    const playerState = GameCore.getPlayerState();
+    if (!playerState) return;
     
-    // Copy reputation
-    this.playerState.reputation = window.playerState.reputation;
+    // Update local references from global state
+    this.playerState.parts = playerState.inventory.length;
+    console.log("Updated parts count:", this.playerState.parts);
     
-    // Energy remains local (not stored in global state)
+    this.playerState.reputation = playerState.reputation;
+    console.log("Updated reputation:", this.playerState.reputation);
   }
   
-  // Load a specific scene
-  loadScene(sceneId) {
+  // Navigate to a scene
+  navigateToScene(sceneId) {
     // Save current scene to history before changing
     if (this.currentScene) {
       this.sceneHistory.push(this.currentScene);
@@ -630,10 +655,16 @@ class AdventureEngine {
       return;
     }
     
-    // If we have global player state, mark this scene as the current scene
+    // Update scene in GameCore
     if (this.hasGlobalState) {
-      window.playerState.adventureProgress.currentScene = sceneId;
-      window.playerState.save();
+      // Update through GameCore dispatch
+      GameCore.store.dispatch({
+        type: 'player/setCurrentScene',
+        payload: sceneId
+      });
+      
+      // Save changes
+      GameCore.save();
     }
     
     // Set the background image
@@ -681,7 +712,7 @@ class AdventureEngine {
         
         // Award rewards if this scene has them
         if (scene.rewards) {
-          this.awardRewards(scene.rewards);
+          this.applyRewards(scene.rewards);
         }
         
         // Handle special actions
@@ -691,91 +722,125 @@ class AdventureEngine {
         }
         
         // Move to the next scene
-        this.loadScene(choice.nextScene);
+        this.navigateToScene(choice.nextScene);
       });
       
       this.choicesContainer.appendChild(button);
     });
   }
   
-  // Apply effects to player state
-  applyEffects(effects) {
-    if (effects.parts !== undefined) {
-      this.playerState.parts += effects.parts;
-    }
-    
-    if (effects.reputation !== undefined) {
-      this.playerState.reputation += effects.reputation;
-      
-      // Also update global state if available
-      if (this.hasGlobalState) {
-        window.playerState.reputation += effects.reputation;
-      }
-    }
-    
-    if (effects.energy !== undefined) {
-      this.playerState.energy += effects.energy;
-      // Ensure energy stays within bounds
-      this.playerState.energy = Math.max(0, Math.min(100, this.playerState.energy));
-    }
-    
-    // Update the displayed stats
-    this.updateStats();
-    
-    // Save global state if available
+  // Complete a scene
+  completeScene(sceneId) {
+    // Mark scene as completed in GameCore
     if (this.hasGlobalState) {
-      window.playerState.save();
+      const playerState = GameCore.getPlayerState();
+      
+      if (playerState && playerState.adventureProgress && 
+          !playerState.adventureProgress.completedScenes.includes(sceneId)) {
+        
+        // Complete scene through GameCore
+        GameCore.store.dispatch({
+          type: 'player/completeScene',
+          payload: sceneId
+        });
+      }
     }
   }
   
-  // Award rewards for completing a scene
-  awardRewards(rewards) {
-    // Only process rewards if we have global player state
-    if (!this.hasGlobalState) return;
-    
-    let levelUp = null;
-    
-    // Award XP
-    if (rewards.xp) {
-      levelUp = window.playerState.addXP(rewards.xp);
+  // Apply game effects
+  applyEffects(effects) {
+    // Apply effects to local state
+    if (effects.parts) {
+      this.playerState.parts += effects.parts;
+      console.log(`${effects.parts > 0 ? '+' : ''}${effects.parts} parts`);
     }
     
-    // Award currency
-    if (rewards.currency) {
-      window.playerState.addCurrency(rewards.currency);
-    }
-    
-    // Award relationship points
-    if (rewards.character && rewards.relationship) {
-      window.playerState.changeRelationship(rewards.character, rewards.relationship);
-    }
-    
-    // Award items
-    if (rewards.item) {
-      window.playerState.addItem(rewards.item);
-    }
-    
-    // Award multiple items
-    if (rewards.items && Array.isArray(rewards.items)) {
-      rewards.items.forEach(item => window.playerState.addItem(item));
-    }
-    
-    // Complete quest
-    if (rewards.quest_complete) {
-      // In a real implementation, we'd have a more complex quest system
-      // For now, just mark it as completed
-      if (!window.playerState.completedMissions.includes(rewards.quest_complete)) {
-        window.playerState.completedMissions.push(rewards.quest_complete);
+    if (effects.reputation) {
+      this.playerState.reputation += effects.reputation;
+      console.log(`${effects.reputation > 0 ? '+' : ''}${effects.reputation} reputation`);
+      
+      // Update GameCore state
+      if (this.hasGlobalState) {
+        // We'd need a proper reducer for this in playerSlice
+        // For now, just update through GameCore
       }
     }
     
-    // Save state
-    window.playerState.save();
+    if (effects.energy) {
+      this.playerState.energy += effects.energy;
+      console.log(`${effects.energy > 0 ? '+' : ''}${effects.energy} energy`);
+      
+      // Cap energy between 0 and 100
+      this.playerState.energy = Math.max(0, Math.min(100, this.playerState.energy));
+    }
+    
+    // Update UI
+    this.updateStatusDisplay();
+    
+    // Save changes
+    if (this.hasGlobalState) {
+      GameCore.save();
+    }
+  }
+  
+  // Apply rewards
+  applyRewards(rewards) {
+    let levelUp = null;
+    
+    // Add XP
+    if (rewards.xp && this.hasGlobalState) {
+      // Add XP through GameCore
+      GameCore.addXP(rewards.xp);
+    }
+    
+    // Add currency
+    if (rewards.currency && this.hasGlobalState) {
+      // Add currency through GameCore
+      GameCore.addCurrency(rewards.currency);
+    }
+    
+    // Improve relationship
+    if (rewards.character && rewards.relationship && this.hasGlobalState) {
+      // Update relationship through GameCore
+      GameCore.updateRelationship(rewards.character, rewards.relationship);
+    }
+    
+    // Add single item
+    if (rewards.item && this.hasGlobalState) {
+      // Add item through GameCore
+      GameCore.addItem(rewards.item);
+    }
+    
+    // Add multiple items
+    if (rewards.items && rewards.items.length > 0 && this.hasGlobalState) {
+      // Add items through GameCore
+      rewards.items.forEach(item => GameCore.addItem(item));
+    }
+    
+    // Complete quest
+    if (rewards.quest_complete && this.hasGlobalState) {
+      const playerState = GameCore.getPlayerState();
+      
+      if (playerState && !playerState.completedMissions.includes(rewards.quest_complete)) {
+        // Complete mission through GameCore dispatch
+        GameCore.store.dispatch({
+          type: 'player/completeMission',
+          payload: rewards.quest_complete
+        });
+      }
+    }
+    
+    // Save changes
+    if (this.hasGlobalState) {
+      GameCore.save();
+    }
     
     // Show level up notification if player leveled up
     if (levelUp) {
       this.showLevelUp(levelUp);
     }
+    
+    return levelUp;
   }
   
   // Show level up notification
@@ -824,7 +889,7 @@ class AdventureEngine {
   }
   
   // Update stat displays
-  updateStats() {
+  updateStatusDisplay() {
     this.partsDisplay.textContent = this.playerState.parts;
     this.repDisplay.textContent = this.playerState.reputation;
     this.energyDisplay.textContent = `${this.playerState.energy}%`;
@@ -842,7 +907,7 @@ class AdventureEngine {
     
     // Also save to global player state if available
     if (this.hasGlobalState) {
-      window.playerState.save();
+      GameCore.save();
     }
   }
   
@@ -859,8 +924,8 @@ class AdventureEngine {
         this.sceneHistory = gameData.sceneHistory;
         
         // Load the current scene
-        this.loadScene(this.currentScene);
-        this.updateStats();
+        this.navigateToScene(this.currentScene);
+        this.updateStatusDisplay();
         
         return true;
       } catch (error) {
@@ -878,91 +943,58 @@ class AdventureEngine {
       const previousScene = this.sceneHistory.pop();
       // We don't want to add the current scene to history when going back
       const currentHistory = [...this.sceneHistory];
-      this.loadScene(previousScene);
+      this.navigateToScene(previousScene);
       this.sceneHistory = currentHistory;
     }
   }
 }
 
 // Initialize the adventure engine when the document is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
   console.log("DOM loaded, preparing to initialize adventure engine");
   
-  // Create loading indicator
+  // Show loading indicator
   const loadingIndicator = document.createElement('div');
+  loadingIndicator.id = 'adventure-initial-loading';
   loadingIndicator.className = 'initial-loading';
   loadingIndicator.innerHTML = `
     <div class="loading-spinner"></div>
-    <p>Loading Midnight Raid Adventure...</p>
+    <p>Loading Adventure...</p>
   `;
-  loadingIndicator.style.position = 'fixed';
-  loadingIndicator.style.top = '50%';
-  loadingIndicator.style.left = '50%';
-  loadingIndicator.style.transform = 'translate(-50%, -50%)';
-  loadingIndicator.style.background = 'rgba(0, 0, 0, 0.8)';
-  loadingIndicator.style.padding = '2rem';
-  loadingIndicator.style.borderRadius = '12px';
-  loadingIndicator.style.color = 'white';
-  loadingIndicator.style.textAlign = 'center';
-  loadingIndicator.style.zIndex = '1000';
   document.body.appendChild(loadingIndicator);
   
-  // Check if player state is already loaded
-  if (window.playerState) {
-    console.log("Player state already loaded, initializing adventure");
-    initializeAdventure();
-  } else {
-    console.log("Waiting for player state to be ready");
-    // Wait for player state to be ready
-    document.addEventListener('playerStateReady', function() {
-      console.log("Player state ready event received, initializing adventure");
-      initializeAdventure();
-    });
+  try {
+    // Initialize GameCore first
+    console.log("Initializing GameCore");
+    await GameCore.boot();
     
-    // Set a timeout to handle cases where playerStateReady never fires
-    setTimeout(() => {
-      if (!window.adventure) {
-        console.log("Timeout reached, attempting to initialize without waiting for player state");
-        initializeAdventure();
-      }
-    }, 5000);
+    // Then initialize adventure engine
+    console.log("GameCore loaded, initializing adventure");
+    initializeAdventure();
+  } catch (error) {
+    console.error("Error initializing GameCore:", error);
+    // Still try to initialize adventure with local state only
+    console.log("Proceeding with adventure initialization using local state only");
+    initializeAdventure();
   }
-  
-  function initializeAdventure() {
-    try {
-      console.log("Creating adventure engine instance");
-      const adventure = new AdventureEngine();
-      
-      // Auto-save every 30 seconds
-      setInterval(() => {
-        try {
-          adventure.saveGame();
-        } catch (e) {
-          console.error("Error auto-saving game:", e);
-        }
-      }, 30000);
-      
-      // Make the adventure available globally for debugging
-      window.adventure = adventure;
-      
-      // Remove initial loading indicator
-      if (document.body.contains(loadingIndicator)) {
-        document.body.removeChild(loadingIndicator);
-      }
-      
-      console.log("Adventure engine initialization complete");
-    } catch (e) {
-      console.error("Error initializing adventure engine:", e);
-      
-      // Update loading indicator to show error
-      loadingIndicator.innerHTML = `
-        <h3 style="color: #e63946;">Adventure Failed to Load</h3>
-        <p>There was an error loading the adventure.</p>
-        <div style="margin-top: 1rem;">
-          <button onclick="location.reload()" style="margin-right: 1rem; background: var(--squad-neon); color: black; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">Retry</button>
-          <button onclick="window.location.href='squad-hq.html'" style="background: #333; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">Return to HQ</button>
-        </div>
-      `;
+});
+
+// Function to initialize the adventure engine
+function initializeAdventure() {
+  try {
+    window.adventureEngine = new AdventureEngine();
+    
+    // Initialize the game with the first scene
+    window.adventureEngine.init();
+    
+    // Remove initial loading indicator
+    const loadingIndicator = document.getElementById('adventure-initial-loading');
+    if (loadingIndicator) {
+      loadingIndicator.parentNode.removeChild(loadingIndicator);
     }
+    
+    console.log("Adventure engine initialization complete");
+  } catch (e) {
+    console.error("Error initializing adventure engine:", e);
   }
-}); 
+} 

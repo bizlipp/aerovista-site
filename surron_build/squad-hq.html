@@ -419,11 +419,13 @@
   </style>
 </head>
 <body class="surron-squad-theme">
-  <a href="surron_squad.html" class="btn-small" style="position:absolute;top:1rem;left:1rem;z-index:1000;text-decoration:none;padding:0.4em 1em;background:#222;color:#39FF14;border-radius:5px;font-size:0.95em;opacity:0.85;transition:background 0.2s;">← View Squad Bios</a>
+  <div style="margin: 10px 0; text-align: left;">
+    <a href="surron_squad.html" class="btn" style="background-color: #e63946; color: #fff;">← Back to Home</a>
+  </div>
   <div class="hq-container">
     <header>
-      <h1>Surron Squad HQ</h1>
-      <p class="subtitle">Your command center for all Surron Squad adventures</p>
+      <h1>Squad HQ – Your Command Center</h1>
+      <p class="subtitle">Manage your progress, builds, and adventures here.</p>
       
       <div style="margin: 10px 0; text-align: right;">
         <a href="settings.html" class="btn" style="background-color: rgba(23, 23, 25, 0.7);">⚙️ Settings</a>
@@ -702,147 +704,85 @@
     };
   </script>
   
-  <script src="player-state.js"></script>
-  <script>
-    // Main initialization on document ready
-    document.addEventListener('DOMContentLoaded', function() {
+  <script src="game/GameBridge.js"></script>
+  <script src="game/AdventureIntegration.js"></script>
+  <!-- Import GameCore instead of player-state.js -->
+  <script type="module">
+    import GameCore from './game/GameCore.js';
+    
+    // Make GameCore available globally for older scripts that expect it
+    window.GameCore = GameCore;
+    
+    // After GameCore loads, initialize the page
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Initialize GameCore (loads player state from storage)
+      await GameCore.boot();
+      
+      // Initialize HQ functions
       loadNotifications();
       loadMessages();
       
       // Check adventure access
       checkAdventureAccess();
       
-      // Check if player state is available
-      if (window.playerState) {
-        updatePlayerProfile();
-        updateReputationLevel();
-        updateCharacterRelationships();
-        checkUnlockedFeatures();
-        checkNewRewards();
-        updateCurrencyDisplay();
-        updatePlayerLevel();
-        checkAdventureAccess(); // Check again when playerState is confirmed available
-      } else {
-        // Wait for player state to be ready
-        document.addEventListener('playerStateReady', function() {
-          updatePlayerProfile();
-          updateReputationLevel();
-          updateCharacterRelationships();
-          checkUnlockedFeatures();
-          checkNewRewards();
-          updateCurrencyDisplay();
-          updatePlayerLevel();
-          checkAdventureAccess(); // Check when playerState becomes ready
-        });
-      }
-      
-      // Listen for quest completion to update adventure access
-      window.addEventListener('questCompleted', function(event) {
-        console.log('Quest completed event received:', event.detail);
-        checkAdventureAccess();
-      });
-      
-      // Listen for player state updates
-      document.addEventListener('playerStateUpdated', function(event) {
-        const {property, value} = event.detail;
-        
-        console.log(`Player state updated: ${property}`, event.detail);
-        
-        switch(property) {
-          case 'xp':
-            updatePlayerLevel();
-            break;
-          case 'level':
-            updatePlayerLevel();
-            checkUnlockedFeatures();
-            break;
-          case 'currency':
-            updateCurrencyDisplay();
-            break;
-          case 'relationship':
-            updateCharacterRelationships();
-            break;
-          case 'inventory':
-            updatePlayerProfile();
-            break;
-          case 'fullReset':
-          case 'fullImport':
-            // Full state changed, update everything
-            updatePlayerProfile();
-            updateReputationLevel();
-            updateCharacterRelationships();
-            checkUnlockedFeatures();
-            updateCurrencyDisplay();
-            updatePlayerLevel();
-            break;
+      // Update UI with player data
+      updatePlayerProfile();
+      updateCharacterRelationships();
+      checkUnlockedFeatures();
+      checkNewRewards();
+
+      // Show debug panel for developers on ctrl+d
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'd') {
+          const debugPanel = document.getElementById('debug-panel');
+          debugPanel.style.display = debugPanel.style.display === 'none' ? 'block' : 'none';
         }
       });
-      
-      // Listen for level up events to show special notification
-      document.addEventListener('playerLevelUp', function(event) {
-        const {newLevel, rewards} = event.detail;
-        
-        // Show level up notification
-        const message = `🎉 Level Up! You reached level ${newLevel}!`;
-        const details = [];
-        
-        if (rewards.currency) {
-          details.push(`+${rewards.currency} SurCoins`);
-        }
-        
-        if (rewards.items && rewards.items.length > 0) {
-          rewards.items.forEach(item => {
-            details.push(`Received: ${item.name}`);
-          });
-        }
-        
-        if (rewards.unlockedFeatures && rewards.unlockedFeatures.length > 0) {
-          rewards.unlockedFeatures.forEach(feature => {
-            details.push(`Unlocked: ${feature.replace('_', ' ')}`);
-          });
-        }
-        
-        // Add level up notification
-        addNotification('⭐', message, details.join(', '), true);
-        
-        // Check for feature unlocks
-        checkUnlockedFeatures();
-      });
+
+      // Expose debug function globally
+      window.debugPlayerState = function() {
+        GameCore.debugPlayerState();
+      };
     });
-    
-    // Update player level display
-    function updatePlayerLevel() {
-      if (!window.playerState) return;
+
+    // Function to load notifications
+    function loadNotifications() {
+      // Get the notification container
+      const container = document.getElementById('notifications-container');
+      if (!container) return;
       
-      // Update level display in the header
-      const levelDisplay = document.querySelector('.player-level');
-      if (levelDisplay) {
-        levelDisplay.textContent = window.playerState.level;
+      // Clear existing notifications
+      container.innerHTML = '';
+      
+      // Get player state
+      const playerState = GameCore.getPlayerState();
+      if (!playerState) return;
+      
+      // Add default notifications
+      addNotification('👋', 'Welcome to Squad HQ', 'Check your missions and adventure progress');
+      
+      // Add level-based notification
+      addNotification('🏆', 'Current Level', `You are level ${playerState.level} rider`, false);
+      
+      // Add pending quest notification if there are incomplete quests
+      if (playerState.completedMissions && playerState.completedMissions.length < 3) {
+        addNotification('📋', 'Pending Quests', 'You have quests waiting at the Quest Board', false);
       }
-      
-      // Update XP progress bar if it exists
-      const xpBar = document.querySelector('.xp-progress-bar');
-      if (xpBar) {
-        const xpPercent = (window.playerState.xp / window.playerState.xpToNextLevel) * 100;
-        xpBar.style.width = `${xpPercent}%`;
-      }
-      
-      // Update XP text display if it exists
-      const xpText = document.querySelector('.xp-progress-text');
-      if (xpText) {
-        xpText.textContent = `${window.playerState.xp}/${window.playerState.xpToNextLevel} XP`;
-      }
-      
-      console.log(`Player level updated - Level: ${window.playerState.level}, XP: ${window.playerState.xp}/${window.playerState.xpToNextLevel}`);
     }
-    
+
+    // Update all player state references in the file
     function updatePlayerProfile() {
-      if (!window.playerState) return;
+      const playerState = GameCore.getPlayerState();
+      if (!playerState) return;
       
-      // Update level and XP
-      document.getElementById('player-level').textContent = playerState.level;
-      const xpPercentage = (playerState.xp / playerState.xpToNextLevel) * 100;
-      document.getElementById('xp-fill').style.width = `${xpPercentage}%`;
+      // Update player name and level
+      document.getElementById('player-name').textContent = playerState.name || 'Rider';
+      document.getElementById('player-level').textContent = `Level ${playerState.level}`;
+      
+      // Update XP bar
+      const xpPercent = (playerState.xp / playerState.xpToNextLevel) * 100;
+      document.getElementById('xp-fill').style.width = `${Math.min(xpPercent, 100)}%`;
+      document.getElementById('xp-text').textContent = `${playerState.xp} / ${playerState.xpToNextLevel} XP`;
       
       // Update stats
       document.getElementById('currency-value').textContent = playerState.currency;
@@ -852,7 +792,8 @@
     }
     
     function updateCharacterRelationships() {
-      if (!window.playerState) return;
+      const playerState = GameCore.getPlayerState();
+      if (!playerState) return;
       
       // Update relationship meters
       updateRelationshipMeter('charlie', playerState.relationships.charlie);
@@ -864,7 +805,7 @@
       document.getElementById('billy-relationship').textContent = getRelationshipLabel(playerState.relationships.billy);
       document.getElementById('tbd-relationship').textContent = getRelationshipLabel(playerState.relationships.tbd);
     }
-    
+
     function updateRelationshipMeter(character, level) {
       const meter = document.getElementById(`${character}-meter`);
       const points = meter.querySelectorAll('.relationship-point');
@@ -885,9 +826,10 @@
       if (level <= 8) return 'Close Ally';
       return 'Trusted Partner';
     }
-    
+
     function checkAdventureAccess() {
-      if (!window.playerState) return;
+      const playerState = GameCore.getPlayerState();
+      if (!playerState) return;
       
       const charlieAdventureLink = document.getElementById('charlie-adventure-link');
       if (charlieAdventureLink) {
@@ -927,13 +869,13 @@
     
     function checkUnlockedFeatures() {
       // This would check player level and unlocked features
-      // For now, we'll just simulate some locked features
-      console.log("Checking unlocked features, player state:", window.playerState);
+      const playerState = GameCore.getPlayerState();
+      console.log("Checking unlocked features, player state:", playerState);
       
       const testTrackModule = document.querySelector('.module-card:nth-child(5)');
       const testTrackButton = testTrackModule.querySelector('.btn-module');
       
-      if (window.playerState && playerState.level >= 5) {
+      if (playerState && playerState.level >= 5) {
         console.log("Player level is high enough to unlock test track:", playerState.level);
         // Unlock test track at level 5
         testTrackModule.querySelector('.module-status').textContent = 'NEW';
@@ -948,7 +890,8 @@
     
     // Check for new rewards or changes since last visit
     function checkNewRewards() {
-      if (!window.playerState) return;
+      const playerState = GameCore.getPlayerState();
+      if (!playerState) return;
       
       // Get last visited timestamp from localStorage
       const lastVisited = localStorage.getItem('squadHqLastVisit') || 0;
@@ -999,42 +942,46 @@
     
     // Check for new inventory items since last visit
     function checkNewInventoryItems(lastVisited) {
-      if (!window.playerState || !window.playerState.inventory) return [];
+      const playerState = GameCore.getPlayerState();
+      if (!playerState || !playerState.inventory) return [];
       
       // In a real implementation, we'd track timestamps for each item
       // For now, we'll just return the most recent items (max 3)
-      return window.playerState.inventory.slice(-3);
+      return playerState.inventory.slice(-3);
     }
     
     // Check for new builds since last visit
     function checkNewBuilds(lastVisited) {
-      if (!window.playerState || !window.playerState.builds) return [];
+      const playerState = GameCore.getPlayerState();
+      if (!playerState || !playerState.builds) return [];
       
       // In a real implementation, we'd track timestamps for each build
       // For now, we'll just return the most recent builds (max 2)
-      return window.playerState.builds.slice(-2);
+      return playerState.builds.slice(-2);
     }
     
     // Check for newly completed scenes since last visit
     function checkNewCompletedScenes(lastVisited) {
-      if (!window.playerState || !window.playerState.adventureProgress) return [];
+      const playerState = GameCore.getPlayerState();
+      if (!playerState || !playerState.adventureProgress) return [];
       
       // In a real implementation, we'd track timestamps for scene completion
       // For now, we'll just return the most recent scenes (max 5)
-      const completedScenes = window.playerState.adventureProgress.completedScenes || [];
+      const completedScenes = playerState.adventureProgress.completedScenes || [];
       return completedScenes.slice(-5);
     }
     
     // Check for relationship changes since last visit
     function checkRelationshipChanges(lastVisited) {
-      if (!window.playerState || !window.playerState.relationships) return [];
+      const playerState = GameCore.getPlayerState();
+      if (!playerState || !playerState.relationships) return [];
       
       // In a real implementation, we'd track timestamps for relationship changes
       // For now, we'll just check if any relationship is above level 1
       const changes = [];
       
-      for (const character in window.playerState.relationships) {
-        const level = window.playerState.relationships[character];
+      for (const character in playerState.relationships) {
+        const level = playerState.relationships[character];
         if (level > 1) {
           changes.push({
             character: character,
@@ -1070,6 +1017,8 @@
     // Function to add a notification
     function addNotification(icon, title, message, animate = true) {
       const container = document.getElementById('notifications-container');
+      if (!container) return;
+      
       const notification = document.createElement('div');
       notification.className = 'notification-item';
       
@@ -1103,21 +1052,34 @@
         }, 10);
       }
     }
-    
-    // Function to update currency display
-    function updateCurrencyDisplay() {
-      if (!window.playerState) return;
+
+    // Function to show toast messages
+    function showToast(message, duration = 3000) {
+      const container = document.getElementById('toast-container');
+      if (!container) return;
       
-      const currencyDisplay = document.getElementById('currency-value');
-      if (currencyDisplay) {
-        currencyDisplay.textContent = window.playerState.currency;
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      
+      container.appendChild(toast);
+      
+      // Animate in
+      setTimeout(() => {
+        toast.style.opacity = '1';
+        toast.style.transform = 'translateY(0)';
+      }, 10);
+      
+      // Remove after duration
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(20px)';
         
-        // Add animation effect
-        currencyDisplay.style.animation = 'pulse 0.5s';
+        // Remove from DOM after fade out
         setTimeout(() => {
-          currencyDisplay.style.animation = '';
-        }, 500);
-      }
+          toast.remove();
+        }, 300);
+      }, duration);
     }
   </script>
   <script type="module">
