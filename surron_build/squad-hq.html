@@ -617,20 +617,100 @@
     
   </div>
 
+  <!-- For developers: Hidden debug tools -->
+  <div style="margin-top: 20px; padding: 10px; border: 1px dashed #666; background: rgba(0,0,0,0.2); display: none;" id="debug-panel">
+    <h4>Developer Debug Panel</h4>
+    <button onclick="window.debugPlayerState()">Debug Player State</button>
+    <button onclick="window.localStorage.removeItem('surronSquadPlayerState'); location.reload();">Reset Game</button>
+    <button onclick="document.getElementById('debug-log').innerHTML = ''">Clear Log</button>
+    <div id="debug-log" style="max-height: 200px; overflow-y: auto; margin-top: 10px; background: #111; padding: 5px; font-family: monospace; font-size: 12px;"></div>
+  </div>
+  
+  <!-- Show debug panel with key combo Ctrl+Alt+D -->
+  <script>
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.altKey && e.key === 'd') {
+        const debugPanel = document.getElementById('debug-panel');
+        debugPanel.style.display = debugPanel.style.display === 'none' ? 'block' : 'none';
+      }
+    });
+    
+    // Override console.log to also display in debug panel
+    const originalConsoleLog = console.log;
+    console.log = function() {
+      // Call original console.log
+      originalConsoleLog.apply(console, arguments);
+      
+      // Also log to debug panel
+      const debugLog = document.getElementById('debug-log');
+      if (debugLog) {
+        const message = Array.from(arguments).map(arg => 
+          typeof arg === 'object' ? JSON.stringify(arg) : arg
+        ).join(' ');
+        
+        const logEntry = document.createElement('div');
+        logEntry.textContent = `> ${message}`;
+        debugLog.appendChild(logEntry);
+        debugLog.scrollTop = debugLog.scrollHeight;
+      }
+    };
+  </script>
+  
   <script src="player-state.js"></script>
   <script>
-    // Wait for player state to be ready
-    document.addEventListener('playerStateReady', function() {
-      // Update UI from player state
-      updatePlayerProfile();
-      updateCharacterRelationships();
+    // Main initialization on document ready
+    document.addEventListener('DOMContentLoaded', function() {
+      loadNotifications();
+      loadMessages();
       
-      // Check for unlocked features
-      checkUnlockedFeatures();
-      
-      // Check for new purchases or rewards
-      checkNewRewards();
+      // Check if player state is available
+      if (window.playerState) {
+        updatePlayerProfile();
+        updateReputationLevel();
+        updateCharacterRelationships();
+        checkUnlockedFeatures();
+        checkNewRewards();
+        updateCurrencyDisplay();
+        updatePlayerLevel();
+      } else {
+        // Wait for player state to be ready
+        document.addEventListener('playerStateReady', function() {
+          updatePlayerProfile();
+          updateReputationLevel();
+          updateCharacterRelationships();
+          checkUnlockedFeatures();
+          checkNewRewards();
+          updateCurrencyDisplay();
+          updatePlayerLevel();
+        });
+      }
     });
+    
+    // Update player level display
+    function updatePlayerLevel() {
+      if (!window.playerState) return;
+      
+      // Update level display in the header
+      const levelDisplay = document.querySelector('.player-level');
+      if (levelDisplay) {
+        levelDisplay.textContent = window.playerState.level;
+      }
+      
+      // Update XP progress bar if it exists
+      const xpBar = document.querySelector('.xp-progress-bar');
+      if (xpBar) {
+        const xpPercent = (window.playerState.xp / window.playerState.xpToNextLevel) * 100;
+        xpBar.style.width = `${xpPercent}%`;
+      }
+      
+      // Update XP text display if it exists
+      const xpText = document.querySelector('.xp-progress-text');
+      if (xpText) {
+        xpText.textContent = `${window.playerState.xp}/${window.playerState.xpToNextLevel} XP`;
+      }
+      
+      console.log(`Player level updated - Level: ${window.playerState.level}, XP: ${window.playerState.xp}/${window.playerState.xpToNextLevel}`);
+    }
     
     function updatePlayerProfile() {
       if (!window.playerState) return;
@@ -685,11 +765,13 @@
     function checkUnlockedFeatures() {
       // This would check player level and unlocked features
       // For now, we'll just simulate some locked features
+      console.log("Checking unlocked features, player state:", window.playerState);
       
       const testTrackModule = document.querySelector('.module-card:nth-child(5)');
       const testTrackButton = testTrackModule.querySelector('.btn-module');
       
       if (window.playerState && playerState.level >= 5) {
+        console.log("Player level is high enough to unlock test track:", playerState.level);
         // Unlock test track at level 5
         testTrackModule.querySelector('.module-status').textContent = 'NEW';
         testTrackModule.querySelector('.module-status').classList.remove('locked');

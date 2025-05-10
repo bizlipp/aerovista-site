@@ -14,18 +14,27 @@ class GameBridge {
     this.isReady = false;
     this.listeners = [];
     
+    // Add debug logging
+    console.log("GameBridge constructor called");
+    console.log("window.playerState exists:", typeof window.playerState !== 'undefined');
+    
     // Check if GameCore and/or playerState are available
     this.hasGameCore = typeof GameCore !== 'undefined';
     this.hasPlayerState = typeof window.playerState !== 'undefined';
     
+    console.log("GameBridge initial state - hasGameCore:", this.hasGameCore, "hasPlayerState:", this.hasPlayerState);
+    
     // Wait for playerState to be ready if it's not yet
     if (!this.hasPlayerState) {
+      console.log("Waiting for playerStateReady event");
       document.addEventListener('playerStateReady', () => {
-        this.hasPlayerState = true;
+        console.log("playerStateReady event received, playerState exists:", typeof window.playerState !== 'undefined');
+        this.hasPlayerState = typeof window.playerState !== 'undefined';
         this.isReady = true;
         this._notifyReady();
       });
     } else {
+      console.log("GameBridge is ready immediately");
       this.isReady = true;
     }
   }

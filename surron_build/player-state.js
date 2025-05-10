@@ -176,23 +176,43 @@ class PlayerState {
    * Save current player state to localStorage
    */
   save() {
-    localStorage.setItem('surronSquadPlayerState', JSON.stringify({
-      level: this.level,
-      xp: this.xp,
-      xpToNextLevel: this.xpToNextLevel,
-      currency: this.currency,
-      reputation: this.reputation,
-      inventory: this.inventory,
-      builds: this.builds,
-      unlockedParts: this.unlockedParts,
-      completedMissions: this.completedMissions,
-      adventureProgress: this.adventureProgress,
-      relationships: this.relationships,
-      achievements: this.achievements,
-      lastActionTime: this.lastActionTime
-    }));
-    
-    console.log('Player state saved');
+    try {
+      const stateToSave = {
+        level: this.level,
+        xp: this.xp,
+        xpToNextLevel: this.xpToNextLevel,
+        currency: this.currency,
+        reputation: this.reputation,
+        inventory: this.inventory,
+        builds: this.builds,
+        unlockedParts: this.unlockedParts,
+        completedMissions: this.completedMissions,
+        adventureProgress: this.adventureProgress,
+        relationships: this.relationships,
+        achievements: this.achievements,
+        lastActionTime: this.lastActionTime
+      };
+      
+      // Convert to JSON
+      const jsonState = JSON.stringify(stateToSave);
+      
+      // Save to localStorage
+      localStorage.setItem('surronSquadPlayerState', jsonState);
+      
+      console.log('Player state saved successfully', {
+        level: this.level,
+        xp: this.xp,
+        currency: this.currency,
+        inventoryCount: this.inventory.length,
+        missionCount: this.completedMissions?.length || 0,
+        stateSize: jsonState.length + ' bytes'
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('Error saving player state:', error);
+      return false;
+    }
   }
   
   /**
@@ -336,6 +356,47 @@ class PlayerState {
 
 // Export as global for now
 window.PlayerState = PlayerState;
+
+// Add a debugging function to help diagnose issues
+window.debugPlayerState = function() {
+  console.log("==== PLAYER STATE DEBUG ====");
+  if (!window.playerState) {
+    console.error("No playerState found in window object!");
+    return;
+  }
+  
+  console.log("Current level:", window.playerState.level);
+  console.log("Current XP:", window.playerState.xp);
+  console.log("XP to next level:", window.playerState.xpToNextLevel);
+  console.log("Currency:", window.playerState.currency);
+  console.log("Inventory items:", window.playerState.inventory.length);
+  console.log("Completed missions:", window.playerState.completedMissions);
+  
+  // Test XP addition
+  const testXP = 10;
+  const oldXP = window.playerState.xp;
+  const levelUpResult = window.playerState.addXP(testXP);
+  console.log(`After adding ${testXP} XP:`, window.playerState.xp, 
+              "Difference:", window.playerState.xp - oldXP,
+              "Level up?", levelUpResult ? "Yes" : "No");
+  
+  // Test currency addition
+  const testCurrency = 50;
+  const oldCurrency = window.playerState.currency;
+  window.playerState.addCurrency(testCurrency);
+  console.log(`After adding ${testCurrency} currency:`, window.playerState.currency,
+              "Difference:", window.playerState.currency - oldCurrency);
+  
+  // Check localStorage
+  try {
+    const savedState = localStorage.getItem('surronSquadPlayerState');
+    console.log("State in localStorage:", savedState ? "Present" : "Missing");
+  } catch (e) {
+    console.error("Error accessing localStorage:", e);
+  }
+  
+  console.log("==== DEBUG COMPLETE ====");
+};
 
 // Initialize player state when document loads
 document.addEventListener('DOMContentLoaded', function() {
