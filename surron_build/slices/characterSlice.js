@@ -1,5 +1,5 @@
 // slices/characterSlice.js
-import { createSlice } from "https://cdn.skypack.dev/@reduxjs/toolkit";
+import { createSlice } from "../StateStackULTRA/toolkit.js";
 
 const initialState = {
   charlie: {

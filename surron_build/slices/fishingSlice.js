@@ -1,5 +1,5 @@
 // fishingSlice.js – Redux state for fishing game
-import { createSlice } from "https://cdn.skypack.dev/@reduxjs/toolkit";
+import { createSlice } from "../StateStackULTRA/toolkit.js";
 
 const initialState = {
   isActive: false,
