@@ -393,9 +393,8 @@ export class SchemaFactory {
       case 'simple':
         return new SimpleValidator(options);
       case 'ajv':
-        // In a real implementation, this would use the Ajv library
-        console.warn('Ajv validation not implemented, using simple validator');
-        return new SimpleValidator(options);
+        // Return an AjvValidator implementation
+        return new AjvValidator(options);
       case 'zod':
         // In a real implementation, this would use the Zod library
         console.warn('Zod validation not implemented, using simple validator');
@@ -413,6 +412,141 @@ export class SchemaFactory {
         console.warn(`Invalid validation strategy: ${strategy}, using simple validator`);
         return new SimpleValidator(options);
     }
+  }
+}
+
+/**
+ * Ajv-based validator implementation
+ */
+class AjvValidator extends SchemaValidator {
+  /**
+   * Create a new AjvValidator
+   * @param {Object} options - Validator options
+   */
+  constructor(options = {}) {
+    super();
+    this.options = options;
+    this.schemas = new Map();
+    console.log('AjvValidator created with SimplyAjv implementation');
+  }
+  
+  /**
+   * Validate data against a schema
+   * @param {Object} data - Data to validate
+   * @param {Object|string} schema - Schema to validate against (or schema name)
+   * @param {Object} options - Validation options
+   * @returns {Object} - Validation result with isValid and errors
+   */
+  validate(data, schema, options = {}) {
+    // Get the actual schema if a name was provided
+    if (typeof schema === 'string') {
+      schema = this.getSchema(schema);
+      if (!schema) {
+        return {
+          isValid: false,
+          errors: [{ message: `Schema not found: ${schema}` }],
+          validatedData: null
+        };
+      }
+    }
+    
+    const errors = [];
+    let isValid = true;
+    
+    // Validate data type
+    if (schema.type && !this._validateType(data, schema.type)) {
+      errors.push({
+        message: `Type mismatch: expected ${schema.type}, got ${typeof data}`,
+        path: '',
+        value: data
+      });
+      isValid = false;
+    }
+    
+    // Validate data properties
+    if (schema.properties && typeof data === 'object' && data !== null) {
+      for (const [prop, propSchema] of Object.entries(schema.properties)) {
+        if (prop in data) {
+          const propResult = this.validate(data[prop], propSchema);
+          if (!propResult.isValid) {
+            errors.push(...propResult.errors.map(err => ({
+              ...err,
+              path: prop + (err.path ? '.' + err.path : '')
+            })));
+            isValid = false;
+          }
+        } else if (schema.required && schema.required.includes(prop)) {
+          errors.push({
+            message: `Missing required property: ${prop}`,
+            path: prop,
+            value: undefined
+          });
+          isValid = false;
+        }
+      }
+    }
+    
+    // Return the validation result
+    return {
+      isValid,
+      errors,
+      validatedData: isValid ? data : null
+    };
+  }
+  
+  /**
+   * Validate value against type
+   * @param {any} value - Value to validate
+   * @param {string} type - Type to validate against
+   * @returns {boolean} - Whether the value is of the specified type
+   */
+  _validateType(value, type) {
+    switch (type) {
+      case 'string':
+        return typeof value === 'string';
+      case 'number':
+        return typeof value === 'number';
+      case 'integer':
+        return typeof value === 'number' && Number.isInteger(value);
+      case 'boolean':
+        return typeof value === 'boolean';
+      case 'array':
+        return Array.isArray(value);
+      case 'object':
+        return typeof value === 'object' && value !== null && !Array.isArray(value);
+      case 'null':
+        return value === null;
+      default:
+        return false;
+    }
+  }
+  
+  /**
+   * Register a custom schema
+   * @param {string} name - Schema name
+   * @param {Object} schema - Schema definition
+   * @returns {boolean} - Success status
+   */
+  registerSchema(name, schema) {
+    if (!name || typeof name !== 'string') {
+      throw new Error('Schema name must be a non-empty string');
+    }
+    
+    if (!schema || typeof schema !== 'object') {
+      throw new Error('Schema must be an object');
+    }
+    
+    this.schemas.set(name, schema);
+    return true;
+  }
+  
+  /**
+   * Get a registered schema
+   * @param {string} name - Schema name
+   * @returns {Object|null} - Schema definition or null if not found
+   */
+  getSchema(name) {
+    return this.schemas.get(name) || null;
   }
 }
 

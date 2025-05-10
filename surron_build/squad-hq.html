@@ -704,8 +704,8 @@
     };
   </script>
   
-  <script src="game/GameBridge.js"></script>
-  <script src="game/AdventureIntegration.js"></script>
+  <script type="module" src="game/GameBridge.js"></script>
+  <script type="module" src="game/AdventureIntegration.js"></script>
   <!-- Import GameCore instead of player-state.js -->
   <script type="module">
     import GameCore from './game/GameCore.js';
@@ -768,6 +768,48 @@
       if (playerState.completedMissions && playerState.completedMissions.length < 3) {
         addNotification('📋', 'Pending Quests', 'You have quests waiting at the Quest Board', false);
       }
+    }
+
+    // Function to load squad messages
+    function loadMessages() {
+      // Get the messages container
+      const container = document.getElementById('messages-container');
+      if (!container) return;
+      
+      // Clear existing messages
+      container.innerHTML = '';
+      
+      // Default messages if none in state
+      const defaultMessages = [
+        { from: 'charlie', text: 'Hey! Check out the new bike builds. I added some INSANE mods!', time: '2 hours ago' },
+        { from: 'billy', text: 'Anyone want to go fishing this weekend? The lake is perfect right now.', time: '5 hours ago' },
+        { from: 'tbd', text: 'Performance analysis complete. New controller modifications available.', time: '1 day ago' }
+      ];
+      
+      // Get messages from state or use defaults
+      const playerState = GameCore.getPlayerState();
+      const messages = (playerState && playerState.messages) || defaultMessages;
+      
+      // Add messages to container
+      messages.forEach(message => {
+        const msgElement = document.createElement('div');
+        msgElement.className = `message ${message.from}`;
+        
+        msgElement.innerHTML = `
+          <div class="message-avatar">
+            <img src="images/surron-${message.from}-alert-pose.png" alt="${message.from}">
+          </div>
+          <div class="message-content">
+            <div class="message-header">
+              <span class="message-sender">${message.from.charAt(0).toUpperCase() + message.from.slice(1)}</span>
+              <span class="message-time">${message.time}</span>
+            </div>
+            <div class="message-text">${message.text}</div>
+          </div>
+        `;
+        
+        container.appendChild(msgElement);
+      });
     }
 
     // Update all player state references in the file

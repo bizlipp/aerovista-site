@@ -45,8 +45,11 @@ class GameBridge {
     }
   }
   
-  // Export a singleton instance
-  export const game = new GameBridge();
+  // Create a singleton instance
+  const game = new GameBridge();
   
   // Also provide global access for non-module scripts
   window.game = game;
+  
+  // Export the singleton instance
+  export default game;
