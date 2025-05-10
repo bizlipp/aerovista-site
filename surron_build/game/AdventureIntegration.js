@@ -208,6 +208,41 @@ export function getCurrentScene() {
 export function initializeAdventureProgress() {
   const state = GameCore.getPlayerState();
   
+  // Handle case where state is completely undefined
+  if (!state) {
+    console.log('[AdventureIntegration] Player state not found, creating initial state');
+    
+    // Create initial state with default values
+    GameCore.store.dispatch({
+      type: 'player/loadFromStorage',
+      payload: {
+        level: 1,
+        xp: 0,
+        xpToNextLevel: 100,
+        currency: 250,
+        reputation: 0,
+        inventory: [],
+        builds: [],
+        unlockedParts: [],
+        completedMissions: [],
+        adventureProgress: {
+          currentChapter: 1,
+          completedScenes: [],
+          currentScene: 'intro'
+        },
+        relationships: {
+          charlie: 1,
+          billy: 1,
+          tbd: 1
+        }
+      }
+    });
+    
+    GameCore.save();
+    return;
+  }
+  
+  // Continue with the original logic for partial state
   if (!state.adventureProgress) {
     GameCore.store.dispatch({
       type: 'player/initAdventureProgress',

@@ -435,13 +435,13 @@
         console.log("GameCore booted successfully");
         
         // Get game state
-        const playerState = GameCore.getPlayerState();
+        const playerState = GameCore.getPlayerState() || {};
         console.log("Player state loaded:", playerState);
         
         // Setup UI
         setupAdventureUI();
         
-        // Update stats display
+        // Update stats display with safe defaults
         document.getElementById('player-level').textContent = playerState.level || 1;
         document.getElementById('player-reputation').textContent = playerState.reputation || 0;
         document.getElementById('player-coins').textContent = playerState.currency || 0;

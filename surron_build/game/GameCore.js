@@ -23,6 +23,31 @@ const GameCore = {
         console.info('[GameCore] Loaded player state from storage:', data);
       } else {
         console.info('[GameCore] No saved player state found. Starting fresh.');
+        // Initialize with default player state
+        store.dispatch(playerActions.loadFromStorage({
+          level: 1,
+          xp: 0,
+          xpToNextLevel: 100,
+          currency: 250,
+          reputation: 0,
+          inventory: [],
+          builds: [],
+          unlockedParts: [],
+          completedMissions: [],
+          adventureProgress: {
+            currentChapter: 1,
+            completedScenes: [],
+            currentScene: 'intro'
+          },
+          relationships: {
+            charlie: 1,
+            billy: 1,
+            tbd: 1
+          },
+          achievements: []
+        }));
+        this.save();
+        console.info('[GameCore] Created new player state.');
       }
     } catch (error) {
       console.error('[GameCore] Boot error:', error);
