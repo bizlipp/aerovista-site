@@ -5,7 +5,7 @@
  * based on their current state and progression.
  */
 import GameCore from './game/GameCore.js';
-import { store } from './surron_build/StateStackULTRA/store/gameStore.js';
+import { store } from './StateStackULTRA/store/gameStore.js';
 
 class GameplayDirector {
   constructor() {

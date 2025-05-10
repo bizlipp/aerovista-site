@@ -676,6 +676,112 @@
       }, duration);
     }
     
+    // Function to update player profile with the latest state
+    function updatePlayerProfile() {
+      try {
+        console.log("Updating player profile...");
+        
+        // Access GameCore if available in window
+        if (!window.GameCore) {
+          console.error("GameCore not available for updatePlayerProfile");
+          return;
+        }
+        
+        const state = window.GameCore.getPlayerState();
+        if (!state) {
+          console.error("Player state not available");
+          return;
+        }
+        
+        // Update player level
+        const levelEl = document.getElementById('player-level');
+        if (levelEl) levelEl.textContent = state.level || 1;
+        
+        // Update XP bar
+        const xpEl = document.getElementById('player-xp');
+        if (xpEl) xpEl.textContent = state.xp || 0;
+        
+        const xpToNextEl = document.getElementById('player-xp-to-next');
+        if (xpToNextEl) xpToNextEl.textContent = state.xpToNextLevel || 100;
+        
+        const xpProgressEl = document.getElementById('xp-progress');
+        if (xpProgressEl) {
+          const percentage = Math.min(100, Math.floor((state.xp / state.xpToNextLevel) * 100) || 0);
+          xpProgressEl.style.width = `${percentage}%`;
+        }
+        
+        // Update currency
+        const currencyEl = document.getElementById('player-currency');
+        if (currencyEl) currencyEl.textContent = state.currency || 0;
+        
+        // Update inventory count
+        const inventoryEl = document.getElementById('inventory-count');
+        if (inventoryEl) inventoryEl.textContent = state.inventory ? state.inventory.length : 0;
+        
+        console.log("Player profile updated successfully");
+      } catch (error) {
+        console.error("Error updating player profile:", error);
+      }
+    }
+    
+    // Function to update character relationships display
+    function updateCharacterRelationships() {
+      try {
+        console.log("Updating character relationships...");
+        
+        // Access GameCore if available in window
+        if (!window.GameCore) {
+          console.error("GameCore not available for updateCharacterRelationships");
+          return;
+        }
+        
+        const state = window.GameCore.getPlayerState();
+        if (!state || !state.relationships) {
+          console.error("Relationships data not available");
+          return;
+        }
+        
+        const relationships = state.relationships;
+        
+        // Update character relationships UI
+        updateCharacter('charlie', relationships.charlie || 1);
+        updateCharacter('billy', relationships.billy || 1);
+        updateCharacter('tbd', relationships.tbd || 1);
+        
+        console.log("Character relationships updated successfully");
+      } catch (error) {
+        console.error("Error updating character relationships:", error);
+      }
+    }
+    
+    // Helper function for updating a single character's relationship
+    function updateCharacter(character, level) {
+      // Update relationship level text
+      const relationshipEl = document.getElementById(`${character}-relationship`);
+      if (relationshipEl) {
+        relationshipEl.textContent = getRelationshipLabel(level);
+      }
+      
+      // Update relationship meter
+      const meterEl = document.getElementById(`${character}-meter`);
+      if (meterEl) {
+        const points = meterEl.querySelectorAll('.relationship-point');
+        points.forEach((point, index) => {
+          point.className = index < level ? 'relationship-point filled' : 'relationship-point';
+        });
+      }
+    }
+    
+    // Helper function to get relationship label based on level
+    function getRelationshipLabel(level) {
+      if (level <= 1) return 'Acquaintance';
+      if (level <= 3) return 'Friend';
+      if (level <= 5) return 'Good Friend';
+      if (level <= 7) return 'Close Friend';
+      if (level <= 9) return 'BFF';
+      return 'Squad Legend';
+    }
+    
     document.addEventListener('keydown', function(e) {
       if (e.ctrlKey && e.altKey && e.key === 'd') {
         const debugPanel = document.getElementById('debug-panel');
@@ -705,33 +811,101 @@
   </script>
   
   <script type="module">
-    import GameCore from './game/GameCore.js';
-    import { initQuestBoard } from './quest-board.js';
-    import director from './gameplay-director.js';
+    console.log("Squad HQ: Loading modules...");
     
-    // Initialize with GameCore
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Boot GameCore
-      await GameCore.boot();
-      console.log("GameCore initialized in Squad HQ");
+    // Try importing modules with error handling
+    let GameCore, initQuestBoard, director;
+    
+    try {
+      // Import modules one by one with error handling
+      const gameCoreMod = await import('./game/GameCore.js');
+      console.log("GameCore module loaded successfully");
+      GameCore = gameCoreMod.default;
       
-      // Initialize quest board 
-      initQuestBoard();
+      try {
+        const questBoardMod = await import('./quest-board.js');
+        console.log("Quest board module loaded successfully");
+        initQuestBoard = questBoardMod.initQuestBoard;
+      } catch (error) {
+        console.error("Error loading quest-board.js:", error);
+      }
       
-      // Update player profile with latest state
-      updatePlayerProfile();
-      updateCharacterRelationships();
+      try {
+        const directorMod = await import('./gameplay-director.js');
+        console.log("Director module loaded successfully");
+        director = directorMod.default;
+      } catch (error) {
+        console.error("Error loading gameplay-director.js:", error);
+      }
       
-      // Listen for quest completion events
-      window.addEventListener('questCompleted', (event) => {
-        const questId = event.detail;
-        addNotification('📋', 'Quest Completed', `You've completed the ${questId.replace('_', ' ')} quest!`);
-        
-        // Refresh player profile to show updated stats
-        updatePlayerProfile();
-        updateCharacterRelationships();
+      // Initialize with GameCore
+      document.addEventListener('DOMContentLoaded', async function() {
+        try {
+          // Boot GameCore
+          console.log("Booting GameCore...");
+          await GameCore.boot();
+          console.log("GameCore initialized in Squad HQ");
+          
+          // Initialize quest board if available
+          if (typeof initQuestBoard === 'function') {
+            console.log("Initializing quest board...");
+            initQuestBoard();
+          }
+          
+          // Update player profile with latest state
+          if (typeof updatePlayerProfile === 'function') {
+            updatePlayerProfile();
+          } else {
+            console.warn("updatePlayerProfile function not found");
+          }
+          
+          if (typeof updateCharacterRelationships === 'function') {
+            updateCharacterRelationships();
+          } else {
+            console.warn("updateCharacterRelationships function not found");
+          }
+          
+          // Listen for quest completion events
+          window.addEventListener('questCompleted', (event) => {
+            const questId = event.detail;
+            if (typeof addNotification === 'function') {
+              addNotification('📋', 'Quest Completed', `You've completed the ${questId.replace('_', ' ')} quest!`);
+            }
+            
+            // Refresh player profile to show updated stats
+            if (typeof updatePlayerProfile === 'function') {
+              updatePlayerProfile();
+            }
+            if (typeof updateCharacterRelationships === 'function') {
+              updateCharacterRelationships();
+            }
+          });
+          
+          // Show success toast
+          showToast("Game loaded successfully!", "success");
+          
+        } catch (error) {
+          console.error("Error during Squad HQ initialization:", error);
+          showToast("Error loading game: " + error.message, "error", 10000);
+          
+          // Show debug panel to help diagnose
+          const debugPanel = document.getElementById('debug-panel');
+          if (debugPanel) {
+            debugPanel.style.display = 'block';
+          }
+        }
       });
-    });
+      
+    } catch (error) {
+      console.error("Fatal error loading GameCore module:", error);
+      showToast("Failed to load game modules: " + error.message, "error", 10000);
+      
+      // Show debug panel
+      const debugPanel = document.getElementById('debug-panel');
+      if (debugPanel) {
+        debugPanel.style.display = 'block';
+      }
+    }
   </script>
   <script type="module" src="adventureUI.js"></script>
 </body>

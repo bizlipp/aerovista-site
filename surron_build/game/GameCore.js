@@ -85,6 +85,23 @@ const GameCore = {
   },
 
   /**
+   * Dispatch actions to store from external components
+   * @param {string} action - Action name
+   * @param {*} payload - Action payload 
+   */
+  dispatch(action, payload) {
+    // Check if the action exists in playerActions
+    if (playerActions[action]) {
+      store.dispatch(playerActions[action](payload));
+      console.log(`[GameCore] Dispatched action: ${action}`, payload);
+      return true;
+    } else {
+      console.warn(`[GameCore] Unknown action: ${action}`);
+      return false;
+    }
+  },
+
+  /**
    * Navigate between game scenes or modules (stubbed for now)
    */
   navigateTo(target) {

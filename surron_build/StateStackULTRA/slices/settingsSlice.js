@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "https://cdn.skypack.dev/@reduxjs/toolkit";
 
 // Define the initial state of settings
 const initialState = {

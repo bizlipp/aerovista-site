@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Image Extraction</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #f0f0f5;
+      font-family: sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    canvas {
+      border: 1px solid #333;
+      display: block;
+      margin: 20px 0;
+      max-width: 100%;
+    }
+    
+    .controls {
+      margin-bottom: 20px;
+    }
+    
+    button {
+      background: linear-gradient(90deg, #ff31b0, #9a31ff);
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    
+    .output {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .character-image {
+      text-align: center;
+    }
+    
+    .character-image img {
+      max-width: 300px;
+      border: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Character Image Extraction</h1>
+  
+  <div class="controls">
+    <button id="extractPh4ze">Extract PH4ZE</button>
+    <button id="extractVektor">Extract VEKTOR</button>
+    <button id="extractX1nth">Extract X1NTH</button>
+    <button id="extractAll">Extract All</button>
+  </div>
+  
+  <h2>Source Image</h2>
+  <img id="sourceImage" src="assets/images/glitch-portraits.png" alt="Glitch Portraits" style="max-width: 100%;">
+  
+  <h2>Extracted Images</h2>
+  <div class="output" id="output"></div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sourceImage = document.getElementById('sourceImage');
+      const output = document.getElementById('output');
+      
+      // Button click handlers
+      document.getElementById('extractPh4ze').addEventListener('click', () => extractCharacter('ph4ze'));
+      document.getElementById('extractVektor').addEventListener('click', () => extractCharacter('vektor'));
+      document.getElementById('extractX1nth').addEventListener('click', () => extractCharacter('x1nth'));
+      document.getElementById('extractAll').addEventListener('click', extractAll);
+      
+      // Extract coordinates based on the glitch-portraits.png layout
+      function getCoordinates(character) {
+        switch(character) {
+          case 'ph4ze':
+            return { x: 0, y: 0, width: 375, height: 850 };
+          case 'vektor':
+            return { x: 375, y: 0, width: 375, height: 850 };
+          case 'x1nth':
+            return { x: 750, y: 0, width: 375, height: 850 };
+          default:
+            return null;
+        }
+      }
+      
+      // Extract a single character from the source image
+      function extractCharacter(character) {
+        const coords = getCoordinates(character);
+        if (!coords) return;
+        
+        // Create canvas and context
+        const canvas = document.createElement('canvas');
+        canvas.width = coords.width;
+        canvas.height = coords.height;
+        const ctx = canvas.getContext('2d');
+        
+        // Draw the portion of the source image
+        ctx.drawImage(
+          sourceImage,
+          coords.x, coords.y, coords.width, coords.height,
+          0, 0, coords.width, coords.height
+        );
+        
+        // Convert to data URL
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+        
+        // Create character image element
+        const charDiv = document.createElement('div');
+        charDiv.className = 'character-image';
+        
+        const img = document.createElement('img');
+        img.src = dataUrl;
+        img.alt = character.toUpperCase();
+        
+        const downloadLink = document.createElement('a');
+        downloadLink.href = dataUrl;
+        downloadLink.download = `${character}.jpg`;
+        downloadLink.textContent = `Download ${character.toUpperCase()}`;
+        downloadLink.style.display = 'block';
+        downloadLink.style.marginTop = '10px';
+        
+        charDiv.appendChild(img);
+        charDiv.appendChild(downloadLink);
+        output.appendChild(charDiv);
+        
+        // Trigger download
+        downloadLink.click();
+      }
+      
+      // Extract all characters
+      function extractAll() {
+        output.innerHTML = '';
+        extractCharacter('ph4ze');
+        extractCharacter('vektor');
+        extractCharacter('x1nth');
+      }
+    });
+  </script>
+</body>
+</html> 

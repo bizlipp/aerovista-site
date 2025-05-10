@@ -67,6 +67,27 @@
       font-size: 2rem;
       margin-bottom: 0.5rem;
     }
+    
+    .error-message {
+      color: #ff4800;
+      background-color: rgba(0,0,0,0.7);
+      padding: 10px;
+      border-radius: 5px;
+      max-width: 80%;
+      margin-top: 20px;
+      display: none;
+    }
+    
+    .manual-redirect {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #ff4800;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: none;
+    }
 
   </style>
 </head>
@@ -79,17 +100,40 @@
     <div class="loading-fill" id="loadingFill"></div>
   </div>
 
-  <div class="boot-text" id="bootText">Charlie’s finding a screwdriver... probably</div>
+  <div class="boot-text" id="bootText">Charlie's finding a screwdriver... probably</div>
+  
+  <div class="error-message" id="errorMessage">
+    Something went wrong loading the game. Check the console for more details.
+  </div>
+  
+  <button class="manual-redirect" id="manualRedirect">
+    Continue Anyway
+  </button>
 
   <script type="module">
-    import GameCore from './game/GameCore.js';
+    console.log("Loading Surron Squad...");
+    
+    // Try to import GameCore
+    try {
+      import('./game/GameCore.js').then(module => {
+        console.log("GameCore module imported successfully");
+        window.GameCore = module.default;
+        simulateBootProgress();
+      }).catch(error => {
+        console.error("Error importing GameCore:", error);
+        showError("Failed to import GameCore module: " + error.message);
+      });
+    } catch (error) {
+      console.error("Exception during import:", error);
+      showError("Error loading game modules: " + error.message);
+    }
 
     const fill = document.getElementById('loadingFill');
     const bootText = document.getElementById('bootText');
     const messages = [
-      "Charlie’s finding a screwdriver... probably",
-      "Billy’s truck is warming up (kinda)",
-      "TBD’s writing firmware on a GameBoy",
+      "Charlie's finding a screwdriver... probably",
+      "Billy's truck is warming up (kinda)",
+      "TBD's writing firmware on a GameBoy",
       "Loading duct tape physics...",
       "Cracking a cold one while we wait..."
     ];
@@ -117,11 +161,30 @@
     }
 
     async function startGame() {
-      await GameCore.boot();
-      window.location.href = 'squad-hq.html';
+      console.log("Starting game...");
+      try {
+        console.log("Calling GameCore.boot()");
+        await window.GameCore.boot();
+        console.log("GameCore.boot() completed successfully");
+        window.location.href = 'squad-hq.html';
+      } catch (error) {
+        console.error("Error during game boot:", error);
+        showError("Error starting game: " + error.message);
+      }
     }
-
-    simulateBootProgress();
+    
+    function showError(message) {
+      const errorElement = document.getElementById('errorMessage');
+      errorElement.textContent = message;
+      errorElement.style.display = 'block';
+      
+      // Show manual redirect button
+      const redirectButton = document.getElementById('manualRedirect');
+      redirectButton.style.display = 'block';
+      redirectButton.addEventListener('click', () => {
+        window.location.href = 'squad-hq.html';
+      });
+    }
   </script>
 </body>
 </html>

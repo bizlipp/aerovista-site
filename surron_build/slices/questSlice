@@ -1,5 +1,5 @@
 // slices/questSlice.js
-import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter } from "https://cdn.skypack.dev/@reduxjs/toolkit";
 
 const questsAdapter = createEntityAdapter();
 
