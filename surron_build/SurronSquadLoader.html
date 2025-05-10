@@ -136,7 +136,7 @@
         console.error("Failed to load background image, using fallback");
         document.body.style.backgroundImage = "none";
       };
-      testImg.src = 'images/trailer-bg.png';
+      testImg.src = '/surron_build/images/trailer-bg.png';
     });
 
     // Add a global error handler to capture import errors
@@ -286,8 +286,22 @@
       console.log("Starting game...");
       try {
         console.log("Calling GameCore.boot()");
-        await window.GameCore.boot();
-        console.log("GameCore.boot() completed successfully");
+        try {
+          await window.GameCore.boot();
+          console.log("GameCore.boot() completed successfully");
+        } catch (error) {
+          // Check for the specific DataStackULTRA error
+          if (error.message && error.message.includes('Model instance with ID main not found')) {
+            console.warn("Non-critical DataStackULTRA error detected, continuing to Squad HQ:", error.message);
+            // We can continue despite this error
+          } else {
+            // Re-throw other errors
+            throw error;
+          }
+        }
+        
+        // Proceed to Squad HQ regardless of error
+        console.log("Redirecting to Squad HQ...");
         window.location.href = 'squad-hq.html';
       } catch (error) {
         console.error("Error during game boot:", error);
