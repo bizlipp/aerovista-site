@@ -1,10 +1,10 @@
 // chapter2.js - Chapter 2: Lakeside Legends
-import { store } from './StateStackULTRA/store/gameStore.js';
-import { playerActions } from './StateStackULTRA/slices/playerSlice.js';
-import { progressStep, updateQuestStatus } from './StateStackULTRA/slices/questSlice.js';
-import { unlockLocation } from './StateStackULTRA/slices/locationSlice.js';
-import { dispatchers } from './actionDispatchers.js';
-import GameCore from './game/GameCore.js';
+import { store } from '../StateStackULTRA/store/gameStore.js';
+import { playerActions } from '../StateStackULTRA/slices/StateStackULTRA/slices/playerSlice.js';
+import { progressStep, updateQuestStatus } from '../StateStackULTRA/slices/questSlice.js';
+import { unlockLocation } from '../StateStackULTRA/slices/locationSlice.js';
+import { dispatchers } from '../actionDispatchers.js';
+import GameCore from '../game/GameCore.js';
 
 // Chapter data
 export const chapterData = {
@@ -424,6 +424,80 @@ export const scenes = {
   }
 };
 
+// XP Coins for Chapter 2
+export const xpCoins = [
+  {
+    id: 'ch2_coin1',
+    location: 'tubbs-hill',
+    coordinates: { x: 25, y: 35 },
+    value: 100,
+    found: false,
+    description: 'Under the fallen log',
+    hint: 'That fallen log crossing the trail might be hiding something'
+  },
+  {
+    id: 'ch2_coin2',
+    location: 'lakefront',
+    coordinates: { x: 65, y: 20 },
+    value: 150,
+    found: false,
+    description: 'Near the dock post',
+    hint: 'Check the dock posts where the water is shallow'
+  },
+  {
+    id: 'ch2_coin3',
+    location: 'downtown',
+    coordinates: { x: 40, y: 70 },
+    value: 125,
+    found: false,
+    description: 'Behind the coffee shop counter',
+    hint: 'When the barista isn\'t looking, peek behind the counter'
+  }
+];
+
+/**
+ * Get all XP coins for Chapter 2
+ * @returns {Array} XP coins for Chapter 2
+ */
+export function getXPCoins() {
+  return xpCoins;
+}
+
+/**
+ * Find an XP coin by ID
+ * @param {string} coinId - The ID of the coin to find
+ * @returns {Object|null} The coin object or null if not found
+ */
+export function findXPCoin(coinId) {
+  return xpCoins.find(coin => coin.id === coinId) || null;
+}
+
+/**
+ * Collect an XP coin and add its value to the player's XP
+ * @param {string} coinId - The ID of the coin to collect
+ * @returns {boolean} Whether the coin was successfully collected
+ */
+export function collectXPCoin(coinId) {
+  const coin = findXPCoin(coinId);
+  if (!coin || coin.found) return false;
+  
+  // Mark the coin as found
+  coin.found = true;
+  
+  // Add XP to the player
+  GameCore.addXP(coin.value);
+  
+  // Show a toast notification
+  if (window.toast) {
+    window.toast.show(`Found XP Coin (${coin.value} XP)!`, 'success');
+  }
+  
+  // Save the game state
+  GameCore.save();
+  
+  return true;
+}
+
 /**
  * Check if the player meets the requirements to start Chapter 2
  * @returns {boolean} Whether the player can start Chapter 2
@@ -431,9 +505,8 @@ export const scenes = {
 export function canStartChapter2() {
   const state = store.getState();
   const playerLevel = state.player?.level || 1;
-  const currentChapter = state.player?.chapter || 1;
   
-  return playerLevel >= chapterData.requiredLevel && currentChapter >= 1;
+  return playerLevel >= chapterData.requiredLevel;
 }
 
 /**
@@ -459,18 +532,18 @@ export function startChapter2() {
 }
 
 /**
- * Get the title for the current chapter
- * @param {number} chapterNumber - Chapter number
- * @returns {string} Chapter title
+ * Get the title for a chapter number
+ * @param {number} chapterNumber - The chapter number
+ * @returns {string} The chapter title
  */
 export function getChapterTitle(chapterNumber) {
-  const chapterTitles = {
+  const titles = {
     1: "The Voltage Uprising",
     2: "Lakeside Legends",
     3: "TBD's Revelation"
   };
   
-  return chapterTitles[chapterNumber] || `Chapter ${chapterNumber}`;
+  return titles[chapterNumber] || `Chapter ${chapterNumber}`;
 }
 
 export default {
@@ -478,5 +551,9 @@ export default {
   scenes,
   canStartChapter2,
   startChapter2,
-  getChapterTitle
+  getChapterTitle,
+  xpCoins,
+  getXPCoins,
+  findXPCoin,
+  collectXPCoin
 }; 

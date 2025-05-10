@@ -1,9 +1,9 @@
 // actionDispatchers.js – Replaces procedural methods from SurronGame with Redux actions
 import { store } from './StateStackULTRA/store/gameStore.js';
-import { progressStep, updateQuestStatus } from '../StateStackULTRA/slices/questSlice.js';
-import { updateRelationship, incrementQuestCount } from '../StateStackULTRA/slices/characterSlice.js';
-import { unlockLocation } from '../StateStackULTRA/slices/locationSlice.js';
-import { playerActions } from '../StateStackULTRA/slices/playerSlice.js';
+import { progressStep, updateQuestStatus } from './StateStackULTRA/slices/questSlice.js';
+import { updateRelationship, incrementQuestCount } from './StateStackULTRA/slices/characterSlice.js';
+import { unlockLocation } from './StateStackULTRA/slices/locationSlice.js';
+import { playerActions } from './StateStackULTRA/slices/StateStackULTRA/slices/playerSlice.js';
 import GameCore from './game/GameCore.js';
 
 export const dispatchers = {
@@ -41,7 +41,7 @@ export const dispatchers = {
     
     // Check if all steps are completed
     if (progress >= 100) {
-      completeQuest(questId);
+      this.completeQuest(questId);
       return true;
     }
     
@@ -51,7 +51,7 @@ export const dispatchers = {
 
   completeQuest(questId, rewards = {}) {
     const state = store.getState();
-    const quest = state.quests.entities[questId];
+    const quest = state.quests?.entities?.[questId];
     if (!quest) return;
 
     // Give rewards
@@ -91,8 +91,16 @@ export const dispatchers = {
       acquiredAt: Date.now()
     }));
   },
+  
+  addReputation(amount) {
+    store.dispatch(playerActions.updateReputation(amount));
+  },
+  
+  addParts(amount) {
+    store.dispatch(playerActions.addParts(amount));
+  },
 
-  completeChapter(newChapterNumber) {
+  completeChapter(chapterNumber) {
     const titleMap = {
       1: "The Voltage Uprising",
       2: "Lakeside Legends",
@@ -100,8 +108,8 @@ export const dispatchers = {
     };
 
     store.dispatch(playerActions.setChapter({
-      chapter: newChapterNumber,
-      title: titleMap[newChapterNumber] || "The Next Chapter"
+      chapter: chapterNumber,
+      title: titleMap[chapterNumber] || "The Next Chapter"
     }));
 
     // Add chapter completion rewards
@@ -109,11 +117,11 @@ export const dispatchers = {
     GameCore.addCurrency(1000);
     
     // Add a special reward item
-    const chapterRewardItem = `Chapter ${newChapterNumber} Completion Trophy`;
-    addItemByName(chapterRewardItem);
+    const chapterRewardItem = `Chapter ${chapterNumber} Completion Trophy`;
+    this.addItemByName(chapterRewardItem);
     
     if (window.toast) {
-      window.toast.show(`Chapter ${newChapterNumber} completed!`, 'success');
+      window.toast.show(`Chapter ${chapterNumber} completed!`, 'success');
     }
 
     GameCore.save();

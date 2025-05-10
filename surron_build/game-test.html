@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surron Squad - Game Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=Permanent+Marker&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="surron_squad.css">
+  <style>
+    .test-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    
+    .test-panel {
+      background-color: rgba(23, 23, 25, 0.7);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    
+    .test-button {
+      background-color: #ff4800;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .test-button:hover {
+      background-color: #e63946;
+    }
+    
+    .result-panel {
+      background-color: #1a1a1a;
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      margin-top: 1rem;
+      max-height: 300px;
+      overflow: auto;
+    }
+    
+    h2 {
+      color: #ff4800;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body class="surron-squad-theme">
+  <div class="test-container">
+    <h1>Surron Squad Game Test</h1>
+    
+    <div class="test-panel">
+      <h2>Game Core Tests</h2>
+      <button class="test-button" id="test-game-core">Test GameCore</button>
+      <button class="test-button" id="test-game-store">Test Store</button>
+      <button class="test-button" id="test-player-state">Test Player State</button>
+      <div class="result-panel" id="core-result"></div>
+    </div>
+    
+    <div class="test-panel">
+      <h2>Chapter Tests</h2>
+      <button class="test-button" id="test-chapter1">Test Chapter 1</button>
+      <button class="test-button" id="test-chapter2">Test Chapter 2</button>
+      <button class="test-button" id="test-xp-coins">Test XP Coins</button>
+      <div class="result-panel" id="chapter-result"></div>
+    </div>
+    
+    <div class="test-panel">
+      <h2>Navigation</h2>
+      <a href="SurronSquadLoader.html" class="test-button">Go to Loader</a>
+      <a href="squad-hq.html" class="test-button">Go to Squad HQ</a>
+      <a href="adventure.html" class="test-button">Go to Adventure</a>
+    </div>
+  </div>
+  
+  <script type="module">
+    import GameCore from './game/GameCore.js';
+    import { store } from './StateStackULTRA/store/gameStore.js';
+    import * as chapter1 from './scenes/chapter1.js';
+    import * as chapter2 from './scenes/chapter2.js';
+    
+    // Setup test buttons
+    document.getElementById('test-game-core').addEventListener('click', testGameCore);
+    document.getElementById('test-game-store').addEventListener('click', testGameStore);
+    document.getElementById('test-player-state').addEventListener('click', testPlayerState);
+    document.getElementById('test-chapter1').addEventListener('click', testChapter1);
+    document.getElementById('test-chapter2').addEventListener('click', testChapter2);
+    document.getElementById('test-xp-coins').addEventListener('click', testXPCoins);
+    
+    // Test GameCore
+    async function testGameCore() {
+      const resultEl = document.getElementById('core-result');
+      resultEl.textContent = 'Testing GameCore...\n';
+      
+      try {
+        await GameCore.boot();
+        resultEl.textContent += '✅ GameCore booted successfully\n';
+        
+        const methods = Object.keys(GameCore);
+        resultEl.textContent += `Available methods: ${methods.join(', ')}\n`;
+        
+        resultEl.textContent += '✅ GameCore test completed successfully';
+      } catch (error) {
+        resultEl.textContent += `❌ Error: ${error.message}\n${error.stack}`;
+      }
+    }
+    
+    // Test Store
+    function testGameStore() {
+      const resultEl = document.getElementById('core-result');
+      resultEl.textContent = 'Testing Store...\n';
+      
+      try {
+        const state = store.getState();
+        resultEl.textContent += `State slices: ${Object.keys(state).join(', ')}\n`;
+        
+        // Check each slice
+        for (const [key, value] of Object.entries(state)) {
+          resultEl.textContent += `${key}: ${typeof value === 'object' ? 'OK' : 'Not an object'}\n`;
+        }
+        
+        resultEl.textContent += '✅ Store test completed successfully';
+      } catch (error) {
+        resultEl.textContent += `❌ Error: ${error.message}\n${error.stack}`;
+      }
+    }
+    
+    // Test Player State
+    function testPlayerState() {
+      const resultEl = document.getElementById('core-result');
+      resultEl.textContent = 'Testing Player State...\n';
+      
+      try {
+        const playerState = GameCore.getPlayerState();
+        resultEl.textContent += `Player state: ${JSON.stringify(playerState, null, 2)}\n`;
+        
+        // Add some XP and check if it works
+        GameCore.addXP(100);
+        const newState = GameCore.getPlayerState();
+        resultEl.textContent += `After adding XP: ${JSON.stringify(newState, null, 2)}\n`;
+        
+        resultEl.textContent += '✅ Player state test completed successfully';
+      } catch (error) {
+        resultEl.textContent += `❌ Error: ${error.message}\n${error.stack}`;
+      }
+    }
+    
+    // Test Chapter 1
+    function testChapter1() {
+      const resultEl = document.getElementById('chapter-result');
+      resultEl.textContent = 'Testing Chapter 1...\n';
+      
+      try {
+        // Check chapter data
+        resultEl.textContent += `Chapter 1 data: ${JSON.stringify(chapter1.chapterData, null, 2)}\n`;
+        
+        // Check scenes
+        const sceneCount = Object.keys(chapter1.scenes).length;
+        resultEl.textContent += `Number of scenes: ${sceneCount}\n`;
+        
+        // Check if canStartChapter1 works
+        const canStart = chapter1.canStartChapter1();
+        resultEl.textContent += `Can start chapter 1: ${canStart}\n`;
+        
+        resultEl.textContent += '✅ Chapter 1 test completed successfully';
+      } catch (error) {
+        resultEl.textContent += `❌ Error: ${error.message}\n${error.stack}`;
+      }
+    }
+    
+    // Test Chapter 2
+    function testChapter2() {
+      const resultEl = document.getElementById('chapter-result');
+      resultEl.textContent = 'Testing Chapter 2...\n';
+      
+      try {
+        // Check chapter data
+        resultEl.textContent += `Chapter 2 data: ${JSON.stringify(chapter2.chapterData, null, 2)}\n`;
+        
+        // Check scenes
+        const sceneCount = Object.keys(chapter2.scenes).length;
+        resultEl.textContent += `Number of scenes: ${sceneCount}\n`;
+        
+        // Check if canStartChapter2 works
+        const canStart = chapter2.canStartChapter2();
+        resultEl.textContent += `Can start chapter 2: ${canStart}\n`;
+        
+        resultEl.textContent += '✅ Chapter 2 test completed successfully';
+      } catch (error) {
+        resultEl.textContent += `❌ Error: ${error.message}\n${error.stack}`;
+      }
+    }
+    
+    // Test XP Coins
+    function testXPCoins() {
+      const resultEl = document.getElementById('chapter-result');
+      resultEl.textContent = 'Testing XP Coins...\n';
+      
+      try {
+        // Check chapter 1 coins
+        const ch1Coins = chapter1.getXPCoins();
+        resultEl.textContent += `Chapter 1 coins: ${ch1Coins.length}\n`;
+        
+        // Check chapter 2 coins
+        const ch2Coins = chapter2.getXPCoins();
+        resultEl.textContent += `Chapter 2 coins: ${ch2Coins.length}\n`;
+        
+        // Test finding a coin
+        const coin1 = chapter1.findXPCoin('ch1_coin1');
+        resultEl.textContent += `Found coin ch1_coin1: ${coin1 ? 'Yes' : 'No'}\n`;
+        
+        // Collect a coin
+        const collectResult = chapter1.collectXPCoin('ch1_coin1');
+        resultEl.textContent += `Collected coin: ${collectResult ? 'Yes' : 'No'}\n`;
+        
+        resultEl.textContent += '✅ XP Coins test completed successfully';
+      } catch (error) {
+        resultEl.textContent += `❌ Error: ${error.message}\n${error.stack}`;
+      }
+    }
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Game test page loaded');
+    });
+  </script>
+</body>
+</html> 

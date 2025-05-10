@@ -1,13 +1,30 @@
-<!DOCTYPE html>what 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surron Squad - Adventure Mode</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=Permanent+Marker&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="surron_squad.css">
+  <style>
     /* Adventure mode specific styles */
+    :root {
+      --charlie-color: #e63946;
+      --billy-color: #7d8260;
+      --tbd-color: #264653;
+    }
+    
     .game-container {
       max-width: 1200px;
       margin: 0 auto;
       position: relative;
+      padding: 1rem;
     }
     
     .game-header {
-      background: url('images/surron-squad-bar-sidequest.png') center/cover no-repeat;
+      background: url('images/backgrounds/trail-bg.jpg') center/cover no-repeat;
       height: 250px;
       border-radius: 12px;
       margin-bottom: 2rem;
@@ -239,6 +256,18 @@
       transform: translateY(-5px);
     }
     
+    .quest-card.charlie {
+      border-left-color: var(--charlie-color);
+    }
+    
+    .quest-card.billy {
+      border-left-color: var(--billy-color);
+    }
+    
+    .quest-card.tbd {
+      border-left-color: var(--tbd-color);
+    }
+    
     .quest-difficulty {
       position: absolute;
       top: 1rem;
@@ -250,31 +279,10 @@
       color: var(--squad-text);
     }
     
-    .quest-status {
-      position: absolute;
-      top: 3rem;
-      right: 1rem;
-      background: var(--squad-primary);
-      padding: 0.25rem 0.5rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      color: white;
-    }
-    
-    .quest-status.active {
-      background: #4ca3ff;
-    }
-    
-    .quest-status.completed {
-      background: #32d574;
-    }
-    
     .quest-title {
-      font-family: 'Bangers', cursive;
       font-size: 1.5rem;
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      padding-right: 100px;
+      margin: 0 0 0.5rem 0;
+      color: white;
     }
     
     .quest-description {
@@ -282,832 +290,174 @@
       margin-bottom: 1rem;
     }
     
-    .quest-rewards {
+    .quest-character {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--squad-border);
+      margin-bottom: 1rem;
     }
     
-    .reward-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    
-    .reward-icon {
-      font-size: 1.2rem;
-    }
-    
-    .map-container {
-      position: relative;
-      height: 400px;
-      border-radius: 12px;
-      overflow: hidden;
-      margin: 2rem 0;
-      box-shadow: var(--squad-shadow);
-      background: url('images/surron-squad-builder-garagepose.png') center/cover no-repeat;
-    }
-    
-    .map-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .map-title {
-      font-family: 'Bangers', cursive;
-      font-size: 2.5rem;
-      color: var(--squad-neon);
-      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-    
-    .location-pins {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 2;
-    }
-    
-    .location-pin {
-      position: absolute;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--squad-primary);
-      border: 3px solid white;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    
-    .location-pin:hover {
-      transform: scale(1.2);
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-    }
-    
-    .location-pin.workshop {
-      top: 50%;
-      left: 30%;
-      background: var(--charlie-color);
-    }
-    
-    .location-pin.lake {
-      top: 30%;
-      right: 25%;
-      background: var(--billy-color);
-    }
-    
-    .location-pin.lab {
-      bottom: 25%;
-      right: 40%;
-      background: var(--tbd-color);
-    }
-    
-    .action-button {
-      display: inline-block;
-      background: var(--squad-primary);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 30px;
-      font-weight: bold;
-      text-transform: uppercase;
-      text-decoration: none;
-      letter-spacing: 1px;
-      transition: all 0.3s;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-      border: none;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    
-    .action-button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-    }
-    
-    .inventory-preview {
-      margin: 2rem 0;
-    }
-    
-    .inventory-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    
-    .inventory-item {
-      background-color: rgba(23, 23, 25, 0.7);
-      border-radius: 8px;
-      padding: 0.75rem;
-      text-align: center;
-      position: relative;
-      box-shadow: var(--squad-shadow);
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    
-    .inventory-item:hover {
-      transform: translateY(-5px);
-    }
-    
-    .item-icon {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-    
-    .item-quantity {
-      position: absolute;
-      top: 0.25rem;
-      right: 0.25rem;
-      background: var(--squad-primary);
-      color: white;
-      font-size: 0.7rem;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .item-name {
-      font-size: 0.8rem;
-      color: var(--squad-text);
-      margin: 0;
-    }
-    
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.8);
-    }
-    
-    .modal-content {
-      background-color: var(--squad-dark);
-      margin: 5% auto;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.5);
-      position: relative;
-      width: 80%;
-    }
-    
-    .close-modal {
-      position: absolute;
-      right: 10px;
-      top: 10px;
-      color: white;
-      background: rgba(0,0,0,0.3);
+    .quest-character img {
       width: 30px;
       height: 30px;
-      border: none;
       border-radius: 50%;
-      font-size: 20px;
-      cursor: pointer;
+      margin-right: 0.5rem;
+    }
+    
+    .quest-progress {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    
+    .quest-progress-fill {
+      height: 100%;
+      background: var(--squad-primary);
+      border-radius: 4px;
+    }
+    
+    .quest-steps {
+      margin: 1rem 0;
+      list-style: none;
+      padding: 0;
+    }
+    
+    .quest-step {
+      padding: 0.5rem;
+      margin-bottom: 0.5rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 4px;
       display: flex;
       align-items: center;
-      justify-content: center;
     }
     
-    .modal-title {
-      font-family: 'Bangers', cursive;
-      color: var(--squad-neon);
-      text-align: center;
-      margin-top: 0;
+    .quest-step.completed {
+      text-decoration: line-through;
+      opacity: 0.7;
     }
     
-    /* Story introduction modal styles */
-    .story-panels {
-      position: relative;
-      min-height: 400px;
+    .quest-step::before {
+      content: "⬜";
+      margin-right: 0.5rem;
     }
     
-    .story-panel {
+    .quest-step.completed::before {
+      content: "✅";
+    }
+
+    /* Error message styling */
+    #error-message {
       display: none;
-      text-align: center;
-      animation: fadeIn 0.5s;
-    }
-    
-    .story-panel.active {
-      display: block;
-    }
-    
-    .character-speaking {
-      font-family: 'Bangers', cursive;
-      font-size: 1.5rem;
-      color: var(--squad-primary);
-      margin-bottom: 0.5rem;
-    }
-    
-    .dialogue {
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 12px;
-      padding: 1.5rem;
-      font-family: 'Permanent Marker', cursive;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: var(--squad-text);
-      position: relative;
-      margin-bottom: 2rem;
-    }
-    
-    .dialogue:before {
-      content: '';
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-bottom: 10px solid rgba(0, 0, 0, 0.2);
-    }
-    
-    .next-panel-btn,
-    .start-adventure-btn {
-      background: var(--squad-primary);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 30px;
-      font-family: 'Bangers', cursive;
-      font-size: 1.2rem;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .start-adventure-btn {
-      background: var(--squad-neon);
-      color: black;
-      font-size: 1.5rem;
-      padding: 1rem 2rem;
-    }
-    
-    .next-panel-btn:hover,
-    .start-adventure-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    
-    @media (max-width: 768px) {
-      .character-progress {
-        grid-template-columns: 1fr;
-      }
-      
-      .quest-rewards {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-      }
-      
-      .map-title {
-        font-size: 1.8rem;
-      }
-      
-      .game-title {
-        font-size: 2.5rem;
-      }
-      
-      .modal-content {
-        width: 95%;
-        padding: 1.5rem;
-      }
-      
-      .dialogue {
-        font-size: 1rem;
-        padding: 1rem;
-      }
-      
-      .quick-action-card {
-        width: 100%;
-        max-width: 400px;
-      }
-    }
-    
-    .quick-actions {
-      margin: 2rem 0;
+      background: rgba(230, 57, 70, 0.2);
+      color: #e63946;
       padding: 1rem;
-      background: rgba(0, 0, 0, 0.3);
       border-radius: 8px;
-    }
-    
-    .section-title {
-      font-family: 'Bangers', cursive;
-      color: var(--squad-neon);
+      border-left: 4px solid #e63946;
+      margin: 2rem auto;
+      max-width: 80%;
       text-align: center;
-      margin-bottom: 1.5rem;
-      font-size: 2rem;
-      letter-spacing: 0.05em;
+      font-weight: bold;
     }
-    
-    .quick-actions-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      justify-content: center;
-    }
-    
-    .quick-action-card {
-      background: var(--squad-dark);
-      border-radius: 8px;
-      overflow: hidden;
-      width: 250px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    
-    .quick-action-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-    }
-    
-    .action-image {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      object-position: center;
-      background-color: #333;
-    }
-    
-    .quick-action-card h3 {
-      font-family: 'Rajdhani', sans-serif;
-      color: var(--squad-neon);
-      margin: 1rem 1rem 0.5rem;
-      font-size: 1.3rem;
-    }
-    
-    .quick-action-card p {
-      margin: 0 1rem 1rem;
-      font-size: 0.9rem;
-      color: #e0e0e0;
-      min-height: 40px;
-    }
-    
-    .btn-action {
-      display: block;
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 1rem;
+      padding: 0.5rem 1rem;
       background: var(--squad-primary);
       color: white;
-      text-align: center;
       text-decoration: none;
-      padding: 0.75rem;
-      margin: 0 1rem 1rem;
       border-radius: 4px;
-      font-family: 'Rajdhani', sans-serif;
       font-weight: bold;
-      border: none;
-      cursor: pointer;
-      transition: background 0.2s;
     }
-    
-    .btn-action:hover {
-      background: var(--squad-neon);
-      color: black;
+
+    .back-button:hover {
+      background: var(--squad-secondary);
     }
   </style>
 </head>
 <body class="surron-squad-theme">
   <div class="game-container">
+    <a href="squad-hq.html" class="back-button">← Back to Squad HQ</a>
+    
     <header class="game-header">
-      <p class="game-subtitle">Chapter 1: The Voltage Uprising</p>
-      <h1 class="game-title">Surron Squad Adventures</h1>
-      <div class="game-level">Player Level: 1</div>
+      <h1 class="game-title">Adventure Mode</h1>
+      <p class="game-subtitle">Your journey with the Surron Squad begins here...</p>
+      <div class="game-level">Player Level: <span id="player-level">1</span></div>
     </header>
     
-    <nav class="nav-buttons">
-      <a href="surron_squad.html" class="btn">Squad HQ</a>
-      <a href="buildpartsSelector.html" class="btn">Build Workshop</a>
-      <a href="saved_builds.html" class="btn">Build Library</a>
-      <a href="#" class="btn" id="open-inventory">Inventory</a>
-    </nav>
-    
-    <section class="adventure-stats">
+    <div class="adventure-stats">
       <div class="stat-card">
-        <h3>Adventure Progress</h3>
-        <div class="stat-label">Story Completion</div>
-        <div class="stat-value">5%</div>
-        <div class="stat-bar">
-          <div class="stat-fill charlie" style="width: 5%;"></div>
-        </div>
+        <h3>Reputation</h3>
+        <div class="stat-value" id="player-reputation">0</div>
+        <div class="stat-label">Your standing in the Surron community</div>
       </div>
+      
       <div class="stat-card">
-        <h3>Garage Status</h3>
-        <div class="stat-label">Builds Completed</div>
-        <div class="stat-value">1</div>
-        <div class="stat-label">Builds In Progress</div>
-        <div class="stat-value">2</div>
+        <h3>SurCoins</h3>
+        <div class="stat-value" id="player-coins">0</div>
+        <div class="stat-label">Earned through adventures and missions</div>
       </div>
+      
       <div class="stat-card">
-        <h3>Resources</h3>
-        <div class="stat-row">
-          <span class="stat-name">SurCoins</span>
-          <span class="stat-value">250</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Reputation</span>
-          <span class="stat-value">10</span>
-        </div>
-        <div class="stat-row">
-          <span class="stat-name">Parts</span>
-          <span class="stat-value">7</span>
-        </div>
+        <h3>Completed Missions</h3>
+        <div class="stat-value" id="missions-completed">0/10</div>
+        <div class="stat-label">Your progress through Season 1</div>
       </div>
-    </section>
+    </div>
     
-    <section class="character-progress">
-      <div class="character-card charlie">
-        <div class="character-header">
-          <img src="images/surron-charlie-alert-pose.png" alt="Charlie" class="character-avatar">
-          <div>
-            <h3 class="character-name">Charlie "Throttle"</h3>
-            <p class="character-role">Wildcard Engineer</p>
-          </div>
-          <div class="character-level">3</div>
-        </div>
-        <div class="character-stats">
-          <div class="stat-row">
-            <span class="stat-name">Power</span>
-            <span>85/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill charlie" style="width: 85%;"></div>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-name">Control</span>
-            <span>35/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill charlie" style="width: 35%;"></div>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-name">Durability</span>
-            <span>50/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill charlie" style="width: 50%;"></div>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-name">Pizza Capacity</span>
-            <span>95/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill charlie" style="width: 95%;"></div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="character-card billy">
-        <div class="character-header">
-          <img src="images/surron-billy-fishing_ready-pose.png" alt="Billy" class="character-avatar">
-          <div>
-            <h3 class="character-name">Billy "Baggin's"</h3>
-            <p class="character-role">Reluctant Mechanic</p>
-          </div>
-          <div class="character-level">2</div>
-        </div>
-        <div class="character-stats">
-          <div class="stat-row">
-            <span class="stat-name">Power</span>
-            <span>45/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill billy" style="width: 45%;"></div>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-name">Control</span>
-            <span>65/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill billy" style="width: 65%;"></div>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-name">Durability</span>
-            <span>80/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill billy" style="width: 80%;"></div>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-name">Fishing Skill</span>
-            <span>90/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill billy" style="width: 90%;"></div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="character-card tbd">
-        <div class="character-header">
-          <img src="images/surron-tbd-terminal-ready.png" alt="TBD" class="character-avatar">
-          <div>
-            <h3 class="character-name">TBD</h3>
-            <p class="character-role">Tech Mastermind</p>
-          </div>
-          <div class="character-level">4</div>
-        </div>
-        <div class="character-stats">
-          <div class="stat-row">
-            <span class="stat-name">Power</span>
-            <span>60/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill tbd" style="width: 60%;"></div>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-name">Control</span>
-            <span>90/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill tbd" style="width: 90%;"></div>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-name">Durability</span>
-            <span>70/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill tbd" style="width: 70%;"></div>
-          </div>
-          
-          <div class="stat-row">
-            <span class="stat-name">Tech Skills</span>
-            <span>98/100</span>
-          </div>
-          <div class="stat-bar">
-            <div class="stat-fill tbd" style="width: 98%;"></div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <h2>Squad Members</h2>
+    <div class="character-progress" id="character-cards">
+      <!-- Character cards will be populated dynamically -->
+    </div>
     
-    <section class="map-container">
-      <div class="map-overlay">
-        <h2 class="map-title">Trail Map</h2>
-        <a href="#" class="action-button" id="explore-map">Explore</a>
-      </div>
-      <div class="location-pins">
-        <div class="location-pin workshop" data-location="workshop">🔧</div>
-        <div class="location-pin lake" data-location="lake">🎣</div>
-        <div class="location-pin lab" data-location="lab">💻</div>
-      </div>
-    </section>
-    
-    <section class="quests-container">
-      <h2>Active Quests</h2>
-      
-      <div class="quest-card">
-        <div class="quest-difficulty">Beginner</div>
-        <div class="quest-status active">In Progress</div>
-        <h3 class="quest-title">The First Volt</h3>
-        <div class="quest-description">
-          Complete your first 72V build to unlock Charlie's special power upgrade parts.
-        </div>
-        <div class="quest-progress">
-          <div class="stat-bar">
-            <div class="stat-fill charlie" style="width: 60%;"></div>
-          </div>
-          <div style="text-align: right; font-size: 0.9rem; margin-top: 0.25rem;">60%</div>
-        </div>
-        <div class="quest-rewards">
-          <div class="reward-item">
-            <span class="reward-icon">⚡</span>
-            <span>100 SurCoins</span>
-          </div>
-          <div class="reward-item">
-            <span class="reward-icon">🔧</span>
-            <span>Unlock: Power Module</span>
-          </div>
-          <div class="reward-item">
-            <span class="reward-icon">📈</span>
-            <span>+5 Reputation</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="quest-card">
-        <div class="quest-difficulty">Intermediate</div>
-        <div class="quest-status">Not Started</div>
-        <h3 class="quest-title">Gone Fishin'</h3>
-        <div class="quest-description">
-          Join Billy on his fishing trip and learn about waterproofing your electronics while catching some trophy bass.
-        </div>
-        <div class="quest-progress">
-          <div class="stat-bar">
-            <div class="stat-fill billy" style="width: 0%;"></div>
-          </div>
-          <div style="text-align: right; font-size: 0.9rem; margin-top: 0.25rem;">0%</div>
-        </div>
-        <div class="quest-rewards">
-          <div class="reward-item">
-            <span class="reward-icon">⚡</span>
-            <span>150 SurCoins</span>
-          </div>
-          <div class="reward-item">
-            <span class="reward-icon">🎣</span>
-            <span>Unlock: Fishing Rod Mount</span>
-          </div>
-          <div class="reward-item">
-            <span class="reward-icon">📈</span>
-            <span>+10 Reputation</span>
-          </div>
-        </div>
-      </div>
-      
-      <div class="quest-card">
-        <div class="quest-difficulty">Advanced</div>
-        <div class="quest-status">Locked</div>
-        <h3 class="quest-title">TBD's Secret Lab</h3>
-        <div class="quest-description">
-          Gain access to TBD's secret laboratory where cutting-edge Sur-Ron tech is developed. Requires: Level 5.
-        </div>
-        <div class="quest-rewards">
-          <div class="reward-item">
-            <span class="reward-icon">⚡</span>
-            <span>300 SurCoins</span>
-          </div>
-          <div class="reward-item">
-            <span class="reward-icon">💻</span>
-            <span>Unlock: Programmer Tool</span>
-          </div>
-          <div class="reward-item">
-            <span class="reward-icon">📈</span>
-            <span>+20 Reputation</span>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <section class="inventory-preview">
-      <h2>Inventory Quick Access</h2>
-      <div class="inventory-grid">
-        <div class="inventory-item">
-          <div class="item-icon">🔋</div>
-          <div class="item-quantity">2</div>
-          <p class="item-name">Battery Cell</p>
-        </div>
-        <div class="inventory-item">
-          <div class="item-icon">⚙️</div>
-          <div class="item-quantity">4</div>
-          <p class="item-name">Motor Part</p>
-        </div>
-        <div class="inventory-item">
-          <div class="item-icon">🔌</div>
-          <div class="item-quantity">1</div>
-          <p class="item-name">Controller</p>
-        </div>
-        <div class="inventory-item">
-          <div class="item-icon">🎣</div>
-          <div class="item-quantity">1</div>
-          <p class="item-name">Basic Rod</p>
-        </div>
-      </div>
-    </section>
-    
-    <section class="quick-actions">
-      <h2 class="section-title">Mini Games & Quests</h2>
-      <div class="quick-actions-container">
-        <div class="quick-action-card">
-          <img src="images/surron-charlie-alert-pose.png" alt="Charlie" class="action-image">
-          <h3>Build a Bike</h3>
-          <p>Build and tune a Sur-Ron with Charlie to unlock new adventures.</p>
-          <a href="buildpartsSelector.html" class="btn-action">Build Now</a>
-        </div>
-        
-        <div class="quick-action-card">
-          <img src="images/surron-billy-fishing_ready-pose.png" alt="Billy" class="action-image">
-          <h3>Go Fishing</h3>
-          <p>Join Billy for a relaxing fishing session at Tubbs Hill Lake.</p>
-          <button class="btn-action" onclick="openFishingGame()">Start Fishing</button>
-        </div>
-        
-        <div class="quick-action-card">
-          <img src="images/surron-tbd-terminal-ready.png" alt="TBD" class="action-image">
-          <h3>Active Quests</h3>
-          <p>Check your active squad quests and help the team.</p>
-          <a href="questboard.html" class="btn-action">View Quests</a>
-        </div>
-      </div>
-    </section>
-  </div>
-  
-  <!-- Modal Templates -->
-  <div class="modal" id="inventory-modal">
-    <div class="modal-content">
-      <button class="close-modal">&times;</button>
-      <h2 class="modal-title">Your Inventory</h2>
-      <div class="inventory-grid" id="full-inventory">
-        <!-- Will be populated by JS -->
-      </div>
+    <h2>Available Adventures</h2>
+    <div class="quests-container" id="available-quests">
+      <!-- Quests will be populated dynamically -->
     </div>
   </div>
   
-  <div class="modal" id="location-modal">
-    <div class="modal-content">
-      <button class="close-modal">&times;</button>
-      <h2 class="modal-title" id="location-title">Location</h2>
-      <div id="location-content">
-        <!-- Will be populated by JS -->
-      </div>
-    </div>
+  <div id="error-message">
+    Failed to initialize adventure. Please try refreshing the page.
   </div>
   
-  <!-- Story Introduction Modal -->
-  <div class="modal" id="story-intro-modal">
-    <div class="modal-content">
-      <button class="close-modal">&times;</button>
-      <h2 class="modal-title">The Surron Squad Adventure</h2>
-      <div class="story-panels">
-        <div class="story-panel active">
-          <img src="images/surron-charlie-alert-pose.png" alt="Charlie holding pizza box" style="max-height: 200px; margin-bottom: 1rem;">
-          <p class="character-speaking">Charlie "Throttle"</p>
-          <p class="dialogue">Hey! Welcome to the Surron Squad! I'm Charlie, but everyone calls me "Throttle" because...well, let's just say I have a deep philosophical disagreement with speed limits.</p>
-          <button class="next-panel-btn">Next</button>
-        </div>
-        
-        <div class="story-panel">
-          <img src="images/surron-billy-fishing_ready-pose.png" alt="Billy with fishing rod" style="max-height: 200px; margin-bottom: 1rem;">
-          <p class="character-speaking">Billy "Baggin's"</p>
-          <p class="dialogue">Uh, hi. I'm Billy. I'd rather be fishing, honestly. But Charlie keeps dragging me into these "adventures." At least we get to ride Sur-Rons. They're quiet enough not to scare away the fish.</p>
-          <button class="next-panel-btn">Next</button>
-        </div>
-        
-        <div class="story-panel">
-          <img src="images/surron-tbd-terminal-ready.png" alt="TBD on laptop" style="max-height: 200px; margin-bottom: 1rem;">
-          <p class="character-speaking">TBD</p>
-          <p class="dialogue">Greetings. I am known as TBD. I handle the technical aspects of our operations. My analysis indicates you have a 76.4% chance of survival if you join our squad. Those are favorable odds.</p>
-          <button class="next-panel-btn">Next</button>
-        </div>
-        
-        <div class="story-panel">
-          <img src="images/surron-squad-builder-garagepose.png" alt="The Squad in the garage" style="max-height: 200px; margin-bottom: 1rem;">
-          <p class="character-speaking">Charlie "Throttle"</p>
-          <p class="dialogue">So here's the deal: we're on a mission to build the ultimate Sur-Ron e-bikes. We're talking 72V systems that'll make your hair stand on end! And we need your help. You in?</p>
-          <button class="start-adventure-btn">Start Adventure</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Fishing Game Modal -->
-  <div class="modal" id="fishing-modal">
-    <div class="modal-content" style="max-width: 700px;">
-      <button class="close-modal">&times;</button>
-      <h2 class="modal-title">Fishing with Billy</h2>
-      <div id="fishing-game-container"></div>
-    </div>
-  </div>
-  
-  <script type="module" src="fishing-game.js"></script>
-  <script type="module" src="adventureUI.js"></script>
-  
-  <!-- Initialize GameCore -->
+  <!-- Connection to game system -->
   <script type="module">
     import GameCore from './game/GameCore.js';
+    import { setupAdventureUI, renderCharacters, renderAvailableQuests } from './adventureUI.js';
     
-    // Initialize GameCore when DOM is ready
-    document.addEventListener('DOMContentLoaded', async function() {
-      // Boot GameCore to initialize state
-      await GameCore.boot();
-      console.log('GameCore initialized in Adventure mode');
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        console.log("Initializing Adventure Mode");
+        
+        // Initialize game core
+        await GameCore.boot();
+        console.log("GameCore booted successfully");
+        
+        // Get game state
+        const playerState = GameCore.getPlayerState();
+        console.log("Player state loaded:", playerState);
+        
+        // Setup UI
+        setupAdventureUI();
+        
+        // Update stats display
+        document.getElementById('player-level').textContent = playerState.level || 1;
+        document.getElementById('player-reputation').textContent = playerState.reputation || 0;
+        document.getElementById('player-coins').textContent = playerState.currency || 0;
+        document.getElementById('missions-completed').textContent = 
+          `${playerState.completedMissions?.length || 0}/10`;
+        
+        // Render characters
+        renderCharacters();
+        
+        // Render available quests
+        renderAvailableQuests();
+        
+      } catch (error) {
+        console.error('Failed to initialize adventure:', error);
+        document.getElementById('error-message').style.display = 'block';
+      }
     });
   </script>
 </body>
