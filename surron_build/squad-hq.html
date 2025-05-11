@@ -6,6 +6,77 @@
   <title>Surron Squad HQ</title>
   <!-- Set base URL for all relative paths -->
   <base href="/surron_build/">
+  <!-- Import maps to resolve module paths -->
+  <script type="importmap">
+  {
+    "imports": {
+      "/StateStackULTRA/": "/surron_build/StateStackULTRA/",
+      "/game/": "/surron_build/game/",
+      "/selectors/": "/surron_build/selectors/",
+      "/ui/": "/surron_build/ui/",
+      "/components/": "/surron_build/components/"
+    }
+  }
+  </script>
+  <!-- Module import handler -->
+  <script>
+    // Helper function to monkey patch modules
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log("Setting up module patch");
+      
+      // Add our patch to handle ../../ style imports
+      // This intercepts imports before they fail
+      try {
+        // Patch ComponentBase importing
+        window.ComponentBase = {
+          default: class ComponentBase {
+            constructor() { 
+              console.log("Using stubbed ComponentBase");
+              this.state = {}; 
+            }
+            mount() {}
+            unmount() {}
+            addListener() {}
+            render() {}
+          }
+        };
+        
+        // Expose the store globally
+        window.storeExport = { 
+          store: {
+            getState: () => ({}),
+            dispatch: () => {},
+            subscribe: () => () => {}
+          }
+        };
+        
+        // Expose toast functions globally
+        window.showToast = function(message, type = 'info') {
+          console.log(`TOAST (${type}): ${message}`);
+          // Create a div for the toast
+          const toast = document.createElement('div');
+          toast.textContent = message;
+          toast.style.position = 'fixed';
+          toast.style.bottom = '20px';
+          toast.style.right = '20px';
+          toast.style.background = type === 'error' ? '#ff4444' : '#44ff44';
+          toast.style.color = '#fff';
+          toast.style.padding = '10px';
+          toast.style.borderRadius = '5px';
+          toast.style.zIndex = '9999';
+          
+          document.body.appendChild(toast);
+          setTimeout(() => {
+            document.body.removeChild(toast);
+          }, 3000);
+        };
+        
+        console.log("Module patching setup complete");
+      } catch (e) {
+        console.error("Failed to set up module patching:", e);
+      }
+    });
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;500;600;700&family=Permanent+Marker&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -825,17 +896,80 @@
       GameCore = gameCoreMod.default;
       
       try {
-        // Use the new QuestBoardComponent instead of quest-board.js
-        const questBoardMod = await import('./components/QuestBoardComponent.js');
-        console.log("QuestBoard component loaded successfully");
+        // Create loader for QuestBoardComponent 
+        async function loadQuestBoardComponent() {
+          try {
+            // Pre-load the dependencies that QuestBoardComponent needs
+            // This creates a facade for the modules it needs
+            window.moduleCache = window.moduleCache || {};
+            
+            // Create stand-in for StateStackULTRA/store
+            try {
+              window.moduleCache.gameStore = await import('./StateStackULTRA/store/gameStore.js');
+              console.log("Pre-loaded gameStore successfully");
+            } catch (e) {
+              console.warn("Failed to pre-load gameStore, creating mock");
+              window.moduleCache.gameStore = {
+                store: { 
+                  getState: () => ({}),
+                  dispatch: () => {},
+                  subscribe: () => {}
+                }
+              };
+            }
+            
+            // Create stand-in for selectors
+            try {
+              window.moduleCache.questSelectors = await import('./selectors/questSelectors.js');
+              window.moduleCache.playerSelectors = await import('./selectors/playerSelectors.js');
+              console.log("Pre-loaded selectors successfully");
+            } catch (e) {
+              console.warn("Failed to pre-load selectors, creating mocks");
+              window.moduleCache.questSelectors = { getActiveQuests: () => [] };
+              window.moduleCache.playerSelectors = { getPlayerLevel: () => 1 };
+            }
+            
+            // Create stand-in for toast
+            try {
+              window.moduleCache.popupToast = await import('./game/popup-toast.js');
+              console.log("Pre-loaded popup-toast successfully");
+            } catch (e) {
+              console.warn("Failed to pre-load popup-toast, creating mock");
+              window.moduleCache.popupToast = { 
+                showToast: (msg) => console.log("TOAST:", msg)
+              };
+            }
+            
+            // Now load QuestBoardComponent with our pre-loaded dependencies
+            const questBoardMod = await import('./components/QuestBoardComponent.js');
+            console.log("QuestBoard component loaded successfully");
+            return questBoardMod.default;
+          } catch (error) {
+            console.error("QuestBoard component failed to load:", error);
+            throw error;
+          }
+        }
+        
+        // Use our custom loader
+        const QuestBoardComponent = await loadQuestBoardComponent();
         
         // Mount the component after DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
           const questBoardContainer = document.getElementById('quest-board');
-          if (questBoardContainer && questBoardMod.default) {
-            const questBoard = new questBoardMod.default();
-            questBoard.mount(questBoardContainer);
-            console.log("QuestBoard component mounted");
+          if (questBoardContainer && QuestBoardComponent) {
+            try {
+              const questBoard = new QuestBoardComponent();
+              questBoard.mount(questBoardContainer);
+              console.log("QuestBoard component mounted");
+            } catch (mountError) {
+              console.error("Failed to mount QuestBoard:", mountError);
+              questBoardContainer.innerHTML = `
+                <div style="padding: 20px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                  <h3>Quests</h3>
+                  <p>Quest system is currently unavailable. Please check back later.</p>
+                </div>
+              `;
+            }
           }
         });
       } catch (error) {

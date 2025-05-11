@@ -1,158 +1,120 @@
 /**
- * ComponentBase.js
- * Base class for UI components with Redux integration
+ * ComponentBase class - Stub implementation
+ * This file serves as a fallback for modules that import ComponentBase
  */
 
-import { store } from '../../StateStackULTRA/store/gameStore.js';
-import { showToast } from '../../game/popup-toast.js';
+import { store } from '../StateStackULTRA/store/gameStore.js';
+import { showToast } from '../game/popup-toast.js';
 
+// Base class for all UI components
 export default class ComponentBase {
-  /**
-   * Create a component
-   * @param {string[]} stateSlices - State slices to watch for changes
-   */
   constructor(stateSlices = []) {
+    // Initialize component state
+    this.state = {};
+    this.listeners = [];
+    this.subscriptions = [];
     this.container = null;
     this.stateSlices = stateSlices;
-    this.prevState = {};
-    this.unsubscribe = null;
-    this.eventListeners = [];
+    
+    console.log("ComponentBase stub initialized");
   }
   
-  /**
-   * Mount component to container
-   * @param {HTMLElement} container - Container element
-   */
+  // Mount component to DOM
   mount(container) {
-    this.container = container;
-    
-    if (!this.container) {
-      console.error('Cannot mount component: Container element is null');
-      return false;
+    if (!container) {
+      console.error("Cannot mount component: No container provided");
+      return;
     }
+    
+    this.container = container;
+    this.render(store.getState());
     
     // Subscribe to store changes
-    if (this.stateSlices.length > 0) {
-      this.unsubscribe = store.subscribe(() => {
-        const currentState = store.getState();
-        const shouldUpdate = this.shouldComponentUpdate(currentState);
-        
-        if (shouldUpdate) {
-          this.render(currentState);
-          this.prevState = this.getRelevantState(currentState);
-        }
-      });
-    }
-    
-    // Initial render
-    this.render(store.getState());
-    this.prevState = this.getRelevantState(store.getState());
-    
-    return true;
-  }
-  
-  /**
-   * Render component
-   * @param {Object} state - Redux state
-   */
-  render(state) {
-    try {
-      // To be implemented by child classes
-    } catch (error) {
-      console.error('Error rendering component:', error);
-      this.handleRenderError(error);
-    }
-  }
-  
-  /**
-   * Clean up component
-   */
-  unmount() {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-      this.unsubscribe = null;
-    }
-    
-    // Remove event listeners
-    this.removeAllEventListeners();
-  }
-  
-  /**
-   * Add an event listener and track it for cleanup
-   * @param {Element} element - Element to add listener to
-   * @param {string} type - Event type
-   * @param {Function} listener - Event listener
-   */
-  addListener(element, type, listener) {
-    if (!element) return;
-    
-    element.addEventListener(type, listener);
-    this.eventListeners.push({ element, type, listener });
-  }
-  
-  /**
-   * Remove all tracked event listeners
-   */
-  removeAllEventListeners() {
-    this.eventListeners.forEach(({ element, type, listener }) => {
-      if (element) {
-        element.removeEventListener(type, listener);
+    const unsubscribe = store.subscribe(() => {
+      const state = store.getState();
+      // Only re-render if watched slices change
+      if (this.shouldComponentUpdate(state)) {
+        this.render(state);
       }
     });
-    this.eventListeners = [];
+    
+    this.subscriptions.push(unsubscribe);
+    console.log("ComponentBase mounted to", container);
   }
   
-  /**
-   * Get the relevant state for this component
-   * @param {Object} state - Full Redux state
-   * @returns {Object} Relevant state slices
-   */
-  getRelevantState(state) {
-    const relevantState = {};
+  // Clean up resources when component is removed
+  unmount() {
+    // Remove all event listeners
+    this.removeAllListeners();
     
-    if (this.stateSlices.length === 0) {
-      return state;
+    // Unsubscribe from store
+    this.subscriptions.forEach(unsubscribe => unsubscribe());
+    this.subscriptions = [];
+    
+    // Clear container
+    if (this.container) {
+      this.container.innerHTML = '';
+      this.container = null;
     }
     
-    this.stateSlices.forEach(slice => {
-      relevantState[slice] = state[slice];
+    console.log("ComponentBase unmounted");
+  }
+  
+  // Determine if component should update based on state changes
+  shouldComponentUpdate(newState) {
+    // If no specific slices are watched, always update
+    if (!this.stateSlices || this.stateSlices.length === 0) {
+      return true;
+    }
+    
+    // Otherwise, check if any watched slices changed
+    return this.stateSlices.some(slice => 
+      newState[slice] !== this.state[slice]
+    );
+  }
+  
+  // Add an event listener and track it for cleanup
+  addListener(element, event, callback) {
+    if (!element) return;
+    
+    element.addEventListener(event, callback);
+    this.listeners.push({ element, event, callback });
+  }
+  
+  // Remove all tracked event listeners
+  removeAllListeners() {
+    this.listeners.forEach(({ element, event, callback }) => {
+      if (element) {
+        element.removeEventListener(event, callback);
+      }
     });
-    
-    return relevantState;
+    this.listeners = [];
   }
   
-  /**
-   * Determine if the component should update
-   * @param {Object} currentState - Current Redux state
-   * @returns {boolean} Whether the component should update
-   */
-  shouldComponentUpdate(currentState) {
-    const relevantState = this.getRelevantState(currentState);
-    
-    // Deep comparison with previous state
-    return JSON.stringify(relevantState) !== JSON.stringify(this.prevState);
-  }
-  
-  /**
-   * Handle render errors
-   * @param {Error} error - Render error
-   */
+  // Handle render errors gracefully
   handleRenderError(error) {
-    if (!this.container) return;
+    console.error("Error rendering component:", error);
     
-    this.container.innerHTML = `
-      <div class="error-message">
-        <h3>Something went wrong</h3>
-        <p>There was an error rendering this component. Please try refreshing the page.</p>
-        <details>
-          <summary>Technical Details</summary>
-          <pre>${error.message}</pre>
-        </details>
-      </div>
-    `;
+    if (this.container) {
+      this.container.innerHTML = `
+        <div style="padding: 20px; background: rgba(255,0,0,0.1); border-radius: 8px;">
+          <h3>Component Error</h3>
+          <p>There was a problem displaying this component.</p>
+        </div>
+      `;
+    }
     
+    // Show error toast
     if (typeof showToast === 'function') {
-      showToast('Error rendering component: ' + error.message, 'error');
+      showToast("Component rendering error: " + error.message, "error");
+    }
+  }
+  
+  // To be implemented by subclasses
+  render(state) {
+    console.warn("ComponentBase.render() called directly - should be overridden by subclass");
+    if (this.container) {
+      this.container.innerHTML = '<div>Base component - override render() in subclass</div>';
     }
   }
 }
