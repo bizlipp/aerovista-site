@@ -24,45 +24,71 @@ const mainModel = dataStack.createModel('main', mainSchema, {
   keyPrefix: 'surron:main:'
 });
 
+// Force create and initialize the main model with default values
+export async function forceCreateMainModel() {
+  try {
+    // Use direct key setting to avoid the model error
+    const key = 'surron:main:main';
+    const data = {
+      version: '1.0.0',
+      gameState: {},
+      lastUpdated: Date.now(),
+      settings: {
+        sound: true,
+        music: true,
+        vibration: true,
+        difficulty: 'normal'
+      },
+      flags: {
+        tutorialCompleted: false,
+        firstTimeUser: true
+      }
+    };
+    
+    // Use the dataStack's direct set method
+    await dataStack.set(key, data);
+    
+    console.log('[DataStackULTRA] Force initialized main model');
+    return { id: 'main', ...data };
+  } catch (error) {
+    console.error('[DataStackULTRA] Error force initializing main model:', error);
+    throw error;
+  }
+}
+
 // Initialize the main model with defaults if it doesn't exist
 export async function initializeMainModel() {
   try {
-    // Check if main model exists
-    const existing = await mainModel.get('main');
+    // Create initial main model instance if it doesn't exist
+    // Use set instead of update to create if not exists
+    const result = await mainModel.set('main', {
+      version: '1.0.0',
+      gameState: {},
+      lastUpdated: Date.now(),
+      settings: {
+        sound: true,
+        music: true,
+        vibration: true,
+        difficulty: 'normal'
+      },
+      flags: {
+        tutorialCompleted: false,
+        firstTimeUser: true
+      }
+    });
     
-    if (!existing) {
-      // Create initial main model instance
-      await mainModel.create('main', {
-        version: '1.0.0',
-        gameState: {},
-        lastUpdated: Date.now(),
-        settings: {
-          sound: true,
-          music: true,
-          vibration: true,
-          difficulty: 'normal'
-        },
-        flags: {
-          tutorialCompleted: false,
-          firstTimeUser: true
-        }
-      });
-      
-      console.log('[DataStackULTRA] Initialized main model');
-    }
-    
-    return true;
+    console.log('[DataStackULTRA] Initialized main model');
+    return result;
   } catch (error) {
     console.error('[DataStackULTRA] Error initializing main model:', error);
-    return false;
+    throw error;
   }
 }
 
 // Get the main model data
 export async function getMainData() {
   try {
-    await initializeMainModel();
-    return await mainModel.get('main');
+    return await mainModel.get('main') || await initializeMainModel();
   } catch (error) {
     console.error('[DataStackULTRA] Error getting main data:', error);
     return null;
@@ -72,10 +98,17 @@ export async function getMainData() {
 // Update the main model
 export async function updateMainData(data) {
   try {
-    await initializeMainModel();
+    // Check if main instance exists
+    const exists = await mainModel.get('main');
+    
+    if (!exists) {
+      // Create if it doesn't exist
+      return await initializeMainModel();
+    }
     
     // Update with merged data
-    const updated = await mainModel.update('main', {
+    const updated = await mainModel.set('main', {
+      ...exists,
       ...data,
       lastUpdated: Date.now()
     });
@@ -84,13 +117,8 @@ export async function updateMainData(data) {
   } catch (error) {
     console.error('[DataStackULTRA] Error updating main data:', error);
     
-    // Try to initialize and create if it failed because it doesn't exist
-    if (error.message.includes('not found')) {
-      await initializeMainModel();
-      return await mainModel.get('main');
-    }
-    
-    return null;
+    // Try to initialize if it failed
+    return await initializeMainModel();
   }
 }
 

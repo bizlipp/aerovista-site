@@ -15,7 +15,7 @@ import questIntegration from './game/quest-integration.js';
 import { startFishing, stopFishing } from './StateStackULTRA/slices/fishingSlice.js';
 
 // Import main model and initialize it
-import mainModel, { initializeMainModel, forceCreateMainModel } from './DataStackULTRA/models/main.js';
+import mainModel, { initializeMainModel } from './DataStackULTRA/models/main.js';
 
 class FishingGame {
   constructor() {
@@ -2716,101 +2716,20 @@ class FishingGame {
 }
 
 // Initialize game when document is loaded
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   try {
-    // Force initialize main model
-    await forceCreateMainModel();
-    console.log('[FishingGame] Main model initialized successfully');
-    
-    // Add CSS animations for enhanced visuals
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes fishSwim {
-        0% { transform: translateX(0) rotate(0deg); }
-        25% { transform: translateX(5px) rotate(2deg); }
-        50% { transform: translateX(0) rotate(0deg); }
-        75% { transform: translateX(-5px) rotate(-2deg); }
-        100% { transform: translateX(0) rotate(0deg); }
-      }
-      
-      .fish-icon {
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-      }
-      
-      .fish-icon:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        transition: all 0.5s ease;
-      }
-      
-      .fish-icon.caught:hover:before {
-        left: 100%;
-      }
-      
-      .fish-icon.caught:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 10px rgba(255,255,255,0.3);
-      }
-      
-      .bubble {
-        position: absolute;
-        background-color: rgba(255, 255, 255, 0.4);
-        border-radius: 50%;
-        pointer-events: none;
-      }
-      
-      .cast-touch-button:after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-        border-radius: 50%;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-      }
-      
-      .cast-touch-button:active:after {
-        opacity: 1;
-      }
-      
-      @keyframes waterRipple {
-        0% { transform: scale(0); opacity: 0.7; }
-        100% { transform: scale(3); opacity: 0; }
-      }
-      
-      .water-ripple {
-        position: absolute;
-        border: 2px solid rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        transform-origin: center;
-        animation: waterRipple 4s infinite linear;
-      }
-    `;
-    document.head.appendChild(style);
-    
     // Boot GameCore
-    try {
-      await GameCore.boot();
+    GameCore.boot().then(() => {
       // Initialize the fishing game
       window.fishingGame = new FishingGame();
       
       // Update player info
       updatePlayerInfo();
-    } catch (error) {
+    }).catch(error => {
       console.error("Error booting GameCore:", error);
       const fishingGame = new FishingGame();
       fishingGame.showFallbackMessage("Failed to initialize game. Please try again later.");
-    }
+    });
   } catch (error) {
     console.error("Fatal error initializing fishing game:", error);
     const fishingGame = new FishingGame();
@@ -2851,4 +2770,89 @@ function showFallbackMessage(message) {
   }
 }
 
-// Initialize main model on page load
+// Add CSS animations for enhanced visuals and initialize main model
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    // Initialize main model
+    await initializeMainModel();
+    console.log('[FishingGame] Main model initialized successfully');
+  } catch (error) {
+    console.error('[FishingGame] Error initializing main model:', error);
+  }
+  
+  // Add CSS animations for enhanced visuals
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fishSwim {
+      0% { transform: translateX(0) rotate(0deg); }
+      25% { transform: translateX(5px) rotate(2deg); }
+      50% { transform: translateX(0) rotate(0deg); }
+      75% { transform: translateX(-5px) rotate(-2deg); }
+      100% { transform: translateX(0) rotate(0deg); }
+    }
+    
+    .fish-icon {
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .fish-icon:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: all 0.5s ease;
+    }
+    
+    .fish-icon.caught:hover:before {
+      left: 100%;
+    }
+    
+    .fish-icon.caught:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+    
+    .bubble {
+      position: absolute;
+      background-color: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    
+    .cast-touch-button:after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .cast-touch-button:active:after {
+      opacity: 1;
+    }
+    
+    @keyframes waterRipple {
+      0% { transform: scale(0); opacity: 0.7; }
+      100% { transform: scale(3); opacity: 0; }
+    }
+    
+    .water-ripple {
+      position: absolute;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      transform-origin: center;
+      animation: waterRipple 4s infinite linear;
+    }
+  `;
+  document.head.appendChild(style);
+}); 
