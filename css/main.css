@@ -45,6 +45,196 @@
 /* 8. Special features */
 @import url('./easter-eggs.css'); /* Easter egg features */
 
+/* Base Theme Styles */
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Enhanced Readability Styles */
+p, li, td, th, input, textarea {
+  line-height: 1.6;
+  font-size: clamp(1rem, 1vw + 0.75rem, 1.125rem);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-text);
+  margin-bottom: 0.5em;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+/* Code and Pre Blocks */
+code, pre {
+  background-color: var(--color-surface-alt);
+  border-radius: 4px;
+  padding: 0.2em 0.4em;
+}
+
+pre {
+  padding: 1em;
+  overflow-x: auto;
+}
+
+/* Form Elements */
+input, textarea, select {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 0.5em 0.75em;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-focus-ring);
+  outline: none;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+th, td {
+  padding: 0.75em;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+th {
+  background-color: var(--color-surface-alt);
+  font-weight: 600;
+}
+
+/* Card and Container Styles */
+.card, .container {
+  background-color: var(--color-card);
+  border-radius: 8px;
+  padding: 1.5em;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Buttons */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75em 1.5em;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.button-primary:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.button-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.button-secondary:hover {
+  background-color: var(--color-surface-alt);
+}
+
+/* Glass Effect Components */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-hover);
+}
+
+.theme-toggle__icon {
+  font-size: 1.5rem;
+  transition: opacity 0.3s ease;
+}
+
+.theme-toggle__icon--light {
+  display: none;
+}
+
+.theme-toggle__icon--dark {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle__icon--light {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle__icon--dark {
+  display: none;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle, .theme-toggle:hover {
+    transition: none;
+  }
+}
+
+/* High contrast mode */
+@media (forced-colors: active) {
+  .theme-toggle {
+    border: 2px solid ButtonText;
+  }
+}
+
 /*
  * How to use this system:
  * 
@@ -62,4 +252,4 @@
  * 12. Division-specific styles are in the divisions/ directory
  * 13. App-specific styles are in the apps/ directory
  * 14. Easter eggs and special features are in easter-eggs.css
- */ 
+ */

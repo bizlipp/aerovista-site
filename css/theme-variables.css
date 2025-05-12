@@ -67,23 +67,62 @@
   --color-hover-overlay: rgba(255, 255, 255, 0.05);
   --color-active-overlay: rgba(255, 255, 255, 0.1);
   
-  /* UI Surface Colors */
-  --color-bg: #080a12;
-  --color-bg-rgb: 8, 10, 18; /* For rgba() calculations */
-  --color-surface: #101418;
-  --color-surface-rgb: 16, 20, 24;
-  --color-surface-alt: #141822;
-  --color-surface-alt-rgb: 20, 24, 34;
-  --color-card: #161c28;
-  --color-card-rgb: 22, 28, 40;
-  --color-card-hover: #1c2435;
-  --color-card-hover-rgb: 28, 36, 53;
-  --color-text: #ffffffee;
-  --color-text-rgb: 255, 255, 255;
-  --color-text-soft: #ffffffaa;
-  --color-text-muted: #ffffff77;
-  --color-border: #ffffff22;
-  --color-border-rgb: 255, 255, 255;
+  /* Theme-independent colors */
+  /* Keep brand colors and UI colors as is */
+
+  /* Light theme defaults */
+  :root {
+    --color-bg: #ffffff;
+    --color-bg-rgb: 255, 255, 255;
+    --color-surface: #f8f9fa;
+    --color-surface-rgb: 248, 249, 250;
+    --color-surface-alt: #f1f3f5;
+    --color-surface-alt-rgb: 241, 243, 245;
+    --color-card: #ffffff;
+    --color-card-rgb: 255, 255, 255;
+    --color-card-hover: #f8f9fa;
+    --color-card-hover-rgb: 248, 249, 250;
+    --color-text: rgba(0, 0, 0, 0.87);
+    --color-text-rgb: 0, 0, 0;
+    --color-text-soft: rgba(0, 0, 0, 0.67);
+    --color-text-muted: rgba(0, 0, 0, 0.47);
+    --color-border: rgba(0, 0, 0, 0.12);
+    --color-border-rgb: 0, 0, 0;
+    
+    --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
+    
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --glass-blur: 8px;
+  }
+  
+  /* Dark theme overrides */
+  [data-theme="dark"] {
+    --color-bg: #080a12;
+    --color-bg-rgb: 8, 10, 18;
+    --color-surface: #101418;
+    --color-surface-rgb: 16, 20, 24;
+    --color-surface-alt: #141822;
+    --color-surface-alt-rgb: 20, 24, 34;
+    --color-card: #161c28;
+    --color-card-rgb: 22, 28, 40;
+    --color-card-hover: #1c2435;
+    --color-card-hover-rgb: 28, 36, 53;
+    --color-text: rgba(255, 255, 255, 0.93);
+    --color-text-rgb: 255, 255, 255;
+    --color-text-soft: rgba(255, 255, 255, 0.67);
+    --color-text-muted: rgba(255, 255, 255, 0.47);
+    --color-border: rgba(255, 255, 255, 0.13);
+    --color-border-rgb: 255, 255, 255;
+    
+    --shadow-card: 0 2px 4px rgba(0, 0, 0, 0.4);
+    --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.6);
+    
+    --glass-bg: rgba(255, 255, 255, 0.07);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-blur: 12px;
+  }
   
   /* Dark Mode Variables */
   --color-surface-dark: #121212;
