@@ -13,7 +13,7 @@
 
 import { store } from '../StateStackULTRA/store/gameStore.js';
 import GameCore from './GameCore.js';
-import weatherSystem from './weather-system.js';
+import weatherSystem, { WEATHER_CONDITIONS, SEASONS, TIME_OF_DAY } from './weather-system.js';
 import fishCatalog from './fish-catalog.js';
 
 /**
