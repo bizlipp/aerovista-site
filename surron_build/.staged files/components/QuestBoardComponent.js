@@ -3,7 +3,7 @@
  * Displays available quests and allows player to start them
  */
 
-import ComponentBase from '../ui/ComponentBase.js';
+import ComponentBase from './ComponentBase.js';
 import { store } from '../../StateStackULTRA/store/gameStore.js';
 import { getActiveQuests } from '../selectors/questSelectors.js';
 import { getPlayerLevel } from '../selectors/playerSelectors.js';

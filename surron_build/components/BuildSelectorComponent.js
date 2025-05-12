@@ -4,9 +4,9 @@
  */
 
 import ComponentBase from '../ui/ComponentBase.js';
-import { store } from '../../StateStackULTRA/store/gameStore.js';
+import { store } from '../StateStackULTRA/store/gameStore.js';
 import { getPlayerLevel } from '../selectors/playerSelectors.js';
-import { showToast } from '../../game/popup-toast.js';
+import { showToast } from '../game/popup-toast.js';
 
 export default class BuildSelectorComponent extends ComponentBase {
   constructor() {

@@ -58,13 +58,13 @@ export class EnhancedFishing {
       
       switch(event) {
         case 'weather':
-          message = `Weather changed to ${data.new}. ${WEATHER_CONDITIONS[data.new].description}`;
+          message = `Weather changed to ${data.new}. ${WEATHER_CONDITIONS[data.new]?.description || "Weather changed."}`;
           break;
         case 'season':
-          message = `Season changed to ${data.new}. ${SEASONS[data.new].description}`;
+          message = `Season changed to ${data.new}. ${SEASONS[data.new]?.description || "Season changed."}`;
           break;
         case 'timeOfDay':
-          message = `It's now ${data.new}. ${TIME_OF_DAY[data.new].description}`;
+          message = `It's now ${data.new}. ${TIME_OF_DAY[data.new]?.description || "Time of day changed."}`;
           break;
       }
       
