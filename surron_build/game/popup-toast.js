@@ -1,18 +1,32 @@
 /**
+ * popup-toast.js
  * Simple toast notification system
- * This file provides a fallback for modules that import popup-toast.js
  */
 
 /**
- * Show a toast notification
- * @param {string} message - Message to display
- * @param {string} type - Toast type: 'info', 'success', 'warning', 'error'
- * @param {number} duration - Duration in milliseconds
+ * Display a toast notification
+ * @param {string} message - Toast message
+ * @param {string} type - Toast type (success, error, warning, info)
+ * @param {number} duration - Duration in ms
  */
 export function showToast(message, type = 'info', duration = 3000) {
-  console.log(`TOAST (${type}): ${message}`);
+  // Create toast element
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.style.backgroundColor = type === 'success' ? '#4CAF50' : 
+                              type === 'error' ? '#F44336' : 
+                              type === 'warning' ? '#FF9800' : '#2196F3';
+  toast.style.color = 'white';
+  toast.style.padding = '10px 20px';
+  toast.style.borderRadius = '4px';
+  toast.style.marginBottom = '10px';
+  toast.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+  toast.style.opacity = '0';
+  toast.style.transition = 'opacity 0.3s ease';
   
-  // Create toast container if it doesn't exist
+  toast.textContent = message;
+  
+  // Find or create toast container
   let container = document.getElementById('toast-container');
   if (!container) {
     container = document.createElement('div');
@@ -20,53 +34,14 @@ export function showToast(message, type = 'info', duration = 3000) {
     container.style.position = 'fixed';
     container.style.bottom = '20px';
     container.style.right = '20px';
-    container.style.zIndex = '9999';
+    container.style.zIndex = '1000';
     document.body.appendChild(container);
-  }
-  
-  // Create the toast element
-  const toast = document.createElement('div');
-  toast.className = `toast toast-${type}`;
-  toast.innerHTML = message;
-  
-  // Style the toast
-  Object.assign(toast.style, {
-    margin: '10px 0',
-    padding: '12px 20px',
-    borderRadius: '4px',
-    boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
-    fontFamily: 'sans-serif',
-    fontSize: '14px',
-    fontWeight: 'bold',
-    opacity: '0',
-    transition: 'all 0.3s ease',
-    display: 'flex',
-    alignItems: 'center',
-    color: '#fff',
-    minWidth: '200px',
-    maxWidth: '300px'
-  });
-  
-  // Set color based on type
-  switch (type) {
-    case 'success':
-      toast.style.backgroundColor = '#4CAF50';
-      break;
-    case 'warning':
-      toast.style.backgroundColor = '#FFC107';
-      toast.style.color = '#333';
-      break;
-    case 'error':
-      toast.style.backgroundColor = '#F44336';
-      break;
-    default: // info
-      toast.style.backgroundColor = '#2196F3';
   }
   
   // Add to container
   container.appendChild(toast);
   
-  // Animation
+  // Fade in
   setTimeout(() => {
     toast.style.opacity = '1';
   }, 10);

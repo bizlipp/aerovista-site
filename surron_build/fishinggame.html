@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Surron Squad - Fishing with Billy</title>
+  <!-- Set base URL for all relative paths -->
+  <base href="/surron_build/">
+  <!-- Import maps to resolve module paths -->
+  <script type="importmap">
+  {
+    "imports": {
+      "/StateStackULTRA/": "/surron_build/StateStackULTRA/",
+      "/game/": "/surron_build/game/",
+      "/selectors/": "/surron_build/selectors/",
+      "/ui/": "/surron_build/ui/",
+      "/components/": "/surron_build/components/"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="surron_squad.css">
+  <style>
+    /* Fishing game specific styles */
+    body {
+      overflow: hidden;
+      background: linear-gradient(to bottom, #87CEEB, #0077be);
+    }
+    
+    .fishing-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .back-button {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .fishing-layout {
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 1rem;
+      flex-grow: 1;
+    }
+    
+    .game-area {
+      position: relative;
+      background-color: #115577;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .widget {
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 8px;
+      padding: 1rem;
+      color: white;
+    }
+    
+    .challenge-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    
+    .challenge-container {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 2rem;
+      border-radius: 8px;
+      width: 80%;
+      max-width: 500px;
+    }
+    
+    /* Different challenge types */
+    .challenge-timing, .challenge-reeling, .challenge-balancing, .challenge-patience {
+      display: none;
+    }
+    
+    /* Weather display */
+    .weather-display {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .weather-icon {
+      font-size: 2rem;
+    }
+    
+    /* Progress bars */
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 0.5rem 0;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      background-color: #4CAF50;
+      width: 0%;
+      transition: width 0.3s;
+    }
+  </style>
+</head>
+<body class="surron-squad-theme">
+  <div class="fishing-container">
+    <div class="top-bar">
+      <a href="squad-hq.html" class="back-button">← Back to Squad HQ</a>
+      <div class="player-info">
+        <span id="player-level">Level 1</span> | 
+        <span id="player-currency">250 SurCoins</span>
+      </div>
+    </div>
+    
+    <div class="fishing-layout">
+      <div class="game-area">
+        <canvas id="fishing-canvas" width="800" height="600"></canvas>
+        
+        <!-- Challenge Overlays -->
+        <div class="challenge-overlay" id="challenge-overlay">
+          <div class="challenge-container">
+            <h2 id="challenge-title">Fish On!</h2>
+            <p id="challenge-description">Quick, catch it before it gets away!</p>
+            
+            <!-- Timing Challenge -->
+            <div class="challenge-timing" id="challenge-timing">
+              <div class="timing-bar">
+                <div class="timing-indicator"></div>
+                <div class="timing-target"></div>
+              </div>
+              <p>Click when the indicator is in the target zone!</p>
+            </div>
+            
+            <!-- Reeling Challenge -->
+            <div class="challenge-reeling" id="challenge-reeling">
+              <div class="reeling-meter">
+                <div class="reeling-fill"></div>
+              </div>
+              <p>Click rapidly to reel in the fish!</p>
+              <button id="reel-button" class="action-button">REEL!</button>
+            </div>
+            
+            <!-- Balancing Challenge -->
+            <div class="challenge-balancing" id="challenge-balancing">
+              <div class="balance-container">
+                <div class="balance-indicator"></div>
+                <div class="balance-target"></div>
+              </div>
+              <p>Keep the indicator in the target zone!</p>
+            </div>
+            
+            <!-- Patience Challenge -->
+            <div class="challenge-patience" id="challenge-patience">
+              <div class="patience-meter">
+                <div class="patience-fill"></div>
+              </div>
+              <p>Hold steady... Don't move...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="sidebar">
+        <!-- Current Weather -->
+        <div class="widget" id="weather-widget">
+          <h3>Current Conditions</h3>
+          <div class="weather-display">
+            <div class="weather-icon" id="weather-icon">☀️</div>
+            <div class="weather-info">
+              <div id="weather-name">Sunny</div>
+              <div id="weather-time">Day, Summer</div>
+            </div>
+          </div>
+          <p id="weather-description">Clear skies and calm waters. Good fishing conditions.</p>
+        </div>
+        
+        <!-- Fishing Equipment -->
+        <div class="widget" id="equipment-widget">
+          <h3>Your Gear</h3>
+          <div class="gear-item">
+            <div class="gear-name">Rod: <span id="rod-name">Basic Rod</span></div>
+            <div class="gear-stats">
+              <div>Quality: <span id="rod-quality">1</span></div>
+              <div>Reel Speed: <span id="rod-speed">1</span></div>
+            </div>
+          </div>
+          <div class="gear-item">
+            <div class="gear-name">Lure: <span id="lure-name">Basic Lure</span></div>
+            <div class="gear-stats">
+              <div>Attract: <span id="lure-attract">1</span></div>
+              <div>Rarity: <span id="lure-rarity">+0%</span></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Last Catch -->
+        <div class="widget" id="last-catch-widget">
+          <h3>Last Catch</h3>
+          <div id="no-catch-message">No fish caught yet. Cast your line!</div>
+          <div id="catch-display" style="display: none;">
+            <div class="catch-name" id="catch-name">Bluegill</div>
+            <div class="catch-rarity" id="catch-rarity">Common</div>
+            <div class="catch-value" id="catch-value">5 SurCoins</div>
+          </div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="widget" id="controls-widget">
+          <h3>Controls</h3>
+          <button id="cast-button" class="control-button">Cast Line</button>
+          <button id="end-fishing-button" class="control-button">End Fishing</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification container -->
+  <div id="toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
+
+  <!-- Main Script -->
+  <script type="module" src="fishinggame.js"></script>
+</body>
+</html> 

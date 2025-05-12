@@ -43,6 +43,18 @@
   </main>
   
   <script type="module">
+    // Check if we need to redirect to the dedicated fishing game
+    document.addEventListener('DOMContentLoaded', () => {
+      // Check URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const activity = urlParams.get('activity');
+      
+      // Redirect to dedicated fishing game if activity is fishing
+      if (activity === 'fishing') {
+        window.location.href = 'fishinggame.html';
+      }
+    });
+    
     console.log("Initializing Surron Squad game components...");
     
     // Dynamic imports

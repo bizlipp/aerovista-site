@@ -595,7 +595,7 @@
         <div class="module-content">
           <h3 class="module-title">Fishing with Billy</h3>
           <p class="module-description">Relax by the lake and catch some fish to earn extra SurCoins.</p>
-          <a href="MainGameShell.html?activity=fishing" class="btn-module">Go Fishing</a>
+          <a href="fishinggame.html" class="btn-module">Go Fishing</a>
         </div>
       </div>
       
@@ -1089,6 +1089,173 @@
         console.error("Error loading adventureUI.js:", error);
       }
     })();
+  </script>
+
+  <!-- Add script imports for enhanced game mechanics -->
+  <script type="module">
+    // Import the game enhancements integration
+    import gameEnhancements from './game/game-integration.js';
+    
+    // Display game enhancement status in console
+    document.addEventListener('DOMContentLoaded', async () => {
+      console.log('Loading Surron Squad enhancements...');
+      
+      // Initialize game enhancements
+      await gameEnhancements.init();
+      
+      // Log feature status
+      console.log('Game enhancement status:', gameEnhancements.getFeatureStatus());
+      
+      // Update UI to reflect enhancement status
+      updateEnhancementsUI(gameEnhancements.getFeatureStatus());
+    });
+    
+    // Update UI to show which enhancements are active
+    function updateEnhancementsUI(status) {
+      // Create status indicator in the footer
+      const footer = document.querySelector('footer') || document.body;
+      const statusDiv = document.createElement('div');
+      statusDiv.className = 'game-enhancements-status';
+      statusDiv.innerHTML = `
+        <span class="enhancement-indicator ${status.enhancedFishing ? 'active' : 'inactive'}">
+          Enhanced Fishing
+        </span>
+        <span class="enhancement-indicator ${status.dynamicWeather ? 'active' : 'inactive'}">
+          Dynamic Weather
+        </span>
+        <span class="enhancement-indicator ${status.enhancedTuning ? 'active' : 'inactive'}">
+          Enhanced Tuning
+        </span>
+      `;
+      
+      // Add some styling
+      const style = document.createElement('style');
+      style.textContent = `
+        .game-enhancements-status {
+          position: fixed;
+          bottom: 10px;
+          right: 10px;
+          background: rgba(0,0,0,0.7);
+          color: white;
+          padding: 5px 10px;
+          border-radius: 4px;
+          font-size: 12px;
+          z-index: 100;
+          display: flex;
+          gap: 8px;
+        }
+        
+        .enhancement-indicator {
+          padding: 2px 6px;
+          border-radius: 3px;
+        }
+        
+        .enhancement-indicator.active {
+          background: #2ecc71;
+        }
+        
+        .enhancement-indicator.inactive {
+          background: #e74c3c;
+        }
+      `;
+      
+      document.head.appendChild(style);
+      footer.appendChild(statusDiv);
+    }
+  </script>
+
+  <!-- Add this before the closing body tag -->
+  <div id="current-weather" class="weather-display"></div>
+
+  <script type="module">
+    import weatherSystem from './game/weather-system.js';
+    
+    // Update weather display periodically
+    function updateWeatherDisplay() {
+      const weatherDisplay = document.getElementById('current-weather');
+      if (!weatherDisplay) return;
+      
+      try {
+        const conditions = weatherSystem.getCurrentConditions();
+        if (!conditions) return;
+        
+        // Create weather info HTML
+        weatherDisplay.innerHTML = `
+          <div class="weather-icon">${getWeatherEmoji(conditions.weather.name)}</div>
+          <div class="weather-info">
+            <div class="weather-primary">${conditions.weather.name}</div>
+            <div class="weather-secondary">${conditions.timeOfDay.name}, ${conditions.season.name}</div>
+            <div class="game-time">Game Time: ${formatGameTime(conditions.gameTime)}</div>
+          </div>
+        `;
+        
+        // Make sure we have styling
+        if (!document.getElementById('weather-display-style')) {
+          const style = document.createElement('style');
+          style.id = 'weather-display-style';
+          style.textContent = `
+            .weather-display {
+              position: fixed;
+              top: 10px;
+              right: 10px;
+              background: rgba(0,0,0,0.7);
+              color: white;
+              padding: 8px 12px;
+              border-radius: 6px;
+              font-size: 14px;
+              z-index: 100;
+              display: flex;
+              align-items: center;
+              gap: 10px;
+            }
+            
+            .weather-icon {
+              font-size: 24px;
+            }
+            
+            .weather-primary {
+              font-weight: bold;
+            }
+            
+            .weather-secondary, .game-time {
+              font-size: 12px;
+              opacity: 0.8;
+            }
+          `;
+          document.head.appendChild(style);
+        }
+      } catch (error) {
+        console.error('Error updating weather display:', error);
+      }
+    }
+    
+    // Get emoji for weather condition
+    function getWeatherEmoji(weather) {
+      const weatherEmojis = {
+        'Sunny': '☀️',
+        'Cloudy': '☁️',
+        'Rainy': '🌧️',
+        'Stormy': '⛈️',
+        'Foggy': '��️'
+      };
+      
+      return weatherEmojis[weather] || '🌤️';
+    }
+    
+    // Format game time
+    function formatGameTime(gameTime) {
+      const hours = gameTime.hour.toString().padStart(2, '0');
+      return `${hours}:00, Day ${gameTime.day}`;
+    }
+    
+    // Update weather display initially and every minute
+    document.addEventListener('DOMContentLoaded', () => {
+      // Initial update
+      setTimeout(updateWeatherDisplay, 1000);
+      
+      // Update every minute
+      setInterval(updateWeatherDisplay, 60000);
+    });
   </script>
 </body>
 </html> 
