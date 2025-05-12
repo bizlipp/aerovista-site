@@ -12,6 +12,10 @@ import { WEATHER_CONDITIONS, SEASONS, TIME_OF_DAY } from './game/weather-system.
 import { recordCatch } from './StateStackULTRA/slices/fishingSlice.js';
 import { progressStep } from './StateStackULTRA/slices/questSlice.js';
 import questIntegration from './game/quest-integration.js';
+import { startFishing, stopFishing } from './StateStackULTRA/slices/fishingSlice.js';
+
+// Import main model and initialize it
+import mainModel, { initializeMainModel } from './DataStackULTRA/models/main.js';
 
 class FishingGame {
   constructor() {
@@ -106,13 +110,14 @@ class FishingGame {
       // Get player state from GameCore
       const playerState = GameCore.getPlayerState();
       
-      // Update fisher level and XP
-      this.fisherLevel = playerState.level || 1;
-      this.fisherXP = playerState.xp || 0;
-      this.xpToNextLevel = playerState.xpToNextLevel || 100;
+      // Update fisher level and XP with fallbacks for undefined state
+      this.fisherLevel = playerState?.level || 1;
+      this.fisherXP = playerState?.xp || 0;
+      this.xpToNextLevel = playerState?.xpToNextLevel || 100;
       
       // Get previously caught fish from state
-      const fishingState = store.getState().fishing;
+      const state = store.getState();
+      const fishingState = state.fishing;
       if (fishingState && fishingState.catches) {
         this.collectedFish = [...new Set(fishingState.catches.map(fish => fish.name))];
         this.totalCatches = fishingState.catches.length;
@@ -129,6 +134,13 @@ class FishingGame {
       });
     } catch (error) {
       console.error('[FishingGame] Error syncing with main game:', error);
+      // Set defaults in case of error
+      this.fisherLevel = 1;
+      this.fisherXP = 0;
+      this.xpToNextLevel = 100;
+      this.collectedFish = [];
+      this.totalCatches = 0;
+      this.uniqueSpeciesCaught = 0;
     }
   }
   
@@ -361,57 +373,63 @@ class FishingGame {
    * Initialize the game and connect to enhanced fishing
    */
   initializeGame() {
-    // Ensure canvas is properly sized
-    this.resizeCanvas();
-    
-    // Start the fishing session with enhanced fishing
-    this.startFishingSession();
-    
-    // Initialize weather display
-    this.updateWeatherDisplay();
-    
-    // Setup weather listener
-    weatherSystem.addEventListener('all', (event, data) => {
+    try {
+      // Ensure canvas is properly sized
+      this.resizeCanvas();
+      
+      // Initialize weather display
       this.updateWeatherDisplay();
-    });
-    
-    // Start game loop
-    this.lastFrameTime = performance.now();
-    this.gameLoop(this.lastFrameTime);
-    
-    // Initialize fish collection grid
-    this.initializeFishCollection();
-    
-    // Initialize achievements
-    this.updateAchievements();
-    
-    // Initialize fisher level display
-    this.updateFisherLevelDisplay();
-    
-    // Check for available upgrades
-    this.checkForAvailableUpgrades();
-    
-    // Create initial ambient water ripples
-    this.createInitialRipples();
-    
-    // Setup initial mobile-specific UI
-    this.setupMobileUI();
-    
-    // Update mission tracker with current missions
-    this.updateMissionTracker();
-    
-    // Show initial dialog from Billy
-    if (this.activeFishingMissions.length > 0) {
-      this.showBillyDialog("I see you're here for a mission! Let's catch some special fish today!", 5000);
-    } else {
-      this.showBillyDialog("Ready to catch some fish? Touch and hold the button to cast your line!", 5000);
-    }
-    
-    // If player has active missions, indicate this in the UI
-    if (this.activeFishingMissions.length > 0 && this.targetFishForMissions.size > 0) {
-      setTimeout(() => {
-        this.showToast(`Mission active: Catch ${Array.from(this.targetFishForMissions).join(', ')}`, "info", 8000);
-      }, 6000);
+      
+      // Setup weather listener
+      weatherSystem.addEventListener('all', (event, data) => {
+        this.updateWeatherDisplay();
+      });
+      
+      // Start game loop
+      this.lastFrameTime = performance.now();
+      this.gameLoop(this.lastFrameTime);
+      
+      // Initialize fish collection grid
+      this.initializeFishCollection();
+      
+      // Initialize achievements
+      this.updateAchievements();
+      
+      // Initialize fisher level display
+      this.updateFisherLevelDisplay();
+      
+      // Check for available upgrades
+      this.checkForAvailableUpgrades();
+      
+      // Create initial ambient water ripples
+      this.createInitialRipples();
+      
+      // Setup initial mobile-specific UI
+      this.setupMobileUI();
+      
+      // Update mission tracker with current missions
+      this.updateMissionTracker();
+      
+      // Show initial dialog from Billy
+      if (this.activeFishingMissions.length > 0) {
+        this.showBillyDialog("I see you're here for a mission! Let's catch some special fish today!", 5000);
+      } else {
+        this.showBillyDialog("Ready to catch some fish? Touch and hold the button to cast your line!", 5000);
+      }
+      
+      // If player has active missions, indicate this in the UI
+      if (this.activeFishingMissions.length > 0 && this.targetFishForMissions.size > 0) {
+        setTimeout(() => {
+          this.showToast(`Mission active: Catch ${Array.from(this.targetFishForMissions).join(', ')}`, "info", 8000);
+        }, 6000);
+      }
+      
+      // Start the fishing session with enhanced fishing (do this last after all the setup)
+      this.startFishingSession();
+    } catch (error) {
+      console.error('[FishingGame] Error initializing game:', error);
+      // Show message to user
+      this.showFallbackMessage("Error initializing fishing game. Please refresh the page.");
     }
   }
   
@@ -519,82 +537,99 @@ class FishingGame {
    * Start the enhanced fishing session
    */
   startFishingSession() {
-    if (this.fishingActive) return;
-    
-    // Start session with enhanced fishing
-    const sessionData = enhancedFishing.startFishing();
-    this.fishingActive = true;
-    
-    // Update UI with equipment info
-    this.updateEquipmentDisplay(sessionData.equipment);
-    
-    // Generate some fish based on current conditions
-    this.generateFish();
-    
-    // Show notification
-    this.showToast("Fishing session started!", "success");
-    
-    // Reset session stats
-    this.sessionStats = {
-      catches: 0,
-      totalValue: 0,
-      startTime: Date.now(),
-      rareCatches: 0
-    };
-    
-    // Update session display
-    this.updateSessionStatsDisplay();
-    
-    // Update fish activity based on current weather
-    this.updateFishActivityDisplay();
-    
-    // Let the main game know fishing has started
-    store.dispatch({ type: 'fishing/startFishing' });
+    try {
+      if (this.fishingActive) return;
+      
+      // Start session with enhanced fishing
+      const sessionData = enhancedFishing.startFishing();
+      this.fishingActive = true;
+      
+      // Update UI with equipment info
+      this.updateEquipmentDisplay(sessionData.equipment);
+      
+      // Generate some fish based on current conditions
+      this.generateFish();
+      
+      // Show notification
+      this.showToast("Fishing session started!", "success");
+      
+      // Reset session stats
+      this.sessionStats = {
+        catches: 0,
+        totalValue: 0,
+        startTime: Date.now(),
+        rareCatches: 0
+      };
+      
+      // Update session display
+      this.updateSessionStatsDisplay();
+      
+      // Update fish activity based on current weather
+      this.updateFishActivityDisplay();
+      
+      // Let the main game know fishing has started - using proper action creator
+      store.dispatch(startFishing());
+    } catch (error) {
+      console.error('[FishingGame] Error starting fishing session:', error);
+      // Show error message to user
+      this.showToast("Error starting fishing session. Please try again.", "error");
+    }
   }
   
   /**
    * End the current fishing session
    */
   endFishing() {
-    if (!this.fishingActive) return;
-    
-    // End session with enhanced fishing
-    const summary = enhancedFishing.endFishing();
-    this.fishingActive = false;
-    
-    // Calculate session rewards
-    const xpGained = this.calculateSessionXP(this.sessionStats);
-    const coinsGained = this.sessionStats.totalValue;
-    
-    // Add XP and check for level up
-    this.addFisherXP(xpGained);
-    
-    // Update main game state with rewards
-    GameCore.addXP(xpGained);
-    GameCore.addCurrency(coinsGained);
-    
-    // Update stats
-    this.sessionsCompleted++;
-    
-    // Show toast
-    this.showToast(`Fishing ended! Gained ${xpGained} XP and ${coinsGained} SurCoins.`, "info");
-    
-    // Update mission progress in main game if needed
-    this.updateMissionProgress();
-    
-    // Show detailed summary
-    this.showSessionSummary(summary);
-    
-    // Update main game state
-    store.dispatch({ type: 'fishing/stopFishing' });
-    
-    // Force save state
-    GameCore.save();
-    
-    // Redirect back to Squad HQ after a delay
-    setTimeout(() => {
-      window.location.href = 'squad-hq.html';
-    }, 3000);
+    try {
+      if (!this.fishingActive) return;
+      
+      // End session with enhanced fishing
+      const summary = enhancedFishing.endFishing();
+      this.fishingActive = false;
+      
+      // Calculate session rewards
+      const xpGained = this.calculateSessionXP(this.sessionStats);
+      const coinsGained = this.sessionStats.totalValue;
+      
+      // Add XP and check for level up
+      this.addFisherXP(xpGained);
+      
+      // Update main game state with rewards
+      GameCore.addXP(xpGained);
+      GameCore.addCurrency(coinsGained);
+      
+      // Update stats
+      this.sessionsCompleted++;
+      
+      // Show toast
+      this.showToast(`Fishing ended! Gained ${xpGained} XP and ${coinsGained} SurCoins.`, "info");
+      
+      // Update mission progress in main game if needed
+      this.updateMissionProgress();
+      
+      // Show detailed summary
+      this.showSessionSummary(summary);
+      
+      // Update main game state - using proper action creator
+      store.dispatch(stopFishing());
+      
+      // Force save state
+      GameCore.save();
+      
+      // Redirect back to Squad HQ after a delay
+      setTimeout(() => {
+        window.location.href = 'squad-hq.html';
+      }, 3000);
+    } catch (error) {
+      console.error('[FishingGame] Error ending fishing session:', error);
+      // Show error message to user
+      this.showToast("Error ending fishing session. Returning to HQ.", "error");
+      
+      // Return to HQ even if there's an error
+      setTimeout(() => {
+        window.location.href = 'squad-hq.html';
+      }, 2000);
+    }
   }
   
   /**
@@ -2687,8 +2722,17 @@ function showFallbackMessage(message) {
   }
 }
 
-// Add CSS animations for enhanced visuals
-document.addEventListener('DOMContentLoaded', function() {
+// Add CSS animations for enhanced visuals and initialize main model
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    // Initialize main model
+    await initializeMainModel();
+    console.log('[FishingGame] Main model initialized successfully');
+  } catch (error) {
+    console.error('[FishingGame] Error initializing main model:', error);
+  }
+  
+  // Add CSS animations for enhanced visuals
   const style = document.createElement('style');
   style.textContent = `
     @keyframes fishSwim {
