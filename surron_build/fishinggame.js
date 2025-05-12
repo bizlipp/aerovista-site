@@ -2718,9 +2718,17 @@ class FishingGame {
 // Initialize game when document is loaded
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    // Force initialize main model
-    await forceCreateMainModel();
-    console.log('[FishingGame] Main model initialized successfully');
+    console.log('[FishingGame] Initializing game...');
+    
+    // Force initialize main model first before any other operations
+    try {
+      await forceCreateMainModel();
+      console.log('[FishingGame] Main model initialized successfully');
+    } catch (mainModelError) {
+      console.error('[FishingGame] Error initializing main model:', mainModelError);
+      showFallbackMessage("Failed to initialize game data. Please refresh the page.");
+      return;
+    }
     
     // Add CSS animations for enhanced visuals
     const style = document.createElement('style');
@@ -2798,23 +2806,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
     document.head.appendChild(style);
     
-    // Boot GameCore
+    // Initialize fishing game after ensuring main model is created
     try {
+      // Boot GameCore after main model is initialized
       await GameCore.boot();
+      console.log('[FishingGame] GameCore boot successful');
+      
       // Initialize the fishing game
       window.fishingGame = new FishingGame();
       
       // Update player info
       updatePlayerInfo();
     } catch (error) {
-      console.error("Error booting GameCore:", error);
-      const fishingGame = new FishingGame();
-      fishingGame.showFallbackMessage("Failed to initialize game. Please try again later.");
+      console.error("[FishingGame] Error initializing game:", error);
+      showFallbackMessage("Failed to initialize game. Please try again later.");
     }
   } catch (error) {
-    console.error("Fatal error initializing fishing game:", error);
-    const fishingGame = new FishingGame();
-    fishingGame.showFallbackMessage("Critical error. Please refresh the page and try again.");
+    console.error("[FishingGame] Fatal error initializing fishing game:", error);
+    showFallbackMessage("Critical error. Please refresh the page and try again.");
   }
 });
 
@@ -2835,9 +2844,7 @@ function updatePlayerInfo() {
   }
 }
 
-/**
- * Show fallback message if game fails to load
- */
+// Global fallback message for initialization errors
 function showFallbackMessage(message) {
   const gameArea = document.querySelector('.game-area');
   if (gameArea) {

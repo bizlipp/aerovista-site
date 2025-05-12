@@ -81,20 +81,24 @@ export class EnhancedFishing {
    * Update available fish based on current conditions
    */
   updateAvailableFish() {
-    const conditions = {
-      weather: weatherSystem.currentWeather,
-      season: weatherSystem.currentSeason,
-      timeOfDay: weatherSystem.currentTimeOfDay
-    };
-    
-    // Get fish available in current conditions
-    const availableFish = fishCatalog.getAvailableFish(conditions);
-    
-    // Update game state with available fish
-    store.dispatch({
-      type: 'fishing/updateAvailableFish',
-      payload: availableFish
-    });
+    try {
+      const conditions = {
+        weather: weatherSystem.currentWeather,
+        season: weatherSystem.currentSeason,
+        timeOfDay: weatherSystem.currentTimeOfDay
+      };
+      
+      // Get fish available in current conditions
+      const availableFish = fishCatalog.getAvailableFish(conditions);
+      
+      // Update game state with available fish
+      store.dispatch({
+        type: 'fishing/updateAvailableFish',
+        payload: availableFish
+      });
+    } catch (error) {
+      console.error('[EnhancedFishing] Error updating available fish:', error);
+    }
   }
   
   /**
@@ -104,49 +108,79 @@ export class EnhancedFishing {
    * @returns {Object} Initial fishing session data
    */
   startFishing(spot = null, equipment = null) {
-    // Get player state
-    const playerState = GameCore.getPlayerState();
-    const inventory = playerState?.inventory || [];
-    
-    // Set active state
-    this.isActive = true;
-    this.currentSpot = spot || {
-      name: "Lakeside",
-      depth: "medium",
-      fishDensity: 0.8,
-      rarityBonus: 0
-    };
-    
-    // Get player's equipment
-    this.equipment = equipment || this.getEquipmentFromInventory(inventory);
-    
-    // Get current environmental conditions
-    const conditions = weatherSystem.getCurrentConditions();
-    
-    // Calculate session modifiers based on conditions and equipment
-    const sessionModifiers = this.calculateFishingModifiers();
-    
-    // Initialize session in store
-    store.dispatch({
-      type: 'fishing/startSession',
-      payload: {
+    try {
+      // Get player state (safely)
+      let playerState = null;
+      try {
+        playerState = GameCore.getPlayerState();
+      } catch (error) {
+        console.warn('[EnhancedFishing] Error getting player state, using defaults:', error);
+        playerState = { inventory: [] };
+      }
+      
+      const inventory = playerState?.inventory || [];
+      
+      // Set active state
+      this.isActive = true;
+      this.currentSpot = spot || {
+        name: "Lakeside",
+        depth: "medium",
+        fishDensity: 0.8,
+        rarityBonus: 0
+      };
+      
+      // Get player's equipment
+      this.equipment = equipment || this.getEquipmentFromInventory(inventory);
+      
+      // Get current environmental conditions
+      const conditions = weatherSystem.getCurrentConditions();
+      
+      // Calculate session modifiers based on conditions and equipment
+      const sessionModifiers = this.calculateFishingModifiers();
+      
+      // Initialize session in store
+      try {
+        store.dispatch({
+          type: 'fishing/startSession',
+          payload: {
+            spot: this.currentSpot,
+            equipment: this.equipment,
+            conditions: conditions,
+            modifiers: sessionModifiers,
+            startTime: Date.now()
+          }
+        });
+      } catch (storeError) {
+        console.error('[EnhancedFishing] Error dispatching to store:', storeError);
+      }
+      
+      // Update available fish based on current conditions
+      try {
+        this.updateAvailableFish();
+      } catch (fishError) {
+        console.error('[EnhancedFishing] Error updating available fish:', fishError);
+      }
+      
+      return {
         spot: this.currentSpot,
         equipment: this.equipment,
         conditions: conditions,
-        modifiers: sessionModifiers,
-        startTime: Date.now()
-      }
-    });
-    
-    // Update available fish based on current conditions
-    this.updateAvailableFish();
-    
-    return {
-      spot: this.currentSpot,
-      equipment: this.equipment,
-      conditions: conditions,
-      modifiers: sessionModifiers
-    };
+        modifiers: sessionModifiers
+      };
+    } catch (error) {
+      console.error('[EnhancedFishing] Error starting fishing session:', error);
+      
+      // Return fallback data in case of error
+      return {
+        spot: { name: "Lakeside" },
+        equipment: {
+          rod: { name: 'Basic Rod', quality: 1, reelSpeed: 1 },
+          lure: { name: 'Basic Lure', attractPower: 1 }
+        },
+        conditions: { weather: "sunny", season: "summer", timeOfDay: "day" },
+        modifiers: { catchRate: 1, rarityBonus: 0, reelSpeed: 1, attractPower: 1 }
+      };
+    }
   }
   
   /**

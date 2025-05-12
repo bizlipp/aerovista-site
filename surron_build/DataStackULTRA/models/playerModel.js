@@ -22,6 +22,32 @@ const schema = {
   }
 };
 
-export const PlayerModel = ds.createModel('player', schema, {
-  keyPrefix: 'player:'
-}); 
+// Create and export the PlayerModel with set method
+export const PlayerModel = {
+  ...ds.createModel('player', schema, {
+    keyPrefix: 'player:'
+  }),
+  
+  // Add a set method that will create or update an instance
+  async set(id, data) {
+    const key = `player:${id}`;
+    try {
+      // Check if already exists
+      const existing = await ds.get(key, null);
+      
+      if (existing) {
+        // Update existing data
+        const merged = { ...existing, ...data };
+        await ds.set(key, merged);
+        return { id, ...merged };
+      } else {
+        // Create new instance
+        await ds.set(key, data);
+        return { id, ...data };
+      }
+    } catch (error) {
+      console.error(`Error setting player model ${id}:`, error);
+      throw error;
+    }
+  }
+}; 

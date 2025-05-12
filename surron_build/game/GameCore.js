@@ -56,8 +56,25 @@ const GameCore = {
 
     // Auto-save on any change
     store.subscribe(() => {
-      const current = store.getState().player;
-      PlayerModel.update('main', current);
+      try {
+        const current = store.getState().player;
+        if (!current) return;
+        
+        // Handle update safely
+        PlayerModel.get('main')
+          .then(existingModel => {
+            if (existingModel) {
+              return PlayerModel.update('main', current);
+            } else {
+              return PlayerModel.set('main', current);
+            }
+          })
+          .catch(error => {
+            console.error('[GameCore] Auto-save error:', error);
+          });
+      } catch (error) {
+        console.error('[GameCore] Error in auto-save subscriber:', error);
+      }
     });
   },
 
@@ -65,9 +82,33 @@ const GameCore = {
    * Manual save trigger (optional)
    */
   save() {
-    const state = store.getState().player;
-    PlayerModel.update('main', state);
-    console.log('[GameCore] Player state manually saved.');
+    try {
+      const state = store.getState().player;
+      if (!state) {
+        console.warn('[GameCore] Cannot save: No player state found');
+        return;
+      }
+      
+      // Create or update player model safely
+      PlayerModel.get('main')
+        .then(existingModel => {
+          if (existingModel) {
+            // Update existing model
+            return PlayerModel.update('main', state);
+          } else {
+            // Create a new model if it doesn't exist
+            return PlayerModel.set('main', state);
+          }
+        })
+        .then(() => {
+          console.log('[GameCore] Player state manually saved.');
+        })
+        .catch(error => {
+          console.error('[GameCore] Error saving player state:', error);
+        });
+    } catch (error) {
+      console.error('[GameCore] Exception in save method:', error);
+    }
   },
 
   /**
