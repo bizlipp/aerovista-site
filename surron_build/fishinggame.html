@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Surron Squad - Fishing with Billy</title>
   <!-- Set base URL for all relative paths -->
   <base href="/surron_build/">
@@ -1092,6 +1092,132 @@
       width: 0%;
       transition: width 0.3s ease;
     }
+    
+    /* Animation to show XP gains */
+    @keyframes xpBounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+    
+    .xp-animated {
+      animation: xpBounce 0.5s ease-in-out;
+    }
+    
+    /* Mission Tracker style */
+    .mission-tracker {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: white;
+      max-width: 250px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      font-size: 0.9rem;
+      z-index: 50;
+      pointer-events: none;
+      transform: translateY(-10px);
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    
+    .mission-tracker.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    
+    .mission-title {
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: #FFD700;
+    }
+    
+    .mission-objective {
+      opacity: 0.9;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+    }
+    
+    .mission-progress {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+    }
+    
+    .mission-bar {
+      flex-grow: 1;
+      height: 4px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    
+    .mission-fill {
+      height: 100%;
+      background-color: #FFD700;
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+    
+    /* Target fish highlight in collection */
+    .fish-icon.mission-target {
+      box-shadow: 0 0 10px #FFD700;
+      position: relative;
+    }
+    
+    .fish-icon.mission-target:after {
+      content: '!';
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 20px;
+      height: 20px;
+      background-color: #e63946;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.8rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    /* State change notifications */
+    .state-change {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      text-align: center;
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      opacity: 0;
+      z-index: 100;
+    }
+    
+    .state-change.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    
+    .state-change .title {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    
+    .state-change .detail {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body class="surron-squad-theme">
@@ -1336,7 +1462,57 @@
   <!-- Toast notification container -->
   <div id="toast-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;"></div>
 
+  <!-- Mission tracker overlay (new) -->
+  <div class="mission-tracker" id="mission-tracker">
+    <div class="mission-title">Current Mission</div>
+    <div class="mission-objective">Catch specific fish types to complete your mission</div>
+    <div class="mission-progress">
+      <div class="mission-bar">
+        <div class="mission-fill" id="mission-fill"></div>
+      </div>
+      <span id="mission-percentage">0%</span>
+    </div>
+  </div>
+  
+  <!-- State change notification -->
+  <div class="state-change" id="state-change-notification">
+    <div class="title" id="change-title">Mission Updated</div>
+    <div class="detail" id="change-detail">Your mission progress has been updated</div>
+  </div>
+
   <!-- Main Script -->
   <script type="module" src="fishinggame.js"></script>
+  
+  <script>
+    // Function for fisher level display (restored)
+    function updateFisherLevelDisplay() {
+      const fisherLevel = document.getElementById('fisher-level');
+      const xpFill = document.getElementById('fisher-xp-fill');
+      const currentXP = document.getElementById('current-xp');
+      const nextLevelXP = document.getElementById('next-level-xp');
+      
+      if (fisherLevel) {
+        fisherLevel.textContent = this.fisherLevel;
+        fisherLevel.classList.add('xp-animated');
+        setTimeout(() => fisherLevel.classList.remove('xp-animated'), 500);
+      }
+      
+      if (xpFill) {
+        const percentage = Math.min(100, Math.round((this.fisherXP / this.xpToNextLevel) * 100));
+        xpFill.style.width = `${percentage}%`;
+      }
+      
+      if (currentXP) {
+        currentXP.textContent = this.fisherXP;
+      }
+      
+      if (nextLevelXP) {
+        nextLevelXP.textContent = `${this.xpToNextLevel} XP`;
+      }
+    }
+    
+    // Make the function available to the FishingGame class
+    window.updateFisherLevelDisplay = updateFisherLevelDisplay;
+  </script>
 </body>
 </html> 

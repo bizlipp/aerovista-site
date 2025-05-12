@@ -9,6 +9,9 @@ import enhancedFishing from './game/enhanced-fishing.js';
 import weatherSystem from './game/weather-system.js';
 import fishCatalog from './game/fish-catalog.js';
 import { WEATHER_CONDITIONS, SEASONS, TIME_OF_DAY } from './game/weather-system.js';
+import { recordCatch } from './StateStackULTRA/slices/fishingSlice.js';
+import { progressStep } from './StateStackULTRA/slices/questSlice.js';
+import questIntegration from './game/quest-integration.js';
 
 class FishingGame {
   constructor() {
@@ -76,9 +79,100 @@ class FishingGame {
     this.fishEscapeThreshold = 100;
     this.vibrationSupported = "vibrate" in navigator;
     
+    // Mission tracking
+    this.activeFishingMissions = [];
+    this.targetFishForMissions = new Set();
+    this.missionProgress = {};
+    
+    // State change indicators
+    this.stateChangeIndicators = {
+      xpGain: 0,
+      currencyGain: 0,
+      lastNotification: null,
+      showingReward: false
+    };
+    
     // Initialize
+    this.syncWithMainGame();
     this.initializeEventListeners();
     this.initializeGame();
+  }
+  
+  /**
+   * Sync the fishing game state with the main game
+   */
+  syncWithMainGame() {
+    try {
+      // Get player state from GameCore
+      const playerState = GameCore.getPlayerState();
+      
+      // Update fisher level and XP
+      this.fisherLevel = playerState.level || 1;
+      this.fisherXP = playerState.xp || 0;
+      this.xpToNextLevel = playerState.xpToNextLevel || 100;
+      
+      // Get previously caught fish from state
+      const fishingState = store.getState().fishing;
+      if (fishingState && fishingState.catches) {
+        this.collectedFish = [...new Set(fishingState.catches.map(fish => fish.name))];
+        this.totalCatches = fishingState.catches.length;
+        this.uniqueSpeciesCaught = this.collectedFish.length;
+      }
+      
+      // Fetch active fishing missions
+      this.checkForActiveFishingMissions();
+      
+      console.log('[FishingGame] Synced with main game state', {
+        level: this.fisherLevel,
+        xp: this.fisherXP,
+        uniqueFish: this.uniqueSpeciesCaught
+      });
+    } catch (error) {
+      console.error('[FishingGame] Error syncing with main game:', error);
+    }
+  }
+  
+  /**
+   * Check for active missions related to fishing
+   */
+  checkForActiveFishingMissions() {
+    try {
+      const state = store.getState();
+      const allQuests = state.quests?.entities || {};
+      
+      // Find active fishing-related quests
+      this.activeFishingMissions = Object.values(allQuests)
+        .filter(quest => 
+          quest.status === 'Active' && 
+          (quest.character === 'billy' || quest.id === 'goneFishin' || quest.id.includes('fish'))
+        );
+      
+      if (this.activeFishingMissions.length > 0) {
+        console.log('[FishingGame] Active fishing missions found:', this.activeFishingMissions);
+        
+        // Extract target fish for missions
+        this.targetFishForMissions = new Set();
+        this.missionProgress = {};
+        
+        this.activeFishingMissions.forEach(mission => {
+          // Store initial progress state for each mission
+          this.missionProgress[mission.id] = mission.progress || 0;
+          
+          // Extract potential target fish from steps
+          mission.steps?.forEach(step => {
+            if (step.description.includes('fish') || step.description.includes('catch')) {
+              // Extract fish names from descriptions (simplified example)
+              const fishMatch = step.description.match(/catch a ([\w\s]+)/i);
+              if (fishMatch && fishMatch[1]) {
+                this.targetFishForMissions.add(fishMatch[1].trim());
+              }
+            }
+          });
+        });
+      }
+    } catch (error) {
+      console.error('[FishingGame] Error checking fishing missions:', error);
+    }
   }
   
   /**
@@ -303,8 +397,22 @@ class FishingGame {
     // Setup initial mobile-specific UI
     this.setupMobileUI();
     
+    // Update mission tracker with current missions
+    this.updateMissionTracker();
+    
     // Show initial dialog from Billy
-    this.showBillyDialog("Ready to catch some fish? Touch and hold the button to cast your line!", 5000);
+    if (this.activeFishingMissions.length > 0) {
+      this.showBillyDialog("I see you're here for a mission! Let's catch some special fish today!", 5000);
+    } else {
+      this.showBillyDialog("Ready to catch some fish? Touch and hold the button to cast your line!", 5000);
+    }
+    
+    // If player has active missions, indicate this in the UI
+    if (this.activeFishingMissions.length > 0 && this.targetFishForMissions.size > 0) {
+      setTimeout(() => {
+        this.showToast(`Mission active: Catch ${Array.from(this.targetFishForMissions).join(', ')}`, "info", 8000);
+      }, 6000);
+    }
   }
   
   /**
@@ -439,6 +547,9 @@ class FishingGame {
     
     // Update fish activity based on current weather
     this.updateFishActivityDisplay();
+    
+    // Let the main game know fishing has started
+    store.dispatch({ type: 'fishing/startFishing' });
   }
   
   /**
@@ -451,25 +562,79 @@ class FishingGame {
     const summary = enhancedFishing.endFishing();
     this.fishingActive = false;
     
-    // Show summary toast
-    this.showToast(`Fishing ended! You caught ${summary.stats.totalCatches} fish worth ${summary.stats.totalValue} SurCoins.`, "info");
-    
     // Calculate session rewards
     const xpGained = this.calculateSessionXP(this.sessionStats);
+    const coinsGained = this.sessionStats.totalValue;
     
     // Add XP and check for level up
     this.addFisherXP(xpGained);
     
+    // Update main game state with rewards
+    GameCore.addXP(xpGained);
+    GameCore.addCurrency(coinsGained);
+    
     // Update stats
     this.sessionsCompleted++;
+    
+    // Show toast
+    this.showToast(`Fishing ended! Gained ${xpGained} XP and ${coinsGained} SurCoins.`, "info");
+    
+    // Update mission progress in main game if needed
+    this.updateMissionProgress();
     
     // Show detailed summary
     this.showSessionSummary(summary);
     
-    // Redirect back to Squad HQ
+    // Update main game state
+    store.dispatch({ type: 'fishing/stopFishing' });
+    
+    // Force save state
+    GameCore.save();
+    
+    // Redirect back to Squad HQ after a delay
     setTimeout(() => {
       window.location.href = 'squad-hq.html';
     }, 3000);
+  }
+  
+  /**
+   * Update mission progress based on catches
+   */
+  updateMissionProgress() {
+    if (this.activeFishingMissions.length === 0) return;
+    
+    let missionUpdated = false;
+    
+    this.activeFishingMissions.forEach(mission => {
+      // Simple example: if mission requires catching fish and we caught some
+      if (this.sessionStats.catches > 0) {
+        const stepIndexToComplete = mission.steps?.findIndex(step => 
+          !step.completed && 
+          (step.description.toLowerCase().includes('catch') || 
+           step.description.toLowerCase().includes('fish'))
+        );
+        
+        if (stepIndexToComplete !== -1 && stepIndexToComplete !== undefined) {
+          // Dispatch to update quest step progress
+          store.dispatch(progressStep({
+            id: mission.id,
+            step: stepIndexToComplete
+          }));
+          
+          missionUpdated = true;
+          
+          // Show notification
+          this.showToast(`Mission progress updated: ${mission.title}`, "success", 5000);
+        }
+      }
+    });
+    
+    if (missionUpdated) {
+      // Save progress
+      GameCore.save();
+    }
+    
+    return missionUpdated;
   }
   
   /**
@@ -927,6 +1092,18 @@ class FishingGame {
       
       // Add to catch history
       this.addToCatchHistory(result.fish);
+      
+      // Record catch in store
+      store.dispatch(recordCatch(result.fish));
+      
+      // Check if this catch satisfies a mission target
+      if (this.targetFishForMissions.size > 0) {
+        if (this.targetFishForMissions.has(result.fish.name)) {
+          this.showToast(`Mission target caught: ${result.fish.name}!`, "success", 5000);
+          this.showBillyDialog("That's the one we needed for the mission! Great job!", 5000);
+          this.vibrate([100, 100, 200, 100, 300]);
+        }
+      }
     } else {
       // Show failure message
       this.showToast("The fish got away!", "error");
@@ -979,6 +1156,21 @@ class FishingGame {
     setTimeout(() => {
       catchReveal.classList.add('visible');
     }, 100);
+    
+    // Update quest progress if this fish is a target for any mission
+    if (questIntegration.isTargetItem('fishing', fish.name)) {
+      // Update quest progress
+      const updateResult = questIntegration.updateQuestProgress('fishing', {
+        type: 'catch_fish',
+        target: fish.name,
+        value: 1
+      });
+      
+      if (updateResult) {
+        // Show state change notification
+        this.showStateChangeNotification('Mission Updated', `You've made progress on your mission by catching ${fish.name}!`);
+      }
+    }
     
     // Set up continue button
     document.getElementById('continue-button').addEventListener('click', () => {
@@ -1685,16 +1877,22 @@ class FishingGame {
    * Add fisher XP and check for level up
    */
   addFisherXP(xp) {
+    const oldXP = this.fisherXP;
     this.fisherXP += xp;
     
+    // Show XP gain indicator
+    this.showXPGain(xp);
+    
     // Check for level up
+    let leveledUp = false;
     while (this.fisherXP >= this.xpToNextLevel) {
       this.fisherXP -= this.xpToNextLevel;
       this.fisherLevel++;
       this.xpToNextLevel = Math.floor(this.xpToNextLevel * 1.5); // Increase XP needed for next level
+      leveledUp = true;
       
-      // Show level up notification
-      this.showToast(`Fisher Level Up! Now level ${this.fisherLevel}`, "success", 5000);
+      // Show level up notification with animation
+      this.showLevelUpAnimation();
       
       // Enable upgrades if available
       this.checkForAvailableUpgrades();
@@ -1702,33 +1900,115 @@ class FishingGame {
     
     // Update display
     this.updateFisherLevelDisplay();
+    
+    return leveledUp;
   }
   
   /**
-   * Update fisher level display
+   * Show XP gain with animation
    */
-  updateFisherLevelDisplay() {
-    const fisherLevel = document.getElementById('fisher-level');
-    const xpFill = document.getElementById('fisher-xp-fill');
-    const currentXP = document.getElementById('current-xp');
-    const nextLevelXP = document.getElementById('next-level-xp');
+  showXPGain(xp) {
+    if (xp <= 0) return;
     
-    if (fisherLevel) {
-      fisherLevel.textContent = this.fisherLevel;
+    // Create floating XP indicator
+    const xpIndicator = document.createElement('div');
+    xpIndicator.className = 'floating-indicator xp-indicator';
+    xpIndicator.textContent = `+${xp} XP`;
+    xpIndicator.style.position = 'fixed';
+    xpIndicator.style.top = '50%';
+    xpIndicator.style.right = '20px';
+    xpIndicator.style.backgroundColor = 'rgba(76, 175, 80, 0.9)';
+    xpIndicator.style.color = 'white';
+    xpIndicator.style.padding = '8px 12px';
+    xpIndicator.style.borderRadius = '4px';
+    xpIndicator.style.zIndex = '1000';
+    xpIndicator.style.animation = 'floatUp 2s forwards';
+    xpIndicator.style.boxShadow = '0 2px 8px rgba(0,0,0,0.2)';
+    
+    document.body.appendChild(xpIndicator);
+    
+    // Add CSS animation if not already in page
+    if (!document.getElementById('floating-indicator-style')) {
+      const style = document.createElement('style');
+      style.id = 'floating-indicator-style';
+      style.textContent = `
+        @keyframes floatUp {
+          0% { opacity: 0; transform: translateY(20px); }
+          20% { opacity: 1; }
+          80% { opacity: 1; }
+          100% { opacity: 0; transform: translateY(-50px); }
+        }
+      `;
+      document.head.appendChild(style);
     }
     
-    if (xpFill) {
-      const percentage = Math.min(100, Math.round((this.fisherXP / this.xpToNextLevel) * 100));
-      xpFill.style.width = `${percentage}%`;
-    }
+    // Remove after animation completes
+    setTimeout(() => {
+      if (xpIndicator.parentNode) {
+        xpIndicator.parentNode.removeChild(xpIndicator);
+      }
+    }, 2000);
+  }
+  
+  /**
+   * Show level up animation
+   */
+  showLevelUpAnimation() {
+    // Create level up overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'level-up-overlay';
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.backgroundColor = 'rgba(0,0,0,0.7)';
+    overlay.style.display = 'flex';
+    overlay.style.alignItems = 'center';
+    overlay.style.justifyContent = 'center';
+    overlay.style.zIndex = '1000';
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity 0.5s';
     
-    if (currentXP) {
-      currentXP.textContent = this.fisherXP;
-    }
+    const content = document.createElement('div');
+    content.className = 'level-up-content';
+    content.style.textAlign = 'center';
+    content.style.color = 'white';
+    content.style.transform = 'scale(0.8)';
+    content.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
     
-    if (nextLevelXP) {
-      nextLevelXP.textContent = `${this.xpToNextLevel} XP`;
-    }
+    content.innerHTML = `
+      <div style="font-size: 3rem; margin-bottom: 1rem; color: gold; text-shadow: 0 0 10px rgba(255,215,0,0.7);">LEVEL UP!</div>
+      <div style="font-size: 2rem; margin-bottom: 1.5rem;">Fisher Level ${this.fisherLevel}</div>
+      <div style="font-size: 1.2rem; opacity: 0.8;">Keep catching fish to unlock more upgrades!</div>
+    `;
+    
+    overlay.appendChild(content);
+    document.body.appendChild(overlay);
+    
+    // Vibrate for level up
+    this.vibrate([100, 50, 100, 50, 200]);
+    
+    // Show Billy's reaction
+    this.showBillyDialog("Whoa! You just leveled up! That's awesome fishing skill!", 5000);
+    
+    // Show animation with delay
+    setTimeout(() => {
+      overlay.style.opacity = '1';
+      content.style.transform = 'scale(1)';
+    }, 100);
+    
+    // Auto hide after delay
+    setTimeout(() => {
+      overlay.style.opacity = '0';
+      content.style.transform = 'scale(1.2)';
+      
+      setTimeout(() => {
+        if (overlay.parentNode) {
+          overlay.parentNode.removeChild(overlay);
+        }
+      }, 500);
+    }, 3000);
   }
   
   /**
@@ -2258,6 +2538,99 @@ class FishingGame {
     balanceIndicator.style.boxShadow = inTargetZone ? 
       '0 0 10px rgba(76, 175, 80, 0.7)' : 
       '0 0 10px rgba(244, 67, 54, 0.7)';
+  }
+
+  /**
+   * Show state change notification
+   */
+  showStateChangeNotification(title, detail) {
+    const notification = document.getElementById('state-change-notification');
+    
+    if (!notification) return;
+    
+    // Set content
+    document.getElementById('change-title').textContent = title;
+    document.getElementById('change-detail').textContent = detail;
+    
+    // Show notification
+    notification.classList.add('visible');
+    
+    // Hide after delay
+    setTimeout(() => {
+      notification.classList.remove('visible');
+    }, 5000);
+  }
+
+  /**
+   * Update mission tracker UI with active fishing missions
+   */
+  updateMissionTracker() {
+    const missionTracker = document.getElementById('mission-tracker');
+    if (!missionTracker) return;
+    
+    // Get active fishing missions
+    const fishingMissions = questIntegration.getQuestsForComponent('fishing');
+    
+    if (fishingMissions.length > 0) {
+      // Get first active mission for display
+      const activeMission = fishingMissions[0];
+      
+      // Update mission tracker content
+      const missionTitle = activeMission.title;
+      const missionObjective = activeMission.steps?.find(step => !step.completed)?.description || 
+                               'Catch fish to complete your mission';
+      const missionProgress = activeMission.progress || 0;
+      
+      // Update UI elements
+      const missionTitleEl = missionTracker.querySelector('.mission-title');
+      const missionObjectiveEl = missionTracker.querySelector('.mission-objective');
+      const missionFillEl = document.getElementById('mission-fill');
+      const missionPercentageEl = document.getElementById('mission-percentage');
+      
+      if (missionTitleEl) missionTitleEl.textContent = missionTitle;
+      if (missionObjectiveEl) missionObjectiveEl.textContent = missionObjective;
+      if (missionFillEl) missionFillEl.style.width = `${missionProgress}%`;
+      if (missionPercentageEl) missionPercentageEl.textContent = `${missionProgress}%`;
+      
+      // Show the tracker
+      missionTracker.classList.add('visible');
+      
+      // Highlight target fish in collection
+      this.highlightTargetFishInCollection();
+    } else {
+      // Hide tracker if no active missions
+      missionTracker.classList.remove('visible');
+    }
+  }
+
+  /**
+   * Highlight target fish in the collection grid
+   */
+  highlightTargetFishInCollection() {
+    // Get all target fish names
+    const targetFish = questIntegration.getTargetItemsForComponent('fishing');
+    
+    if (targetFish.size === 0) return;
+    
+    // Get fish collection grid
+    const collectionGrid = document.getElementById('fish-collection-grid');
+    if (!collectionGrid) return;
+    
+    // Get all fish icons
+    const fishIcons = collectionGrid.querySelectorAll('.fish-icon');
+    
+    // Clear existing highlights
+    fishIcons.forEach(icon => {
+      icon.classList.remove('mission-target');
+    });
+    
+    // Add highlights to target fish
+    fishIcons.forEach((icon, index) => {
+      const fishName = fishCatalog.FISH_CATALOG[index]?.name;
+      if (fishName && targetFish.has(fishName)) {
+        icon.classList.add('mission-target');
+      }
+    });
   }
 }
 
