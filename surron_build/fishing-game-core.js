@@ -254,25 +254,32 @@ class FishingGame {
       this.endFishing();
     });
     
-    // Challenge interaction events
-    // Timing challenge - attaching to document for wide click area
+    // Challenge interaction events - using event delegation pattern
+    // For timing challenges - catch any click on the document
     document.addEventListener('click', (e) => {
       if (this.state === 'challenge' && this.activeChallenge?.type === 'timing') {
         this.handleTimingClick();
       }
     });
     
-    // Reeling challenge - specific button
+    // For reeling challenges - use the specific button
     const reelButton = document.getElementById('reel-challenge-button');
     if (reelButton) {
-      reelButton.addEventListener('click', (e) => {
+      reelButton.addEventListener('mousedown', (e) => {
         if (this.state === 'challenge' && this.activeChallenge?.type === 'reeling') {
           this.handleReelingClick();
         }
       });
+      
+      reelButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        if (this.state === 'challenge' && this.activeChallenge?.type === 'reeling') {
+          this.handleReelingTouch();
+        }
+      });
     }
     
-    // Mouse move for balancing challenge
+    // For balancing challenges - use mouse movement on canvas
     this.canvas.addEventListener('mousemove', (e) => {
       if (this.state === 'challenge' && this.activeChallenge?.type === 'balancing') {
         const rect = this.canvas.getBoundingClientRect();
@@ -285,7 +292,6 @@ class FishingGame {
     this.canvas.addEventListener('touchstart', (e) => {
       e.preventDefault();
       if (this.state === 'challenge') {
-        const touch = e.touches[0];
         if (this.activeChallenge?.type === 'timing') {
           this.handleTimingClick();
         } else if (this.activeChallenge?.type === 'reeling') {
@@ -332,11 +338,8 @@ class FishingGame {
     // Continue button for catch animation
     document.getElementById('continue-button').addEventListener('click', () => {
       document.getElementById('catch-animation').style.display = 'none';
-      this.state = 'idle';
-      
-      // Re-enable cast button
-      document.getElementById('cast-button').disabled = false;
-      document.getElementById('cast-button').textContent = 'Cast Line';
+      // Return to idle state after closing catch animation
+      this.returnToIdle();
     });
   }
   
@@ -1173,10 +1176,71 @@ class FishingGame {
   }
 
   /**
-   * Start a fishing challenge
-   * @param {Object} challengeData - Data for the challenge
+   * Handle specific challenge click events
+   * This delegating method routes clicks to the appropriate handler
+   * @param {Event} e - Click event
+   */
+  handleChallengeInteraction(e) {
+    if (this.state !== 'challenge' || !this.activeChallenge) return;
+    
+    // Get challenge type
+    const type = this.activeChallenge.type;
+    
+    // Route to appropriate handler
+    switch (type) {
+      case 'timing':
+        this.handleTimingClick();
+        break;
+      case 'reeling':
+        // Only handle if clicked on the reel button
+        if (e.target.closest('#reel-challenge-button')) {
+          this.handleReelingClick();
+        }
+        break;
+      case 'balancing':
+        // Balancing uses mousemove, not clicks
+        break;
+      case 'patience':
+        // Patience requires no user input
+        break;
+    }
+  }
+
+  /**
+   * Update the challenge UI progress
+   */
+  updateChallengeProgress() {
+    if (!this.activeChallenge) return;
+    
+    // Update progress bar
+    const progressFill = document.getElementById('challenge-progress-fill');
+    if (progressFill) {
+      const progress = Math.min(100, (this.challengeTimer / this.challengeDuration) * 100);
+      progressFill.style.width = `${progress}%`;
+      
+      // Change color based on progress
+      if (progress > 75) {
+        progressFill.style.backgroundColor = '#F44336'; // Red when almost out of time
+      } else if (progress > 50) {
+        progressFill.style.backgroundColor = '#FFC107'; // Yellow as warning
+      }
+    }
+  }
+
+  /**
+   * Start a challenge when fish bites
    */
   startChallenge(challengeData) {
+    // Bind important challenge methods to ensure "this" context is correct
+    this.handleTimingClick = this.handleTimingClick.bind(this);
+    this.handleReelingClick = this.handleReelingClick.bind(this);
+    this.handleReelingTouch = this.handleReelingTouch.bind(this);
+    this.handleBalancingMove = this.handleBalancingMove.bind(this);
+    this.handlePatienceMouseMove = this.handlePatienceMouseMove.bind(this);
+    this.handlePatienceTouchMove = this.handlePatienceTouchMove.bind(this);
+    this.handleChallengeInteraction = this.handleChallengeInteraction.bind(this);
+    
+    // Set general challenge state
     this.state = 'challenge';
     this.activeChallenge = challengeData;
     this.challengeScore = 0;
@@ -1200,6 +1264,9 @@ class FishingGame {
         break;
     }
     
+    // Add event listener for challenge interactions
+    document.addEventListener('click', this.handleChallengeInteraction);
+    
     // Show challenge overlay
     const overlay = document.getElementById('challenge-overlay');
     overlay.style.display = 'flex';
@@ -1214,7 +1281,7 @@ class FishingGame {
     // Play catch sound based on fish rarity
     const soundId = challengeData.fish.rarity >= 4 ? 'catchRare' : 
                    challengeData.fish.rarity >= 3 ? 'catchUncommon' : 'catchCommon';
-    this.soundSystem.playSound(soundId, { volume: 0.6 });
+    SoundSystem.playSound(soundId, { volume: 0.6 });
     
     // Provide haptic feedback on challenge start
     this.vibrate([100, 50, 100]);
@@ -1224,59 +1291,45 @@ class FishingGame {
   }
 
   /**
-   * Get description text for challenge type
-   * @param {string} challengeType - Type of challenge
-   * @returns {string} Challenge description
+   * Cleanup event listeners and state when completing challenges
    */
-  getChallengeDescription(challengeType) {
-    switch(challengeType) {
-      case 'timing':
-        return 'Click at exactly the right moment!';
-      case 'reeling':
-        return 'Click rapidly to reel in the fish!';
-      case 'balancing':
-        return 'Keep the indicator in the target zone!';
-      case 'patience':
-        return 'Hold steady and wait for the right moment!';
-      default:
-        return 'Catch the fish!';
+  cleanupChallengeEvents() {
+    // Remove challenge interaction listener
+    document.removeEventListener('click', this.handleChallengeInteraction);
+    
+    // Remove patience-specific listeners
+    if (this.patienceState && this.patienceState.active) {
+      document.removeEventListener('mousemove', this.handlePatienceMouseMove);
+      document.removeEventListener('touchmove', this.handlePatienceTouchMove);
+      this.patienceState.active = false;
+    }
+    
+    // Clear any intervals
+    if (this.challengeInterval) {
+      clearInterval(this.challengeInterval);
+      this.challengeInterval = null;
     }
   }
 
   /**
-   * Show the UI for a specific challenge type
-   * @param {string} challengeType - Type of challenge
-   */
-  showChallengeUI(challengeType) {
-    // Hide all challenge UIs first
-    document.getElementById('challenge-timing').style.display = 'none';
-    document.getElementById('challenge-reeling').style.display = 'none';
-    document.getElementById('challenge-balancing').style.display = 'none';
-    document.getElementById('challenge-patience').style.display = 'none';
-    
-    // Show the specific UI
-    document.getElementById(`challenge-${challengeType}`).style.display = 'block';
-  }
-
-  /**
-   * Complete the current challenge
-   * @param {boolean} success - Whether the challenge was successful
+   * Complete the current challenge and transition to result
    */
   completeChallenge(success) {
-    if (this.state !== 'challenge' || !this.activeChallenge) return;
+    // Cleanup event listeners and timers first
+    this.cleanupChallengeEvents();
+    
+    // Stop challenge-related sounds
+    SoundSystem.stopChallengeSound();
     
     // Hide challenge overlay
     document.getElementById('challenge-overlay').style.display = 'none';
-    
-    // Calculate final score (0-100)
-    const finalScore = Math.min(100, this.challengeScore);
     
     if (success) {
       // Get the caught fish with detailed info
       const fish = this.activeChallenge.fish;
       
       // Calculate quality-based value bonus (50-100% of base value)
-      const qualityMultiplier = 0.5 + (finalScore / 200);
+      const qualityMultiplier = 0.5 + (this.challengeScore / 200);
       const adjustedValue = Math.round(fish.value * qualityMultiplier);
       
       // Create catch result with metadata
@@ -1285,7 +1338,7 @@ class FishingGame {
         name: fish.name,
         rarity: fish.rarity,
         value: adjustedValue,
-        quality: finalScore,
+        quality: this.challengeScore,
         timestamp: Date.now()
       };
       
@@ -1297,7 +1350,7 @@ class FishingGame {
       
       // 3. Add XP reward based on rarity and quality
       const baseXP = fish.rarity * 5;
-      const qualityBonus = Math.round(finalScore / 20); // 0-5 bonus XP based on quality
+      const qualityBonus = Math.round(this.challengeScore / 20); // 0-5 bonus XP based on quality
       const xpGained = baseXP + qualityBonus;
       
       // Apply XP and check for level up
@@ -1320,55 +1373,43 @@ class FishingGame {
       this.updateSessionStatsDisplay();
       
       // 7. Show appropriate success message
-      const qualityText = finalScore >= 90 ? 'Perfect' : 
-                         finalScore >= 70 ? 'Great' : 
-                         finalScore >= 50 ? 'Good' : 'Poor';
+      const qualityText = this.challengeScore >= 90 ? 'Perfect' : 
+                       this.challengeScore >= 70 ? 'Great' : 
+                       this.challengeScore >= 50 ? 'Good' : 'Poor';
       
       this.showToast(`${qualityText} catch! ${fish.name} (+${xpGained} XP, +${adjustedValue} coins)`, "success");
       
-      // 8. Handle level up notification if needed
-      if (leveledUp) {
-        this.showToast(`Level Up! You are now level ${this.fisherLevel}!`, "success", 5000);
-        
-        // Create level up visual effect
-        const levelUpEffect = document.createElement('div');
-        levelUpEffect.className = 'level-up-effect';
-        document.body.appendChild(levelUpEffect);
-        
-        // Remove after animation completes
-        setTimeout(() => {
-          if (document.body.contains(levelUpEffect)) {
-            document.body.removeChild(levelUpEffect);
-          }
-        }, 1500);
-      }
+      // 8. Show catch animation
+      document.getElementById('catch-animation').style.display = 'flex';
       
-      // 9. Check if this is a first-time catch of this species
-      const isNewSpecies = !this.collectedFish.includes(fish.name);
-      if (isNewSpecies) {
-        this.uniqueSpeciesCaught++;
-        this.showToast(`New species discovered: ${fish.name}!`, "success", 3000);
-        
-        // Show a special message from Billy
-        this.showBillyDialog(`Wow! You caught a ${this.getRarityText(fish.rarity).toLowerCase()} ${fish.name}! Adding it to your collection!`, 5000);
-      }
+      // 9. Update catch animation content
+      document.getElementById('caught-fish-name').textContent = fish.name;
+      document.getElementById('caught-fish-rarity').innerHTML = `${this.getRarityText(fish.rarity)} <span class="stars">${this.getRarityStars(fish.rarity)}</span>`;
+      document.getElementById('caught-fish-value').textContent = `+${adjustedValue} SurCoins`;
       
-      // 10. Save game state
-      GameState.saveGameState();
+      // 10. Set emoji/image based on fish rarity
+      const fishImage = document.getElementById('caught-fish-image');
+      fishImage.textContent = this.getFishEmoji(fish.rarity);
       
-      // 11. Show catch animation
-      this.showCatchAnimation(catchResult);
+      // 11. Provide haptic feedback for catch
+      this.vibrate([100, 50, 200]);
     } else {
       // Handle failed catch
-      this.showToast(`The ${this.activeChallenge.fish.name} got away!`, "error");
+      this.showToast("The fish got away!", "error");
       SoundSystem.playSound('lineBreak', { volume: 0.6 });
       
-      // Reset state
+      // Create escape visual effect
+      for (let i = 0; i < 3; i++) {
+        setTimeout(() => {
+          const x = this.hookPosition.x + (Math.random() * 30 - 15);
+          const y = this.hookPosition.y + (Math.random() * 20 - 10);
+          this.createWaterRipple(x, y);
+        }, i * 100);
+      }
+      
+      // Return to idle state immediately
       this.returnToIdle();
     }
-    
-    // Reset challenge state
-    this.activeChallenge = null;
   }
 
   /**
@@ -1418,46 +1459,66 @@ class FishingGame {
   }
 
   /**
-   * Return the game to idle state
+   * Return to idle state and reset for next cast
    */
   returnToIdle() {
     // Reset game state
     this.state = 'idle';
-    this.hookHasFish = false;
     this.activeChallenge = null;
-    this.challengeScore = 0;
+    this.hookHasFish = false;
     this.challengeTimer = 0;
+    this.challengeScore = 0;
     
-    // Reset UI elements
-    const challengeOverlay = document.getElementById('challenge-overlay');
-    if (challengeOverlay) {
-      challengeOverlay.style.display = 'none';
-    }
-    
-    // Reset any active timers
+    // Clear any challenge intervals
     if (this.challengeInterval) {
       clearInterval(this.challengeInterval);
       this.challengeInterval = null;
     }
     
-    // Reset power meter
-    const powerMeter = document.getElementById('power-meter-fill');
-    if (powerMeter) {
-      powerMeter.style.width = '0%';
+    // Reset any challenge-specific state
+    this.timingState = null;
+    this.reelingState = null;
+    this.balancingState = null;
+    this.patienceState = null;
+    
+    // Cleanup any event listeners from challenges
+    this.cleanupChallengeListeners();
+    
+    // Hide challenge overlay
+    const overlay = document.getElementById('challenge-overlay');
+    if (overlay) {
+      overlay.style.display = 'none';
     }
     
-    // Enable casting button
+    // Enable cast button
     const castButton = document.getElementById('cast-button');
     if (castButton) {
-      castButton.disabled = false;
       castButton.textContent = 'Cast Line';
+      castButton.disabled = false;
+      castButton.classList.remove('active');
     }
     
     // Reset hook position
-    this.hookPosition = { x: this.canvas.width / 2, y: this.canvas.height / 3 };
+    this.hookPosition = { x: 100, y: 150 };
+    this.targetHookPosition = { x: 100, y: 150 };
     
-    // Play ambient sound
-    SoundSystem.playSound('ambient', { loop: true, volume: 0.3 });
+    // Stop any challenge-related sounds
+    SoundSystem.stopChallengeSound();
+    
+    // Show ambient water sounds
+    SoundSystem.playSound('ambient', { volume: 0.3, loop: true });
+  }
+
+  /**
+   * Clean up any event listeners from challenges
+   */
+  cleanupChallengeListeners() {
+    // Remove patience challenge event listeners if they exist
+    if (this.patienceState && this.patienceState.active) {
+      document.removeEventListener('mousemove', this.handlePatienceMouseMove);
+      document.removeEventListener('touchmove', this.handlePatienceTouchMove);
+      this.patienceState.active = false;
+    }
   }
 
   /**
@@ -1992,46 +2053,41 @@ class FishingGame {
    * @param {HTMLElement} container - Challenge container
    */
   initTimingChallenge(container) {
-    // Set up indicator animation
-    const indicator = container.querySelector('.timing-indicator');
-    if (!indicator) return;
+    console.log('[FishingGame] Initializing timing challenge');
     
-    // Initial position (start from left)
-    indicator.style.left = '0%';
-    
-    // Set up animation interval
-    this.challengeInterval = setInterval(() => {
-      // Get current position
-      const currentPos = parseFloat(indicator.style.left) || 0;
-      
-      // Move indicator based on difficulty
-      const moveSpeed = 1 + (this.activeChallenge.difficulty * 1.5);
-      const newPos = currentPos + moveSpeed;
-      
-      // Check if we need to reset
-      if (newPos > 100) {
-        indicator.style.left = '0%';
-      } else {
-        indicator.style.left = `${newPos}%`;
-      }
-      
-      // Update timer
-      this.challengeTimer += 50;
-      this.updateChallengeProgress();
-      
-      // Check for timeout
-      if (this.challengeTimer >= this.challengeDuration) {
-        clearInterval(this.challengeInterval);
-        this.completeChallenge(false);
-      }
-    }, 50);
-    
-    // Set visible
+    // Show the container
     container.style.display = 'block';
     
-    // Add instructional toast for new players
-    if (this.totalCatches < 2) {
-      this.showToast("Tap when the indicator aligns with the target!", "info", 2000);
+    // Reset any existing state
+    this.timingState = {
+      position: 0,
+      direction: 1,
+      speed: 1 + (this.activeChallenge.difficulty * 1.5),
+      targetHit: false,
+      hitAccuracy: 0,
+      pulseEffect: 0
+    };
+    
+    // Set up indicator element
+    const indicator = container.querySelector('.timing-indicator');
+    const target = container.querySelector('.timing-target');
+    
+    if (indicator && target) {
+      // Initial position (start from left)
+      indicator.style.left = '0%';
+      
+      // Animate target to draw attention
+      target.style.animation = 'pulse 0.8s infinite';
+    }
+    
+    // Play sound
+    SoundSystem.playSound('reel', { volume: 0.5, loop: true });
+    
+    // Update challenge description with fish name
+    const instruction = container.querySelector('.timing-instruction');
+    if (instruction && this.activeChallenge.fish) {
+      const fishName = this.activeChallenge.fish.name;
+      instruction.textContent = `This ${fishName} requires perfect timing! Click when the marker aligns with the target!`;
     }
   }
 
@@ -2040,81 +2096,67 @@ class FishingGame {
    * @param {HTMLElement} container - Challenge container
    */
   initReelingChallenge(container) {
-    // Reset reeling state
-    this.reelProgress = 0;
-    this.clickCount = 0;
-    this.fishResistance = 0;
+    console.log('[FishingGame] Initializing reeling challenge');
     
-    // Determine ideal clicks based on difficulty (higher difficulty = more clicks)
-    this.idealClicks = 10 + Math.round(this.activeChallenge.difficulty * 10);
-    
-    // Reset visual elements
-    const reelingFill = container.querySelector('.reeling-fill');
-    if (reelingFill) {
-      reelingFill.style.width = '0%';
-    }
-    
-    const resistanceFill = container.querySelector('#resistance-fill');
-    if (resistanceFill) {
-      resistanceFill.style.width = '100%';
-    }
-    
-    const fatigueFill = container.querySelector('#fatigue-fill');
-    if (fatigueFill) {
-      fatigueFill.style.width = '0%';
-    }
-    
-    // Set up animation interval
-    this.challengeInterval = setInterval(() => {
-      // Simulate fish fighting back - slowly decrease progress if not reeling
-      this.reelProgress = Math.max(0, this.reelProgress - 0.5);
-      
-      // Fish gets tired as challenge continues
-      this.fishFatigue = Math.min(100, this.fishFatigue + 0.5);
-      
-      // Update visuals
-      if (reelingFill) {
-        reelingFill.style.width = `${this.reelProgress}%`;
-      }
-      
-      if (resistanceFill) {
-        const resistanceWidth = 100 - Math.min(80, this.fishFatigue);
-        resistanceFill.style.width = `${resistanceWidth}%`;
-      }
-      
-      if (fatigueFill) {
-        fatigueFill.style.width = `${this.fishFatigue}%`;
-      }
-      
-      // Update timer
-      this.challengeTimer += 50;
-      this.updateChallengeProgress();
-      
-      // Check for timeout or fish escape
-      if (this.challengeTimer >= this.challengeDuration) {
-        clearInterval(this.challengeInterval);
-        
-        // If progress is above 50%, success, otherwise failure
-        this.completeChallenge(this.reelProgress >= 50);
-      }
-    }, 50);
-    
-    // Set visible
+    // Show the container
     container.style.display = 'block';
     
-    // Add instructional toast for new players
-    if (this.totalCatches < 2) {
-      this.showToast("Tap rapidly to reel in the fish!", "info", 2000);
+    // Initialize challenge state
+    this.reelingState = {
+      reelPower: 0,
+      lineStrain: 0,
+      progress: 0,
+      lastReelTime: 0,
+      reelDecay: 0.5, // How quickly reel power decays
+      strainIncrease: this.activeChallenge.difficulty * 0.6, // How quickly strain increases
+      progressNeeded: 100, // Progress needed to win
+      maxStrain: 100, // Maximum strain before line breaks
+      fishStrength: 50 + (this.activeChallenge.fish.rarity * 10),
+      clickCount: 0,
+      idealClicks: 15 + (this.activeChallenge.fish.rarity * 3)
+    };
+    
+    // Set up reeling button
+    const reelButton = container.querySelector('#reel-challenge-button');
+    if (reelButton) {
+      // Make button text more dynamic based on fish
+      const fishRarity = this.activeChallenge.fish.rarity;
+      if (fishRarity >= 4) {
+        reelButton.textContent = 'REEL HARD!';
+      } else if (fishRarity >= 3) {
+        reelButton.textContent = 'REEL STEADY!';
+      } else {
+        reelButton.textContent = 'REEL!';
+      }
     }
     
-    // Mobile-specific setup
-    if (this.isMobile) {
-      // Increase button prominence
-      const reelButton = container.querySelector('.reeling-button');
-      if (reelButton) {
-        reelButton.style.transform = 'scale(1.05)';
-        reelButton.style.boxShadow = '0 0 15px rgba(230, 57, 70, 0.5)';
-      }
+    // Reset UI elements
+    const strainFill = container.querySelector('.strain-fill');
+    const progressFill = container.querySelector('.progress-fill');
+    const strengthFill = container.querySelector('.strength-fill');
+    
+    if (strainFill) strainFill.style.width = '0%';
+    if (progressFill) progressFill.style.width = '0%';
+    if (strengthFill) strengthFill.style.width = '100%';
+    
+    // Hide warning text initially
+    const warningText = container.querySelector('.strain-warning-text');
+    if (warningText) {
+      warningText.style.opacity = '0';
+    }
+    
+    // Play sound
+    SoundSystem.playSound('lineTension', { volume: 0.3, loop: true });
+    
+    // Update instruction text
+    const instruction = container.querySelector('.reeling-instruction');
+    if (instruction && this.activeChallenge.fish) {
+      const fishName = this.activeChallenge.fish.name;
+      instruction.innerHTML = `
+        <span class="mobile-only">Tap rapidly to reel in the ${fishName}!</span>
+        <span class="desktop-only">Click rapidly to reel in the ${fishName}!</span>
+        <div class="strain-warning-text">Be careful not to break the line!</div>
+      `;
     }
   }
 
@@ -2123,63 +2165,44 @@ class FishingGame {
    * @param {HTMLElement} container - Challenge container
    */
   initBalancingChallenge(container) {
-    // Reset balancing state
-    this.balanceTime = 0;
-    this.positionChanges = 0;
-    this.lastPosition = null;
+    console.log('[FishingGame] Initializing balancing challenge');
     
-    // Determine target balance time based on difficulty
-    this.targetBalanceTime = 50 + Math.round(50 * this.activeChallenge.difficulty); 
-    
-    // Set up initial indicator position (middle)
-    const indicator = container.querySelector('.balance-indicator');
-    if (indicator) {
-      indicator.style.top = '50%';
-    }
-    
-    // Set up animation interval
-    this.challengeInterval = setInterval(() => {
-      // Apply random "fish movement" effect
-      if (Math.random() < 0.3 && indicator) {
-        // Get current position
-        const currentPos = parseFloat(indicator.style.top) || 50;
-        
-        // Random movement based on difficulty
-        const movement = (Math.random() * 10 - 5) * this.activeChallenge.difficulty;
-        
-        // Apply movement with boundaries
-        const newPos = Math.max(0, Math.min(100, currentPos + movement));
-        
-        // Only apply movement if user hasn't provided input recently
-        if (Date.now() - (this.lastInputTime || 0) > 500) {
-          indicator.style.top = `${newPos}%`;
-        }
-      }
-      
-      // Update timer
-      this.challengeTimer += 50;
-      this.updateChallengeProgress();
-      
-      // Check for timeout
-      if (this.challengeTimer >= this.challengeDuration) {
-        clearInterval(this.challengeInterval);
-        
-        // If balance time is above threshold, success
-        const threshold = this.targetBalanceTime * 0.6;
-        this.completeChallenge(this.balanceTime >= threshold);
-      }
-    }, 50);
-    
-    // Set visible
+    // Show the container
     container.style.display = 'block';
     
-    // Add instructional toast for new players
-    if (this.totalCatches < 2) {
-      if (this.isMobile) {
-        this.showToast("Move your finger up and down to keep the indicator in the target zone!", "info", 3000);
-      } else {
-        this.showToast("Move your mouse up and down to keep the indicator in the target zone!", "info", 3000);
-      }
+    // Initialize challenge state
+    this.balancingState = {
+      targetPosition: 40, // Start target at 40% from top
+      targetDirection: 1, // 1 = down, -1 = up
+      targetSpeed: 0.3 + (this.activeChallenge.difficulty * 0.2),
+      lastPosition: undefined,
+      successTime: 0,
+      requiredTime: 3000, // Time needed in target zone in ms
+      positionChanges: 0
+    };
+    
+    // Set up track and indicators
+    const target = container.querySelector('.balance-target');
+    const indicator = container.querySelector('.balance-indicator');
+    
+    if (target && indicator) {
+      target.style.top = `${this.balancingState.targetPosition}%`;
+      
+      // Start indicator in middle
+      indicator.style.top = '50%';
+      
+      // Add animation to target to draw attention
+      target.style.animation = 'pulse 1s infinite';
+    }
+    
+    // Play sound
+    SoundSystem.playSound('waterSplash', { volume: 0.2, loop: true });
+    
+    // Update challenge description with fish name
+    const instruction = container.querySelector('p');
+    if (instruction && this.activeChallenge.fish) {
+      const fishName = this.activeChallenge.fish.name;
+      instruction.textContent = `This ${fishName} is strong! ${this.isMobile ? 'Move your finger' : 'Move your mouse'} up and down to keep the indicator in the target zone!`;
     }
   }
 
@@ -2188,59 +2211,131 @@ class FishingGame {
    * @param {HTMLElement} container - Challenge container
    */
   initPatienceChallenge(container) {
-    // Reset patience state
-    this.patienceScore = 100;
-    this.lastMovement = Date.now();
+    console.log('[FishingGame] Initializing patience challenge');
     
-    // Set up animation interval
-    this.challengeInterval = setInterval(() => {
-      // Check for movement (will be updated by mousemove/touchmove handlers)
-      const movementAge = Date.now() - this.lastMovement;
-      
-      // Update patience score - good if no movement
-      if (movementAge > 500) {
-        this.patienceScore = Math.min(100, this.patienceScore + 0.5);
-      } else {
-        this.patienceScore = Math.max(0, this.patienceScore - 5);
-      }
-      
-      // Update visual fill
-      const patienceFill = container.querySelector('.patience-fill');
-      if (patienceFill) {
-        patienceFill.style.width = `${this.patienceScore}%`;
-      }
-      
-      // Show/hide warning
-      const warning = container.querySelector('.patience-warning');
-      if (warning) {
-        warning.classList.toggle('hidden', movementAge > 300);
-      }
-      
-      // Update timer
-      this.challengeTimer += 50;
-      this.updateChallengeProgress();
-      
-      // Check for success/timeout
-      if (this.patienceScore >= 100) {
-        // Success - full patience
-        clearInterval(this.challengeInterval);
-        this.challengeScore = 100;
-        this.completeChallenge(true);
-      } else if (this.challengeTimer >= this.challengeDuration) {
-        // Timeout - check patience level
-        clearInterval(this.challengeInterval);
-        this.challengeScore = this.patienceScore;
-        this.completeChallenge(this.patienceScore >= 50);
-      }
-    }, 50);
-    
-    // Set visible
+    // Show the container
     container.style.display = 'block';
     
-    // Add instructional toast for new players
-    if (this.totalCatches < 2) {
-      this.showToast("Stay still and wait for the fish to tire out!", "info", 2000);
+    // Initialize challenge state
+    this.patienceState = {
+      patienceTime: 0,
+      requiredTime: 5000 + (this.activeChallenge.difficulty * 1000), // Time required in ms
+      playerMoving: false,
+      movementCount: 0,
+      lastMouseX: 0,
+      lastMouseY: 0,
+      testInProgress: false,
+      testDuration: 0,
+      testTimer: 0,
+      active: true // Flag to track if this challenge is active for event cleanup
+    };
+    
+    // Set up UI elements
+    const patienceFill = container.querySelector('.patience-fill');
+    const patienceWarning = container.querySelector('.patience-warning');
+    
+    if (patienceFill) {
+      patienceFill.style.width = '0%';
     }
+    
+    if (patienceWarning) {
+      patienceWarning.classList.add('hidden');
+    }
+    
+    // Add event listeners for mouse/touch movement
+    this.handlePatienceMouseMove = this.handlePatienceMouseMove.bind(this);
+    this.handlePatienceTouchMove = this.handlePatienceTouchMove.bind(this);
+    
+    document.addEventListener('mousemove', this.handlePatienceMouseMove);
+    document.addEventListener('touchmove', this.handlePatienceTouchMove, { passive: false });
+    
+    // Play ambient sound
+    SoundSystem.playSound('ambientNight', { volume: 0.3, loop: true });
+    
+    // Update challenge description with fish name
+    const instruction = container.querySelector('p');
+    if (instruction && this.activeChallenge.fish) {
+      const fishName = this.activeChallenge.fish.name;
+      instruction.textContent = `This ${fishName} requires patience! Stay completely still until it tires!`;
+    }
+  }
+
+  /**
+   * Handle mouse move in patience challenge
+   * @param {MouseEvent} e - Mouse move event
+   */
+  handlePatienceMouseMove(e) {
+    if (this.state !== 'challenge' || this.activeChallenge?.type !== 'patience' || !this.patienceState) {
+      return;
+    }
+    
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    
+    // Skip first time to initialize values
+    if (this.patienceState.lastMouseX === 0 && this.patienceState.lastMouseY === 0) {
+      this.patienceState.lastMouseX = mouseX;
+      this.patienceState.lastMouseY = mouseY;
+      return;
+    }
+    
+    // Calculate movement distance
+    const distance = Math.sqrt(
+      Math.pow(mouseX - this.patienceState.lastMouseX, 2) +
+      Math.pow(mouseY - this.patienceState.lastMouseY, 2)
+    );
+    
+    // If movement is significant, mark as moving
+    if (distance > 3) {
+      this.patienceState.playerMoving = true;
+      this.patienceState.movementCount++;
+    }
+    
+    // Update last position
+    this.patienceState.lastMouseX = mouseX;
+    this.patienceState.lastMouseY = mouseY;
+  }
+
+  /**
+   * Handle touch move in patience challenge
+   * @param {TouchEvent} e - Touch move event
+   */
+  handlePatienceTouchMove(e) {
+    if (this.state !== 'challenge' || this.activeChallenge?.type !== 'patience' || !this.patienceState) {
+      return;
+    }
+    
+    // Prevent scrolling
+    e.preventDefault();
+    
+    if (e.touches.length === 0) return;
+    
+    const touch = e.touches[0];
+    const touchX = touch.clientX;
+    const touchY = touch.clientY;
+    
+    // Skip first time to initialize values
+    if (this.patienceState.lastMouseX === 0 && this.patienceState.lastMouseY === 0) {
+      this.patienceState.lastMouseX = touchX;
+      this.patienceState.lastMouseY = touchY;
+      return;
+    }
+    
+    // Calculate movement distance
+    const distance = Math.sqrt(
+      Math.pow(touchX - this.patienceState.lastMouseX, 2) +
+      Math.pow(touchY - this.patienceState.lastMouseY, 2)
+    );
+    
+    // If movement is significant, mark as moving
+    if (distance > 5) { // Higher threshold for touch to account for subtle movements
+      this.patienceState.playerMoving = true;
+      this.patienceState.movementCount++;
+    }
+    
+    // Update last position
+    this.patienceState.lastMouseX = touchX;
+    this.patienceState.lastMouseY = touchY;
   }
 
   /**
@@ -2251,6 +2346,498 @@ class FishingGame {
     if (progressFill) {
       const progress = Math.min(100, (this.challengeTimer / this.challengeDuration) * 100);
       progressFill.style.width = `${progress}%`;
+    }
+  }
+
+  /**
+   * Update the active challenge
+   * @param {number} deltaTime - Time since last frame in ms
+   */
+  updateChallenge(deltaTime) {
+    if (!this.activeChallenge) return;
+    
+    // Update challenge timer
+    this.challengeTimer += deltaTime;
+    
+    // Update challenge progress bar
+    const progressFill = document.getElementById('challenge-progress-fill');
+    if (progressFill) {
+      const progress = Math.min(this.challengeTimer / this.challengeDuration, 1);
+      progressFill.style.width = `${progress * 100}%`;
+      
+      // Change color based on progress
+      if (progress > 0.75) {
+        progressFill.style.backgroundColor = '#F44336'; // Red at end
+      } else if (progress > 0.5) {
+        progressFill.style.backgroundColor = '#FFC107'; // Yellow in middle
+      }
+    }
+    
+    // Update based on challenge type
+    switch (this.activeChallenge.type) {
+      case 'timing':
+        this.updateTimingChallenge(deltaTime);
+        break;
+      case 'reeling':
+        this.updateReelingChallenge(deltaTime);
+        break;
+      case 'balancing':
+        this.updateBalancingChallenge(deltaTime);
+        break;
+      case 'patience':
+        this.updatePatienceChallenge(deltaTime);
+        break;
+    }
+    
+    // Check for challenge timeout
+    if (this.challengeTimer >= this.challengeDuration) {
+      // Auto-fail if we reach the time limit
+      this.completeChallenge(false);
+    }
+  }
+
+  /**
+   * Update the timing challenge animation and state
+   * @param {number} deltaTime - Time since last frame
+   */
+  updateTimingChallenge(deltaTime) {
+    if (!this.timingState) return;
+    
+    // Move the indicator back and forth
+    this.timingState.position += this.timingState.direction * this.timingState.speed * (deltaTime / 16);
+    
+    // Add some randomness occasionally to simulate fish struggling
+    if (Math.random() < 0.02) {
+      this.timingState.speed = 1 + (this.activeChallenge.difficulty * 1.5) + (Math.random() * 0.5);
+    }
+    
+    // Reverse direction at edges
+    if (this.timingState.position >= 100) {
+      this.timingState.position = 100;
+      this.timingState.direction = -1;
+      // Provide visual feedback on direction change
+      this.pulseIndicator();
+    } else if (this.timingState.position <= 0) {
+      this.timingState.position = 0;
+      this.timingState.direction = 1;
+      // Provide visual feedback on direction change
+      this.pulseIndicator();
+    }
+    
+    // Update indicator position
+    const indicator = document.querySelector('.timing-indicator');
+    if (indicator) {
+      indicator.style.left = `${this.timingState.position}%`;
+      
+      // Update pulse effect if active
+      if (this.timingState.pulseEffect > 0) {
+        this.timingState.pulseEffect -= deltaTime / 200;
+        if (this.timingState.pulseEffect <= 0) {
+          this.timingState.pulseEffect = 0;
+          indicator.style.boxShadow = '';
+        } else {
+          indicator.style.boxShadow = `0 0 ${this.timingState.pulseEffect * 10}px rgba(255,255,255,${this.timingState.pulseEffect})`;
+        }
+      }
+    }
+    
+    // Gradually increase speed for difficulty
+    this.timingState.speed += 0.005 * (deltaTime / 16);
+  }
+
+  /**
+   * Visual pulse effect for timing indicator
+   */
+  pulseIndicator() {
+    if (!this.timingState) return;
+    
+    this.timingState.pulseEffect = 1;
+    const indicator = document.querySelector('.timing-indicator');
+    if (indicator) {
+      indicator.style.boxShadow = '0 0 10px rgba(255,255,255,1)';
+    }
+    
+    // Play a subtle sound for the direction change
+    SoundSystem.playSound('lineTension', { volume: 0.1 });
+  }
+
+  /**
+   * Update the reeling challenge state
+   * @param {number} deltaTime - Time since last frame
+   */
+  updateReelingChallenge(deltaTime) {
+    if (!this.reelingState) return;
+    
+    // Natural decay of reel power
+    this.reelingState.reelPower -= this.reelingState.reelDecay * (deltaTime / 16);
+    this.reelingState.reelPower = Math.max(0, this.reelingState.reelPower);
+    
+    // Update strain based on current reel power
+    const strainChange = (this.reelingState.reelPower > this.reelingState.fishStrength) 
+      ? this.reelingState.strainIncrease * (deltaTime / 16) 
+      : -this.reelingState.strainIncrease * 0.5 * (deltaTime / 16);
+    
+    this.reelingState.lineStrain += strainChange;
+    this.reelingState.lineStrain = Math.max(0, Math.min(this.reelingState.maxStrain, this.reelingState.lineStrain));
+    
+    // Update progress based on reel power vs fish strength
+    if (this.reelingState.reelPower > this.reelingState.fishStrength * 0.5) {
+      const progressGain = ((this.reelingState.reelPower - (this.reelingState.fishStrength * 0.5)) / this.reelingState.fishStrength) * (deltaTime / 16);
+      this.reelingState.progress += progressGain * 2;
+    } else {
+      // If power too low, fish is escaping
+      const progressLoss = (1 - (this.reelingState.reelPower / (this.reelingState.fishStrength * 0.5))) * (deltaTime / 100);
+      this.reelingState.progress -= progressLoss;
+      this.reelingState.progress = Math.max(0, this.reelingState.progress);
+    }
+    
+    // Check for success or failure
+    if (this.reelingState.progress >= this.reelingState.progressNeeded) {
+      // Calculate score based on strain
+      const strainPercentage = this.reelingState.lineStrain / this.reelingState.maxStrain;
+      this.challengeScore = Math.round(100 * (1 - strainPercentage * 0.8));
+      
+      // Complete challenge successfully
+      setTimeout(() => {
+        this.completeChallenge(true);
+      }, 300);
+    } else if (this.reelingState.lineStrain >= this.reelingState.maxStrain) {
+      // Line broke due to too much strain
+      setTimeout(() => {
+        this.completeChallenge(false);
+      }, 300);
+      
+      // Visual feedback for line break
+      const container = document.querySelector('.reeling-challenge');
+      if (container) {
+        container.classList.add('line-break');
+      }
+      
+      // Play sound effect
+      SoundSystem.playSound('lineBreak', { volume: 0.7 });
+    }
+    
+    // Update UI
+    this.updateReelingUI();
+  }
+
+  /**
+   * Update the UI for the reeling challenge
+   */
+  updateReelingUI() {
+    if (!this.reelingState) return;
+    
+    // Update strain bar
+    const strainFill = document.querySelector('.strain-fill');
+    if (strainFill) {
+      strainFill.style.width = `${(this.reelingState.lineStrain / this.reelingState.maxStrain) * 100}%`;
+      
+      // Change color based on strain
+      if (this.reelingState.lineStrain > this.reelingState.maxStrain * 0.8) {
+        strainFill.style.backgroundColor = '#F44336'; // Red
+      } else if (this.reelingState.lineStrain > this.reelingState.maxStrain * 0.5) {
+        strainFill.style.backgroundColor = '#FFC107'; // Yellow
+      } else {
+        strainFill.style.backgroundColor = '#4CAF50'; // Green
+      }
+    }
+    
+    // Update progress bar
+    const progressFill = document.querySelector('.progress-fill');
+    if (progressFill) {
+      progressFill.style.width = `${(this.reelingState.progress / this.reelingState.progressNeeded) * 100}%`;
+    }
+    
+    // Show warning if strain is high
+    const warningText = document.querySelector('.strain-warning-text');
+    if (warningText) {
+      if (this.reelingState.lineStrain > this.reelingState.maxStrain * 0.7) {
+        warningText.style.opacity = '1';
+        warningText.textContent = 'WARNING: Line is about to break!';
+        
+        // Add pulsing effect
+        warningText.style.animation = 'pulse 0.5s infinite';
+        
+        // Provide haptic feedback
+        if (this.vibrationSupported && Math.random() < 0.1) {
+          this.vibrate([10, 10]);
+        }
+      } else if (this.reelingState.lineStrain > this.reelingState.maxStrain * 0.5) {
+        warningText.style.opacity = '0.8';
+        warningText.textContent = 'Careful: Line tension high';
+        warningText.style.animation = 'none';
+      } else {
+        warningText.style.opacity = '0';
+        warningText.style.animation = 'none';
+      }
+    }
+    
+    // Update fish strength indicator
+    const strengthFill = document.querySelector('.strength-fill');
+    if (strengthFill) {
+      const strengthPercentage = (this.reelingState.fishStrength - (this.reelingState.progress / 2)) / this.reelingState.fishStrength;
+      strengthFill.style.width = `${Math.max(0, Math.min(100, strengthPercentage * 100))}%`;
+    }
+  }
+
+  /**
+   * Update the balancing challenge state
+   * @param {number} deltaTime - Time since last frame
+   */
+  updateBalancingChallenge(deltaTime) {
+    if (!this.balancingState) return;
+    
+    // Apply natural movement of target zone (fish struggling)
+    this.balancingState.targetPosition += this.balancingState.targetDirection * this.balancingState.targetSpeed * (deltaTime / 16);
+    
+    // Bounds check and reverse direction
+    if (this.balancingState.targetPosition >= 80) {
+      this.balancingState.targetPosition = 80;
+      this.balancingState.targetDirection = -1;
+    } else if (this.balancingState.targetPosition <= 20) {
+      this.balancingState.targetPosition = 20;
+      this.balancingState.targetDirection = 1;
+    }
+    
+    // Random direction changes to simulate fish behavior
+    if (Math.random() < 0.01) {
+      this.balancingState.targetDirection *= -1;
+    }
+    
+    // Random speed changes
+    if (Math.random() < 0.03) {
+      this.balancingState.targetSpeed = 0.2 + (Math.random() * 0.3) + (this.activeChallenge.difficulty * 0.2);
+    }
+    
+    // Update target position in UI
+    const target = document.querySelector('.balance-target');
+    if (target) {
+      target.style.top = `${this.balancingState.targetPosition}%`;
+    }
+    
+    // Check if indicator is in target zone
+    if (this.balancingState.lastPosition !== undefined) {
+      const targetSize = 30; // Target height in percent
+      const inTarget = Math.abs(this.balancingState.lastPosition - this.balancingState.targetPosition) <= targetSize / 2;
+      
+      if (inTarget) {
+        // Increase success meter
+        this.balancingState.successTime += deltaTime;
+        
+        // Visual feedback
+        const indicator = document.querySelector('.balance-indicator');
+        if (indicator) {
+          indicator.classList.add('in-target');
+        }
+        
+        // Check for success
+        if (this.balancingState.successTime >= this.balancingState.requiredTime) {
+          // Calculate score based on stability
+          const stabilityFactor = Math.min(1, this.balancingState.requiredTime / this.balancingState.positionChanges);
+          this.challengeScore = Math.round(stabilityFactor * 100);
+          
+          // Complete challenge
+          setTimeout(() => {
+            this.completeChallenge(true);
+          }, 300);
+        }
+      } else {
+        // Reset success meter if we leave the target
+        this.balancingState.successTime = Math.max(0, this.balancingState.successTime - (deltaTime * 2));
+        
+        // Visual feedback
+        const indicator = document.querySelector('.balance-indicator');
+        if (indicator) {
+          indicator.classList.remove('in-target');
+        }
+      }
+    }
+    
+    // Update progress bar
+    const progressFill = document.getElementById('challenge-progress-fill');
+    if (progressFill) {
+      const progressPercent = Math.min(100, (this.balancingState.successTime / this.balancingState.requiredTime) * 100);
+      progressFill.style.width = `${progressPercent}%`;
+    }
+  }
+
+  /**
+   * Update the patience challenge state
+   * @param {number} deltaTime - Time since last frame
+   */
+  updatePatienceChallenge(deltaTime) {
+    if (!this.patienceState) return;
+    
+    // Increase patience timer if player is not moving
+    if (!this.patienceState.playerMoving) {
+      this.patienceState.patienceTime += deltaTime;
+      
+      // Occasional random "fish testing" movements
+      if (Math.random() < 0.02 && !this.patienceState.testInProgress) {
+        // Start a "fish testing patience" moment
+        this.patienceState.testInProgress = true;
+        this.patienceState.testDuration = 1000 + Math.random() * 2000; // 1-3 seconds
+        this.patienceState.testTimer = 0;
+        
+        // Show warning
+        const warning = document.querySelector('.patience-warning');
+        if (warning) {
+          warning.classList.remove('hidden');
+        }
+        
+        // Subtle vibration
+        if (this.vibrationSupported) {
+          this.vibrate(20);
+        }
+      }
+      
+      // Update testing timer if active
+      if (this.patienceState.testInProgress) {
+        this.patienceState.testTimer += deltaTime;
+        
+        // Test complete
+        if (this.patienceState.testTimer >= this.patienceState.testDuration) {
+          this.patienceState.testInProgress = false;
+          
+          // Hide warning
+          const warning = document.querySelector('.patience-warning');
+          if (warning) {
+            warning.classList.add('hidden');
+          }
+          
+          // Add bonus to patience time
+          this.patienceState.patienceTime += 500;
+        }
+      }
+    } else {
+      // Player moved - reset timer
+      this.patienceState.patienceTime = Math.max(0, this.patienceState.patienceTime - (deltaTime * 2));
+      
+      // If in a test, failing is worse
+      if (this.patienceState.testInProgress) {
+        this.patienceState.patienceTime = Math.max(0, this.patienceState.patienceTime - (deltaTime * 5));
+        this.patienceState.testInProgress = false;
+        
+        // Hide warning
+        const warning = document.querySelector('.patience-warning');
+        if (warning) {
+          warning.classList.add('hidden');
+        }
+      }
+      
+      // Reset movement flag for next frame
+      this.patienceState.playerMoving = false;
+    }
+    
+    // Update patience meter
+    const patienceFill = document.querySelector('.patience-fill');
+    if (patienceFill) {
+      const fillPercent = Math.min(100, (this.patienceState.patienceTime / this.patienceState.requiredTime) * 100);
+      patienceFill.style.width = `${fillPercent}%`;
+      
+      // Change color based on progress
+      if (fillPercent > 75) {
+        patienceFill.style.backgroundColor = '#4CAF50'; // Green - almost there
+      } else if (fillPercent > 50) {
+        patienceFill.style.backgroundColor = '#8BC34A'; // Light green - good progress
+      } else if (fillPercent > 25) {
+        patienceFill.style.backgroundColor = '#FFEB3B'; // Yellow - some progress
+      }
+    }
+    
+    // Update progress bar
+    const progressFill = document.getElementById('challenge-progress-fill');
+    if (progressFill) {
+      const progressPercent = Math.min(100, (this.patienceState.patienceTime / this.patienceState.requiredTime) * 100);
+      progressFill.style.width = `${progressPercent}%`;
+    }
+    
+    // Check for success
+    if (this.patienceState.patienceTime >= this.patienceState.requiredTime) {
+      // Calculate score based on movement counts
+      const movementFactor = Math.max(0, 1 - (this.patienceState.movementCount / 20));
+      this.challengeScore = Math.round(70 + (movementFactor * 30)); // 70-100 score range
+      
+      // Complete challenge
+      setTimeout(() => {
+        this.completeChallenge(true);
+      }, 300);
+    }
+  }
+
+  /**
+   * Get description text for challenge type
+   * @param {string} challengeType - Type of challenge
+   * @returns {string} Challenge description
+   */
+  getChallengeDescription(challengeType) {
+    switch(challengeType) {
+      case 'timing':
+        return 'Click at exactly the right moment!';
+      case 'reeling':
+        return 'Click rapidly to reel in the fish!';
+      case 'balancing':
+        return 'Keep the indicator in the target zone!';
+      case 'patience':
+        return 'Hold steady and wait for the right moment!';
+      default:
+        return 'Catch the fish!';
+    }
+  }
+
+  /**
+   * Show the UI for a specific challenge type
+   * @param {string} challengeType - Type of challenge
+   */
+  showChallengeUI(challengeType) {
+    // Hide all challenge UIs first
+    document.getElementById('challenge-timing').style.display = 'none';
+    document.getElementById('challenge-reeling').style.display = 'none';
+    document.getElementById('challenge-balancing').style.display = 'none';
+    document.getElementById('challenge-patience').style.display = 'none';
+    
+    // Show the specific UI
+    document.getElementById(`challenge-${challengeType}`).style.display = 'block';
+  }
+
+  /**
+   * Get star display for fish rarity
+   * @param {number} rarity - Fish rarity (1-5)
+   * @returns {string} Stars as string
+   */
+  getRarityStars(rarity) {
+    return '★'.repeat(rarity);
+  }
+
+  /**
+   * Get text description of fish rarity
+   * @param {number} rarity - Fish rarity (1-5)
+   * @returns {string} Rarity name
+   */
+  getRarityText(rarity) {
+    switch(rarity) {
+      case 1: return 'Common';
+      case 2: return 'Uncommon';
+      case 3: return 'Rare';
+      case 4: return 'Epic';
+      case 5: return 'Legendary';
+      default: return 'Common';
+    }
+  }
+
+  /**
+   * Get emoji for fish based on rarity
+   * @param {number} rarity - Fish rarity (1-5)
+   * @returns {string} Fish emoji
+   */
+  getFishEmoji(rarity) {
+    switch(rarity) {
+      case 1: return '🐟';
+      case 2: return '🐠';
+      case 3: return '🐡';
+      case 4: return '🦈';
+      case 5: return '🐋';
+      default: return '🐟';
     }
   }
 }

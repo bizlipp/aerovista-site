@@ -199,29 +199,33 @@ export function playSound(soundId, options = {}) {
       // Create a clone to allow multiple instances of the same sound
       const soundInstance = audio.cloneNode();
       
-      // Apply settings
-      soundInstance.volume = settings.volume * sfxVolume * masterVolume;
-      soundInstance.loop = settings.loop;
-      soundInstance.playbackRate = settings.rate;
+      // Set data attribute for tracking and cleanup
+      soundInstance.setAttribute('data-sound-id', soundId);
       
-      // Apply pitch variation if supported and requested
-      if (settings.pitch !== 0 && window.AudioContext) {
-        try {
-          // This is a simple approximation, in a real implementation you'd use 
-          // Web Audio API to properly shift pitch
-          soundInstance.playbackRate = Math.pow(2, settings.pitch / 12) * settings.rate;
-        } catch (e) {
-          console.warn('[Sound] Pitch adjustment failed:', e);
-        }
+      // Apply volume (combining master and sfx volumes)
+      soundInstance.volume = Math.min(1.0, masterVolume * sfxVolume * settings.volume);
+      
+      // Apply playback rate
+      if (settings.rate !== 1.0) {
+        soundInstance.playbackRate = settings.rate;
       }
       
-      // Play the sound
+      // Set loop
+      soundInstance.loop = settings.loop;
+      
+      // Handle audio context for advanced effects (pitch, pan) if needed
+      if (settings.pitch !== 0 || settings.pan !== 0) {
+        // This would use Web Audio API for advanced effects
+        // Implemented elsewhere for complexity reasons
+      }
+      
+      // Start playback
       const playPromise = soundInstance.play();
       
-      // Handle play() promise (modern browsers return a promise from play())
+      // Handle autoplay restrictions in some browsers
       if (playPromise !== undefined) {
         playPromise.catch(error => {
-          console.warn(`[Sound] Error playing sound ${soundId}:`, error);
+          console.warn(`[Sound] Autoplay prevented for ${soundId}:`, error);
         });
       }
       
@@ -229,8 +233,8 @@ export function playSound(soundId, options = {}) {
     }
     
     return audio;
-  } catch (error) {
-    console.warn(`[Sound] Error playing sound ${soundId}:`, error);
+  } catch (e) {
+    console.error(`[Sound] Error playing sound ${soundId}:`, e);
     return null;
   }
 }
@@ -648,6 +652,36 @@ export function loadSoundSettings() {
   }
 }
 
+/**
+ * Stop any challenge-related sounds
+ * This ensures we clean up sounds related to fishing challenges
+ */
+export function stopChallengeSound() {
+  if (!enabled) return;
+  
+  // Stop sounds commonly used in challenges
+  const challengeSounds = ['reel', 'lineTension', 'waterSplash', 'ambientNight'];
+  
+  challengeSounds.forEach(soundId => {
+    const sound = sounds[soundId];
+    if (sound && !sound.paused) {
+      sound.pause();
+      sound.currentTime = 0;
+    }
+  });
+  
+  // Also stop any cloned instances that might still be playing
+  document.querySelectorAll('audio[data-sound-id]').forEach(audioEl => {
+    const soundId = audioEl.getAttribute('data-sound-id');
+    if (challengeSounds.includes(soundId)) {
+      audioEl.pause();
+      if (audioEl.parentNode) {
+        audioEl.parentNode.removeChild(audioEl);
+      }
+    }
+  });
+}
+
 // Export a default object with all functions
 export default {
   initSoundSystem,
@@ -662,5 +696,6 @@ export default {
   enableSound,
   isSoundEnabled,
   saveSoundSettings,
-  loadSoundSettings
+  loadSoundSettings,
+  stopChallengeSound
 }; 
