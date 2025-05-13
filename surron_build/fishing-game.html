@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Billy's Fishing Adventure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Bangers&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Base styles */
+    :root {
+      --primary-color: #4682B4;
+      --secondary-color: #7d8260;
+      --accent-color: #e63946;
+      --success-color: #4CAF50;
+      --warning-color: #FFD700;
+      --error-color: #F44336;
+      --water-color: #115577;
+      --water-surface: #4682B4;
+      --sky-color: #87CEEB;
+      --squad-primary: #2b6bae;
+      --squad-neon: #39FF14;
+    }
+    
+    * {
+      box-sizing: border-box;
+      touch-action: manipulation;
+    }
+    
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Rajdhani', sans-serif;
+      background: linear-gradient(to bottom, var(--sky-color), var(--water-surface));
+      overscroll-behavior: none;
+    }
+    
+    /* Loading screen styles */
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #115577;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      color: white;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    .loading-title {
+      font-family: 'Bangers', cursive;
+      font-size: 3rem;
+      text-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+      margin-bottom: 2rem;
+    }
+    
+    .loading-bar {
+      width: 80%;
+      max-width: 400px;
+      height: 20px;
+      background-color: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+    
+    .loading-progress {
+      height: 100%;
+      width: 0%;
+      background-color: var(--accent-color);
+      transition: width 0.3s ease-out;
+    }
+    
+    .loading-text {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+    
+    /* Game container styles */
+    .game-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+    }
+    
+    .game-title {
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
+      margin: 0;
+      color: white;
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+    }
+    
+    .player-stats {
+      display: flex;
+      gap: 1rem;
+      background-color: rgba(0,0,0,0.4);
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      color: white;
+      font-weight: 500;
+    }
+    
+    .game-layout {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 0.5rem;
+      overflow: hidden;
+    }
+    
+    .game-area {
+      position: relative;
+      background-color: var(--water-color);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      flex: 1;
+      min-height: 50vh;
+      touch-action: none;
+    }
+    
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      max-height: 40vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+    
+    .widget {
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 8px;
+      padding: 0.75rem;
+      color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    
+    .widget h3 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1rem;
+      font-family: 'Bangers', cursive;
+      color: var(--squad-neon);
+    }
+    
+    /* Game UI elements */
+    #water-ripples {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+    
+    .touch-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      z-index: 5;
+    }
+    
+    .power-meter {
+      width: 200px;
+      height: 12px;
+      background-color: rgba(0,0,0,0.5);
+      border-radius: 6px;
+      overflow: hidden;
+      display: none;
+    }
+    
+    .power-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #4CAF50, #FFEB3B, #FF5722);
+    }
+    
+    #cast-touch-button {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(230,57,70,0.9), rgba(200,30,40,0.9));
+      color: white;
+      font-size: 1.2rem;
+      font-weight: bold;
+      border: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    
+    /* Overlays */
+    #challenge-overlay, #catch-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    
+    .challenge-container {
+      background-color: rgba(0,0,0,0.8);
+      padding: 1.5rem;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    /* Toast notifications */
+    #toast-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    
+    /* Billy character */
+    .billy-character {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 120px;
+      height: 200px;
+      z-index: 3;
+    }
+    
+    #billy-dialog {
+      position: absolute;
+      bottom: 180px;
+      right: 80px;
+      min-width: 200px;
+      max-width: 300px;
+      padding: 10px 15px;
+      background-color: rgba(255,255,255,0.9);
+      color: #333;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 4;
+    }
+    
+    #billy-dialog.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    #billy-dialog:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      right: 30px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid rgba(255,255,255,0.9);
+    }
+    
+    /* Mission tracker */
+    .mission-tracker {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(0,0,0,0.7);
+      border-radius: 8px;
+      padding: 8px 12px;
+      color: white;
+      max-width: 250px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      font-size: 0.9rem;
+      z-index: 5;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    
+    .mission-tracker.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* Settings menu */
+    #settings-button {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background-color: rgba(0,0,0,0.4);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      width: 40px;
+      height: 40px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 100;
+    }
+    
+    #settings-menu {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background-color: rgba(0,0,0,0.9);
+      z-index: 101;
+      padding: 1rem;
+      color: white;
+      transition: right 0.3s ease;
+      overflow-y: auto;
+    }
+    
+    #settings-menu.visible {
+      right: 0;
+    }
+    
+    .volume-control {
+      margin-bottom: 1rem;
+    }
+    
+    .volume-control label {
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    
+    .volume-slider {
+      width: 100%;
+    }
+    
+    /* Responsive layout */
+    @media (min-width: 768px) {
+      .game-layout {
+        flex-direction: row;
+      }
+      
+      .game-area {
+        flex: 3;
+        min-height: auto;
+      }
+      
+      .sidebar {
+        flex: 1;
+        max-height: none;
+        overflow-y: auto;
+      }
+      
+      .game-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading screen -->
+  <div id="loading-screen">
+    <h1 class="loading-title">Billy's Fishing Adventure</h1>
+    <div class="loading-bar">
+      <div class="loading-progress" id="loading-progress"></div>
+    </div>
+    <p class="loading-text" id="loading-text">Loading game assets...</p>
+  </div>
+
+  <!-- Settings button and menu -->
+  <button id="settings-button">⚙️</button>
+  <div id="settings-menu">
+    <h2>Settings</h2>
+    
+    <div class="volume-control">
+      <label for="master-volume">Master Volume</label>
+      <input type="range" id="master-volume" min="0" max="100" value="70" class="volume-slider">
+    </div>
+    
+    <div class="volume-control">
+      <label for="sfx-volume">Sound Effects</label>
+      <input type="range" id="sfx-volume" min="0" max="100" value="100" class="volume-slider">
+    </div>
+    
+    <div class="volume-control">
+      <label for="music-volume">Music</label>
+      <input type="range" id="music-volume" min="0" max="100" value="50" class="volume-slider">
+    </div>
+    
+    <div class="volume-control">
+      <label for="ambient-volume">Ambient Sounds</label>
+      <input type="range" id="ambient-volume" min="0" max="100" value="80" class="volume-slider">
+    </div>
+    
+    <div class="volume-control">
+      <label>
+        <input type="checkbox" id="sound-enabled" checked> Enable Sound
+      </label>
+    </div>
+    
+    <button id="close-settings">Close</button>
+  </div>
+
+  <!-- Main game container -->
+  <div class="game-container">
+    <div class="game-header">
+      <h1 class="game-title">Billy's Fishing Adventure</h1>
+      <div class="player-stats">
+        <span id="player-level">Level 1</span>
+        <span id="player-currency">250 SurCoins</span>
+      </div>
+    </div>
+    
+    <div class="game-layout">
+      <div class="game-area">
+        <canvas id="fishing-canvas"></canvas>
+        <div id="water-ripples"></div>
+        
+        <!-- Billy character and dialog -->
+        <div class="billy-character"></div>
+        <div id="billy-dialog">Ready to catch some fish?</div>
+        
+        <!-- UI overlays -->
+        <div id="challenge-overlay">
+          <div class="challenge-container">
+            <h2 id="challenge-title">Fish On!</h2>
+            <p id="challenge-description">Quick, catch it before it gets away!</p>
+            
+            <!-- Challenge progress bar -->
+            <div class="challenge-progress">
+              <div class="challenge-progress-fill" id="challenge-progress-fill"></div>
+            </div>
+            
+            <!-- Different challenge types will be injected here -->
+            <div id="challenge-timing"></div>
+            <div id="challenge-reeling"></div>
+            <div id="challenge-balancing"></div>
+            <div id="challenge-patience"></div>
+          </div>
+        </div>
+        
+        <div id="catch-animation">
+          <div class="catch-reveal" id="catch-reveal">
+            <div class="fish-image" id="caught-fish-image">🐟</div>
+            <div class="fish-name" id="caught-fish-name">Bluegill</div>
+            <div class="fish-rarity" id="caught-fish-rarity">Common <span class="stars">★</span></div>
+            <div class="fish-value" id="caught-fish-value">+5 SurCoins</div>
+            <button class="continue-button" id="continue-button">Continue</button>
+          </div>
+        </div>
+        
+        <!-- Mission tracker -->
+        <div class="mission-tracker" id="mission-tracker">
+          <div class="mission-title">Current Mission</div>
+          <div class="mission-objective">Catch specific fish to complete your mission</div>
+          <div class="mission-progress">
+            <div class="mission-bar">
+              <div class="mission-fill" id="mission-fill"></div>
+            </div>
+            <span id="mission-percentage">0%</span>
+          </div>
+        </div>
+        
+        <!-- Mobile touch controls -->
+        <div class="touch-controls">
+          <div class="power-meter">
+            <div class="power-fill" id="power-meter-fill"></div>
+          </div>
+          <button id="cast-touch-button">CAST</button>
+        </div>
+      </div>
+      
+      <div class="sidebar">
+        <!-- These widgets will be populated by the game -->
+        <div class="widget collapsible-widget expanded" id="controls-widget">
+          <h3>Controls</h3>
+          <button id="cast-button" class="control-button">Cast Line</button>
+          <button id="reel-button" class="control-button" disabled>Reel In</button>
+          <button id="end-fishing-button" class="control-button">End Fishing</button>
+        </div>
+        
+        <div class="widget collapsible-widget expanded" id="current-conditions-widget">
+          <h3>Current Conditions</h3>
+          <div id="weather-display">
+            <!-- Weather info will be injected here -->
+          </div>
+        </div>
+        
+        <div class="widget collapsible-widget expanded" id="equipment-widget">
+          <h3>Your Gear</h3>
+          <div id="gear-display">
+            <!-- Equipment info will be injected here -->
+          </div>
+        </div>
+        
+        <div class="widget collapsible-widget" id="collection-widget">
+          <h3>Fish Collection <span id="collection-count">(0/0)</span></h3>
+          <div class="fish-collection" id="fish-collection-grid">
+            <!-- Fish collection will be injected here -->
+          </div>
+        </div>
+        
+        <div class="widget collapsible-widget expanded" id="catch-history-widget">
+          <h3>Catch History</h3>
+          <div id="no-catch-message">No fish caught yet. Cast your line!</div>
+          <div id="catch-display" style="display: none;">
+            <div class="session-stats">
+              <div>Session Catches: <span id="session-catches">0</span></div>
+              <div>Session Value: <span id="session-value">0</span> SurCoins</div>
+            </div>
+            <div class="catch-history" id="catch-history">
+              <!-- Recent catches will be injected here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mobile end fishing button -->
+    <button id="mobile-end-fishing" class="back-button" style="margin-top: 0.5rem; width: 100%;">End Fishing Session</button>
+  </div>
+  
+  <!-- Toast notifications container -->
+  <div id="toast-container"></div>
+  
+  <!-- Game scripts -->
+  <script type="module" src="fishing-game-standalone.js"></script>
+</body>
+</html> 
