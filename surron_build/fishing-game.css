@@ -1092,11 +1092,55 @@ canvas {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0) 70%);
   pointer-events: none;
-  opacity: 0;
   z-index: 1000;
-  animation: levelUp 1.5s ease-in-out;
+  background: radial-gradient(circle at center, rgba(255, 215, 0, 0.2) 0%, rgba(255, 215, 0, 0) 70%);
+  animation: levelUpPulse 1.5s ease-out;
+}
+
+@keyframes levelUpPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+.rare-catch-indicator {
+  background-color: rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  border-radius: 4px;
+  padding: 8px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: bold;
+  color: #FFD700;
+  animation: rarePulse 2s infinite;
+}
+
+.rare-star {
+  display: inline-block;
+  font-size: 1.2em;
+  animation: starSpin 3s linear infinite;
+  margin-right: 5px;
+}
+
+@keyframes rarePulse {
+  0% { background-color: rgba(255, 215, 0, 0.1); }
+  50% { background-color: rgba(255, 215, 0, 0.3); }
+  100% { background-color: rgba(255, 215, 0, 0.1); }
+}
+
+@keyframes starSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* Improve button feedback */

@@ -664,11 +664,31 @@ class FishingGame {
    * Update player information in UI
    */
   updatePlayerInfo() {
-    document.getElementById('player-level').textContent = `Level ${this.fisherLevel}`;
+    // Get current player state
+    const playerState = GameState.getState('player');
+    if (!playerState) return;
     
-    const player = GameState.getState('player');
-    if (player) {
-      document.getElementById('player-currency').textContent = `${player.currency} SurCoins`;
+    // Update level display
+    const levelDisplay = document.getElementById('player-level');
+    if (levelDisplay) {
+      levelDisplay.textContent = `Level ${playerState.level}`;
+    }
+    
+    // Update currency display
+    const currencyDisplay = document.getElementById('player-currency');
+    if (currencyDisplay) {
+      currencyDisplay.textContent = `${playerState.currency} SurCoins`;
+    }
+    
+    // Update fisher level properties
+    this.fisherLevel = playerState.level;
+    this.fisherXP = playerState.xp;
+    this.xpToNextLevel = playerState.xpToNextLevel;
+    
+    // Update collection count
+    const collectionCount = document.getElementById('collection-count');
+    if (collectionCount) {
+      collectionCount.textContent = `(${playerState.collectedFish.length}/${fishCatalog.FISH_CATALOG.length})`;
     }
   }
   
@@ -1252,101 +1272,229 @@ class FishingGame {
     const finalScore = Math.min(100, this.challengeScore);
     
     if (success) {
-      // Register the catch
+      // Get the caught fish with detailed info
+      const fish = this.activeChallenge.fish;
+      
+      // Calculate quality-based value bonus (50-100% of base value)
+      const qualityMultiplier = 0.5 + (finalScore / 200);
+      const adjustedValue = Math.round(fish.value * qualityMultiplier);
+      
+      // Create catch result with metadata
       const catchResult = {
-        fish: this.activeChallenge.fish,
+        fish: fish,
+        name: fish.name,
+        rarity: fish.rarity,
+        value: adjustedValue,
         quality: finalScore,
         timestamp: Date.now()
       };
       
-      // Store last catch
-      this.lastCatch = catchResult;
+      // 1. Record catch in game state
+      GameState.recordFishCatch(catchResult);
       
-      // Add to catch history
-      this.catchHistory.unshift(catchResult);
-      if (this.catchHistory.length > 10) {
-        this.catchHistory.pop();
-      }
+      // 2. Add currency reward
+      GameState.addPlayerCurrency(adjustedValue);
       
-      // Update UI with catch info
+      // 3. Add XP reward based on rarity and quality
+      const baseXP = fish.rarity * 5;
+      const qualityBonus = Math.round(finalScore / 20); // 0-5 bonus XP based on quality
+      const xpGained = baseXP + qualityBonus;
+      
+      // Apply XP and check for level up
+      const leveledUp = GameState.addPlayerXP(xpGained);
+      
+      // 4. Check for achievements
+      this.checkFishingAchievements();
+      
+      // 5. Update UI displays
+      this.updateFishCollection(fish.name);
       this.updateLastCatchDisplay(catchResult);
+      this.updatePlayerInfo();
       
-      // Show success message
+      // 6. Update session stats
+      this.sessionStats.catches++;
+      this.sessionStats.totalValue += adjustedValue;
+      if (fish.rarity >= 3) {
+        this.sessionStats.rareCatches++;
+      }
+      this.updateSessionStatsDisplay();
+      
+      // 7. Show appropriate success message
       const qualityText = finalScore >= 90 ? 'Perfect' : 
                          finalScore >= 70 ? 'Great' : 
                          finalScore >= 50 ? 'Good' : 'Poor';
       
-      this.showToast(`${qualityText} catch! ${catchResult.fish.name} (${finalScore}% quality)`, "success");
+      this.showToast(`${qualityText} catch! ${fish.name} (+${xpGained} XP, +${adjustedValue} coins)`, "success");
       
-      // Play catch sound
-      const soundId = catchResult.fish.rarity >= 4 ? 'legendarySuccess' : 
-                     catchResult.fish.rarity >= 3 ? 'rareSuccess' : 'commonSuccess';
-      this.soundSystem.playSound(soundId, { volume: 0.7 });
-      
-      // Vibrate for successful catch
-      const vibrationPattern = [];
-      for (let i = 0; i < catchResult.fish.rarity; i++) {
-        vibrationPattern.push(50, 100);
-      }
-      this.vibrate(vibrationPattern);
-      
-      // Update session stats
-      this.sessionStats.catches++;
-      this.sessionStats.totalValue += catchResult.fish.value;
-      if (catchResult.fish.rarity >= 3) {
-        this.sessionStats.rareCatches++;
+      // 8. Handle level up notification if needed
+      if (leveledUp) {
+        this.showToast(`Level Up! You are now level ${this.fisherLevel}!`, "success", 5000);
+        
+        // Create level up visual effect
+        const levelUpEffect = document.createElement('div');
+        levelUpEffect.className = 'level-up-effect';
+        document.body.appendChild(levelUpEffect);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+          if (document.body.contains(levelUpEffect)) {
+            document.body.removeChild(levelUpEffect);
+          }
+        }, 1500);
       }
       
-      // Show catch animation
+      // 9. Check if this is a first-time catch of this species
+      const isNewSpecies = !this.collectedFish.includes(fish.name);
+      if (isNewSpecies) {
+        this.uniqueSpeciesCaught++;
+        this.showToast(`New species discovered: ${fish.name}!`, "success", 3000);
+        
+        // Show a special message from Billy
+        this.showBillyDialog(`Wow! You caught a ${this.getRarityText(fish.rarity).toLowerCase()} ${fish.name}! Adding it to your collection!`, 5000);
+      }
+      
+      // 10. Save game state
+      GameState.saveGameState();
+      
+      // 11. Show catch animation
       this.showCatchAnimation(catchResult);
     } else {
-      // Fish got away
+      // Handle failed catch
       this.showToast(`The ${this.activeChallenge.fish.name} got away!`, "error");
-      this.soundSystem.playSound('fishEscape', { volume: 0.6 });
+      SoundSystem.playSound('lineBreak', { volume: 0.6 });
       
-      // Return to idle state
+      // Reset state
       this.returnToIdle();
     }
     
     // Reset challenge state
     this.activeChallenge = null;
-    this.challengeScore = 0;
-    this.challengeTimer = 0;
-    this.state = 'idle';
   }
 
   /**
-   * Return to idle state after a challenge or catching a fish
+   * Check for fishing achievements after catching a fish
    */
-  returnToIdle() {
-    this.state = 'idle';
-    this.hookPosition = { x: this.canvas.width / 2, y: this.canvas.height / 2 };
-    this.hookHasFish = false;
-    this.activeChallenge = null;
+  checkFishingAchievements() {
+    const playerState = GameState.getState('player');
+    const achievements = playerState.achievements;
     
-    // Reset UI elements
-    const overlay = document.getElementById('challenge-overlay');
-    if (overlay) {
-      overlay.style.display = 'none';
+    // First Catch achievement
+    if (!achievements.firstCatch && this.totalCatches >= 1) {
+      GameState.updateAchievement('firstCatch', true);
+      this.showToast("Achievement Unlocked: First Catch!", "success", 3000);
     }
     
-    // Re-enable casting button
+    // Variety Fisher (5 unique species)
+    if (!achievements.varietyFisher && this.uniqueSpeciesCaught >= 5) {
+      GameState.updateAchievement('varietyFisher', true);
+      this.showToast("Achievement Unlocked: Variety Fisher!", "success", 3000);
+      
+      // Bonus reward for achievement
+      GameState.addPlayerCurrency(100);
+      this.showToast("+100 SurCoins bonus for Variety Fisher achievement!", "success", 3000);
+    }
+    
+    // Master Angler (10 unique species)
+    if (!achievements.masterAngler && this.uniqueSpeciesCaught >= 10) {
+      GameState.updateAchievement('masterAngler', true);
+      this.showToast("Achievement Unlocked: Master Angler!", "success", 3000);
+      
+      // Bonus reward for achievement
+      GameState.addPlayerCurrency(250);
+      this.showToast("+250 SurCoins bonus for Master Angler achievement!", "success", 3000);
+    }
+    
+    // Collection Complete
+    const totalFishSpecies = fishCatalog.FISH_CATALOG.length;
+    if (!achievements.collectionComplete && this.uniqueSpeciesCaught >= totalFishSpecies) {
+      GameState.updateAchievement('collectionComplete', true);
+      this.showToast("Achievement Unlocked: Collection Complete!", "success", 5000);
+      
+      // Major bonus reward for completing collection
+      GameState.addPlayerCurrency(1000);
+      GameState.addPlayerXP(500);
+      this.showToast("+1000 SurCoins and +500 XP bonus for completing the collection!", "success", 5000);
+    }
+  }
+
+  /**
+   * Return the game to idle state
+   */
+  returnToIdle() {
+    // Reset game state
+    this.state = 'idle';
+    this.hookHasFish = false;
+    this.activeChallenge = null;
+    this.challengeScore = 0;
+    this.challengeTimer = 0;
+    
+    // Reset UI elements
+    const challengeOverlay = document.getElementById('challenge-overlay');
+    if (challengeOverlay) {
+      challengeOverlay.style.display = 'none';
+    }
+    
+    // Reset any active timers
+    if (this.challengeInterval) {
+      clearInterval(this.challengeInterval);
+      this.challengeInterval = null;
+    }
+    
+    // Reset power meter
+    const powerMeter = document.getElementById('power-meter-fill');
+    if (powerMeter) {
+      powerMeter.style.width = '0%';
+    }
+    
+    // Enable casting button
     const castButton = document.getElementById('cast-button');
     if (castButton) {
       castButton.disabled = false;
       castButton.textContent = 'Cast Line';
     }
     
-    // Update mobile UI if needed
-    const touchButton = document.getElementById('cast-touch-button');
-    if (touchButton && this.isMobile) {
-      touchButton.disabled = false;
-      touchButton.textContent = 'CAST';
-      touchButton.style.display = 'block';
-    }
+    // Reset hook position
+    this.hookPosition = { x: this.canvas.width / 2, y: this.canvas.height / 3 };
     
     // Play ambient sound
-    this.soundSystem.playSound('ambient', { loop: true, volume: 0.3 });
+    SoundSystem.playSound('ambient', { loop: true, volume: 0.3 });
+  }
+
+  /**
+   * Update session stats display
+   */
+  updateSessionStatsDisplay() {
+    // Update session catch count
+    const sessionCatches = document.getElementById('session-catches');
+    if (sessionCatches) {
+      sessionCatches.textContent = this.sessionStats.catches;
+    }
+    
+    // Update session value
+    const sessionValue = document.getElementById('session-value');
+    if (sessionValue) {
+      sessionValue.textContent = this.sessionStats.totalValue;
+    }
+    
+    // Update catch display visibility
+    const noCatchMessage = document.getElementById('no-catch-message');
+    const catchDisplay = document.getElementById('catch-display');
+    
+    if (this.sessionStats.catches > 0) {
+      if (noCatchMessage) noCatchMessage.style.display = 'none';
+      if (catchDisplay) catchDisplay.style.display = 'block';
+    }
+    
+    // If there are rare catches, add a special indicator
+    if (this.sessionStats.rareCatches > 0) {
+      const catchHistory = document.getElementById('catch-history');
+      if (catchHistory && !catchHistory.querySelector('.rare-catch-indicator')) {
+        const rareIndicator = document.createElement('div');
+        rareIndicator.className = 'rare-catch-indicator';
+        rareIndicator.innerHTML = `<span class="rare-star">★</span> You've caught ${this.sessionStats.rareCatches} rare fish!`;
+        catchHistory.prepend(rareIndicator);
+      }
+    }
   }
 }
 
