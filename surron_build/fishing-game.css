@@ -1212,10 +1212,13 @@ canvas {
   
   .challenge-button {
     padding: 20px;
-    font-size: 1.5rem;
-    width: 80%;
     margin: 15px auto;
+    width: 80%;
+    min-height: 60px;
+    font-size: 1.3rem;
+    border-radius: 30px;
     display: block;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   }
   
   .timing-track, .reeling-meter, .balance-track {
@@ -1228,6 +1231,112 @@ canvas {
   
   .timing-target, .balance-target {
     box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
+  }
+  
+  /* Larger casting button for easy touch */
+  #cast-touch-button {
+    width: 140px;
+    height: 140px;
+    font-size: 1.5rem;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+  }
+  
+  /* Active state styling */
+  #cast-touch-button:active {
+    transform: scale(0.95) translateY(5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Better visual feedback for progress */
+  .power-meter {
+    width: 80%;
+    height: 16px;
+    background: rgba(0, 0, 0, 0.6);
+    margin-bottom: 20px;
+  }
+  
+  /* Track animation for touch controls */
+  @keyframes pulse-track {
+    0% { box-shadow: 0 0 5px 2px rgba(230, 57, 70, 0.3); }
+    50% { box-shadow: 0 0 15px 5px rgba(230, 57, 70, 0.5); }
+    100% { box-shadow: 0 0 5px 2px rgba(230, 57, 70, 0.3); }
+  }
+  
+  /* Improve visual feedback for challenges */
+  .timing-track, .reeling-meter, .balance-track {
+    animation: pulse-track 2s infinite;
+    margin: 30px auto;
+  }
+  
+  /* Make timing button full width on mobile */
+  .timing-button {
+    width: 90%;
+    font-size: 1.5rem;
+    margin: 20px auto;
+  }
+  
+  /* Better reeling experience */
+  .reeling-button {
+    background: linear-gradient(to bottom, #ff5a5f, #e63946);
+    transform-origin: center;
+  }
+  
+  /* Enhance reeling button animation */
+  @keyframes reel-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
+  
+  .reeling-button {
+    animation: reel-pulse 0.5s infinite;
+  }
+  
+  /* Simplify interface on small screens */
+  .game-header {
+    padding: 0.3rem;
+  }
+  
+  /* Stack player stats for better readability */
+  .player-stats {
+    flex-direction: column;
+    padding: 0.3rem 0.6rem;
+    gap: 0.2rem;
+    font-size: 0.9rem;
+  }
+  
+  /* Make sidebar scrollable on small screens */
+  .sidebar {
+    max-height: 35vh;
+  }
+  
+  /* Make catch history more compact */
+  .catch-history-item {
+    padding: 3px;
+  }
+  
+  /* Add feedback when button is touched */
+  .control-button:active, 
+  .challenge-button:active, 
+  .continue-button:active {
+    background-color: #ff7680;
+    transform: scale(0.98);
+  }
+  
+  /* Better handling of fish collection grid */
+  .fish-collection {
+    grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+  }
+  
+  /* Improve touch experience on catch animation */
+  #catch-animation .continue-button {
+    padding: 15px 30px;
+    font-size: 1.3rem;
+    margin-top: 20px;
+    width: 80%;
+    max-width: 250px;
+    border-radius: 30px;
   }
 }
 
