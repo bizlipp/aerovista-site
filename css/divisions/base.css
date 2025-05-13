@@ -146,6 +146,7 @@
 
 .service-card {
   background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
@@ -351,6 +352,7 @@
 
 .division-form {
   background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
   backdrop-filter: blur(var(--glass-blur));
   padding: var(--space-lg);
   border-radius: var(--radius-lg);
@@ -411,4 +413,78 @@
   .team-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Hero Section Stacked Layout */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 5rem 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 1.5rem;
+  max-width: 800px;
+}
+
+.hero p {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
+  margin-bottom: 2.5rem;
+  max-width: 700px;
+  line-height: 1.6;
+}
+
+.hero .btn {
+  margin-top: 0.5rem;
+  min-width: 180px;
+}
+
+/* Ensure all children are centered */
+.hero > * {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Remove any flex or grid layout that might interfere */
+.hero .flex, 
+.hero .grid {
+  display: block;
+  width: 100%;
+}
+
+/* Ensure responsive layout */
+@media (max-width: 768px) {
+  .hero {
+    padding: 4rem 1rem;
+    min-height: 50vh;
+  }
+  
+  .hero h1 {
+    margin-bottom: 1rem;
+  }
+  
+  .hero p {
+    margin-bottom: 2rem;
+  }
+}
+
+/* Fix linter errors by adding -webkit-backdrop-filter for Safari compatibility */
+.card-glass,
+.modal-glass,
+.dropdown-glass {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+.hero-glass-bg {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
 } 

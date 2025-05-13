@@ -97,10 +97,10 @@
     <section class="contact" id="contact-form">
       <div class="container">
         <h2>Get in Touch</h2>
-        <form aria-label="Contact form">
-          <input type="text" name="name" placeholder="Your Name" required />
-          <input type="email" name="email" placeholder="Your Email" required />
-          <textarea name="message" placeholder="Your Message" required></textarea>
+        <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
+          <input class="form-control mb-sm" type="text" name="name" placeholder="Your Name" required aria-label="Your name" />
+          <input class="form-control mb-sm" type="email" name="email" placeholder="Your Email" required aria-label="Your email address" />
+          <textarea class="form-control mb-md" name="message" placeholder="Your Message" required rows="5" aria-label="Your message"></textarea>
           <button type="submit" class="btn">Send Message</button>
         </form>
       </div>

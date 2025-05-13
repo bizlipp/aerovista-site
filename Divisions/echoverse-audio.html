@@ -6,8 +6,15 @@
   <title>EchoVerse Audio | AeroVista</title>
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles.css" />
+  <!-- Main CSS - Imports all modular files -->
+  <link rel="stylesheet" href="../css/main.css" />
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <meta name="description" content="EchoVerse Audio provides AI-driven music production and sound design crafting immersive sonic experiences across media platforms.">
+  <meta property="og:title" content="EchoVerse Audio | AeroVista">
+  <meta property="og:description" content="AI-driven music production and immersive sound design">
+  <meta property="og:image" content="https://aerovista.us/public/images/divisions/echoverse-audio.jpg">
+  <meta property="og:url" content="https://aerovista.us/Divisions/echoverse-audio.html">
+  <meta property="og:type" content="website">
   <style>
     .audio-waves {
       position: absolute;
@@ -160,201 +167,272 @@
     }
   </style>
 </head>
-<body>
+<body data-page="division-single" data-division="echoverse-audio">
   <!-- Accessibility skip link -->
-  <a href="#main-content" class="skip-link">Skip to content</a>
-  
-  <!-- Header -->
-  <header class="site-header">
-    <div class="container">
-      <div class="header-inner">
-        <a href="../" class="logo">
-          <img src="../public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
-          <span class="logo-text">AeroVista</span>
-        </a>
-        <nav class="main-nav">
-          <nav class="main-nav">
-            <ul class="nav-list horizontal-nav">
-              <li><a href="../index.html" class="nav-link">Home</a></li>
-              <li><a href="../divisions.html" class="nav-link">Divisions</a></li>
-              <li><a href="../apps.html" class="nav-link">Apps</a></li>
-              <li><a href="../Store.html" class="nav-link">Tools & Resources</a></li>
-              <li><a href="../about.html" class="nav-link">About</a></li>
-            </ul>
-          </nav>
-        <button class="menu-toggle" aria-label="Toggle menu">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>
-      </div>
-    </div>
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <!-- Navbar -->
+  <header class="navbar" role="banner">
+    <div class="navbar-brand"><a href="../index.html"><strong>AeroVista</strong></a></div>
+    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
+      <a href="../index.html">Home</a>
+      <a href="../divisions.html" class="active">Divisions</a>
+      <a href="../apps.html">Apps</a>
+      <a href="../Store.html">Tools & Resources</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </header>
 
-  <!-- Division Hero -->
-  <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#474dff55 100%);">
-    <div class="audio-waves"></div>
-    <h1 class="text-gradient glitch" data-text="EchoVerse Audio" data-scramble="true">EchoVerse Audio</h1>
-    <p>AI‑driven music production and sound design crafting immersive sonic experiences across media.</p>
-    <a href="#contact" class="btn" data-animate="fade-up">Request a Demo Reel</a>
-  </section>
+  <!-- Main content -->
+  <main id="main-content">
+    <!-- Division Hero -->
+    <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#474dff55 100%);">
+      <div class="audio-waves"></div>
+      <h1 class="text-gradient glitch" data-text="EchoVerse Audio" data-scramble="true">EchoVerse Audio</h1>
+      <p>AI‑driven music production and sound design crafting immersive sonic experiences across media.</p>
+      <a href="#contact" class="btn" data-animate="fade-up">Request a Demo Reel</a>
+    </section>
 
-  <!-- Overview -->
-  <section class="container">
-    <h2>Our Mission</h2>
-    <div class="text-center" data-animate="fade-up">
-      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">EchoVerse Audio merges cutting‑edge generative tools with human artistry, delivering unique scores, samples, and adaptive soundscapes that resonate with audiences and enhance storytelling.</p>
-    </div>
-    
-    <div class="waveform" data-animate="fade-up"></div>
-  </section>
+    <!-- Overview -->
+    <section class="container">
+      <h2>Our Mission</h2>
+      <div class="text-center" data-animate="fade-up">
+        <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">EchoVerse Audio merges cutting‑edge generative tools with human artistry, delivering unique scores, samples, and adaptive soundscapes that resonate with audiences and enhance storytelling.</p>
+      </div>
+      
+      <div class="waveform" data-animate="fade-up"></div>
+    </section>
 
-  <!-- Services -->
-  <section class="container">
-    <h2>Our Services</h2>
-    <div class="services-grid">
-      <div class="service-card" data-animate="fade-up">
-        <div class="service-icon">🎵</div>
-        <h3>Custom Scores</h3>
-        <p>Dynamic soundtracks for games, film, and interactive installations tailored to your project's emotional arc and technical requirements.</p>
-      </div>
-      
-      <div class="service-card" data-animate="fade-up">
-        <div class="service-icon">🔊</div>
-        <h3>Generative Sample Packs</h3>
-        <p>AI‑crafted loops and stems ready for producers and creators, with usage rights cleared for commercial projects.</p>
-      </div>
-      
-      <div class="service-card" data-animate="fade-up">
-        <div class="service-icon">🎧</div>
-        <h3>Spatial Audio Design</h3>
-        <p>360° and ambisonic mixes for VR, AR, and themed attractions that create truly immersive sonic environments.</p>
-      </div>
-      
-      <div class="service-card" data-animate="fade-up">
-        <div class="service-icon">🔄</div>
-        <h3>Adaptive Audio Systems</h3>
-        <p>Responsive audio frameworks that evolve based on user interactions, enhancing gameplay and interactive experiences.</p>
-      </div>
-      
-      <div class="service-card" data-animate="fade-up">
-        <div class="service-icon">🎤</div>
-        <h3>Voice Synthesis</h3>
-        <p>Natural-sounding AI voice generation for narration, dialogue, and interactive applications with custom voice models.</p>
-      </div>
-      
-      <div class="service-card" data-animate="fade-up">
-        <div class="service-icon">🧠</div>
-        <h3>Audio Consultation</h3>
-        <p>Expert guidance on audio integration, middleware implementation, and sound design strategy for your projects.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Recent Projects -->
-  <section class="container">
-    <h2>Recent Projects</h2>
-    
-    <div class="projects-showcase">
-      <div class="project-item" data-animate="fade-up">
-        <div class="project-content">
-          <h3 class="project-title">Nebula Dreams VR Experience</h3>
-          <p>Full spatial audio design and procedurally generated ambient score for an innovative virtual reality meditation experience.</p>
+    <!-- Services -->
+    <section class="container">
+      <h2>Our Services</h2>
+      <div class="services-grid">
+        <div class="service-card" data-animate="fade-up">
+          <div class="service-icon">🎵</div>
+          <h3>Custom Scores</h3>
+          <p>Dynamic soundtracks for games, film, and interactive installations tailored to your project's emotional arc and technical requirements.</p>
         </div>
-        <div class="project-image">
-          <img 
-            src="../public/images/divisions/sunset_bargraphs.png" 
-            alt="Nebula Dreams VR" 
-            loading="lazy"
-            width="600"
-            height="340">
+        
+        <div class="service-card" data-animate="fade-up">
+          <div class="service-icon">🔊</div>
+          <h3>Generative Sample Packs</h3>
+          <p>AI‑crafted loops and stems ready for producers and creators, with usage rights cleared for commercial projects.</p>
+        </div>
+        
+        <div class="service-card" data-animate="fade-up">
+          <div class="service-icon">🎧</div>
+          <h3>Spatial Audio Design</h3>
+          <p>360° and ambisonic mixes for VR, AR, and themed attractions that create truly immersive sonic environments.</p>
+        </div>
+        
+        <div class="service-card" data-animate="fade-up">
+          <div class="service-icon">🔄</div>
+          <h3>Adaptive Audio Systems</h3>
+          <p>Responsive audio frameworks that evolve based on user interactions, enhancing gameplay and interactive experiences.</p>
+        </div>
+        
+        <div class="service-card" data-animate="fade-up">
+          <div class="service-icon">🎤</div>
+          <h3>Voice Synthesis</h3>
+          <p>Natural-sounding AI voice generation for narration, dialogue, and interactive applications with custom voice models.</p>
+        </div>
+        
+        <div class="service-card" data-animate="fade-up">
+          <div class="service-icon">🧠</div>
+          <h3>Audio Consultation</h3>
+          <p>Expert guidance on audio integration, middleware implementation, and sound design strategy for your projects.</p>
         </div>
       </div>
+    </section>
+
+    <!-- Recent Projects -->
+    <section class="container">
+      <h2>Recent Projects</h2>
       
-      <div class="project-item" data-animate="fade-up">
-        <div class="project-content">
-          <h3 class="project-title">Quantum Pulse Sample Library</h3>
-          <p>A collection of over 2,000 AI-generated sounds, loops, and samples created using our proprietary neural synthesis engine.</p>
+      <div class="projects-showcase">
+        <div class="project-item" data-animate="fade-up">
+          <div class="project-content">
+            <h3 class="project-title">Nebula Dreams VR Experience</h3>
+            <p>Full spatial audio design and procedurally generated ambient score for an innovative virtual reality meditation experience.</p>
+          </div>
+          <div class="project-image">
+            <img 
+              src="../public/images/divisions/sunset_bargraphs.png" 
+              alt="Nebula Dreams VR" 
+              loading="lazy"
+              width="600"
+              height="340">
+          </div>
         </div>
-        <div class="project-image">
-          <img 
-            src="../public/images/portfolio/portfolio-3.png" 
-            alt="Quantum Pulse" 
-            loading="lazy"
-            width="600"
-            height="340">
+        
+        <div class="project-item" data-animate="fade-up">
+          <div class="project-content">
+            <h3 class="project-title">Quantum Pulse Sample Library</h3>
+            <p>A collection of over 2,000 AI-generated sounds, loops, and samples created using our proprietary neural synthesis engine.</p>
+          </div>
+          <div class="project-image">
+            <img 
+              src="../public/images/portfolio/portfolio-3.png" 
+              alt="Quantum Pulse" 
+              loading="lazy"
+              width="600"
+              height="340">
+          </div>
+        </div>
+        
+        <div class="project-item" data-animate="fade-up">
+          <div class="project-content">
+            <h3 class="project-title">Echoes of Terra Game Soundtrack</h3>
+            <p>Adaptive soundtrack that evolves based on player actions and environmental conditions for an open-world RPG.</p>
+          </div>
+          <div class="project-image">
+            <img 
+              src="../public/images/divisions/echohead.webp" 
+              alt="Echoes of Terra" 
+              loading="lazy"
+              width="600"
+              height="340">
+          </div>
         </div>
       </div>
-      
-      <div class="project-item" data-animate="fade-up">
-        <div class="project-content">
-          <h3 class="project-title">Echoes of Terra Game Soundtrack</h3>
-          <p>Adaptive soundtrack that evolves based on player actions and environmental conditions for an open-world RPG.</p>
-        </div>
-        <div class="project-image">
-          <img 
-            src="../public/images/divisions/echohead.webp" 
-            alt="Echoes of Terra" 
-            loading="lazy"
-            width="600"
-            height="340">
-        </div>
-      </div>
-    </div>
+    </section>
+
+    <!-- Collaboration Callout -->
+    <section class="hero" style="min-height:auto;padding:4rem 1rem;background:var(--color-surface);">
+      <h2 style="margin-bottom:1.5rem;" data-scramble="true" data-text="Need a Signature Sound?">Need a Signature Sound?</h2>
+      <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">From high‑octane trailers to meditative ambience, EchoVerse Audio composes sonic worlds that resonate with audiences and elevate your creative vision.</p>
+      <a href="#contact" class="btn alt" data-animate="fade-up">Request a Demo Reel</a>
+    </section>
+  </main>
+
+  <!-- Contact Section -->
+  <section id="contact" class="container section-md" aria-labelledby="contact-heading">
+    <h2 id="contact-heading" class="text-center mb-lg">Contact EchoVerse Audio</h2>
+    <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
+      <input class="form-control mb-sm" required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
+      <input class="form-control mb-sm" required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
+      <textarea class="form-control mb-md" required rows="5" placeholder="Describe your audio needs..." data-animate="fade-up" aria-label="Your message"></textarea>
+      <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
+    </form>
   </section>
 
-  <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:4rem 1rem;background:var(--color-surface);">
-    <h2 style="margin-bottom:1.5rem;" data-scramble="true" data-text="Need a Signature Sound?">Need a Signature Sound?</h2>
-    <p style="max-width:700px;color:var(--color-text-soft);margin-bottom:2rem;">From high‑octane trailers to meditative ambience, EchoVerse Audio composes sonic worlds that resonate with audiences and elevate your creative vision.</p>
-    <a href="#contact" class="btn alt" data-animate="fade-up">Request a Demo Reel</a>
-  </section>
-
-  <!-- Contact CTA -->
-  <section id="contact">
-    <div class="container">
-      <h2>Contact EchoVerse Audio</h2>
-      <form id="contactForm">
-        <input required type="text" placeholder="Your Name" data-animate="fade-up" />
-        <input required type="email" placeholder="Email" data-animate="fade-up" />
-        <textarea required rows="5" placeholder="Describe your audio needs..." data-animate="fade-up"></textarea>
-        <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
-      </form>
-    </div>
-  </section>
-
-  <footer>
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <div class="logo"><strong>AeroVista</strong></div>
+          <div class="footer-logo"><a href="../index.html"><strong>AeroVista</strong></a></div>
           <p>EchoVerse Audio is a division of AeroVista LLC.</p>
         </div>
-        <div class="footer-links">
-          <h4>Quick Links</h4>
-          <a href="../index.html">Home</a>
-          <a href="../divisions.html">Divisions</a>
-          <a href="../apps.html">Apps</a>
-          <a href="../Store.html">Tools & Resources</a>
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <div class="footer-links">
+            <a href="../about.html" aria-label="About AeroVista">About</a>
+            <a href="../divisions.html" aria-label="Explore our divisions">Divisions</a>
+            <a href="../apps.html" aria-label="View our apps">Apps</a>
+            <a href="../Store.html" aria-label="Tools and resources">Tools & Resources</a>
+          </div>
         </div>
-        <div class="footer-links">
-          <h4>Legal</h4>
-          <a href="../privacy-policy.html">Privacy Policy</a>
-          <a href="../terms-of-service.html">Terms of Service</a>
+        <div>
+          <h4 class="footer-heading">Connect</h4>
+          <div class="footer-links">
+            <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
+            <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
+            <a href="../surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Legal</h4>
+          <div class="footer-links">
+            <a href="../privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
+            <a href="../terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
+          </div>
         </div>
       </div>
       <div class="footer-bottom">
         <p>© 2025 AeroVista LLC — All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter"><i class="icon">Twitter</i></a>
+          <a href="#" aria-label="Instagram"><i class="icon">Instagram</i></a>
+          <a href="#" aria-label="GitHub"><i class="icon">GitHub</i></a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <script type="module" src="../main.js"></script>
-  <script type="module">
-    import { initLazyLoading } from '../src/imageUtil.js'; 
+  <!-- Dark mode toggle -->
+  <button class="dark-mode-toggle" aria-label="Toggle dark mode">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
+  </button>
+
+  <!-- Scroll to top button -->
+  <button class="scroll-top" aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.828L7.05 15.778L5.636 14.364L12 8L18.364 14.364L16.95 15.778L12 10.828Z"></path></svg>
+  </button>
+
+  <script src="../main.js"></script>
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
-      initLazyLoading();
+      // Initialize dark mode toggle
+      initDarkModeToggle();
+      
+      // Initialize scroll to top button
+      initScrollToTop();
+      
+      // Initialize lazy loading if available
+      if (typeof initLazyLoading === 'function') {
+        initLazyLoading();
+      }
     });
+    
+    function initDarkModeToggle() {
+      const darkModeToggle = document.querySelector('.dark-mode-toggle');
+      if (!darkModeToggle) return;
+      
+      // Check for saved preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+        document.body.classList.toggle('light-theme', savedTheme === 'light');
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('light-theme')) {
+          document.body.classList.remove('light-theme');
+          document.body.classList.add('dark-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.body.classList.remove('dark-theme');
+          document.body.classList.add('light-theme');
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    }
+    
+    function initScrollToTop() {
+      const scrollTopBtn = document.querySelector('.scroll-top');
+      if (!scrollTopBtn) return;
+      
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          scrollTopBtn.classList.add('visible');
+        } else {
+          scrollTopBtn.classList.remove('visible');
+        }
+      });
+      
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
   </script>
 </body>
 </html>

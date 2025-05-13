@@ -88,16 +88,14 @@
   </main>
 
   <!-- Contact CTA -->
-  <section id="contact">
-    <div class="container">
-      <h2>Feedback & Feature Ideas</h2>
-      <form id="contactForm">
-        <input required type="text" placeholder="Your Name" data-animate="fade-up" />
-        <input required type="email" placeholder="Email" data-animate="fade-up" />
-        <textarea required rows="5" placeholder="Tell us what you'd like to see in VaultMaster" data-animate="fade-up"></textarea>
-        <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
-      </form>
-    </div>
+  <section id="contact" class="container section-md" aria-labelledby="contact-heading">
+    <h2 id="contact-heading">Feedback & Feature Ideas</h2>
+    <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
+      <input class="form-control mb-sm" required type="text" placeholder="Your Name" aria-label="Your name" />
+      <input class="form-control mb-sm" required type="email" placeholder="Email" aria-label="Your email address" />
+      <textarea class="form-control mb-md" required rows="5" placeholder="Tell us what you'd like to see in VaultMaster" aria-label="Your message"></textarea>
+      <button class="btn" type="submit">Send Message</button>
+    </form>
   </section>
 
   <footer>

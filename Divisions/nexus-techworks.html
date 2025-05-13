@@ -6,8 +6,15 @@
   <title>Nexus TechWorks | AeroVista</title>
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles.css" />
+  <!-- Main CSS - Imports all modular files -->
+  <link rel="stylesheet" href="../css/main.css" />
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Nexus TechWorks delivers full-stack web, AI, and product engineering services focused on performant, local-first solutions.">
+  <meta property="og:title" content="Nexus TechWorks | AeroVista">
+  <meta property="og:description" content="Full-stack web, AI, and product engineering services">
+  <meta property="og:image" content="https://aerovista.us/public/images/divisions/nexus-techworks.jpg">
+  <meta property="og:url" content="https://aerovista.us/Divisions/nexus-techworks.html">
+  <meta property="og:type" content="website">
   <style>
     .tech-grid {
       position: absolute;
@@ -288,311 +295,392 @@
     }
   </style>
 </head>
-<body>
+<body data-page="division-single" data-division="nexus-techworks">
   <!-- Accessibility skip link -->
-  <a href="#main-content" class="skip-link">Skip to content</a>
-  
-  <!-- Header -->
-  <header class="site-header">
-    <div class="container">
-      <div class="header-inner">
-        <a href="../" class="logo">
-          <img src="../public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
-          <span class="logo-text">AeroVista</span>
-        </a>
-        <nav class="main-nav">
-          <ul class="nav-list">
-            <li><a href="../index.html" class="nav-link">Home</a></li>
-            <li><a href="../divisions.html" class="nav-link">Divisions</a></li>
-            <li><a href="../apps.html" class="nav-link">Apps</a></li>
-            <li><a href="../Store.html" class="nav-link">Tools & Resources</a></li>
-            <li><a href="../about.html" class="nav-link">About</a></li>
-          </ul>
-        </nav>
-        <button class="menu-toggle" aria-label="Toggle menu">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>
-      </div>
-    </div>
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <!-- Navbar -->
+  <header class="navbar" role="banner">
+    <div class="navbar-brand"><a href="../index.html"><strong>AeroVista</strong></a></div>
+    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
+      <a href="../index.html">Home</a>
+      <a href="../divisions.html" class="active">Divisions</a>
+      <a href="../apps.html">Apps</a>
+      <a href="../Store.html">Tools & Resources</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </header>
 
-  <!-- Division Hero -->
-  <section class="hero" style="background:linear-gradient(135deg,#00d2ff33 0%,#474dff55 100%);">
-    <div class="tech-grid"></div>
-    <div class="particles-container" id="particles"></div>
-    <h1 class="text-gradient glitch" data-text="Nexus TechWorks" data-scramble="true">Nexus TechWorks</h1>
-    <p>Full‑stack web, AI, and product engineering services focused on performant, local‑first solutions.</p>
-    <a href="#contact" class="btn" data-animate="fade-up">Start Your Project</a>
-  </section>
+  <!-- Main content -->
+  <main id="main-content">
+    <!-- Division Hero -->
+    <section class="hero" style="background:linear-gradient(135deg,#00d2ff33 0%,#474dff55 100%);">
+      <div class="tech-grid"></div>
+      <div class="particles-container" id="particles"></div>
+      <h1 class="text-gradient glitch" data-text="Nexus TechWorks" data-scramble="true">Nexus TechWorks</h1>
+      <p>Full‑stack web, AI, and product engineering services focused on performant, local‑first solutions.</p>
+      <a href="#contact" class="btn" data-animate="fade-up">Start Your Project</a>
+    </section>
 
-  <!-- Overview -->
-  <section class="container">
-    <h2>Our Mission</h2>
-    <div class="text-center" data-animate="fade-up">
-      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">Nexus TechWorks bridges visionary concepts with robust engineering—delivering bespoke software that scales, secures, and delights through innovative technical solutions.</p>
-    </div>
-    
-    <div class="code-animation" data-animate="fade-up">
-      <div id="code-text">
-        // Loading modern web solutions...
-        const nexus = new TechSolution({
-          performance: true,
-          security: true,
-          userExperience: 'exceptional'
-        });
-        
-        await nexus.deploy();
+    <!-- Overview -->
+    <section class="container">
+      <h2>Our Mission</h2>
+      <div class="text-center" data-animate="fade-up">
+        <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">Nexus TechWorks bridges visionary concepts with robust engineering—delivering bespoke software that scales, secures, and delights through innovative technical solutions.</p>
       </div>
-    </div>
-  </section>
+      
+      <div class="code-animation" data-animate="fade-up">
+        <div id="code-text">
+          // Loading modern web solutions...
+          const nexus = new TechSolution({
+            performance: true,
+            security: true,
+            userExperience: 'exceptional'
+          });
+          
+          await nexus.deploy();
+        </div>
+      </div>
+    </section>
 
-  <!-- Tech Stats -->
-  <section class="container">
-    <h2>Our Impact</h2>
-    <div class="stats-container">
-      <div class="stat-item" data-animate="fade-up">
-        <div class="stat-value">99.9%</div>
-        <p>Uptime Guarantee</p>
+    <!-- Tech Stats -->
+    <section class="container">
+      <h2>Our Impact</h2>
+      <div class="stats-container">
+        <div class="stat-item" data-animate="fade-up">
+          <div class="stat-value">99.9%</div>
+          <p>Uptime Guarantee</p>
+        </div>
+        <div class="stat-item" data-animate="fade-up">
+          <div class="stat-value">200+</div>
+          <p>Projects Delivered</p>
+        </div>
+        <div class="stat-item" data-animate="fade-up">
+          <div class="stat-value">50ms</div>
+          <p>Average Response Time</p>
+        </div>
       </div>
-      <div class="stat-item" data-animate="fade-up">
-        <div class="stat-value">200+</div>
-        <p>Projects Delivered</p>
-      </div>
-      <div class="stat-item" data-animate="fade-up">
-        <div class="stat-value">50ms</div>
-        <p>Average Response Time</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Core Capabilities -->
-  <section class="container">
-    <h2>Core Capabilities</h2>
-    <div class="tech-cards">
-      <div class="tech-card" data-animate="fade-up">
-        <div class="tech-icon">🧠</div>
-        <h3>AI‑Driven Apps</h3>
-        <p>TensorFlow & PyTorch integrations turning data into intelligent features. From NLP to computer vision, we build AI that enhances user experiences.</p>
+    <!-- Core Capabilities -->
+    <section class="container">
+      <h2>Core Capabilities</h2>
+      <div class="tech-cards">
+        <div class="tech-card" data-animate="fade-up">
+          <div class="tech-icon">🧠</div>
+          <h3>AI‑Driven Apps</h3>
+          <p>TensorFlow & PyTorch integrations turning data into intelligent features. From NLP to computer vision, we build AI that enhances user experiences.</p>
+        </div>
+        <div class="tech-card" data-animate="fade-up">
+          <div class="tech-icon">🔄</div>
+          <h3>Offline‑First Architecture</h3>
+          <p>Building resilient PWAs and Electron apps with seamless sync. Create apps that work everywhere, even when connectivity fails.</p>
+        </div>
+        <div class="tech-card" data-animate="fade-up">
+          <div class="tech-icon">☁️</div>
+          <h3>Cloud & DevOps</h3>
+          <p>AWS, Docker, and Kubernetes pipelines that keep deployments smooth. Automate your infrastructure for reliability and scalability.</p>
+        </div>
+        <div class="tech-card" data-animate="fade-up">
+          <div class="tech-icon">🔒</div>
+          <h3>Security Engineering</h3>
+          <p>End-to-end encryption, penetration testing, and secure data handling. Protect your users and your business with robust security practices.</p>
+        </div>
+        <div class="tech-card" data-animate="fade-up">
+          <div class="tech-icon">📱</div>
+          <h3>Cross-Platform Mobile</h3>
+          <p>React Native and Flutter solutions for iOS and Android with native performance. Build once, deploy everywhere with codebases that scale.</p>
+        </div>
+        <div class="tech-card" data-animate="fade-up">
+          <div class="tech-icon">⚡</div>
+          <h3>Performance Optimization</h3>
+          <p>Profile-driven optimization, efficient state management, and blazing-fast load times. Create experiences that feel instantaneous.</p>
+        </div>
       </div>
-      <div class="tech-card" data-animate="fade-up">
-        <div class="tech-icon">🔄</div>
-        <h3>Offline‑First Architecture</h3>
-        <p>Building resilient PWAs and Electron apps with seamless sync. Create apps that work everywhere, even when connectivity fails.</p>
-      </div>
-      <div class="tech-card" data-animate="fade-up">
-        <div class="tech-icon">☁️</div>
-        <h3>Cloud & DevOps</h3>
-        <p>AWS, Docker, and Kubernetes pipelines that keep deployments smooth. Automate your infrastructure for reliability and scalability.</p>
-      </div>
-      <div class="tech-card" data-animate="fade-up">
-        <div class="tech-icon">🔒</div>
-        <h3>Security Engineering</h3>
-        <p>End-to-end encryption, penetration testing, and secure data handling. Protect your users and your business with robust security practices.</p>
-      </div>
-      <div class="tech-card" data-animate="fade-up">
-        <div class="tech-icon">📱</div>
-        <h3>Cross-Platform Mobile</h3>
-        <p>React Native and Flutter solutions for iOS and Android with native performance. Build once, deploy everywhere with codebases that scale.</p>
-      </div>
-      <div class="tech-card" data-animate="fade-up">
-        <div class="tech-icon">⚡</div>
-        <h3>Performance Optimization</h3>
-        <p>Profile-driven optimization, efficient state management, and blazing-fast load times. Create experiences that feel instantaneous.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Development Process -->
-  <section class="container">
-    <h2>Our Development Process</h2>
-    <div class="workflow-steps">
-      <div class="workflow-step" data-animate="fade-up">
-        <div class="step-number">1</div>
-        <div class="step-content">
-          <h3>Discovery & Strategy</h3>
-          <p>We begin with deep research into your business objectives, user needs, and technical requirements to create a solid foundation for your project.</p>
+    <!-- Development Process -->
+    <section class="container">
+      <h2>Our Development Process</h2>
+      <div class="workflow-steps">
+        <div class="workflow-step" data-animate="fade-up">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Discovery & Strategy</h3>
+            <p>We begin with deep research into your business objectives, user needs, and technical requirements to create a solid foundation for your project.</p>
+          </div>
+        </div>
+        <div class="workflow-step" data-animate="fade-up">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Architecture & Design</h3>
+            <p>Our architects design scalable systems while UX experts craft intuitive interfaces, ensuring both technical excellence and exceptional usability.</p>
+          </div>
+        </div>
+        <div class="workflow-step" data-animate="fade-up">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Agile Development</h3>
+            <p>Through iterative sprints, we build, test, and refine your solution, delivering incremental value while adapting to changing requirements.</p>
+          </div>
+        </div>
+        <div class="workflow-step" data-animate="fade-up">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Testing & Quality Assurance</h3>
+            <p>Comprehensive testing across devices, browsers, and scenarios ensures your product performs flawlessly in all conditions.</p>
+          </div>
+        </div>
+        <div class="workflow-step" data-animate="fade-up">
+          <div class="step-number">5</div>
+          <div class="step-content">
+            <h3>Deployment & Continuous Improvement</h3>
+            <p>We don't just launch—we monitor, optimize, and iterate based on real-world performance and user feedback.</p>
+          </div>
         </div>
       </div>
-      <div class="workflow-step" data-animate="fade-up">
-        <div class="step-number">2</div>
-        <div class="step-content">
-          <h3>Architecture & Design</h3>
-          <p>Our architects design scalable systems while UX experts craft intuitive interfaces, ensuring both technical excellence and exceptional usability.</p>
-        </div>
-      </div>
-      <div class="workflow-step" data-animate="fade-up">
-        <div class="step-number">3</div>
-        <div class="step-content">
-          <h3>Agile Development</h3>
-          <p>Through iterative sprints, we build, test, and refine your solution, delivering incremental value while adapting to changing requirements.</p>
-        </div>
-      </div>
-      <div class="workflow-step" data-animate="fade-up">
-        <div class="step-number">4</div>
-        <div class="step-content">
-          <h3>Testing & Quality Assurance</h3>
-          <p>Comprehensive testing across devices, browsers, and scenarios ensures your product performs flawlessly in all conditions.</p>
-        </div>
-      </div>
-      <div class="workflow-step" data-animate="fade-up">
-        <div class="step-number">5</div>
-        <div class="step-content">
-          <h3>Deployment & Continuous Improvement</h3>
-          <p>We don't just launch—we monitor, optimize, and iterate based on real-world performance and user feedback.</p>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Project Showcase -->
-  <section class="container">
-    <h2>Featured Projects</h2>
-    <div class="project-showcase">
-      <div class="project-item" data-animate="fade-up">
-        <div class="project-content">
-          <h3 class="project-title">QuantumSync Platform</h3>
-          <p>A distributed data synchronization service powering offline-first applications with conflict-free data resolution and end-to-end encryption.</p>
-          <p><strong>Tech Stack:</strong> Node.js, WebRTC, CRDTs, React, WebAssembly</p>
+    <!-- Project Showcase -->
+    <section class="container">
+      <h2>Featured Projects</h2>
+      <div class="project-showcase">
+        <div class="project-item" data-animate="fade-up">
+          <div class="project-content">
+            <h3 class="project-title">QuantumSync Platform</h3>
+            <p>A distributed data synchronization service powering offline-first applications with conflict-free data resolution and end-to-end encryption.</p>
+            <p><strong>Tech Stack:</strong> Node.js, WebRTC, CRDTs, React, WebAssembly</p>
+          </div>
+          <div class="project-image">
+            <img 
+              src="../public/images/portfolio/portfolio-4.png" 
+              alt="QuantumSync Dashboard" 
+              loading="lazy"
+              width="1170"
+              height="780">
+          </div>
         </div>
-        <div class="project-image">
-          <img 
-            src="../public/images/portfolio/portfolio-4.png" 
-            alt="QuantumSync Dashboard" 
-            loading="lazy"
-            width="1170"
-            height="780">
+        <div class="project-item" data-animate="fade-up">
+          <div class="project-content">
+            <h3 class="project-title">Meridian AI Analytics</h3>
+            <p>An enterprise analytics platform that processes terabytes of data in real-time to deliver actionable insights through an intuitive dashboard.</p>
+            <p><strong>Tech Stack:</strong> Python, TensorFlow, Kubernetes, GraphQL, Vue.js</p>
+          </div>
+          <div class="project-image">
+            <img 
+              src="../public/images/portfolio/portfolio-4.png" 
+              alt="Meridian AI Dashboard" 
+              loading="lazy"
+              width="1170"
+              height="780">
+          </div>
+        </div>
+        <div class="project-item" data-animate="fade-up">
+          <div class="project-content">
+            <h3 class="project-title">NexScan Security Suite</h3>
+            <p>A comprehensive security monitoring system that combines ML-powered threat detection with real-time vulnerability assessment.</p>
+            <p><strong>Tech Stack:</strong> Rust, AWS Lambda, Elasticsearch, React, WebSockets</p>
+          </div>
+          <div class="project-image">
+            <img 
+              src="../public/images/portfolio/portfolio-4.png" 
+              alt="NexScan Security Dashboard" 
+              loading="lazy"
+              width="1170"
+              height="780">
+          </div>
+        </div>
+        <div class="project-item" data-animate="fade-up">
+          <div class="project-content">
+            <h3>BytePad Local-First App</h3>
+            <p>Development of a local-first text editor that prioritizes privacy and security, ensuring that user data remains on their device.</p>
+          </div>
+          <div class="project-image">
+            <img 
+              src="../public/images/portfolio/portfolio-4.png" 
+              alt="BytePad Local-First App" 
+              loading="lazy"
+              width="600"
+              height="450">
+          </div>
+        </div>
+        <div class="project-item" data-animate="fade-up">
+          <div class="project-content">
+            <h3>AI-Powered Code Assistant</h3>
+            <p>Development of an AI-powered code assistant that integrates with VS Code and other popular IDEs, offering context-aware suggestions and automated refactoring capabilities.</p>
+          </div>
+          <div class="project-image">
+            <img 
+              src="../public/images/portfolio/portfolio-4.png" 
+              alt="AI Code Assistant" 
+              loading="lazy"
+              width="600"
+              height="450">
+          </div>
+        </div>
+        <div class="project-item" data-animate="fade-up">
+          <div class="project-content">
+            <h3>Digital Ecosystem Platform</h3>
+            <p>Creation of a cloud-native platform enabling seamless data flow between applications while maintaining strict privacy controls and governance protocols.</p>
+          </div>
+          <div class="project-image">
+            <img 
+              src="../public/images/portfolio/portfolio-4.png" 
+              alt="Digital Ecosystem Platform" 
+              loading="lazy"
+              width="600"
+              height="450">
+          </div>
         </div>
       </div>
-      <div class="project-item" data-animate="fade-up">
-        <div class="project-content">
-          <h3 class="project-title">Meridian AI Analytics</h3>
-          <p>An enterprise analytics platform that processes terabytes of data in real-time to deliver actionable insights through an intuitive dashboard.</p>
-          <p><strong>Tech Stack:</strong> Python, TensorFlow, Kubernetes, GraphQL, Vue.js</p>
-        </div>
-        <div class="project-image">
-          <img 
-            src="../public/images/portfolio/portfolio-4.png" 
-            alt="Meridian AI Dashboard" 
-            loading="lazy"
-            width="1170"
-            height="780">
-        </div>
-      </div>
-      <div class="project-item" data-animate="fade-up">
-        <div class="project-content">
-          <h3 class="project-title">NexScan Security Suite</h3>
-          <p>A comprehensive security monitoring system that combines ML-powered threat detection with real-time vulnerability assessment.</p>
-          <p><strong>Tech Stack:</strong> Rust, AWS Lambda, Elasticsearch, React, WebSockets</p>
-        </div>
-        <div class="project-image">
-          <img 
-            src="../public/images/portfolio/portfolio-4.png" 
-            alt="NexScan Security Dashboard" 
-            loading="lazy"
-            width="1170"
-            height="780">
-        </div>
-      </div>
-      <div class="project-item" data-animate="fade-up">
-        <div class="project-content">
-          <h3>BytePad Local-First App</h3>
-          <p>Development of a local-first text editor that prioritizes privacy and security, ensuring that user data remains on their device.</p>
-        </div>
-        <div class="project-image">
-          <img 
-            src="../public/images/portfolio/portfolio-4.png" 
-            alt="BytePad Local-First App" 
-            loading="lazy"
-            width="600"
-            height="450">
-        </div>
-      </div>
-      <div class="project-item" data-animate="fade-up">
-        <div class="project-content">
-          <h3>AI-Powered Code Assistant</h3>
-          <p>Development of an AI-powered code assistant that integrates with VS Code and other popular IDEs, offering context-aware suggestions and automated refactoring capabilities.</p>
-        </div>
-        <div class="project-image">
-          <img 
-            src="../public/images/portfolio/portfolio-4.png" 
-            alt="AI Code Assistant" 
-            loading="lazy"
-            width="600"
-            height="450">
-        </div>
-      </div>
-      <div class="project-item" data-animate="fade-up">
-        <div class="project-content">
-          <h3>Digital Ecosystem Platform</h3>
-          <p>Creation of a cloud-native platform enabling seamless data flow between applications while maintaining strict privacy controls and governance protocols.</p>
-        </div>
-        <div class="project-image">
-          <img 
-            src="../public/images/portfolio/portfolio-4.png" 
-            alt="Digital Ecosystem Platform" 
-            loading="lazy"
-            width="600"
-            height="450">
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);-webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));">
-    <h2 style="margin-bottom:1rem;" class="text-gradient" data-scramble="true" data-text="Let's Build the Future">Let's Build the Future</h2>
-    <p style="max-width:600px;color:var(--color-text-soft);">From MVPs to enterprise platforms, Nexus TechWorks turns ambitious ideas into scalable reality. Ready to transform your concept into code?</p>
-    <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Start Your Project</a>
-  </section>
+    <!-- Collaboration Callout -->
+    <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);-webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));">
+      <h2 style="margin-bottom:1rem;" class="text-gradient" data-scramble="true" data-text="Let's Build the Future">Let's Build the Future</h2>
+      <p style="max-width:600px;color:var(--color-text-soft);">From MVPs to enterprise platforms, Nexus TechWorks turns ambitious ideas into scalable reality. Ready to transform your concept into code?</p>
+      <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Start Your Project</a>
+    </section>
+  </main>
 
-  <!-- Contact CTA -->
-  <section id="contact" class="container">
-    <h2>Contact Nexus TechWorks</h2>
-    <form id="contactForm" class="bg-glass" style="border-radius:var(--radius-base);padding:2rem;border:1px solid var(--glass-border);">
-      <input required type="text" placeholder="Your Name" data-animate="fade-up" />
-      <input required type="email" placeholder="Email" data-animate="fade-up" />
-      <textarea required rows="5" placeholder="Project overview and tech stack..." data-animate="fade-up"></textarea>
+  <!-- Contact Section -->
+  <section id="contact" class="container section-md" aria-labelledby="contact-heading">
+    <h2 id="contact-heading" class="text-center mb-lg">Get in Touch</h2>
+    <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
+      <input class="form-control mb-sm" required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
+      <input class="form-control mb-sm" required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
+      <textarea class="form-control mb-md" required rows="5" placeholder="Project overview and tech stack..." data-animate="fade-up" aria-label="Your message"></textarea>
       <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
     </form>
   </section>
 
-  <footer>
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="logo"><strong>AeroVista</strong></div>
-        <p>Transforming ideas into exceptional digital experiences.</p>
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"><a href="../index.html"><strong>AeroVista</strong></a></div>
+          <p>Transforming ideas into exceptional digital experiences.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <div class="footer-links">
+            <a href="../about.html" aria-label="About AeroVista">About</a>
+            <a href="../divisions.html" aria-label="Explore our divisions">Divisions</a>
+            <a href="../apps.html" aria-label="View our apps">Apps</a>
+            <a href="../Store.html" aria-label="Tools and resources">Tools & Resources</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Connect</h4>
+          <div class="footer-links">
+            <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
+            <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
+            <a href="../surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Legal</h4>
+          <div class="footer-links">
+            <a href="../privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
+            <a href="../terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
+          </div>
+        </div>
       </div>
-      <div class="footer-links">
-        <h4>Divisions</h4>
-        <a href="skyforge-creative.html">SkyForge Creative</a>
-        <a href="echoverse-audio.html">EchoVerse Audio</a>
-        <a href="nexus-techworks.html">Nexus TechWorks</a>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter"><i class="icon">Twitter</i></a>
+          <a href="#" aria-label="Instagram"><i class="icon">Instagram</i></a>
+          <a href="#" aria-label="GitHub"><i class="icon">GitHub</i></a>
+        </div>
       </div>
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <a href="../index.html">Home</a>
-        <a href="../divisions.html">Divisions</a>
-        <a href="../apps.html">Apps</a>
-        <a href="../Store.html">Tools & Resources</a>
-      </div>
-      <div class="footer-links">
-        <h4>Legal</h4>
-        <a href="../privacy-policy.html">Privacy Policy</a>
-        <a href="../terms-of-service.html">Terms of Service</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © 2025 AeroVista LLC — All rights reserved.
     </div>
   </footer>
 
-  <script type="module" src="../main.js"></script>
+  <!-- Dark mode toggle -->
+  <button class="dark-mode-toggle" aria-label="Toggle dark mode">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
+  </button>
+
+  <!-- Scroll to top button -->
+  <button class="scroll-top" aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.828L7.05 15.778L5.636 14.364L12 8L18.364 14.364L16.95 15.778L12 10.828Z"></path></svg>
+  </button>
+
+  <script src="../main.js"></script>
   <script>
-    // Create floating tech particles
     document.addEventListener('DOMContentLoaded', () => {
+      // Initialize dark mode toggle
+      initDarkModeToggle();
+      
+      // Initialize scroll to top button
+      initScrollToTop();
+      
+      // Keep the original page-specific code
+      createParticles();
+      animateCodeTyping();
+      
+      // Initialize lazy loading if it exists
+      if (typeof initLazyLoading === 'function') {
+        initLazyLoading();
+      }
+    });
+    
+    function initDarkModeToggle() {
+      const darkModeToggle = document.querySelector('.dark-mode-toggle');
+      if (!darkModeToggle) return;
+      
+      // Check for saved preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+        document.body.classList.toggle('light-theme', savedTheme === 'light');
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('light-theme')) {
+          document.body.classList.remove('light-theme');
+          document.body.classList.add('dark-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.body.classList.remove('dark-theme');
+          document.body.classList.add('light-theme');
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    }
+    
+    function initScrollToTop() {
+      const scrollTopBtn = document.querySelector('.scroll-top');
+      if (!scrollTopBtn) return;
+      
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          scrollTopBtn.classList.add('visible');
+        } else {
+          scrollTopBtn.classList.remove('visible');
+        }
+      });
+      
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
+    
+    // Keep the original page-specific functions
+    function createParticles() {
       const particlesContainer = document.getElementById('particles');
+      if (!particlesContainer) return;
+      
       const particleCount = 15;
       
       for (let i = 0; i < particleCount; i++) {
@@ -615,31 +703,26 @@
         
         particlesContainer.appendChild(particle);
       }
-      
-      // Animated code typing effect
+    }
+    
+    function animateCodeTyping() {
       const codeText = document.getElementById('code-text');
-      if (codeText) {
-        const text = codeText.innerHTML;
-        let i = 0;
-        codeText.innerHTML = '';
-        
-        function typeWriter() {
-          if (i < text.length) {
-            codeText.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 30);
-          }
+      if (!codeText) return;
+      
+      const text = codeText.innerHTML;
+      let i = 0;
+      codeText.innerHTML = '';
+      
+      function typeWriter() {
+        if (i < text.length) {
+          codeText.innerHTML += text.charAt(i);
+          i++;
+          setTimeout(typeWriter, 30);
         }
-        
-        setTimeout(typeWriter, 1000);
       }
-    });
-  </script>
-  <script type="module">
-    import { initLazyLoading } from '../src/imageUtil.js'; 
-    document.addEventListener('DOMContentLoaded', () => {
-      initLazyLoading();
-    });
+      
+      setTimeout(typeWriter, 1000);
+    }
   </script>
 </body>
 </html>

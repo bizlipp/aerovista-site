@@ -6,8 +6,15 @@
   <title>Horizon Aerial & Visual | AeroVista</title>
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles.css" />
+  <!-- Main CSS - Imports all modular files -->
+  <link rel="stylesheet" href="../css/main.css" />
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Horizon Aerial & Visual provides professional drone cinematography, mapping, and aerial data solutions that elevate perspectives and insights for diverse clients.">
+  <meta property="og:title" content="Horizon Aerial & Visual | AeroVista">
+  <meta property="og:description" content="Professional drone cinematography, mapping, and aerial data solutions">
+  <meta property="og:image" content="https://aerovista.us/public/images/divisions/horizon-aerial-visual.jpg">
+  <meta property="og:url" content="https://aerovista.us/Divisions/horizon-aerial-visual.html">
+  <meta property="og:type" content="website">
   <style>
     .sky-bg {
       position: absolute;
@@ -300,274 +307,346 @@
     }
   </style>
 </head>
-<body>
-  <!-- Header -->
-  <header class="site-header">
-    <div class="container">
-      <div class="header-inner">
-        <a href="../" class="logo">
-          <img src="../public/images/aerovista-icon.ico" alt="AeroVista" class="logo-icon">
-          <span class="logo-text">AeroVista</span>
-        </a>
-        <nav class="main-nav">
-          <ul class="nav-list">
-            <li><a href="../index.html" class="nav-link">Home</a></li>
-            <li><a href="../divisions.html" class="nav-link">Divisions</a></li>
-            <li><a href="../apps.html" class="nav-link">Apps</a></li>
-            <li><a href="../Store.html" class="nav-link">Tools & Resources</a></li>
-            <li><a href="../about.html" class="nav-link">About</a></li>
-          </ul>
-        </nav>
-        <button class="menu-toggle" aria-label="Toggle menu">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </button>
-      </div>
-    </div>
+<body data-page="division-single" data-division="horizon-aerial">
+  <!-- Accessibility skip link -->
+  <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+  <!-- Navbar -->
+  <header class="navbar" role="banner">
+    <div class="navbar-brand"><a href="../index.html"><strong>AeroVista</strong></a></div>
+    <nav class="navbar-nav" role="navigation" aria-label="Main Navigation">
+      <a href="../index.html">Home</a>
+      <a href="../divisions.html" class="active">Divisions</a>
+      <a href="../apps.html">Apps</a>
+      <a href="../Store.html">Tools & Resources</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="navbar-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </header>
 
-  <!-- Division Hero -->
-  <section class="hero" style="background:linear-gradient(135deg,#008abf44 0%,#00d2ff33 100%);">
-    <div class="sky-bg" id="skyBg"></div>
-    <div class="drone" id="drone">
-      <div class="propeller"></div>
-      <div class="propeller"></div>
-    </div>
-    <h1 class="text-gradient glitch" data-text="Horizon Aerial & Visual" data-scramble="true">Horizon Aerial & Visual</h1>
-    <p>Professional drone cinematography, mapping, and aerial data solutions that elevate perspectives and insights.</p>
-    <a href="#services" class="btn" data-animate="fade-up">Explore Services</a>
-  </section>
+  <!-- Main content -->
+  <main id="main-content">
+    <!-- Division Hero -->
+    <section class="hero" style="background:linear-gradient(135deg,#008abf44 0%,#00d2ff33 100%);">
+      <div class="sky-bg" id="skyBg"></div>
+      <div class="drone" id="drone">
+        <div class="propeller"></div>
+        <div class="propeller"></div>
+      </div>
+      <h1 class="text-gradient glitch" data-text="Horizon Aerial & Visual" data-scramble="true">Horizon Aerial & Visual</h1>
+      <p>Professional drone cinematography, mapping, and aerial data solutions that elevate perspectives and insights.</p>
+      <a href="#services" class="btn" data-animate="fade-up">Explore Services</a>
+    </section>
 
-  <!-- Overview -->
-  <section class="container">
-    <h2>Our Mission</h2>
-    <div class="text-center" data-animate="fade-up">
-      <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">Horizon Aerial & Visual captures breathtaking visuals and delivers precise geospatial data, serving diverse clients in real estate, agriculture, and entertainment with innovative aerial solutions.</p>
-    </div>
-    
-    <div class="aerial-stats">
-      <div class="stat-item" data-animate="fade-up">
-        <div class="stat-value">500+</div>
-        <p>Projects Completed</p>
-      </div>
-      <div class="stat-item" data-animate="fade-up">
-        <div class="stat-value">12</div>
-        <p>Specialized Drones</p>
-      </div>
-      <div class="stat-item" data-animate="fade-up">
-        <div class="stat-value">8K</div>
-        <p>Video Resolution</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Services -->
-  <section id="services" class="container">
-    <h2>Our Services</h2>
-    <div class="service-grid">
-      <div class="service-item" data-animate="fade-up">
-        <div class="service-icon">🎬</div>
-        <h3>Aerial Cinematography</h3>
-        <p>Breathtaking drone footage for films, commercials, and promotional videos with cinematic quality and creative direction.</p>
-      </div>
-      <div class="service-item" data-animate="fade-up">
-        <div class="service-icon">🏠</div>
-        <h3>Real Estate Visualization</h3>
-        <p>Showcase properties with stunning aerial perspectives, virtual property tours, and comprehensive site context.</p>
-      </div>
-      <div class="service-item" data-animate="fade-up">
-        <div class="service-icon">🌾</div>
-        <h3>Agricultural Mapping</h3>
-        <p>Multispectral analysis for crop health monitoring, yield forecasting, and precision agriculture applications.</p>
-      </div>
-      <div class="service-item" data-animate="fade-up">
-        <div class="service-icon">🏗️</div>
-        <h3>Construction Progress</h3>
-        <p>Regular aerial documentation of construction sites for project management, timeline tracking, and client updates.</p>
-      </div>
-      <div class="service-item" data-animate="fade-up">
-        <div class="service-icon">🗺️</div>
-        <h3>3D Mapping & Modeling</h3>
-        <p>Photogrammetry services creating detailed 3D models and topographical maps with centimeter-level accuracy.</p>
-      </div>
-      <div class="service-item" data-animate="fade-up">
-        <div class="service-icon">🎮</div>
-        <h3>VR/AR Integration</h3>
-        <p>Custom aerial footage and data capture optimized for virtual and augmented reality applications.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Equipment -->
-  <section class="container">
-    <h2>Our Equipment</h2>
-    <div class="equipment-list">
-      <div class="equipment-item" data-animate="fade-up">
-        <div class="equipment-icon">🚁</div>
-        <div class="equipment-info">
-          <h4>DJI Inspire 3</h4>
-          <p>Professional cinematography drone with 8K camera and interchangeable lenses</p>
-        </div>
-      </div>
-      <div class="equipment-item" data-animate="fade-up">
-        <div class="equipment-icon">📡</div>
-        <div class="equipment-info">
-          <h4>Multispectral Sensors</h4>
-          <p>Advanced agriculture-specific sensors for crop analysis and monitoring</p>
-        </div>
-      </div>
-      <div class="equipment-item" data-animate="fade-up">
-        <div class="equipment-icon">📊</div>
-        <div class="equipment-info">
-          <h4>RTK GPS Systems</h4>
-          <p>Centimeter-precision positioning for accurate mapping and surveying</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Projects -->
-  <section class="container">
-    <h2>Project Showcase</h2>
-    <div class="aerial-grid">
-      <div class="aerial-card" data-animate="fade-up">
-        <div class="aerial-image">
-          <img 
-            src="../public/images/divisions/elevate_vision_drone.webp" 
-            alt="Cinematic Landscape" 
-            loading="lazy"
-            width="600"
-            height="400">
-          <div class="aerial-overlay">
-            <button class="btn">View Project</button>
-          </div>
-        </div>
-        <div class="aerial-info">
-          <h3>Cinematic Landscape Reel</h3>
-          <p>4K aerial footage of the Pacific Northwest, featured in tourism campaigns and showcasing dramatic landscapes.</p>
-        </div>
+    <!-- Overview -->
+    <section class="container">
+      <h2>Our Mission</h2>
+      <div class="text-center" data-animate="fade-up">
+        <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">Horizon Aerial & Visual captures breathtaking visuals and delivers precise geospatial data, serving diverse clients in real estate, agriculture, and entertainment with innovative aerial solutions.</p>
       </div>
       
-      <div class="aerial-card" data-animate="fade-up">
-        <div class="aerial-image">
-          <img 
-            src="../public/images/divisions/horizon_divisionpage_drone.webp" 
-            alt="Crop Mapping" 
-            loading="lazy"
-            width="600"
-            height="400">
-          <div class="aerial-overlay">
-            <button class="btn">View Project</button>
-          </div>
+      <div class="aerial-stats">
+        <div class="stat-item" data-animate="fade-up">
+          <div class="stat-value">500+</div>
+          <p>Projects Completed</p>
         </div>
-        <div class="aerial-info">
-          <h3>Precision Crop Mapping</h3>
-          <p>Multispectral drone survey improving harvest yields for local farms through detailed soil and crop health analysis.</p>
+        <div class="stat-item" data-animate="fade-up">
+          <div class="stat-value">12</div>
+          <p>Specialized Drones</p>
+        </div>
+        <div class="stat-item" data-animate="fade-up">
+          <div class="stat-value">8K</div>
+          <p>Video Resolution</p>
         </div>
       </div>
-      
-      <div class="aerial-card" data-animate="fade-up">
-        <div class="aerial-image">
-          <img 
-            src="../public/images/divisions/future_from_above.webp" 
-            alt="VR Flight" 
-            loading="lazy"
-            width="600"
-            height="400">
-          <div class="aerial-overlay">
-            <button class="btn">View Project</button>
-          </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="container">
+      <h2>Our Services</h2>
+      <div class="service-grid">
+        <div class="service-item" data-animate="fade-up">
+          <div class="service-icon">🎬</div>
+          <h3>Aerial Cinematography</h3>
+          <p>Breathtaking drone footage for films, commercials, and promotional videos with cinematic quality and creative direction.</p>
         </div>
-        <div class="aerial-info">
-          <h3>VR Flight Experience</h3>
-          <p>Immersive 360° drone tour integrated into virtual reality exhibits allowing viewers to soar over stunning locations.</p>
+        <div class="service-item" data-animate="fade-up">
+          <div class="service-icon">🏠</div>
+          <h3>Real Estate Visualization</h3>
+          <p>Showcase properties with stunning aerial perspectives, virtual property tours, and comprehensive site context.</p>
+        </div>
+        <div class="service-item" data-animate="fade-up">
+          <div class="service-icon">🌾</div>
+          <h3>Agricultural Mapping</h3>
+          <p>Multispectral analysis for crop health monitoring, yield forecasting, and precision agriculture applications.</p>
+        </div>
+        <div class="service-item" data-animate="fade-up">
+          <div class="service-icon">🏗️</div>
+          <h3>Construction Progress</h3>
+          <p>Regular aerial documentation of construction sites for project management, timeline tracking, and client updates.</p>
+        </div>
+        <div class="service-item" data-animate="fade-up">
+          <div class="service-icon">🗺️</div>
+          <h3>3D Mapping & Modeling</h3>
+          <p>Photogrammetry services creating detailed 3D models and topographical maps with centimeter-level accuracy.</p>
+        </div>
+        <div class="service-item" data-animate="fade-up">
+          <div class="service-icon">🎮</div>
+          <h3>VR/AR Integration</h3>
+          <p>Custom aerial footage and data capture optimized for virtual and augmented reality applications.</p>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Collaboration Callout -->
-  <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);-webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));">
-    <h2 style="margin-bottom:1rem;" class="text-gradient" data-scramble="true" data-text="Need a bird's‑eye edge?">Need a bird's‑eye edge?</h2>
-    <p style="max-width:600px;color:var(--color-text-soft);">From promo videos to survey-grade data collection, our certified drone pilots have you covered with cutting-edge equipment and technical expertise.</p>
-    <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Request a Quote</a>
-  </section>
+    <!-- Equipment -->
+    <section class="container">
+      <h2>Our Equipment</h2>
+      <div class="equipment-list">
+        <div class="equipment-item" data-animate="fade-up">
+          <div class="equipment-icon">🚁</div>
+          <div class="equipment-info">
+            <h4>DJI Inspire 3</h4>
+            <p>Professional cinematography drone with 8K camera and interchangeable lenses</p>
+          </div>
+        </div>
+        <div class="equipment-item" data-animate="fade-up">
+          <div class="equipment-icon">📡</div>
+          <div class="equipment-info">
+            <h4>Multispectral Sensors</h4>
+            <p>Advanced agriculture-specific sensors for crop analysis and monitoring</p>
+          </div>
+        </div>
+        <div class="equipment-item" data-animate="fade-up">
+          <div class="equipment-icon">📊</div>
+          <div class="equipment-info">
+            <h4>RTK GPS Systems</h4>
+            <p>Centimeter-precision positioning for accurate mapping and surveying</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <!-- Contact CTA -->
-  <section id="contact" class="container">
-    <h2>Contact Horizon Aerial & Visual</h2>
-    <form id="contactForm" class="bg-glass" style="border-radius:var(--radius-base);padding:2rem;border:1px solid var(--glass-border);">
-      <input required type="text" placeholder="Your Name" data-animate="fade-up" />
-      <input required type="email" placeholder="Email" data-animate="fade-up" />
-      <textarea required rows="5" placeholder="Project details & scope" data-animate="fade-up"></textarea>
+    <!-- Featured Projects -->
+    <section class="container">
+      <h2>Project Showcase</h2>
+      <div class="aerial-grid">
+        <div class="aerial-card" data-animate="fade-up">
+          <div class="aerial-image">
+            <img 
+              src="../public/images/divisions/elevate_vision_drone.webp" 
+              alt="Cinematic Landscape" 
+              loading="lazy"
+              width="600"
+              height="400">
+            <div class="aerial-overlay">
+              <button class="btn">View Project</button>
+            </div>
+          </div>
+          <div class="aerial-info">
+            <h3>Cinematic Landscape Reel</h3>
+            <p>4K aerial footage of the Pacific Northwest, featured in tourism campaigns and showcasing dramatic landscapes.</p>
+          </div>
+        </div>
+        
+        <div class="aerial-card" data-animate="fade-up">
+          <div class="aerial-image">
+            <img 
+              src="../public/images/divisions/horizon_divisionpage_drone.webp" 
+              alt="Crop Mapping" 
+              loading="lazy"
+              width="600"
+              height="400">
+            <div class="aerial-overlay">
+              <button class="btn">View Project</button>
+            </div>
+          </div>
+          <div class="aerial-info">
+            <h3>Precision Crop Mapping</h3>
+            <p>Multispectral drone survey improving harvest yields for local farms through detailed soil and crop health analysis.</p>
+          </div>
+        </div>
+        
+        <div class="aerial-card" data-animate="fade-up">
+          <div class="aerial-image">
+            <img 
+              src="../public/images/divisions/future_from_above.webp" 
+              alt="VR Flight" 
+              loading="lazy"
+              width="600"
+              height="400">
+            <div class="aerial-overlay">
+              <button class="btn">View Project</button>
+            </div>
+          </div>
+          <div class="aerial-info">
+            <h3>VR Flight Experience</h3>
+            <p>Immersive 360° drone tour integrated into virtual reality exhibits allowing viewers to soar over stunning locations.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Collaboration Callout -->
+    <section class="hero" style="min-height:auto;padding:3rem 1rem;background:var(--glass-bg);-webkit-backdrop-filter:blur(var(--glass-blur));backdrop-filter:blur(var(--glass-blur));">
+      <h2 style="margin-bottom:1rem;" class="text-gradient" data-scramble="true" data-text="Need a bird's‑eye edge?">Need a bird's‑eye edge?</h2>
+      <p style="max-width:600px;color:var(--color-text-soft);">From promo videos to survey-grade data collection, our certified drone pilots have you covered with cutting-edge equipment and technical expertise.</p>
+      <a href="#contact" class="btn" style="margin-top:1.5rem;" data-animate="fade-up">Request a Quote</a>
+    </section>
+  </main>
+
+  <!-- Contact Section -->
+  <section id="contact" class="container section-md" aria-labelledby="contact-heading">
+    <h2 id="contact-heading" class="text-center mb-lg">Contact Horizon Aerial & Visual</h2>
+    <form id="contactForm" class="form-group" role="form" aria-label="Contact form">
+      <input class="form-control mb-sm" required type="text" placeholder="Your Name" data-animate="fade-up" aria-label="Your name" />
+      <input class="form-control mb-sm" required type="email" placeholder="Email" data-animate="fade-up" aria-label="Your email address" />
+      <textarea class="form-control mb-md" required rows="5" placeholder="Project details & scope" data-animate="fade-up" aria-label="Your message"></textarea>
       <button class="btn" type="submit" data-animate="fade-up">Send Message</button>
     </form>
   </section>
 
-  <footer>
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <div class="logo"><strong>AeroVista</strong></div>
-        <p>Transforming ideas into exceptional digital experiences.</p>
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"><a href="../index.html"><strong>AeroVista</strong></a></div>
+          <p>Transforming ideas into exceptional digital experiences.</p>
+        </div>
+        <div>
+          <h4 class="footer-heading">Quick Links</h4>
+          <div class="footer-links">
+            <a href="../about.html" aria-label="About AeroVista">About</a>
+            <a href="../divisions.html" aria-label="Explore our divisions">Divisions</a>
+            <a href="../apps.html" aria-label="View our apps">Apps</a>
+            <a href="../Store.html" aria-label="Tools and resources">Tools & Resources</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Connect</h4>
+          <div class="footer-links">
+            <a href="mailto:hello@aerovista.us" aria-label="Email us">Email Us</a>
+            <a href="tel:+15551234567" aria-label="Call us">Call Us</a>
+            <a href="../surron_build/surron_squad.html" aria-label="The Surron Squad project">Surron Squad</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="footer-heading">Legal</h4>
+          <div class="footer-links">
+            <a href="../privacy-policy.html" aria-label="Privacy Policy">Privacy Policy</a>
+            <a href="../terms-of-service.html" aria-label="Terms of Service">Terms of Service</a>
+          </div>
+        </div>
       </div>
-      <div class="footer-links">
-        <h4>Divisions</h4>
-        <a href="skyforge-creative.html">SkyForge Creative</a>
-        <a href="horizon-aerial-visual.html">Horizon Aerial</a>
-        <a href="nexus-techworks.html">Nexus TechWorks</a>
+      <div class="footer-bottom">
+        <p>© 2025 AeroVista LLC — All rights reserved.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Twitter"><i class="icon">Twitter</i></a>
+          <a href="#" aria-label="Instagram"><i class="icon">Instagram</i></a>
+          <a href="#" aria-label="GitHub"><i class="icon">GitHub</i></a>
+        </div>
       </div>
-      <div class="footer-links">
-        <h4>Quick Links</h4>
-        <a href="../index.html">Home</a>
-        <a href="../divisions.html">Divisions</a>
-        <a href="../apps.html">Apps</a>
-        <a href="../Store.html">Tools & Resources</a>
-      </div>
-      <div class="footer-links">
-        <h4>Legal</h4>
-        <a href="../privacy-policy.html">Privacy Policy</a>
-        <a href="../terms-of-service.html">Terms of Service</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      © 2025 AeroVista LLC — All rights reserved.
     </div>
   </footer>
 
-  <script type="module" src="../main.js"></script>
-  <script type="module">
-    // Import the image processing utilities
-    import { initLazyLoading } from '../src/imageUtil.js';
-    
+  <!-- Dark mode toggle -->
+  <button class="dark-mode-toggle" aria-label="Toggle dark mode">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
+  </button>
+
+  <!-- Scroll to top button -->
+  <button class="scroll-top" aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 10.828L7.05 15.778L5.636 14.364L12 8L18.364 14.364L16.95 15.778L12 10.828Z"></path></svg>
+  </button>
+
+  <script src="../main.js"></script>
+  <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Initialize dark mode toggle
+      initDarkModeToggle();
+      
+      // Initialize scroll to top button
+      initScrollToTop();
+
       // Create clouds in the sky background
       const skyBg = document.getElementById('skyBg');
-      const cloudCount = 6;
-      
-      for (let i = 0; i < cloudCount; i++) {
-        const cloud = document.createElement('div');
-        cloud.className = 'cloud';
+      if (skyBg) {
+        const cloudCount = 6;
         
-        // Random properties
-        const width = Math.random() * 150 + 100;
-        const height = width * 0.6;
-        const posY = Math.random() * 80;
-        const delay = Math.random() * 30;
-        const duration = Math.random() * 20 + 50;
-        
-        cloud.style.width = `${width}px`;
-        cloud.style.height = `${height}px`;
-        cloud.style.top = `${posY}%`;
-        cloud.style.animationDelay = `-${delay}s`;
-        cloud.style.animationDuration = `${duration}s`;
-        
-        skyBg.appendChild(cloud);
+        for (let i = 0; i < cloudCount; i++) {
+          const cloud = document.createElement('div');
+          cloud.className = 'cloud';
+          
+          // Random properties
+          const width = Math.random() * 150 + 100;
+          const height = width * 0.6;
+          const posY = Math.random() * 80;
+          const delay = Math.random() * 30;
+          const duration = Math.random() * 20 + 50;
+          
+          cloud.style.width = `${width}px`;
+          cloud.style.height = `${height}px`;
+          cloud.style.top = `${posY}%`;
+          cloud.style.animationDelay = `-${delay}s`;
+          cloud.style.animationDuration = `${duration}s`;
+          
+          skyBg.appendChild(cloud);
+        }
       }
       
-      // Initialize lazy loading for images
-      initLazyLoading();
+      // Initialize lazy loading if it exists
+      if (typeof initLazyLoading === 'function') {
+        initLazyLoading();
+      }
     });
+    
+    function initDarkModeToggle() {
+      const darkModeToggle = document.querySelector('.dark-mode-toggle');
+      if (!darkModeToggle) return;
+      
+      // Check for saved preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.classList.toggle('dark-theme', savedTheme === 'dark');
+        document.body.classList.toggle('light-theme', savedTheme === 'light');
+      }
+      
+      darkModeToggle.addEventListener('click', () => {
+        if (document.body.classList.contains('light-theme')) {
+          document.body.classList.remove('light-theme');
+          document.body.classList.add('dark-theme');
+          localStorage.setItem('theme', 'dark');
+        } else {
+          document.body.classList.remove('dark-theme');
+          document.body.classList.add('light-theme');
+          localStorage.setItem('theme', 'light');
+        }
+      });
+    }
+    
+    function initScrollToTop() {
+      const scrollTopBtn = document.querySelector('.scroll-top');
+      if (!scrollTopBtn) return;
+      
+      window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+          scrollTopBtn.classList.add('visible');
+        } else {
+          scrollTopBtn.classList.remove('visible');
+        }
+      });
+      
+      scrollTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      });
+    }
   </script>
 </body>
 </html>
