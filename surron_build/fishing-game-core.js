@@ -37,7 +37,9 @@ class FishingGame {
     this.waves = [];
     this.fish = [];
     this.hookPosition = { x: 100, y: 150 };
+    this.targetHookPosition = { x: 100, y: 150 }; // For smooth animation
     this.hookHasFish = false;
+    this.animations = []; // Store active animations
     
     // Challenge state
     this.challengeScore = 0;
@@ -87,6 +89,65 @@ class FishingGame {
       currencyGain: 0,
       lastNotification: null,
       showingReward: false
+    };
+    
+    // Tutorial system
+    this.tutorial = {
+      active: true,
+      step: 0,
+      steps: [
+        {
+          message: "Welcome to Billy's Fishing Adventure! Let's learn the basics.",
+          trigger: 'start',
+          position: 'center'
+        },
+        {
+          message: "First, let's cast your line. Click the 'Cast Line' button to start.",
+          trigger: 'idle',
+          position: 'buttonCast',
+          highlightElementId: 'cast-button'
+        },
+        {
+          message: "Now click again to set your casting power! The longer you wait, the farther you'll cast.",
+          trigger: 'casting',
+          position: 'buttonCast',
+          highlightElementId: 'cast-button'
+        },
+        {
+          message: "Great! Now wait for a fish to bite. Different fish are active based on weather and time of day.",
+          trigger: 'waiting',
+          position: 'hook'
+        },
+        {
+          message: "A fish is biting! Complete the challenge to catch it!",
+          trigger: 'challenge',
+          position: 'center'
+        },
+        {
+          message: "You caught a fish! Each fish has a different value and rarity.",
+          trigger: 'catch_animation',
+          position: 'center'
+        },
+        {
+          message: "Your catches are recorded in your collection. Try to catch all types of fish!",
+          trigger: 'collection',
+          position: 'right',
+          highlightElementId: 'collection-widget'
+        },
+        {
+          message: "The weather affects what fish are available. Keep an eye on conditions!",
+          trigger: 'weather',
+          position: 'right',
+          highlightElementId: 'current-conditions-widget'
+        },
+        {
+          message: "That's the basics! Happy fishing!",
+          trigger: 'end',
+          position: 'center'
+        }
+      ],
+      shown: {}, // Track which steps have been shown
+      tooltipElement: null
     };
     
     // Start initialization
@@ -173,11 +234,6 @@ class FishingGame {
         e.preventDefault();
         if (this.state === 'idle') {
           this.startCasting();
-          this.touchProps.isPowerMeterVisible = true;
-          document.querySelector('.power-meter').style.display = 'block';
-          
-          // Provide haptic feedback
-          this.vibrate(50);
         }
       });
       
@@ -185,17 +241,11 @@ class FishingGame {
         e.preventDefault();
         if (this.state === 'casting') {
           this.finishCasting();
-          this.touchProps.isPowerMeterVisible = false;
-          document.querySelector('.power-meter').style.display = 'none';
-          
-          // Provide haptic feedback based on cast power
-          const vibrationStrength = Math.round(this.castPower * 1.5);
-          this.vibrate(vibrationStrength);
         }
       });
     }
     
-    // End fishing buttons
+    // End fishing button
     document.getElementById('end-fishing-button').addEventListener('click', () => {
       this.endFishing();
     });
@@ -205,34 +255,22 @@ class FishingGame {
     });
     
     // Challenge interaction events
-    document.getElementById('reel-button').addEventListener('click', () => {
-      if (this.state === 'challenge' && this.activeChallenge?.type === 'reeling') {
-        this.handleReelingClick();
-      }
-    });
-    
-    // Canvas events
-    this.canvas.addEventListener('click', (e) => {
+    // Timing challenge - attaching to document for wide click area
+    document.addEventListener('click', (e) => {
       if (this.state === 'challenge' && this.activeChallenge?.type === 'timing') {
         this.handleTimingClick();
       }
     });
     
-    // Enhanced mobile touch events
-    this.canvas.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      this.handleTouchStart(e);
-    });
-    
-    this.canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      this.handleTouchMove(e);
-    });
-    
-    this.canvas.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      this.handleTouchEnd(e);
-    });
+    // Reeling challenge - specific button
+    const reelButton = document.getElementById('reel-challenge-button');
+    if (reelButton) {
+      reelButton.addEventListener('click', (e) => {
+        if (this.state === 'challenge' && this.activeChallenge?.type === 'reeling') {
+          this.handleReelingClick();
+        }
+      });
+    }
     
     // Mouse move for balancing challenge
     this.canvas.addEventListener('mousemove', (e) => {
@@ -243,11 +281,33 @@ class FishingGame {
       }
     });
     
+    // Enhanced mobile touch events
+    this.canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      if (this.state === 'challenge') {
+        const touch = e.touches[0];
+        if (this.activeChallenge?.type === 'timing') {
+          this.handleTimingClick();
+        } else if (this.activeChallenge?.type === 'reeling') {
+          this.handleReelingTouch();
+        }
+      }
+    });
+    
+    this.canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      if (this.state === 'challenge' && this.activeChallenge?.type === 'balancing') {
+        const touch = e.touches[0];
+        const rect = this.canvas.getBoundingClientRect();
+        const touchY = touch.clientY - rect.top;
+        this.handleBalancingMove(touchY / this.canvas.height);
+      }
+    });
+    
     // Window resize handler
     window.addEventListener('resize', () => {
       this.resizeCanvas();
       this.isMobile = this.detectMobile();
-      this.setupMobileUI();
     });
     
     // Weather change events
@@ -361,6 +421,15 @@ class FishingGame {
     // Always update environment elements
     this.updateWaves(deltaTime);
     this.updateFish(deltaTime);
+    
+    // Update animations
+    this.updateAnimations(deltaTime);
+    
+    // Smooth hook movement
+    this.updateHookPosition(deltaTime);
+    
+    // Check for tutorial steps
+    this.checkTutorial();
   }
   
   /**
@@ -699,6 +768,585 @@ class FishingGame {
     
     const availableFish = fishCatalog.getAvailableFish(conditions);
     GameState.updateAvailableFish(availableFish);
+  }
+  
+  /**
+   * Update animations
+   * @param {number} deltaTime - Time since last frame
+   */
+  updateAnimations(deltaTime) {
+    // Update and filter animations
+    this.animations = this.animations.filter(animation => {
+      // Update animation
+      animation.currentTime += deltaTime;
+      
+      // Check if animation is complete
+      if (animation.currentTime >= animation.duration) {
+        // If animation has onComplete callback, call it
+        if (animation.onComplete) {
+          animation.onComplete();
+        }
+        return false; // Remove animation
+      }
+      
+      // Calculate progress (0 to 1)
+      const progress = animation.currentTime / animation.duration;
+      
+      // If animation has update callback, call it with progress
+      if (animation.update) {
+        animation.update(progress);
+      }
+      
+      return true; // Keep animation
+    });
+  }
+  
+  /**
+   * Create a new animation
+   * @param {Object} options - Animation options
+   * @returns {Object} Animation object
+   */
+  createAnimation(options) {
+    const animation = {
+      currentTime: 0,
+      duration: options.duration || 1000,
+      update: options.update,
+      onComplete: options.onComplete
+    };
+    
+    this.animations.push(animation);
+    return animation;
+  }
+  
+  /**
+   * Update hook position with smooth animation
+   * @param {number} deltaTime - Time since last frame
+   */
+  updateHookPosition(deltaTime) {
+    // Smooth movement towards target position
+    const speed = 0.1 * (deltaTime / 16);
+    
+    this.hookPosition.x += (this.targetHookPosition.x - this.hookPosition.x) * speed;
+    this.hookPosition.y += (this.targetHookPosition.y - this.hookPosition.y) * speed;
+  }
+  
+  /**
+   * Finish casting the line with current power
+   */
+  finishCasting() {
+    // Calculate cast distance based on power
+    const maxDistance = this.canvas.width * 0.8;
+    const distance = (this.castPower / 100) * maxDistance;
+    
+    // Set target hook position (actual position will animate smoothly)
+    this.targetHookPosition = {
+      x: 100 + distance,
+      y: 140 + Math.random() * 30
+    };
+    
+    // Change game state
+    this.state = 'waiting';
+    
+    // Update UI
+    document.getElementById('cast-button').textContent = 'Waiting...';
+    document.getElementById('cast-button').disabled = true;
+    
+    // Hide power meter
+    const powerMeter = document.querySelector('.power-meter');
+    if (powerMeter) {
+      powerMeter.style.display = 'none';
+    }
+    
+    // Play sound effects
+    SoundSystem.playSound('splash', { volume: 0.4 + (this.castPower / 100) * 0.6 });
+    
+    // Create splash effect with dynamic size based on cast power
+    this.createEnhancedSplashEffect(this.targetHookPosition.x, this.targetHookPosition.y, this.castPower);
+    
+    // Show toast message
+    const castQuality = this.getCastQualityMessage(this.castPower);
+    this.showToast(castQuality.message, 'info', 2000);
+    
+    // Check tutorial state for transition
+    if (this.tutorial.active) {
+      this.checkTutorial();
+    }
+  }
+  
+  /**
+   * Create an enhanced splash effect
+   * @param {number} x - X position
+   * @param {number} y - Y position
+   * @param {number} power - Cast power (0-100)
+   */
+  createEnhancedSplashEffect(x, y, power) {
+    // Create multiple splash particles for a more dynamic effect
+    const particleCount = 5 + Math.floor(power / 20);
+    const baseSize = 20 + (power / 5);
+    
+    for (let i = 0; i < particleCount; i++) {
+      // Create water splash particle
+      const splash = document.createElement('div');
+      splash.className = 'splash';
+      
+      // Random size variation
+      const sizeVariation = 0.5 + (Math.random() * 1);
+      const size = baseSize * sizeVariation;
+      
+      // Random position variation
+      const posX = x + (Math.random() * 30 - 15);
+      const posY = y + (Math.random() * 20 - 10);
+      
+      // Set styles
+      splash.style.width = `${size}px`;
+      splash.style.height = `${size}px`;
+      splash.style.left = `${posX}px`;
+      splash.style.top = `${posY}px`;
+      splash.style.opacity = `${0.7 + Math.random() * 0.3}`;
+      
+      // Random animation duration
+      const duration = 600 + Math.random() * 400;
+      splash.style.animationDuration = `${duration}ms`;
+      
+      // Add to water ripples container
+      const rippleContainer = document.getElementById('water-ripples');
+      if (rippleContainer) {
+        rippleContainer.appendChild(splash);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+          if (rippleContainer.contains(splash)) {
+            rippleContainer.removeChild(splash);
+          }
+        }, duration);
+      }
+    }
+    
+    // Also create water ripples
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        this.createWaterRipple(x, y);
+      }, i * 150);
+    }
+  }
+  
+  /**
+   * Check and show tutorial steps based on game state
+   */
+  checkTutorial() {
+    if (!this.tutorial.active) return;
+    
+    // Get current game state as trigger
+    let currentTrigger = this.state;
+    
+    // Find matching tutorial steps for current state
+    const matchingSteps = this.tutorial.steps.filter(step => 
+      step.trigger === currentTrigger && !this.tutorial.shown[step.trigger]
+    );
+    
+    if (matchingSteps.length > 0) {
+      // Show the first matching step
+      this.showTutorialStep(matchingSteps[0]);
+      // Mark as shown
+      this.tutorial.shown[matchingSteps[0].trigger] = true;
+    } else if (currentTrigger === 'idle' && this.tutorial.step === 0) {
+      // Special case for starting tutorial
+      this.showTutorialStep(this.tutorial.steps[0]);
+      this.tutorial.shown['start'] = true;
+      this.tutorial.step = 1;
+    }
+  }
+  
+  /**
+   * Show a tutorial step
+   * @param {Object} step - Tutorial step to show
+   */
+  showTutorialStep(step) {
+    // Create or get tutorial tooltip element
+    if (!this.tutorial.tooltipElement) {
+      this.tutorial.tooltipElement = document.createElement('div');
+      this.tutorial.tooltipElement.className = 'tutorial-tooltip';
+      document.body.appendChild(this.tutorial.tooltipElement);
+    }
+    
+    // Set tooltip content
+    this.tutorial.tooltipElement.innerHTML = `
+      <div class="tutorial-content">
+        <div class="tutorial-message">${step.message}</div>
+        <div class="tutorial-controls">
+          <button class="tutorial-next">Got it!</button>
+          <button class="tutorial-skip">Skip Tutorial</button>
+        </div>
+      </div>
+      <div class="tutorial-arrow"></div>
+    `;
+    
+    // Position tooltip
+    this.positionTutorialTooltip(step);
+    
+    // Highlight target element if specified
+    if (step.highlightElementId) {
+      const targetElement = document.getElementById(step.highlightElementId);
+      if (targetElement) {
+        targetElement.classList.add('tutorial-highlight');
+        
+        // Remove highlight after tutorial step is dismissed
+        const removeHighlight = () => {
+          targetElement.classList.remove('tutorial-highlight');
+        };
+        
+        // Store reference to remove function
+        this.tutorial.removeHighlight = removeHighlight;
+      }
+    }
+    
+    // Handle next button
+    const nextButton = this.tutorial.tooltipElement.querySelector('.tutorial-next');
+    if (nextButton) {
+      nextButton.addEventListener('click', () => {
+        this.dismissTutorialStep();
+      });
+    }
+    
+    // Handle skip button
+    const skipButton = this.tutorial.tooltipElement.querySelector('.tutorial-skip');
+    if (skipButton) {
+      skipButton.addEventListener('click', () => {
+        this.endTutorial();
+      });
+    }
+    
+    // Show tooltip with animation
+    setTimeout(() => {
+      this.tutorial.tooltipElement.classList.add('visible');
+    }, 10);
+  }
+  
+  /**
+   * Position tutorial tooltip based on target position
+   * @param {Object} step - Tutorial step with position info
+   */
+  positionTutorialTooltip(step) {
+    const tooltip = this.tutorial.tooltipElement;
+    if (!tooltip) return;
+    
+    tooltip.className = 'tutorial-tooltip'; // Reset classes
+    
+    // Position based on target
+    switch (step.position) {
+      case 'center':
+        tooltip.style.top = '50%';
+        tooltip.style.left = '50%';
+        tooltip.style.transform = 'translate(-50%, -50%)';
+        break;
+        
+      case 'buttonCast':
+        const castButton = document.getElementById('cast-button');
+        if (castButton) {
+          const rect = castButton.getBoundingClientRect();
+          tooltip.style.top = `${rect.bottom + 10}px`;
+          tooltip.style.left = `${rect.left + rect.width / 2}px`;
+          tooltip.style.transform = 'translateX(-50%)';
+          tooltip.classList.add('tooltip-top');
+        } else {
+          // Fallback to center
+          tooltip.style.top = '50%';
+          tooltip.style.left = '50%';
+          tooltip.style.transform = 'translate(-50%, -50%)';
+        }
+        break;
+        
+      case 'hook':
+        // Position near hook
+        tooltip.style.top = `${this.hookPosition.y + 40}px`;
+        tooltip.style.left = `${this.hookPosition.x}px`;
+        tooltip.style.transform = 'translateX(-50%)';
+        tooltip.classList.add('tooltip-top');
+        break;
+        
+      case 'right':
+        // Position on right side near sidebar
+        if (step.highlightElementId) {
+          const element = document.getElementById(step.highlightElementId);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            tooltip.style.top = `${rect.top + rect.height / 2}px`;
+            tooltip.style.left = `${rect.left - 10}px`;
+            tooltip.style.transform = 'translate(-100%, -50%)';
+            tooltip.classList.add('tooltip-right');
+          } else {
+            // Fallback
+            tooltip.style.top = '50%';
+            tooltip.style.right = '300px';
+            tooltip.style.transform = 'translateY(-50%)';
+            tooltip.classList.add('tooltip-right');
+          }
+        } else {
+          // Fallback
+          tooltip.style.top = '50%';
+          tooltip.style.right = '300px';
+          tooltip.style.transform = 'translateY(-50%)';
+          tooltip.classList.add('tooltip-right');
+        }
+        break;
+        
+      default:
+        // Default to center
+        tooltip.style.top = '50%';
+        tooltip.style.left = '50%';
+        tooltip.style.transform = 'translate(-50%, -50%)';
+    }
+  }
+  
+  /**
+   * Dismiss current tutorial step
+   */
+  dismissTutorialStep() {
+    if (!this.tutorial.tooltipElement) return;
+    
+    // Hide tooltip
+    this.tutorial.tooltipElement.classList.remove('visible');
+    
+    // Remove highlight if present
+    if (this.tutorial.removeHighlight) {
+      this.tutorial.removeHighlight();
+      this.tutorial.removeHighlight = null;
+    }
+    
+    // Increment step counter
+    this.tutorial.step++;
+    
+    // Check if tutorial is complete
+    if (this.tutorial.step >= this.tutorial.steps.length) {
+      this.endTutorial();
+    }
+  }
+  
+  /**
+   * End the tutorial completely
+   */
+  endTutorial() {
+    this.tutorial.active = false;
+    
+    // Remove tooltip element
+    if (this.tutorial.tooltipElement) {
+      if (this.tutorial.tooltipElement.parentNode) {
+        this.tutorial.tooltipElement.parentNode.removeChild(this.tutorial.tooltipElement);
+      }
+      this.tutorial.tooltipElement = null;
+    }
+    
+    // Remove any active highlights
+    if (this.tutorial.removeHighlight) {
+      this.tutorial.removeHighlight();
+      this.tutorial.removeHighlight = null;
+    }
+    
+    // Save tutorial completion to state
+    GameState.updateState('player', (player) => ({
+      ...player,
+      tutorialComplete: true
+    }));
+    
+    // Show completion message
+    this.showToast("Tutorial complete! Happy fishing!", "success");
+  }
+
+  /**
+   * Start a fishing challenge
+   * @param {Object} challengeData - Data for the challenge
+   */
+  startChallenge(challengeData) {
+    this.state = 'challenge';
+    this.activeChallenge = challengeData;
+    this.challengeScore = 0;
+    this.challengeTimer = 0;
+    this.challengeDuration = challengeData.duration || 10000;
+    this.hookHasFish = true;
+    
+    // Initialize challenge-specific state based on challenge type
+    switch(challengeData.type) {
+      case 'timing':
+        this.initTimingChallenge(document.getElementById('challenge-timing'));
+        break;
+      case 'reeling':
+        this.initReelingChallenge(document.getElementById('challenge-reeling'));
+        break;
+      case 'balancing':
+        this.initBalancingChallenge(document.getElementById('challenge-balancing'));
+        break;
+      case 'patience':
+        this.initPatienceChallenge(document.getElementById('challenge-patience'));
+        break;
+    }
+    
+    // Show challenge overlay
+    const overlay = document.getElementById('challenge-overlay');
+    overlay.style.display = 'flex';
+    
+    // Update challenge title and description
+    document.getElementById('challenge-title').textContent = `Fish On! ${challengeData.fish.name}`;
+    document.getElementById('challenge-description').textContent = this.getChallengeDescription(challengeData.type);
+    
+    // Show the specific challenge UI
+    this.showChallengeUI(challengeData.type);
+    
+    // Play catch sound based on fish rarity
+    const soundId = challengeData.fish.rarity >= 4 ? 'catchRare' : 
+                   challengeData.fish.rarity >= 3 ? 'catchUncommon' : 'catchCommon';
+    this.soundSystem.playSound(soundId, { volume: 0.6 });
+    
+    // Provide haptic feedback on challenge start
+    this.vibrate([100, 50, 100]);
+    
+    // Show toast notification
+    this.showToast(`${challengeData.fish.name} is biting! ${this.getChallengeDescription(challengeData.type)}`, "success");
+  }
+
+  /**
+   * Get description text for challenge type
+   * @param {string} challengeType - Type of challenge
+   * @returns {string} Challenge description
+   */
+  getChallengeDescription(challengeType) {
+    switch(challengeType) {
+      case 'timing':
+        return 'Click at exactly the right moment!';
+      case 'reeling':
+        return 'Click rapidly to reel in the fish!';
+      case 'balancing':
+        return 'Keep the indicator in the target zone!';
+      case 'patience':
+        return 'Hold steady and wait for the right moment!';
+      default:
+        return 'Catch the fish!';
+    }
+  }
+
+  /**
+   * Show the UI for a specific challenge type
+   * @param {string} challengeType - Type of challenge
+   */
+  showChallengeUI(challengeType) {
+    // Hide all challenge UIs first
+    document.getElementById('challenge-timing').style.display = 'none';
+    document.getElementById('challenge-reeling').style.display = 'none';
+    document.getElementById('challenge-balancing').style.display = 'none';
+    document.getElementById('challenge-patience').style.display = 'none';
+    
+    // Show the specific UI
+    document.getElementById(`challenge-${challengeType}`).style.display = 'block';
+  }
+
+  /**
+   * Complete the current challenge
+   * @param {boolean} success - Whether the challenge was successful
+   */
+  completeChallenge(success) {
+    if (this.state !== 'challenge' || !this.activeChallenge) return;
+    
+    // Hide challenge overlay
+    document.getElementById('challenge-overlay').style.display = 'none';
+    
+    // Calculate final score (0-100)
+    const finalScore = Math.min(100, this.challengeScore);
+    
+    if (success) {
+      // Register the catch
+      const catchResult = {
+        fish: this.activeChallenge.fish,
+        quality: finalScore,
+        timestamp: Date.now()
+      };
+      
+      // Store last catch
+      this.lastCatch = catchResult;
+      
+      // Add to catch history
+      this.catchHistory.unshift(catchResult);
+      if (this.catchHistory.length > 10) {
+        this.catchHistory.pop();
+      }
+      
+      // Update UI with catch info
+      this.updateLastCatchDisplay(catchResult);
+      
+      // Show success message
+      const qualityText = finalScore >= 90 ? 'Perfect' : 
+                         finalScore >= 70 ? 'Great' : 
+                         finalScore >= 50 ? 'Good' : 'Poor';
+      
+      this.showToast(`${qualityText} catch! ${catchResult.fish.name} (${finalScore}% quality)`, "success");
+      
+      // Play catch sound
+      const soundId = catchResult.fish.rarity >= 4 ? 'legendarySuccess' : 
+                     catchResult.fish.rarity >= 3 ? 'rareSuccess' : 'commonSuccess';
+      this.soundSystem.playSound(soundId, { volume: 0.7 });
+      
+      // Vibrate for successful catch
+      const vibrationPattern = [];
+      for (let i = 0; i < catchResult.fish.rarity; i++) {
+        vibrationPattern.push(50, 100);
+      }
+      this.vibrate(vibrationPattern);
+      
+      // Update session stats
+      this.sessionStats.catches++;
+      this.sessionStats.totalValue += catchResult.fish.value;
+      if (catchResult.fish.rarity >= 3) {
+        this.sessionStats.rareCatches++;
+      }
+      
+      // Show catch animation
+      this.showCatchAnimation(catchResult);
+    } else {
+      // Fish got away
+      this.showToast(`The ${this.activeChallenge.fish.name} got away!`, "error");
+      this.soundSystem.playSound('fishEscape', { volume: 0.6 });
+      
+      // Return to idle state
+      this.returnToIdle();
+    }
+    
+    // Reset challenge state
+    this.activeChallenge = null;
+    this.challengeScore = 0;
+    this.challengeTimer = 0;
+    this.state = 'idle';
+  }
+
+  /**
+   * Return to idle state after a challenge or catching a fish
+   */
+  returnToIdle() {
+    this.state = 'idle';
+    this.hookPosition = { x: this.canvas.width / 2, y: this.canvas.height / 2 };
+    this.hookHasFish = false;
+    this.activeChallenge = null;
+    
+    // Reset UI elements
+    const overlay = document.getElementById('challenge-overlay');
+    if (overlay) {
+      overlay.style.display = 'none';
+    }
+    
+    // Re-enable casting button
+    const castButton = document.getElementById('cast-button');
+    if (castButton) {
+      castButton.disabled = false;
+      castButton.textContent = 'Cast Line';
+    }
+    
+    // Update mobile UI if needed
+    const touchButton = document.getElementById('cast-touch-button');
+    if (touchButton && this.isMobile) {
+      touchButton.disabled = false;
+      touchButton.textContent = 'CAST';
+      touchButton.style.display = 'block';
+    }
+    
+    // Play ambient sound
+    this.soundSystem.playSound('ambient', { loop: true, volume: 0.3 });
   }
 }
 

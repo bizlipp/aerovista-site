@@ -202,7 +202,7 @@ export function selectFish() {
   
   // Get available fish for these conditions
   const fishing = GameState.getState('fishing');
-  const availableFish = fishing.availableFish || fishCatalog.getAvailableFish(conditions);
+  let availableFish = fishing.availableFish || fishCatalog.getAvailableFish(conditions);
   
   if (!availableFish || availableFish.length === 0) {
     // Fallback to full catalog if no available fish
@@ -216,41 +216,71 @@ export function selectFish() {
   // Get environmental rarity bonus
   const environmentRarityBonus = weatherSystem.getRarityBonus();
   
+  // Check if player is on a lucky streak
+  const luckyStreak = fishing.streak > 5 ? Math.min((fishing.streak - 5) * 0.03, 0.15) : 0;
+  
   // Calculate combined bonus
-  const totalRarityBonus = rarityBonus + environmentRarityBonus;
+  const totalRarityBonus = rarityBonus + environmentRarityBonus + luckyStreak;
+  
+  // Apply "first-time player" bonus to help them catch something good early
+  const firstTimeCatchBonus = player.collectedFish.length < 3 ? 0.15 : 0;
   
   // Determine rarity threshold with randomness
   // Higher rarity bonus = better chance at rare fish
   let rarityThreshold;
   const rarityRoll = Math.random();
   
-  if (rarityRoll < 0.05 + totalRarityBonus * 0.2) {
-    // 5-25% chance for legendary (rarity 5)
+  if (rarityRoll < 0.02 + totalRarityBonus * 0.15 + firstTimeCatchBonus) {
+    // 2-17% chance for legendary (rarity 5)
     rarityThreshold = 5;
-  } else if (rarityRoll < 0.15 + totalRarityBonus * 0.3) {
-    // 15-45% chance for epic (rarity 4)
+    // Play a subtle "something special" sound
+    SoundSystem.playSound('lineTension', { volume: 0.8 });
+  } else if (rarityRoll < 0.08 + totalRarityBonus * 0.25 + firstTimeCatchBonus) {
+    // 8-33% chance for epic (rarity 4)
     rarityThreshold = 4;
-  } else if (rarityRoll < 0.35 + totalRarityBonus * 0.4) {
-    // 35-75% chance for rare (rarity 3)
+    // Play a subtle hint sound
+    SoundSystem.playSound('lineTension', { volume: 0.5 });
+  } else if (rarityRoll < 0.25 + totalRarityBonus * 0.3) {
+    // 25-55% chance for rare (rarity 3)
     rarityThreshold = 3;
-  } else if (rarityRoll < 0.6 + totalRarityBonus * 0.3) {
-    // 60-90% chance for uncommon (rarity 2) 
+  } else if (rarityRoll < 0.6 + totalRarityBonus * 0.2) {
+    // 60-80% chance for uncommon (rarity 2) 
     rarityThreshold = 2;
   } else {
     // Remaining chance for common (rarity 1)
     rarityThreshold = 1;
   }
   
-  // Filter fish by rarity threshold
+  // Filter fish by max rarity threshold (can catch any rarity up to the threshold)
   const possibleFish = availableFish.filter(fish => fish.rarity <= rarityThreshold);
   
-  if (possibleFish.length === 0) {
+  // Further filter to prefer fish of the exact rarity threshold if available
+  const exactRarityFish = possibleFish.filter(fish => fish.rarity === rarityThreshold);
+  
+  let selectedPool;
+  if (exactRarityFish.length > 0) {
+    // 80% chance to get a fish of exactly the rarity threshold if available
+    selectedPool = Math.random() < 0.8 ? exactRarityFish : possibleFish;
+  } else {
+    selectedPool = possibleFish;
+  }
+  
+  if (selectedPool.length === 0) {
     // Fallback to all fish if no matches
     return availableFish[Math.floor(Math.random() * availableFish.length)];
   }
   
+  // Prioritize uncaught fish if available to help complete collection
+  const playerCollectedFish = player.collectedFish || [];
+  const uncaughtFish = selectedPool.filter(fish => !playerCollectedFish.includes(fish.name));
+  
+  // 70% chance to get an uncaught fish if available
+  if (uncaughtFish.length > 0 && Math.random() < 0.7) {
+    return uncaughtFish[Math.floor(Math.random() * uncaughtFish.length)];
+  }
+  
   // Select random fish from possible catches
-  return possibleFish[Math.floor(Math.random() * possibleFish.length)];
+  return selectedPool[Math.floor(Math.random() * selectedPool.length)];
 }
 
 /**
@@ -455,7 +485,9 @@ export function completeChallenge(success) {
     SoundSystem.playCatchSound(fish.rarity);
     
     // Add experience and update collection
-    this.addFisherXP(this.calculateCatchXP(fish));
+    const xpGained = this.calculateCatchXP(fish);
+    const isNewCatch = !this.collectedFish.includes(fish.name);
+    this.addFisherXP(xpGained);
     this.updateFishCollection(fish.name);
     
     // Update session stats
@@ -465,12 +497,50 @@ export function completeChallenge(success) {
       this.sessionStats.rareCatches++;
     }
     
+    // Create celebration effects for rare catches
+    if (fish.rarity >= 4) {
+      // Add ripple effects
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          const x = Math.random() * this.canvas.width;
+          const y = 100 + Math.random() * 50;
+          this.createWaterRipple(x, y);
+        }, i * 200);
+      }
+      
+      // Add visual feedback element for legendary fish
+      if (fish.rarity === 5) {
+        const levelUpEffect = document.createElement('div');
+        levelUpEffect.className = 'level-up-effect';
+        document.body.appendChild(levelUpEffect);
+        
+        // Remove after animation completes
+        setTimeout(() => {
+          if (document.body.contains(levelUpEffect)) {
+            document.body.removeChild(levelUpEffect);
+          }
+        }, 1500);
+      }
+    }
+    
+    // Show special message for first catch of this type
+    if (isNewCatch) {
+      this.showToast(`New fish discovered: ${fish.name}!`, "success", 3000);
+      
+      // Show special dialog from Billy
+      const rarityText = this.getRarityText(fish.rarity).toLowerCase();
+      this.showBillyDialog(`Wow! You caught a ${rarityText} ${fish.name}! I've never seen one before!`, 4000);
+    }
+    
     // Show the catch animation
     this.showCatchAnimation(fish);
     
     // Haptic feedback for successful catch
     if (this.isMobile && this.vibrationSupported) {
-      this.vibrate([100, 50, 200]);
+      // More intense vibration for rarer fish
+      const intensity = 100 + (fish.rarity * 20);
+      const pattern = fish.rarity >= 4 ? [intensity, 50, intensity] : [intensity];
+      this.vibrate(pattern);
     }
   } else {
     // Handle failed catch
@@ -478,6 +548,28 @@ export function completeChallenge(success) {
     
     // Play sound for failed catch
     SoundSystem.playSound('lineBreak');
+    
+    // Create "fish escaping" effect
+    const escapeRipples = 3;
+    for (let i = 0; i < escapeRipples; i++) {
+      setTimeout(() => {
+        const offsetX = (Math.random() * 50) - 25;
+        const offsetY = (Math.random() * 30) - 15;
+        this.createWaterRipple(this.hookPosition.x + offsetX, this.hookPosition.y + offsetY);
+      }, i * 150);
+    }
+    
+    // Show "fish escaped" dialog occasionally
+    if (Math.random() < 0.4) {
+      const escapeMessages = [
+        "That one was fast! Try again!",
+        "Almost had it! Keep trying!",
+        "The big ones always get away...",
+        "Quick, cast again before it comes back!"
+      ];
+      const randomMessage = escapeMessages[Math.floor(Math.random() * escapeMessages.length)];
+      this.showBillyDialog(randomMessage, 3000);
+    }
     
     // Reset game state
     this.state = 'idle';

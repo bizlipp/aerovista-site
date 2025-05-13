@@ -455,7 +455,7 @@
         <div id="billy-dialog">Ready to catch some fish?</div>
         
         <!-- UI overlays -->
-        <div id="challenge-overlay">
+        <div class="challenge-overlay" id="challenge-overlay">
           <div class="challenge-container">
             <h2 id="challenge-title">Fish On!</h2>
             <p id="challenge-description">Quick, catch it before it gets away!</p>
@@ -465,11 +465,57 @@
               <div class="challenge-progress-fill" id="challenge-progress-fill"></div>
             </div>
             
-            <!-- Different challenge types will be injected here -->
-            <div id="challenge-timing"></div>
-            <div id="challenge-reeling"></div>
-            <div id="challenge-balancing"></div>
-            <div id="challenge-patience"></div>
+            <!-- Timing Challenge -->
+            <div class="challenge-timing" id="challenge-timing">
+              <div class="timing-track">
+                <div class="timing-indicator"></div>
+                <div class="timing-target"></div>
+              </div>
+              <div class="timing-instruction">Tap when the indicator is in the target zone!</div>
+              <button class="challenge-button timing-button">TAP NOW!</button>
+            </div>
+            
+            <!-- Reeling Challenge -->
+            <div class="challenge-reeling" id="challenge-reeling">
+              <div class="reeling-meter">
+                <div class="reeling-fill"></div>
+                <div class="strain-indicator" id="strain-indicator"></div>
+              </div>
+              <div class="challenge-info">
+                <div class="fish-resistance">
+                  <span>Fish Resistance:</span>
+                  <div class="resistance-bar">
+                    <div class="resistance-fill" id="resistance-fill"></div>
+                  </div>
+                </div>
+                <div class="fish-fatigue">
+                  <span>Fish Fatigue:</span>
+                  <div class="fatigue-bar">
+                    <div class="fatigue-fill" id="fatigue-fill"></div>
+                  </div>
+                </div>
+              </div>
+              <p>Tap rapidly to reel in without breaking the line!</p>
+              <button id="reel-challenge-button" class="challenge-button reeling-button">REEL!</button>
+            </div>
+            
+            <!-- Balancing Challenge -->
+            <div class="challenge-balancing" id="challenge-balancing">
+              <div class="balance-track">
+                <div class="balance-target"></div>
+                <div class="balance-indicator"></div>
+              </div>
+              <p>Move your mouse/finger up and down to keep the indicator in the target zone!</p>
+            </div>
+            
+            <!-- Patience Challenge -->
+            <div class="challenge-patience" id="challenge-patience">
+              <div class="patience-meter">
+                <div class="patience-fill"></div>
+              </div>
+              <div class="patience-warning hidden">Hold steady!</div>
+              <p>Stay still and wait for the fish to tire!</p>
+            </div>
           </div>
         </div>
         

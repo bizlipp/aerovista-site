@@ -261,13 +261,29 @@ canvas {
   z-index: 10;
 }
 
+.challenge-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
 .challenge-container {
-  background-color: rgba(0,0,0,0.8);
-  padding: 1.5rem;
-  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  padding: 20px;
   width: 90%;
   max-width: 500px;
-  border: 1px solid rgba(255,255,255,0.2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid var(--accent-color);
   color: white;
   text-align: center;
 }
@@ -279,18 +295,42 @@ canvas {
 }
 
 .challenge-progress {
-  height: 8px;
-  background-color: rgba(255,255,255,0.2);
-  border-radius: 4px;
-  margin: 1rem 0;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  margin: 15px 0;
   overflow: hidden;
 }
 
 .challenge-progress-fill {
   height: 100%;
+  background-color: var(--accent-color);
   width: 0%;
-  background-color: var(--success-color);
-  transition: width 0.1s linear;
+  transition: width 0.3s linear;
+}
+
+/* Challenge button styles */
+.challenge-button {
+  padding: 15px 30px;
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: transform 0.1s, background-color 0.3s;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.challenge-button:hover {
+  background-color: #ff5a5f;
+  transform: scale(1.05);
+}
+
+.challenge-button:active {
+  transform: scale(0.98);
 }
 
 /* Challenge Types */
@@ -300,48 +340,34 @@ canvas {
 }
 
 .timing-track {
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
   position: relative;
-  height: 50px;
-  background-color: rgba(255,255,255,0.1);
-  border-radius: 25px;
-  margin-bottom: 1rem;
+  margin: 20px 0;
   overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .timing-target {
   position: absolute;
-  top: 0;
-  left: 45%;
-  width: 10%;
+  width: 20%;
   height: 100%;
-  background-color: rgba(255,255,255,0.3);
-  border: 1px dashed rgba(255,255,255,0.5);
+  background-color: rgba(76, 175, 80, 0.3);
+  left: 40%;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
 }
 
 .timing-indicator {
   position: absolute;
-  top: 5px;
-  left: 0;
-  width: 40px;
-  height: 40px;
-  background-color: var(--accent-color);
-  border-radius: 50%;
+  width: 10px;
+  height: 100%;
+  background-color: white;
+  left: 0%;
+  border-radius: 5px;
   transition: left 0.05s linear;
-}
-
-.timing-indicator.perfect-hit {
-  background-color: var(--success-color);
-  box-shadow: 0 0 10px var(--success-color);
-}
-
-.timing-indicator.good-hit {
-  background-color: var(--warning-color);
-  box-shadow: 0 0 10px var(--warning-color);
-}
-
-.timing-indicator.poor-hit {
-  background-color: var(--error-color);
-  box-shadow: 0 0 10px var(--error-color);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 /* Reeling Challenge */
@@ -349,60 +375,68 @@ canvas {
   margin-top: 1rem;
 }
 
-.reeling-meter, .strain-bar {
-  position: relative;
+.reeling-meter {
   height: 20px;
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  margin-bottom: 1rem;
+  margin: 15px 0;
   overflow: hidden;
+  position: relative;
 }
 
-.strain-fill {
+.reeling-fill {
   height: 100%;
+  background-color: #4CAF50;
   width: 0%;
-  background-color: var(--success-color);
-  transition: width 0.1s linear, background-color 0.2s ease;
-}
-
-.strain-warning {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255,0,0,0.3);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.progress-meter {
-  height: 10px;
-  background-color: rgba(255,255,255,0.1);
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  width: 0%;
-  background-color: var(--squad-neon);
+  border-radius: 10px;
   transition: width 0.1s linear;
 }
 
-#reel-challenge-button {
-  display: block;
-  margin: 1rem auto;
-  padding: 0.5rem 2rem;
-  background-color: var(--accent-color);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.1s ease;
+.strain-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  background-color: rgba(244, 67, 54, 0.5);
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.challenge-info {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+  flex-wrap: wrap;
+}
+
+.fish-resistance, .fish-fatigue {
+  flex: 1;
+  min-width: 45%;
+  margin: 5px;
+}
+
+.resistance-bar, .fatigue-bar {
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.resistance-fill {
+  height: 100%;
+  background-color: #2196F3;
+  width: 100%;
+  transition: width 0.3s, background-color 0.3s;
+}
+
+.fatigue-fill {
+  height: 100%;
+  background-color: #FF9800;
+  width: 0%;
+  transition: width 0.3s;
 }
 
 /* Balancing Challenge */
@@ -411,36 +445,40 @@ canvas {
 }
 
 .balance-track {
-  position: relative;
   width: 40px;
-  height: 200px;
-  background-color: rgba(255,255,255,0.1);
+  height: 300px;
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  margin: 0 auto 1rem;
-  overflow: hidden;
+  position: relative;
+  margin: 20px auto;
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .balance-target {
   position: absolute;
-  left: 0;
   width: 100%;
-  background-color: rgba(255,255,255,0.3);
-  border: 1px dashed rgba(255,255,255,0.5);
+  height: 30%;
+  background-color: rgba(76, 175, 80, 0.3);
+  top: 35%;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
 }
 
 .balance-indicator {
   position: absolute;
-  left: 5px;
-  width: 30px;
-  height: 30px;
-  background-color: var(--accent-color);
-  border-radius: 50%;
-  transition: top 0.1s ease;
+  width: 80%;
+  height: 20px;
+  background-color: white;
+  left: 10%;
+  top: 50%;
+  border-radius: 10px;
+  transition: top 0.05s ease-out;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }
 
 .balance-indicator.in-target {
-  background-color: var(--success-color);
-  box-shadow: 0 0 10px var(--success-color);
+  background-color: #4CAF50;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
 }
 
 /* Patience Challenge */
@@ -450,23 +488,24 @@ canvas {
 
 .patience-meter {
   height: 20px;
-  background-color: rgba(255,255,255,0.1);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 10px;
-  margin-bottom: 1rem;
+  margin: 15px 0;
   overflow: hidden;
 }
 
 .patience-fill {
   height: 100%;
+  background-color: #4CAF50;
   width: 0%;
-  background-color: var(--squad-neon);
-  transition: width 0.1s linear;
+  transition: width 0.3s linear;
 }
 
 .patience-warning {
-  color: var(--error-color);
-  margin-bottom: 1rem;
+  color: #F44336;
   font-weight: bold;
+  margin: 10px 0;
+  animation: pulse 0.5s infinite alternate;
 }
 
 .patience-warning.hidden {
@@ -576,15 +615,15 @@ canvas {
   margin-bottom: 10px;
   border-radius: 4px;
   border-left: 4px solid var(--primary-color);
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateX(30px);
   transition: opacity 0.3s, transform 0.3s;
 }
 
 .toast.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(0);
 }
 
 .toast.fadeout {
@@ -924,28 +963,150 @@ canvas {
 
 @keyframes ripple {
   0% { transform: scale(0); opacity: 1; }
+  50% { transform: scale(0.5); opacity: 0.8; }
   100% { transform: scale(1); opacity: 0; }
 }
 
 .ripple {
   position: absolute;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.2));
   transform: scale(0);
-  animation: ripple 1s ease-out;
+  animation: ripple 2s cubic-bezier(0.1, 0.5, 0.5, 1);
   pointer-events: none;
+  z-index: 3;
 }
 
 .splash {
   position: absolute;
   pointer-events: none;
   opacity: 0.8;
+  background-image: url('images/effects/splash.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 4;
   animation: splash 0.8s ease-out forwards;
 }
 
 @keyframes splash {
-  0% { transform: scale(0.3); opacity: 0.8; }
+  0% { transform: scale(0.3) translateY(0); opacity: 0.9; }
+  50% { opacity: 0.7; }
+  100% { transform: scale(1) translateY(-20px); opacity: 0; }
+}
+
+/* Create a fish tug animation */
+@keyframes fishTug {
+  0% { transform: translateX(0) translateY(0); }
+  25% { transform: translateX(-5px) translateY(2px); }
+  50% { transform: translateX(3px) translateY(-2px); }
+  75% { transform: translateX(-2px) translateY(1px); }
+  100% { transform: translateX(0) translateY(0); }
+}
+
+.fish-tugging {
+  animation: fishTug 0.5s ease-in-out;
+}
+
+/* Add a shine effect for rare catches */
+@keyframes shine {
+  0% { background-position: -100px -100px; }
+  100% { background-position: 100px 100px; }
+}
+
+.legendary .fish-image::after,
+.epic .fish-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+  background-size: 200px 200px;
+  animation: shine 2s infinite linear;
+}
+
+/* Add a water surface animation */
+@keyframes waterSurface {
+  0% { background-position: 0 0; }
+  100% { background-position: 200px 0; }
+}
+
+.game-area::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 85, 119, 0) 0%,
+    rgba(17, 85, 119, 0.2) 40%,
+    rgba(17, 85, 119, 0.4) 60%,
+    rgba(17, 85, 119, 0.8) 100%
+  ), 
+  url('images/effects/water_pattern.png');
+  background-size: 200px 200px;
+  opacity: 0.3;
+  pointer-events: none;
+  animation: waterSurface 10s linear infinite;
+  z-index: 1;
+}
+
+/* Create a celebration effect for legendary fish */
+@keyframes celebrate {
+  0%, 100% { background-position: 0% 0%; }
+  50% { background-position: 100% 0%; }
+}
+
+.legendary {
+  position: relative;
+}
+
+.legendary::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 15px;
+  background: linear-gradient(90deg, #FFD700, #FFC107, #FF9800, #FFC107, #FFD700);
+  background-size: 400% 100%;
+  z-index: -1;
+  animation: celebrate 3s ease infinite;
+}
+
+/* Level up animation */
+@keyframes levelUp {
+  0% { transform: scale(1); opacity: 0; }
+  50% { transform: scale(1.5); opacity: 1; }
   100% { transform: scale(1); opacity: 0; }
+}
+
+.level-up-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0) 70%);
+  pointer-events: none;
+  opacity: 0;
+  z-index: 1000;
+  animation: levelUp 1.5s ease-in-out;
+}
+
+/* Improve button feedback */
+.control-button, #cast-touch-button, .continue-button {
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.control-button:active, #cast-touch-button:active, .continue-button:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 /* Utility Classes */
@@ -1004,6 +1165,26 @@ canvas {
     max-width: 200px;
     font-size: 0.8rem;
   }
+  
+  .challenge-button {
+    padding: 20px;
+    font-size: 1.5rem;
+    width: 80%;
+    margin: 15px auto;
+    display: block;
+  }
+  
+  .timing-track, .reeling-meter, .balance-track {
+    margin: 30px auto;
+  }
+  
+  .timing-indicator, .balance-indicator {
+    box-shadow: 0 0 15px rgba(255, 255, 255, 1);
+  }
+  
+  .timing-target, .balance-target {
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.8);
+  }
 }
 
 @media (min-width: 768px) {
@@ -1021,4 +1202,160 @@ canvas {
     max-height: none;
     overflow-y: auto;
   }
+}
+
+/* Tutorial System */
+.tutorial-tooltip {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  z-index: 2000;
+  max-width: 300px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+  border: 2px solid var(--accent-color);
+}
+
+.tutorial-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tutorial-message {
+  margin-bottom: 15px;
+  line-height: 1.4;
+  font-size: 1rem;
+}
+
+.tutorial-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tutorial-next, .tutorial-skip {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tutorial-next {
+  background-color: var(--accent-color);
+  color: white;
+  font-weight: bold;
+}
+
+.tutorial-skip {
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: underline;
+}
+
+.tutorial-arrow {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: rgba(0, 0, 0, 0.85);
+  transform: rotate(45deg);
+  border: 2px solid var(--accent-color);
+}
+
+.tooltip-top .tutorial-arrow {
+  top: -8px;
+  left: 50%;
+  margin-left: -8px;
+  border-bottom: none;
+  border-right: none;
+}
+
+.tooltip-right .tutorial-arrow {
+  top: 50%;
+  right: -8px;
+  margin-top: -8px;
+  border-bottom: none;
+  border-left: none;
+}
+
+.tooltip-bottom .tutorial-arrow {
+  bottom: -8px;
+  left: 50%;
+  margin-left: -8px;
+  border-top: none;
+  border-left: none;
+}
+
+.tooltip-left .tutorial-arrow {
+  top: 50%;
+  left: -8px;
+  margin-top: -8px;
+  border-top: none;
+  border-right: none;
+}
+
+.tutorial-highlight {
+  position: relative;
+  z-index: 1999;
+  animation: tutorial-pulse 1.5s infinite;
+  box-shadow: 0 0 0 4px rgba(230, 57, 70, 0.5);
+}
+
+@keyframes tutorial-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(230, 57, 70, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
+}
+
+/* Animation classes for feedback */
+.perfect-hit {
+  animation: perfect-pulse 0.5s ease;
+  background-color: gold !important;
+  box-shadow: 0 0 20px gold !important;
+}
+
+.good-hit {
+  animation: good-pulse 0.5s ease;
+  background-color: #4CAF50 !important;
+  box-shadow: 0 0 15px #4CAF50 !important;
+}
+
+.poor-hit {
+  animation: poor-pulse 0.5s ease;
+  background-color: #F44336 !important;
+  box-shadow: 0 0 15px #F44336 !important;
+}
+
+.fish-tugging {
+  animation: tug 0.3s ease;
+}
+
+@keyframes perfect-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.5); }
+  100% { transform: scale(1); }
+}
+
+@keyframes good-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+@keyframes poor-pulse {
+  0% { transform: scale(1); }
+  25% { transform: scale(1.2) rotate(5deg); }
+  50% { transform: scale(1.1) rotate(-5deg); }
+  75% { transform: scale(1.05) rotate(3deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+@keyframes tug {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-3px); }
+  100% { transform: translateX(0); }
 } 

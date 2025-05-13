@@ -24,6 +24,10 @@ export function initTimingChallenge(container) {
         <div class="timing-indicator"></div>
       </div>
       <div class="timing-instruction">Click when the marker aligns with the target!</div>
+      <div class="fish-struggle-indicator">
+        <div class="fish-icon">🐟</div>
+        <div class="struggle-text">The fish is testing your timing!</div>
+      </div>
     </div>
   `;
   
@@ -33,11 +37,25 @@ export function initTimingChallenge(container) {
     direction: 1,
     speed: 1 + (this.activeChallenge.difficulty * 1.5),
     targetHit: false,
-    hitAccuracy: 0
+    hitAccuracy: 0,
+    pulseEffect: 0
   };
+  
+  // Animate the target to pulse to draw attention
+  const target = document.querySelector('.timing-target');
+  if (target) {
+    target.style.animation = 'pulse 0.8s infinite';
+  }
   
   // Play sound
   SoundSystem.playSound('reel', { volume: 0.5, loop: true });
+  
+  // Add fish icon based on fish type
+  const fishIcon = document.querySelector('.fish-icon');
+  if (fishIcon && this.activeChallenge && this.activeChallenge.fish) {
+    const fish = this.activeChallenge.fish;
+    fishIcon.textContent = this.getFishEmoji(fish.rarity);
+  }
 }
 
 /**
@@ -50,23 +68,57 @@ export function updateTimingChallenge(deltaTime) {
   // Move the indicator back and forth
   this.timingState.position += this.timingState.direction * this.timingState.speed * (deltaTime / 16);
   
+  // Add some randomness occasionally to simulate fish struggling
+  if (Math.random() < 0.02) {
+    this.timingState.speed = 1 + (this.activeChallenge.difficulty * 1.5) + (Math.random() * 0.5);
+  }
+  
   // Reverse direction at edges
   if (this.timingState.position >= 100) {
     this.timingState.position = 100;
     this.timingState.direction = -1;
+    // Provide visual feedback on direction change
+    this.pulseIndicator();
   } else if (this.timingState.position <= 0) {
     this.timingState.position = 0;
     this.timingState.direction = 1;
+    // Provide visual feedback on direction change
+    this.pulseIndicator();
   }
   
   // Update indicator position
   const indicator = document.querySelector('.timing-indicator');
   if (indicator) {
     indicator.style.left = `${this.timingState.position}%`;
+    
+    // Update pulse effect if active
+    if (this.timingState.pulseEffect > 0) {
+      this.timingState.pulseEffect -= deltaTime / 200;
+      if (this.timingState.pulseEffect <= 0) {
+        this.timingState.pulseEffect = 0;
+        indicator.style.boxShadow = '';
+      } else {
+        indicator.style.boxShadow = `0 0 ${this.timingState.pulseEffect * 10}px rgba(255,255,255,${this.timingState.pulseEffect})`;
+      }
+    }
   }
   
   // Gradually increase speed for difficulty
   this.timingState.speed += 0.005 * (deltaTime / 16);
+}
+
+/**
+ * Pulse the timing indicator for visual feedback
+ */
+export function pulseIndicator() {
+  this.timingState.pulseEffect = 1;
+  const indicator = document.querySelector('.timing-indicator');
+  if (indicator) {
+    indicator.style.boxShadow = '0 0 10px rgba(255,255,255,1)';
+  }
+  
+  // Play a subtle sound for the direction change
+  SoundSystem.playSound('lineTension', { volume: 0.1 });
 }
 
 /**
@@ -123,6 +175,13 @@ export function initReelingChallenge(container) {
   // Set up challenge HTML
   container.innerHTML = `
     <div class="reeling-challenge">
+      <div class="fish-strength-indicator">
+        <div class="fish-icon">🐟</div>
+        <div class="strength-text">Fish Strength</div>
+        <div class="strength-meter">
+          <div class="strength-fill"></div>
+        </div>
+      </div>
       <div class="reeling-meter">
         <div class="strain-warning"></div>
         <div class="strain-bar">
@@ -135,6 +194,7 @@ export function initReelingChallenge(container) {
       <div class="reeling-instruction">
         <span class="mobile-only">Tap rapidly to reel in the fish!</span>
         <span class="desktop-only">Click rapidly to reel in the fish!</span>
+        <div class="strain-warning-text">Be careful not to break the line!</div>
       </div>
       <button class="reel-button" id="reel-challenge-button">REEL!</button>
     </div>
@@ -149,17 +209,45 @@ export function initReelingChallenge(container) {
     reelDecay: 0.5, // How quickly reel power decays
     strainIncrease: this.activeChallenge.difficulty * 0.6, // How quickly strain increases
     progressNeeded: 100, // Progress needed to win
-    maxStrain: 100 // Maximum strain before line breaks
+    maxStrain: 100, // Maximum strain before line breaks
+    fishStrength: 50 + (this.activeChallenge.fish.rarity * 10)
   };
   
   // Set up reeling button
   const reelButton = document.getElementById('reel-challenge-button');
   if (reelButton) {
     reelButton.addEventListener('click', this.handleReelingClick.bind(this));
+    
+    // Add touch event for mobile
+    if (this.isMobile) {
+      reelButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        this.handleReelingClick();
+      });
+    }
+  }
+  
+  // Set initial fish strength display
+  const strengthFill = document.querySelector('.strength-fill');
+  if (strengthFill) {
+    strengthFill.style.width = '100%';
+  }
+  
+  // Add fish icon based on fish type
+  const fishIcon = document.querySelector('.fish-icon');
+  if (fishIcon && this.activeChallenge && this.activeChallenge.fish) {
+    const fish = this.activeChallenge.fish;
+    fishIcon.textContent = this.getFishEmoji(fish.rarity);
   }
   
   // Play line tension sound
   SoundSystem.playSound('lineTension', { volume: 0.3, loop: true });
+  
+  // Hide strain warning text initially
+  const warningText = document.querySelector('.strain-warning-text');
+  if (warningText) {
+    warningText.style.opacity = '0';
+  }
 }
 
 /**
@@ -179,16 +267,44 @@ export function updateReelingChallenge(deltaTime) {
     
     // Increase progress when reeling
     this.reelingState.progress += (this.reelingState.reelPower / 20) * (deltaTime / 16);
+    
+    // Decrease fish strength when reeling successfully
+    this.reelingState.fishStrength -= (this.reelingState.reelPower / 200) * (deltaTime / 16);
   } else {
     // Decrease strain when not reeling
     this.reelingState.lineStrain = Math.max(0, this.reelingState.lineStrain - 0.5 * (deltaTime / 16));
+    
+    // Fish recovers strength when not being reeled
+    this.reelingState.fishStrength = Math.min(100, this.reelingState.fishStrength + 0.1 * (deltaTime / 16));
   }
   
-  // Cap strain
+  // Cap strain and fish strength
   this.reelingState.lineStrain = Math.min(this.reelingState.maxStrain, this.reelingState.lineStrain);
+  this.reelingState.fishStrength = Math.max(0, this.reelingState.fishStrength);
   
   // Update UI
   this.updateReelingUI();
+  
+  // Fish tugs back occasionally
+  if (Math.random() < 0.01 && this.reelingState.fishStrength > 20) {
+    const tugStrength = (this.reelingState.fishStrength / 100) * 10 * this.activeChallenge.difficulty;
+    this.reelingState.lineStrain += tugStrength;
+    
+    // Provide visual and haptic feedback for the tug
+    const reelButton = document.getElementById('reel-challenge-button');
+    if (reelButton) {
+      reelButton.classList.add('fish-tugging');
+      setTimeout(() => reelButton.classList.remove('fish-tugging'), 500);
+    }
+    
+    // Play sound for the tug
+    SoundSystem.playSound('lineTension', { volume: 0.4 + (tugStrength / 20) });
+    
+    // Vibrate for mobile
+    if (this.isMobile && this.vibrationSupported) {
+      this.vibrate(Math.round(tugStrength * 5));
+    }
+  }
   
   // Check for line break
   if (this.reelingState.lineStrain >= this.reelingState.maxStrain) {
@@ -200,7 +316,7 @@ export function updateReelingChallenge(deltaTime) {
   }
   
   // Check for challenge completion
-  if (this.reelingState.progress >= this.reelingState.progressNeeded) {
+  if (this.reelingState.progress >= this.reelingState.progressNeeded || this.reelingState.fishStrength <= 0) {
     this.challengeScore = 100;
     SoundSystem.playSound('lineTension', { interrupt: true });
     this.completeChallenge(true);
@@ -232,10 +348,36 @@ export function updateReelingUI() {
     progressFill.style.width = `${(this.reelingState.progress / this.reelingState.progressNeeded) * 100}%`;
   }
   
+  // Update fish strength meter
+  const strengthFill = document.querySelector('.strength-fill');
+  if (strengthFill) {
+    strengthFill.style.width = `${this.reelingState.fishStrength}%`;
+    
+    // Change color based on remaining strength
+    if (this.reelingState.fishStrength < 30) {
+      strengthFill.style.backgroundColor = '#F44336'; // Red - almost caught
+    } else if (this.reelingState.fishStrength < 60) {
+      strengthFill.style.backgroundColor = '#FFC107'; // Yellow - tiring
+    } else {
+      strengthFill.style.backgroundColor = '#2196F3'; // Blue - strong
+    }
+  }
+  
   // Update warning indicator
   const warning = document.querySelector('.strain-warning');
   if (warning) {
     warning.style.opacity = this.reelingState.lineStrain > this.reelingState.maxStrain * 0.7 ? '1' : '0';
+  }
+  
+  // Update warning text
+  const warningText = document.querySelector('.strain-warning-text');
+  if (warningText) {
+    if (this.reelingState.lineStrain > this.reelingState.maxStrain * 0.7) {
+      warningText.style.opacity = '1';
+      warningText.style.color = '#F44336';
+    } else {
+      warningText.style.opacity = '0';
+    }
   }
   
   // Update reel button size based on power
