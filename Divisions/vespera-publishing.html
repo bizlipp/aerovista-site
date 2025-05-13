@@ -18,7 +18,7 @@
   <style>
     .book-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
       gap: 2rem;
       margin: 2rem 0;
     }
@@ -31,6 +31,9 @@
       border-radius: var(--radius-base);
       overflow: hidden;
       transition: transform var(--transition-medium) ease, box-shadow var(--transition-medium) ease;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
     
     .book-card:hover {
@@ -40,15 +43,21 @@
     
     .book-cover {
       position: relative;
-      height: 340px;
       overflow: hidden;
+      flex: 1;
+      min-height: 380px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
     }
     
     .book-cover img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain;
+      object-position: top;
       transition: transform var(--transition-medium) ease;
+      display: block;
     }
     
     .book-card:hover .book-cover img {
@@ -236,7 +245,7 @@
       }
       
       .book-cover {
-        height: 250px;
+        min-height: 280px;
       }
       
       .course-header {
@@ -249,6 +258,53 @@
         flex-direction: column;
         gap: 0.5rem;
       }
+    }
+
+    /* Easter egg styling */
+    .easter-egg-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .easter-egg-content {
+      background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-base);
+      padding: 2rem;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    }
+    
+    .easter-egg-content h3 {
+      color: var(--color-accent);
+      margin-bottom: 1rem;
+    }
+    
+    .easter-egg-content strong {
+      color: var(--color-hot);
+      font-family: var(--font-heading);
+      letter-spacing: 1px;
+    }
+    
+    .close-easter-egg {
+      margin-top: 1.5rem;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
@@ -296,168 +352,67 @@
       </div>
     </section>
 
-    <!-- Featured Books -->
-    <section id="books" class="container">
-      <h2>Featured Books</h2>
+    <section class="container mt-12">
+      <h2 class="text-3xl font-bold mb-6">🍂 Seasons of Change Series</h2>
+      <p class="max-w-3xl mb-8 text-lg text-gray-300">
+        <em>Seasons of Change</em> is Vespera's flagship publication—an evolving four-part series guiding readers through cycles of nature and self. Each seasonal volume blends poetic wisdom, personal reflection, creative prompts, and seasonal rituals into a timeless companion for intentional living.
+      </p>
+    
       <div class="book-grid">
         <div class="book-card" data-animate="fade-up">
           <div class="book-cover">
-            <img 
-              src="../public/images/divisions/book_1.jpg" 
-              alt="Digital Horizons" 
-              loading="lazy"
-              width="240"
-              height="340">
-            <div class="book-badge">Bestseller</div>
+            <img src="../public/images/books/winters_wisdom.png" alt="Winter's Wisdom" loading="lazy">
           </div>
           <div class="book-info">
-            <h3 class="book-title">Digital Horizons</h3>
-            <div class="book-author">By Elena Marquez</div>
-            <p>An exploration of the emerging technologies shaping our collective future and how they intersect with human values.</p>
-            <div class="book-cta">
-              <a href="#" class="btn small">Learn More</a>
-              <span class="price">$24.99</span>
-            </div>
+            <h3 class="book-title">Winter's Wisdom</h3>
+            <div class="book-author">The Snowy Owl, your seasonal guide</div>
+            <p>Stillness, inner vision, and restoration. A deep dive into the quiet power of winter, guided by poetic reflections and introspective prompts.</p>
           </div>
         </div>
+    
         <div class="book-card" data-animate="fade-up">
           <div class="book-cover">
-            <img 
-              src="../public/images/divisions/book_2.png" 
-              alt="Creative Code" 
-              loading="lazy"
-              width="240"
-              height="340">
+            <img src="../public/images/books/springs_awakening.png" alt="Spring's Awakening" loading="lazy">
           </div>
           <div class="book-info">
-            <h3 class="book-title">Creative Code</h3>
-            <div class="book-author">By Marcus Chen</div>
-            <p>A hands-on guide to generative art and creative coding, bridging visual arts and programming.</p>
-            <div class="book-cta">
-              <a href="#" class="btn small">Learn More</a>
-              <span class="price">$29.99</span>
-            </div>
+            <h3 class="book-title">Spring's Awakening</h3>
+            <div class="book-author">Guided by Thistle the Bee</div>
+            <p>Seeds of renewal, playful energy, new growth,and creative momentum. Spring invites you to bloom from within.</p>
           </div>
         </div>
+    
         <div class="book-card" data-animate="fade-up">
           <div class="book-cover">
-            <img 
-              src="../public/images/divisions/book_3.png" 
-              alt="The Quiet Revolution" 
-              loading="lazy"
-              width="240"
-              height="340">
+            <img src="../public/images/books/autumns_harvest.png" alt="Autumn's Harvest" loading="lazy">
           </div>
           <div class="book-info">
-            <h3 class="book-title">The Quiet Revolution</h3>
-            <div class="book-author">By Sarah Norwell</div>
-            <p>How small, intentional changes in digital habits can transform productivity and wellbeing.</p>
-            <div class="book-cta">
-              <a href="#" class="btn small">Learn More</a>
-              <span class="price">$19.99</span>
-            </div>
+            <h3 class="book-title">Autumn's Harvest</h3>
+            <div class="book-author">With the guidance of the Fox</div>
+            <p>Reflection, gratitude, and letting go. Autumn offers warmth, storytelling, and introspective richness in every leaf fall.</p>
           </div>
         </div>
+    
         <div class="book-card" data-animate="fade-up">
           <div class="book-cover">
-            <img 
-              src="../public/images/divisions/book_4.png" 
-              alt="Synthetic Souls" 
-              loading="lazy"
-              width="240"
-              height="340">
-            <div class="book-badge">New Release</div>
+            <img src="../public/images/books/summers_radiance.png" alt="Summer's Radiance" loading="lazy">
           </div>
           <div class="book-info">
-            <h3 class="book-title">Synthetic Souls</h3>
-            <div class="book-author">By Daniel Kairos</div>
-            <p>A provocative analysis of consciousness, AI ethics, and what it means to be human in a post-AI world.</p>
-            <div class="book-cta">
-              <a href="#" class="btn small">Learn More</a>
-              <span class="price">$26.99</span>
-            </div>
+            <h3 class="book-title">Summer's Radiance</h3>
+            <div class="book-author">Coming Soon</div>
+            <p>Bold expression, joy, and connection. Summer encourages full presence and heartfelt expansion. Available soon in the Seasons series.</p>
           </div>
         </div>
       </div>
+    
+      <div class="cta-box glass mt-12">
+        <h2 class="cta-title">Bring the Seasons Into Your Story</h2>
+        <p class="mb-4">Use these guides as companions, teaching tools, or creative prompts in your seasonal practice. Individual and group editions available soon.</p>
+        <a href="#contact" class="btn">Request Preview Copy</a>
+      </div>
     </section>
+    
 
-    <!-- Online Courses -->
-    <section class="container">
-      <h2>Online Courses</h2>
-      <div class="course-list">
-        <div class="course-item" data-animate="fade-up">
-          <div class="course-header">
-            <h3 class="course-title">Digital Content Creation Masterclass</h3>
-            <div class="course-badge">Popular</div>
-          </div>
-          <div class="course-meta">
-            <div class="meta-item">
-              <div class="meta-icon">⏱️</div>
-              <span>10 weeks</span>
-            </div>
-            <div class="meta-item">
-              <div class="meta-icon">👩‍🏫</div>
-              <span>7 instructors</span>
-            </div>
-            <div class="meta-item">
-              <div class="meta-icon">🌟</div>
-              <span>4.9/5 (287 reviews)</span>
-            </div>
-          </div>
-          <p>Learn multimedia content creation from industry professionals. This comprehensive course covers writing, video, audio, and interactive media for various platforms.</p>
-          <div class="cta-container">
-            <a href="#" class="btn">Enroll Now - $399</a>
-          </div>
-        </div>
-        <div class="course-item" data-animate="fade-up">
-          <div class="course-header">
-            <h3 class="course-title">Futures Thinking: Strategic Foresight</h3>
-          </div>
-          <div class="course-meta">
-            <div class="meta-item">
-              <div class="meta-icon">⏱️</div>
-              <span>6 weeks</span>
-            </div>
-            <div class="meta-item">
-              <div class="meta-icon">👩‍🏫</div>
-              <span>3 instructors</span>
-            </div>
-            <div class="meta-item">
-              <div class="meta-icon">🌟</div>
-              <span>4.8/5 (142 reviews)</span>
-            </div>
-          </div>
-          <p>Develop the toolkit needed to anticipate trends, navigate uncertainty, and create robust strategies. Learn systematic approaches to future planning used by top organizations.</p>
-          <div class="cta-container">
-            <a href="#" class="btn">Enroll Now - $299</a>
-          </div>
-        </div>
-        <div class="course-item" data-animate="fade-up">
-          <div class="course-header">
-            <h3 class="course-title">Creative Writing for Digital Media</h3>
-            <div class="course-badge">New</div>
-          </div>
-          <div class="course-meta">
-            <div class="meta-item">
-              <div class="meta-icon">⏱️</div>
-              <span>8 weeks</span>
-            </div>
-            <div class="meta-item">
-              <div class="meta-icon">👩‍🏫</div>
-              <span>4 instructors</span>
-            </div>
-            <div class="meta-item">
-              <div class="meta-icon">🌟</div>
-              <span>New course</span>
-            </div>
-          </div>
-          <p>Craft compelling narratives optimized for digital platforms. This course covers everything from microcopy to long-form content, focusing on audience engagement and multi-platform storytelling.</p>
-          <div class="cta-container">
-            <a href="#" class="btn">Enroll Now - $249</a>
-          </div>
-        </div>
-      </div>
-    </section>
+
 
     <!-- Submission CTA -->
     <section class="container">
@@ -582,6 +537,45 @@
       if (typeof initLazyLoading === 'function') {
         initLazyLoading();
       }
+
+      // Easter Egg - Secret message when clicking on all four book covers in order
+      let secretSequence = [];
+      const correctSequence = ['winter', 'spring', 'autumn', 'summer'];
+      const bookCovers = document.querySelectorAll('.book-cover');
+      
+      bookCovers.forEach((cover, index) => {
+        cover.addEventListener('click', () => {
+          const season = ['winter', 'spring', 'autumn', 'summer'][index];
+          secretSequence.push(season);
+          
+          // Check if the last 4 items match the correct sequence
+          if (secretSequence.length >= 4) {
+            const lastFour = secretSequence.slice(-4);
+            if (JSON.stringify(lastFour) === JSON.stringify(correctSequence)) {
+              // Reveal the easter egg
+              const message = document.createElement('div');
+              message.className = 'easter-egg-message';
+              message.innerHTML = `
+                <div class="easter-egg-content">
+                  <h3>You've discovered the secret of the seasons!</h3>
+                  <p>Like the turning of the seasons, wisdom comes to those who embrace the full cycle.</p>
+                  <p>Use code <strong>FULLCYCLE</strong> for 20% off your next purchase.</p>
+                  <button class="btn close-easter-egg">Close</button>
+                </div>
+              `;
+              document.body.appendChild(message);
+              
+              // Add closing functionality
+              document.querySelector('.close-easter-egg').addEventListener('click', () => {
+                message.remove();
+              });
+              
+              // Reset sequence
+              secretSequence = [];
+            }
+          }
+        });
+      });
     });
     
     function initDarkModeToggle() {

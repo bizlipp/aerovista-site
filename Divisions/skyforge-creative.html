@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SkyForge Creative | AeroVista</title>
+  <title>SkyForge Creative Studios | AeroVista</title>
   <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
   <!-- Main CSS - Imports all modular files -->
@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="../responsive-fixes.css" />
   <link rel="stylesheet" href="../theme-classes.css" />
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
-  <meta name="description" content="SkyForge Creative is AeroVista's game development and virtual storytelling studio crafting immersive worlds that resonate beyond the screen.">
-  <meta property="og:title" content="SkyForge Creative | AeroVista">
+  <meta name="description" content="SkyForge Creative Studios is AeroVista's game development and virtual storytelling studio crafting immersive worlds that resonate beyond the screen.">
+  <meta property="og:title" content="SkyForge Creative Studios | AeroVista">
   <meta property="og:description" content="Immersive game development & virtual storytelling">
   <meta property="og:image" content="https://aerovista.us/public/images/divisions/skyforge-creative.jpg">
   <meta property="og:url" content="https://aerovista.us/Divisions/skyforge-creative.html">
@@ -99,6 +99,49 @@
       font-family: var(--font-heading);
     }
     
+    /* Ascension Image Styles */
+    .flagship-project {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    
+    .project-image {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .project-image::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(0, 0, 0, 0) 50%);
+      pointer-events: none;
+    }
+    
+    .project-image:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+    
+    .project-image img {
+      display: block;
+      width: 100%;
+      height: auto;
+      transition: filter 0.3s ease;
+    }
+    
+    .project-image:hover img {
+      filter: brightness(1.1);
+    }
+    
     @media (max-width: 768px) {
       .showcase-gallery {
         height: auto;
@@ -109,6 +152,14 @@
       
       .showcase-item {
         height: 200px;
+      }
+      
+      .flagship-project {
+        grid-template-columns: 1fr;
+      }
+      
+      .project-image {
+        margin-bottom: 1.5rem;
       }
     }
   </style>
@@ -138,16 +189,12 @@
   <main id="main-content">
     <!-- Division Hero -->
     <section class="hero" style="background:linear-gradient(135deg,#ff3caf44 0%,#492eff66 100%);">
-      <h1 class="text-gradient glitch" data-text="SkyForge Creative" data-scramble="true">SkyForge Creative</h1>
-      <p>Immersive game development & virtual storytelling studio crafting worlds that resonate beyond the screen.</p>
+      <h1 class="text-gradient glitch" data-text="SkyForge Creative Studios" data-scramble="true">SkyForge Creative Studios</h1>
+      <h3>Build Worlds. Tell Stories. Play Bold.</h3>
+      <p>Game development meets immersive storytelling. We craft interactive experiences rooted in imagination and layered with meaning—where code becomes myth, and players become legends.</p>
       <a href="#contact" class="btn" data-animate="fade-up">Start a Project</a>
     </section>
 
-    <section class="container">
-      <h2>Our Mission</h2>
-      <div class="text-center" data-animate="fade-up">
-        <p style="font-size:1.2rem;max-width:800px;margin:0 auto 3rem;">SkyForge Creative explores the edge of virtual storytelling and interactive design—crafting worlds that resonate across platforms, genres, and imaginations.</p>
-      </div>
       
       <div class="showcase-gallery" data-animate="fade-up">
         <div class="showcase-item" data-animate="fade-in">
@@ -185,59 +232,218 @@
       </div>
     </section>
 
-    <!-- Featured Projects -->
+    <!--  Projects -->
     <section class="container">
-      <h2>Featured Projects</h2>
-      <div class="grid grid-cols-3 stagger">
-        <div class="project">
-          <h3>Nebula Drift: Immersive Game World</h3>
-          <p>Development of a neon-infused cyberpunk open world with modular environment systems and complex NPC behavior trees.</p>
-          <a href="skyforge-creative/nebula-drift-case-study.html" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
+      <h2>Featured Project: <em>Assentation Awaits</em></h2>
+      <div class="flagship-project" data-animate="fade-up">
+        <div class="service-item" data-animate="fade-left">
+          <div class="service-content">
+            <h3>A voice-driven, AI-powered adventure about choice, consciousness, and ascent.</h3>
+            <p>Currently in development, <em>Assentation Awaits</em> is a next-generation mobile experience blending traditional exploration with real-time voice commands and dynamic, AI-generated NPC interactions. Set in a fractured mythic world between memory and matter, players journey through dreamlike environments guided by riddles, rituals, and reactive storytelling.</p>
+
+             <p>This immersive narrative isn't just played—it's spoken, felt, and shaped with every word. Players can whisper secrets to statues, chant phrases to reveal hidden paths, or simply listen to the environment breathe back. Whether through vocal interaction or tactile exploration, Assentation Awaits encourages a slow burn of revelation and transformation. </p>
+            <ul style="list-style:disc;padding-left:1.25rem;line-height:1.8;margin-top:1rem;">
+              <li>🎙️ Voice-command gameplay layered with standard controls</li>
+              <li>🧠 Emotionally reactive NPC conversations (powered by GPT-based models)</li>
+              <li>🎧 Auto-advancing narrative mode for ambient, hands-free play</li>
+              <li>🧩 Procedurally generated quests and puzzles with symbolic themes</li>
+              <li>🌌 Immersive audio with real-time voice acting and ambient soundscapes</li>
+            </ul>
+            <p style="font-size:0.9rem;color:var(--color-text-soft);margin-top:1rem;">⚙️ Expected platform: Mobile-first (iOS/Android), with PC expansion in future phases. 🧭 Status: Narrative engine draft complete. Audio prototyping underway.</p> 
+          </div>
         </div>
-        <div class="project">
-          <h3>Echo Chamber: Spatial Audio Experience</h3>
-          <p>VR audio visualization that translates sound into interactive environments that respond to both music and player interaction.</p>
-          <a href="skyforge-creative/echo-chamber-case-study.html" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
-        </div>
-        <div class="project">
-          <h3>Chronos: Time-manipulation Mechanics</h3>
-          <p>Experimental game mechanics focused on time manipulation, complete with shaders, particle systems and physics integration.</p>
-          <a href="skyforge-creative/chronos-case-study.html" class="btn outline" style="margin-top:1.5rem;">View Case Study</a>
+        <div class="project-image" data-animate="fade-right">
+          <img 
+            src="../public/images/divisions/Asention.png" 
+            alt="Ascension - Characters from the Assentation Awaits game" 
+            loading="lazy"
+            width="800"
+            height="600">
         </div>
       </div>
     </section>
     
-    <!-- Services Section -->
+    <!--  Projects -->
     <section class="container">
-      <h2>Our Services</h2>
-      <div class="services-list">
-        <div class="service-item" data-animate="fade-left">
-          <div class="service-icon">🎮</div>
-          <div class="service-content">
-            <h3>Game Development</h3>
-            <p>From concept to launch, we create engaging gameplay experiences using Unity, Unreal Engine, and custom frameworks. Specializing in procedural content, adaptive systems, and player-driven narratives.</p>
-          </div>
+      <h2>Featured Project: <em>Surron Squad</em></h2>
+      <div class="flagship-project" data-animate="fade-up">
+        <div class="project-image" data-animate="fade-left">
+          <img 
+            src="../public/images/skyforge/surron-squad-bar-pool.png" 
+            alt="Surron Squad - A comic-style scene at a pool bar" 
+            loading="lazy"
+            width="800"
+            height="600">
         </div>
         <div class="service-item" data-animate="fade-right">
-          <div class="service-icon">📱</div>
           <div class="service-content">
-            <h3>AR/VR Experiences</h3>
-            <p>Crafting immersive extended reality solutions that bridge digital and physical worlds. Projects span enterprise training, cultural exhibitions, and interactive entertainment.</p>
+            <h3>Surron Squad</h3>
+            <p class="italic" style="margin-bottom:1rem;">A low-fi, high-vibe turn-based quest game with squad dynamics and questionable upgrades.</p>
+            <p>Built as a fun internal side project, Surron Squad explores tactical chaos, light comedy, and offbeat progression systems. Players control a wild crew of backwoods DIY misfits trying to save… something. Maybe the pizza budget. Maybe the lake. Maybe their dignity. Either way, it's poorly planned—and that's kind of the point.</p>
+            <p>The game is built using our in-house adventure engine, which is a work in progress. It's a turn-based tactical RPG with a focus on squad dynamics and offbeat progression systems. The game is currently in active prototyping, and we're working on the core mechanics and systems.</p>
+            <p>Missions range from ridiculous side quests to full-on wilderness operations like "Bassassin" and "High Stakes, Low Plans," where duct tape, fishing gear, and overclocked Surrons are standard-issue equipment. Each playable character has unique quirks, passive abilities, and hilarious dialogue triggers, all layered into a mission map built from our in-house narrative engine.</p>
+            <p style="font-size:0.9rem;color:var(--color-text-soft);margin-top:1rem;">🎮 Status: In active prototyping, built using our in-house adventure engine. <span title="Access secret mission files..." class="mission-link">🔧</span></p>
           </div>
         </div>
-        <div class="service-item" data-animate="fade-left">
-          <div class="service-icon">📖</div>
-          <div class="service-content">
-            <h3>Interactive Storytelling</h3>
-            <p>Narrative design and branching storylines that respond to user choices. We combine traditional writing talent with technical implementation for truly dynamic stories.</p>
+      </div>
+    </section>
+
+    <!-- Surron Squad Easter Egg - Hidden Mission Generator -->
+    <style>
+      .mission-generator {
+        display: none; /* Hide by default, will be shown via JavaScript */
+        margin-top: 2rem;
+        text-align: left;
+        font-size: 0.9rem;
+        color: var(--color-text-soft);
+      }
+      
+      .mission-content {
+        background: rgba(20, 20, 25, 0.8);
+        color: #e0e0e0;
+        padding: 1.5rem;
+        margin-top: 1rem;
+        border-radius: var(--radius-lg);
+        border: 1px solid #333;
+        font-family: monospace;
+      }
+      
+      .mission-card {
+        border-left: 4px solid;
+        padding-left: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      
+      .mission-card:last-child {
+        margin-bottom: 0;
+      }
+      
+      .mission-card h3 {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+      
+      .mission-card p {
+        margin-bottom: 0.5rem;
+      }
+      
+      .mission-card:nth-child(1) {
+        border-color: #ff6a00;
+      }
+      
+      .mission-card:nth-child(1) h3 {
+        color: #ff8c40;
+      }
+      
+      .mission-card:nth-child(2) {
+        border-color: #3cff6a;
+      }
+      
+      .mission-card:nth-child(2) h3 {
+        color: #7dff9e;
+      }
+      
+      .mission-card:nth-child(3) {
+        border-color: #6a3cff;
+      }
+      
+      .mission-card:nth-child(3) h3 {
+        color: #9e7dff;
+      }
+      
+      /* Glitch animation */
+      @keyframes glitch {
+        0% { transform: translate(0) }
+        20% { transform: translate(-2px, 2px) }
+        40% { transform: translate(-2px, -2px) }
+        60% { transform: translate(2px, 2px) }
+        80% { transform: translate(2px, -2px) }
+        100% { transform: translate(0) }
+      }
+      
+      .mission-glitch {
+        position: relative;
+      }
+      
+      .mission-glitch:hover::before,
+      .mission-glitch:hover::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0.8;
+      }
+      
+      .mission-glitch:hover::before {
+        color: #0ff;
+        z-index: -1;
+        animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+      }
+      
+      .mission-glitch:hover::after {
+        color: #f0f;
+        z-index: -2;
+        animation: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) reverse both infinite;
+      }
+      
+      /* Very subtle tool emoji styling */
+      .mission-link {
+        color: rgba(255,255,255,0.15) !important; 
+        cursor: pointer;
+        margin-left: 5px;
+        font-size: 0.8rem;
+        opacity: 0.5;
+        transition: all 0.3s ease;
+      }
+      
+      .mission-link:hover {
+        color: rgba(255,106,0,0.5) !important;
+        opacity: 0.8;
+        text-shadow: 0 0 3px rgba(255,106,0,0.2);
+      }
+    </style>
+    
+    <div class="container">
+      <div id="secret-missions" class="mission-generator">
+        <div class="mission-content">
+          <div class="mission-card">
+            <h3 class="mission-glitch" data-text="🎯 Operation: Bassassin - Phase II">🎯 Operation: Bassassin - Phase II</h3>
+            <p><strong>Loadout:</strong> 1 Kayak (borrowed), a headlamp, half a Snickers</p>
+            <p><strong>Objective:</strong> Out-fish Jimmy using only your charm and aluminum foil</p>
+            <p><strong>Complication:</strong> Charlie lost the bait… again.</p>
+            <p><strong>Reward:</strong> The vending machine might dispense XP now.</p>
+          </div>
+        
+          <div class="mission-card">
+            <h3 class="mission-glitch" data-text="🧪 Operation: Duct Tape Diplomacy">🧪 Operation: Duct Tape Diplomacy</h3>
+            <p><strong>Loadout:</strong> One Surron, six zip ties, a busted walkie-talkie</p>
+            <p><strong>Objective:</strong> Mediate a dispute between raccoons and the HOA board</p>
+            <p><strong>Complication:</strong> Billy misunderstood "parley" as "party"</p>
+            <p><strong>Reward:</strong> +1 Respect (local squirrel network)</p>
+          </div>
+        
+          <div class="mission-card">
+            <h3 class="mission-glitch" data-text="📦 Operation: The Payload Problem">📦 Operation: The Payload Problem</h3>
+            <p><strong>Loadout:</strong> A drone, two tacos, and something marked "NOT FRAGILE"</p>
+            <p><strong>Objective:</strong> Deliver the payload without opening it (TBD insists)</p>
+            <p><strong>Complication:</strong> It's leaking salsa.</p>
+            <p><strong>Reward:</strong> The respect of Ted. Maybe.</p>
           </div>
         </div>
-        <div class="service-item" data-animate="fade-right">
-          <div class="service-icon">📊</div>
-          <div class="service-content">
-            <h3>Consulting & Prototyping</h3>
-            <p>Strategic guidance and rapid prototyping services for businesses looking to explore game mechanics, virtual worlds, or interactive media. We help validate ideas quickly.</p>
-          </div>
+      </div>
+    </div>
+
+    <!-- What's Next Section -->
+    <section class="container">
+      <h2>What's Next?</h2>
+      <div class="service-item" data-animate="fade-left">
+        <div class="service-content">
+          <p>We're actively building our toolkit—visual systems, narrative frameworks, and AI tooling—so future projects can scale rapidly while keeping the soul intact.</p>
+          <p style="margin-top:1rem;">If you're a writer, sound designer, animator, or creative technologist looking to collaborate on <span class="italic">ritual-grade interactive media</span>, let's connect.</p>
+          <a href="mailto:contact@aerovista.us" class="btn outline" style="margin-top:1.5rem;">📬 Reach Out</a>
         </div>
       </div>
     </section>
@@ -328,6 +534,44 @@
       if (typeof initLazyLoading === 'function') {
         initLazyLoading();
       }
+      
+      // Easter Egg Console Log
+      console.log("Phase One Initiated. Ascenders, prepare for unraveling.");
+      
+      // Surron Squad Console Log Easter Egg - much more subtle now
+      console.log("%c🛠️ Maintenance tools available to authorized personnel only.", "color: #555; font-style: italic; font-size: 11px;");
+      
+      // Setup secret missions toggle
+      let missionsVisible = false;
+      const missionsPanel = document.getElementById('secret-missions');
+      
+      // Add a click listener to the stealthy mission link
+      document.querySelector('.mission-link').addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        if (!missionsVisible) {
+          // Show missions
+          missionsPanel.style.display = 'block';
+          missionsVisible = true;
+          missionsPanel.scrollIntoView({ behavior: 'smooth' });
+          console.log("%c🔐 ACCESS GRANTED: MISSION FILES DECLASSIFIED", "color: #ff6a00; font-weight: bold;");
+          console.log("%c🎯 TIP: Hover over mission names for glitch effect", "color: cyan; font-style: italic;");
+        } else {
+          // Hide missions
+          missionsPanel.style.display = 'none';
+          missionsVisible = false;
+          console.log("%c📁 MISSION FILES SECURED", "color: orange;");
+        }
+      });
+      
+      // Add click listener to document to hide missions when clicking elsewhere
+      document.addEventListener('click', function(e) {
+        if (missionsVisible && !missionsPanel.contains(e.target) && !e.target.classList.contains('mission-link')) {
+          missionsPanel.style.display = 'none';
+          missionsVisible = false;
+          console.log("%c📁 MISSION FILES SECURED - UNAUTHORIZED USER DETECTED", "color: red;");
+        }
+      });
     });
     
     function initDarkModeToggle() {
